@@ -36,5 +36,5 @@ export class AddholidaysComponent implements OnInit {
   hasFormErrors() {
     return !this._frm.valid;
   }
-
 }
+/*hi sid */
