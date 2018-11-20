@@ -23,6 +23,7 @@ export class HolidaysComponent implements OnInit {
   _recData: any;
 
   ngOnInit() {
+    // This should be dynamic
     this._years = [
       { label: '2010', value: '2010' },
       { label: '2011', value: '2011' },
