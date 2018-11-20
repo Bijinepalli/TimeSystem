@@ -25,7 +25,7 @@ export class AddholidaysComponent implements OnInit {
     this._frm.controls['holidayDate'].setValue(new Date());
   }
 
-// Comment added 
+// Comment added Dharmatej
   cancelHoliday() {
     this.router.navigate(['/menu/holidays']);
   }
