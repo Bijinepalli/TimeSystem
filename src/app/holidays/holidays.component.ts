@@ -4,6 +4,7 @@ import { Holidays } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-holidays',
@@ -21,6 +22,10 @@ export class HolidaysComponent implements OnInit {
   selectedYear: any;
   cols: any;
   _recData: any;
+
+  holidayDialog = false;
+  holidayHdr = 'Add Holiday';
+  _frm = new FormGroup({});
 
   ngOnInit() {
     // This should be dynamic
@@ -77,7 +82,50 @@ export class HolidaysComponent implements OnInit {
   }
 
   addHoliday() {
-    this.router.navigate(['/menu/addholidays']);
+    this.holidayDialog = true;
+    this.holidayHdr = 'Add New Holiday';
+    this.resetForm();
+    this.addControls(null);
+  }
+
+  editHoliday(data: Holidays) {
+    this.holidayDialog = true;
+    this.holidayHdr = 'Edit Holiday';
+    this.resetForm();
+    console.log(data);
+    this.addControls(data);
+  }
+
+  addControls(data: Holidays) {
+    console.log(data);
+    console.log(data.HolidayName);
+    this._frm.addControl('holidayName', new FormControl(data.HolidayName, Validators.required));
+    this._frm.addControl('holidayDate', new FormControl(data.HolidayDate, Validators.required));
+    if (data === undefined) {
+      this._frm.controls['holidayDate'].setValue(new Date());
+    } else {
+      this._frm.controls['holidayName'].setValue(data.HolidayName);
+      this._frm.controls['holidayDate'].setValue(data.HolidayDate);
+    }
+  }
+
+  cancelHoliday() {
+    this.holidayDialog = false;
+  }
+
+  saveHoliday() {
+    this.holidayDialog = false;
+  }
+
+  hasFormErrors() {
+    return !this._frm.valid;
+  }
+
+  resetForm() {
+    this._frm.markAsPristine();
+    this._frm.markAsUntouched();
+    this._frm.updateValueAndValidity();
+    this._frm.reset();
   }
 
 
