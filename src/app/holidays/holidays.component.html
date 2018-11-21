@@ -56,7 +56,12 @@
             (click)="editHoliday(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
-          {{rowData[col.field]}}
+            <div *ngIf="col.header.indexOf('Date') >= 0">
+                {{rowData[col.field]}}
+            </div>
+            <div *ngIf="col.header.indexOf('Date') == -1">
+                {{rowData[col.field]}}
+            </div>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['InUse'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused holiday" style="cursor:pointer;color:red"

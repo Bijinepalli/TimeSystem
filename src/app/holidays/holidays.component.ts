@@ -28,7 +28,7 @@ export class HolidaysComponent implements OnInit {
   _frm = new FormGroup({});
 
   ngOnInit() {
-    // This should be dynamic
+
     this._years = [
       { label: '2010', value: '2010' },
       { label: '2011', value: '2011' },
@@ -52,6 +52,9 @@ export class HolidaysComponent implements OnInit {
 
     this.selectedYear = _date.getFullYear();
     this.getHolidays();
+
+    this._frm.addControl('holidayName', new FormControl(null, Validators.required));
+    this._frm.addControl('holidayDate', new FormControl(null, Validators.required));
 
   }
 
@@ -85,22 +88,17 @@ export class HolidaysComponent implements OnInit {
     this.holidayDialog = true;
     this.holidayHdr = 'Add New Holiday';
     this.resetForm();
-    this.addControls(null);
+    this.addControls(undefined);
   }
 
   editHoliday(data: Holidays) {
     this.holidayDialog = true;
     this.holidayHdr = 'Edit Holiday';
     this.resetForm();
-    console.log(data);
     this.addControls(data);
   }
 
   addControls(data: Holidays) {
-    console.log(data);
-    console.log(data.HolidayName);
-    this._frm.addControl('holidayName', new FormControl(data.HolidayName, Validators.required));
-    this._frm.addControl('holidayDate', new FormControl(data.HolidayDate, Validators.required));
     if (data === undefined) {
       this._frm.controls['holidayDate'].setValue(new Date());
     } else {
