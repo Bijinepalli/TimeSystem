@@ -1,28 +1,28 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
     Holidays
   </div>
-  <div class="ui-g-12 ui-md-2 ui-g-nopad">
-    <div class="ui-g-12 ui-md-6"></div>
-    <div class="ui-g-12 ui-md-4"></div>
-    <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
+  <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-6 ui-lg-6"></div>
+    <div class="ui-g-12 ui-md-4 ui-lg-4"></div>
+    <div class="ui-g-12 ui-md-2 ui-lg-2 helpClass ui-g-nopad">
       <a href="#"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
 <div class="ui-g">
-  <div class="ui-g-12 ui-md-10"></div>
-  <div class="ui-g-12 ui-md-2" style="text-align: right">
+  <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Holiday" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Holiday" (click)=addHoliday()></button>
   </div>
 </div>
 <div class="ui-g">
-  <div class="ui-g-12 ui-md-1" style="text-align: right">
+  <div class="ui-g-12 ui-md-1 ui-lg-1" style="text-align: right">
     Select Year:
   </div>
-  <div class="ui-g-12 ui-md-2">
+  <div class="ui-g-12 ui-md-2 ui-lg-2">
     <p-dropdown [options]="_years" [(ngModel)]="selectedYear"></p-dropdown>
   </div>
 </div>
@@ -31,8 +31,8 @@
   <p-table #dt [columns]="cols" [value]="_holidays" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
-        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
@@ -76,15 +76,15 @@
   [width]="830">
   <form [formGroup]="_frm">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-12">
-        <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
           Holiday Name *<br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Holiday Name" formControlName="holidayName">
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12">
-        <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
           Date * (mm-dd-yyyy)<br>
           <div style="height:5px"></div>
           <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
@@ -94,8 +94,8 @@
     </div>
     <p-footer>
       <div class="ui-g">
-        <div class="ui-g-12 ui-md-12">
-          <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
             <button pButton label="Save" (click)="saveHoliday()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelHoliday()"></button>

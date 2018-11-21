@@ -30,7 +30,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { DataViewModule } from 'primeng/dataview';
 import { InputSwitchModule } from 'primeng/inputswitch';
-
+import {SelectButtonModule} from 'primeng/selectbutton';
 import { ToastModule } from 'primeng/toast';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -46,6 +46,7 @@ import { MasterComponent } from './master/master.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Master2Component } from './master2/master2.component';
 import { HolidaysComponent } from './holidays/holidays.component';
+import { CustomersComponent } from './customers/customers.component';
 
 
 
@@ -59,6 +60,7 @@ const appRoutes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'holidays', component: HolidaysComponent },
+      { path: 'customers', component: CustomersComponent },
 
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
@@ -95,6 +97,7 @@ const appRoutes: Routes = [
     DashboardComponent,
     Master2Component,
     HolidaysComponent,
+    CustomersComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -143,7 +146,7 @@ const appRoutes: Routes = [
     FileUploadModule,
     RouterModule.forRoot(appRoutes), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
-    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule
+    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, SelectButtonModule
   ],
   providers: [TimesystemService, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

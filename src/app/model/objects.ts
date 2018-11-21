@@ -5,3 +5,10 @@ export class Holidays {
     CalendarYear: number;
     InUse: number;
 }
+export class Customers {
+    Id: number;
+    CustomerNumber: string;
+    CustomerName: string;
+    Inactive: boolean;
+    used: number;
+}
