@@ -17,3 +17,10 @@ export class YearEndCodes {
     /// <summary>Prefix used for Holiday descriptions. The year is appended to it.</summary>
     public HolidayName = 'Holiday ';
 }
+
+export class DateFormats {
+    public DisplayDateFormat = 'MM-dd-yyyy';
+    public DisplayMonthDayFormat = 'MM-dd';
+    public DisplayTimeStampFormat = 'MM-dd-yyyy hh:mm:ss tt';
+}
+

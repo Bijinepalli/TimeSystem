@@ -35,7 +35,8 @@ import { ToastModule } from 'primeng/toast';
 
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { SanitizeHtmlPipe } from './pipes/sanitizeHtmlString.pipe';
+import { SanitizeHtmlPipe } from './sharedpipes/sanitizeHtmlString.pipe';
+import { DateTimeFormatPipe } from './sharedpipes/dateformat';
 
 import { TimesystemService } from './service/timesystem.service';
 import { AppComponent } from './app.component';
@@ -45,7 +46,6 @@ import { MasterComponent } from './master/master.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { Master2Component } from './master2/master2.component';
 import { HolidaysComponent } from './holidays/holidays.component';
-import { AddholidaysComponent } from './addholidays/addholidays.component';
 
 
 
@@ -59,7 +59,6 @@ const appRoutes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'holidays', component: HolidaysComponent },
-      { path: 'addholidays', component: AddholidaysComponent },
 
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
@@ -91,11 +90,11 @@ const appRoutes: Routes = [
     LoginComponent,
     FielderrorsComponent,
     SanitizeHtmlPipe,
+    DateTimeFormatPipe,
     MasterComponent,
     DashboardComponent,
     Master2Component,
     HolidaysComponent,
-    AddholidaysComponent,
   ],
   imports: [
     BrowserAnimationsModule,

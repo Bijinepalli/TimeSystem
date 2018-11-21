@@ -4,6 +4,7 @@ import { Holidays } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-holidays',
@@ -14,7 +15,6 @@ export class HolidaysComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) { }
-
   _holidays: Holidays[] = [];
   _yec: YearEndCodes = new YearEndCodes();
   _years; any;
@@ -22,8 +22,12 @@ export class HolidaysComponent implements OnInit {
   cols: any;
   _recData: any;
 
+  holidayDialog = false;
+  holidayHdr = 'Add Holiday';
+  _frm = new FormGroup({});
+
   ngOnInit() {
-    // This should be dynamic
+
     this._years = [
       { label: '2010', value: '2010' },
       { label: '2011', value: '2011' },
@@ -47,6 +51,9 @@ export class HolidaysComponent implements OnInit {
 
     this.selectedYear = _date.getFullYear();
     this.getHolidays();
+
+    this._frm.addControl('holidayName', new FormControl(null, Validators.required));
+    this._frm.addControl('holidayDate', new FormControl(null, Validators.required));
 
   }
 
@@ -77,7 +84,45 @@ export class HolidaysComponent implements OnInit {
   }
 
   addHoliday() {
-    this.router.navigate(['/menu/addholidays']);
+    this.holidayDialog = true;
+    this.holidayHdr = 'Add New Holiday';
+    this.resetForm();
+    this.addControls(undefined);
+  }
+
+  editHoliday(data: Holidays) {
+    this.holidayDialog = true;
+    this.holidayHdr = 'Edit Holiday';
+    this.resetForm();
+    this.addControls(data);
+  }
+
+  addControls(data: Holidays) {
+    if (data === undefined) {
+      this._frm.controls['holidayDate'].setValue(new Date());
+    } else {
+      this._frm.controls['holidayName'].setValue(data.HolidayName);
+      this._frm.controls['holidayDate'].setValue(data.HolidayDate);
+    }
+  }
+
+  cancelHoliday() {
+    this.holidayDialog = false;
+  }
+
+  saveHoliday() {
+    this.holidayDialog = false;
+  }
+
+  hasFormErrors() {
+    return !this._frm.valid;
+  }
+
+  resetForm() {
+    this._frm.markAsPristine();
+    this._frm.markAsUntouched();
+    this._frm.updateValueAndValidity();
+    this._frm.reset();
   }
 
 

@@ -20,4 +20,8 @@ export class TimesystemService {
       .set('code', code);
     return this.http.get<Holidays[]>(this.url + 'GetHolidays', { params });
   }
+
+  getHelp() {
+    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm');
+  }
 }
