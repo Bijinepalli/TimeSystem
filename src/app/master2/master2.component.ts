@@ -85,7 +85,7 @@ export class Master2Component implements OnInit {
               command: (event) => handleSelected(event), title: 'Holidays'
             },
             {
-              label: 'Companies', icon: 'fa fa-building', routerLink: ['/timesheet'],
+              label: 'Companies', icon: 'fa fa-building', routerLink: ['/menu/companies'],
               command: (event) => handleSelected(event), title: 'Companies'
             },
             {

@@ -1,0 +1,140 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    Companies
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-6"></div>
+    <div class="ui-g-12 ui-md-4"></div>
+    <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
+      <a href="#"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-10"></div>
+  <div class="ui-g-12 ui-md-2" style="text-align: right">
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Company" tooltipPosition="bottom" class="ui-button-info"
+      label="Add New Comapny" (click)=addCompany()></button>
+  </div>
+</div>
+
+
+<div class="ui-g">
+  <p-table #dt [columns]="cols" [value]="_companies" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 5em">Edit</th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+        <th style="width: 5em">Delete</th>
+        <th style="width: 7em">Holidays</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td style="text-align: center">
+          <i class="fa fa-edit fa-150x" pTooltip="Edit Company" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
+            (click)="editCompany(rowData)"></i>
+        </td>
+        <td *ngFor="let col of columns">
+          <div *ngIf="col.header.indexOf('Date') >= 0">
+            {{rowData[col.field]}}
+          </div>
+          <div *ngIf="col.header.indexOf('Date') == -1">
+            {{rowData[col.field]}}
+          </div>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['HolidaysInUse'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this company. It has no hours assigned to its holidays."
+            style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="deleteCompany(rowData)"></i>
+        </td>
+        <td>
+          <i class="fa fa-calendar fa-150x" pTooltip="Manage the holidays assigned to this company" style="cursor:pointer;color:green"
+            tooltipPosition="bottom" (click)="assignCompanyHolidays(rowData)"></i>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+<p-dialog header="{{companyHolidayHdr}}" [(visible)]="companyHolidayDialog" [responsive]="true" showEffect="fade"
+  [modal]="true" [width]="830">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12">
+        Year: <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="changeHolidayYear()" ></p-dropdown>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12">
+        <p-pickList [target]="_slctHolidays" [source]="_availableHolidays" filterBy="HolidayName" sourceHeader="Unassigned Holidays"
+          targetHeader="Assigned Holidays" [responsive]="true" [showSourceControls]="false" [showTargetControls]="false"
+          sourceFilterPlaceholder="Search by HolidayName" targetFilterPlaceholder="Search by HolidayName" [sourceStyle]="{'height':'300px'}"
+          [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()">
+          <ng-template let-attr pTemplate="item">
+            <div class="ui-helper-clearfix">
+              {{attr.DisplayName}}
+            </div>
+          </ng-template>
+
+        </p-pickList>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Save Holidays" (click)="saveCompanyHolidays()" ></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelCompany()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="{{companyHdr}}" [(visible)]="companyDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  [width]="830">
+  <form [formGroup]="_frm">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          Company Name *<br>
+          <div style="height:5px"></div>
+          <input type="text" pInputText style="width:100%" placeholder="Company Name" formControlName="companyName">
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <div style="height:5px"></div>
+          <p-checkbox name="chk1" value="Yes" label="Default" formControlName="companyDefault" inputId="chkCompany"></p-checkbox>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-12">
+          <div class="ui-g-12 ui-md-12">
+            <button pButton label="Save" (click)="saveCompany()" [disabled]="hasFormErrors()"></button>
+            &nbsp;
+            <button pButton label="Cancel" (click)="cancelCompany()"></button>
+          </div>
+        </div>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>
