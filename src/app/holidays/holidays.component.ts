@@ -15,7 +15,6 @@ export class HolidaysComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) { }
-
   _holidays: Holidays[] = [];
   _yec: YearEndCodes = new YearEndCodes();
   _years; any;
