@@ -18,6 +18,17 @@ export class YearEndCodes {
     public HolidayName = 'Holiday ';
 }
 
+export class BillingCode {
+    /// <summary>Value for time and material billable items.</summary>
+    public Client = 'TANDM';
+
+    /// <summary>Value for project billable items.</summary>
+    public Project = 'PROJBILL';
+
+    /// <summary>Value for non-billable items.</summary>
+    public NonBillable = 'NONBILL';
+}
+
 export class DateFormats {
     public DisplayDateFormat = 'MM-dd-yyyy';
     public DisplayMonthDayFormat = 'MM-dd';
