@@ -93,7 +93,7 @@ export class Master2Component implements OnInit {
               command: (event) => handleSelected(event), title: 'Billing Codes'
             },
             {
-              label: 'Project', icon: 'fa fa-sticky-note-o', routerLink: ['/menu/admin'],
+              label: 'Project', icon: 'fa fa-sticky-note-o', routerLink: ['/menu/projects'],
               command: (event) => handleSelected(event), title: 'Project'
             },
             {
