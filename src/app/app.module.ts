@@ -51,7 +51,8 @@ import { Master2Component } from './master2/master2.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { CompaniesComponent } from './companies/companies.component';
 import { ProjectsComponent } from './projects/projects.component';
-
+import { CustomersComponent } from './customers/customers.component';
+import { ClientsComponent } from './clients/clients.component';
 
 
 
@@ -66,7 +67,8 @@ const appRoutes: Routes = [
       { path: 'holidays', component: HolidaysComponent },
       { path: 'companies', component: CompaniesComponent },
       { path: 'projects', component: ProjectsComponent },
-
+      { path: 'customers', component: CustomersComponent },
+      { path: 'clients', component: ClientsComponent },
 
 
       // { path: 'burndown', component: BurndownchartComponent },
@@ -106,6 +108,8 @@ const appRoutes: Routes = [
     HolidaysComponent,
     CompaniesComponent,
     ProjectsComponent,
+    CustomersComponent,
+    ClientsComponent,
   ],
   imports: [
     BrowserAnimationsModule,
