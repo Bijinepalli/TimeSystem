@@ -11,7 +11,7 @@ declare var jQuery: any;
   styleUrls: ['./master2.component.css']
 })
 export class Master2Component implements OnInit {
-
+  public visibleHelp = false;
   fullName = 'Welcome';
   title = 'My Master Page...';
   public show = false;
