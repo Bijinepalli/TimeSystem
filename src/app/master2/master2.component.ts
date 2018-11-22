@@ -70,7 +70,7 @@ export class Master2Component implements OnInit {
         selected.addClass('menu-selected');
       };
       switch (localStorage.getItem('UserRole').toString()) {
-        case 'Admin':
+        case 'A':
           this.menuItems = [
             {
               label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
@@ -101,11 +101,11 @@ export class Master2Component implements OnInit {
               command: (event) => handleSelected(event), title: 'Non-Billables'
             },
             {
-              label: 'Customers', icon: 'fa fa-users', routerLink: ['/menu/user'],
+              label: 'Customers', icon: 'fa fa-users', routerLink: ['/menu/customers'],
               command: (event) => handleSelected(event), title: 'Customers'
             },
             {
-              label: 'Clients', icon: 'fa fa-user-secret', routerLink: ['/menu/user'],
+              label: 'Clients', icon: 'fa fa-user-secret', routerLink: ['/menu/clients'],
               command: (event) => handleSelected(event), title: 'Clients'
             },
             {
@@ -146,7 +146,7 @@ export class Master2Component implements OnInit {
             },
           ];
           break;
-        case 'Employee':
+        case 'E':
           break;
         default:
           this.menuItems = [

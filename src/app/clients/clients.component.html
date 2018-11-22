@@ -1,0 +1,139 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    Clients
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-6 ui-lg-6"></div>
+    <div class="ui-g-12 ui-md-4 ui-lg-4"></div>
+    <div class="ui-g-12 ui-md-2 ui-lg-2 helpClass ui-g-nopad">
+      <a href="#"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Customer" tooltipPosition="bottom" class="ui-button-info"
+      label="Add New Client" (click)=addClient()></button>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-12 ui-lg-12">
+    Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"></p-selectButton>
+  </div>
+</div>
+
+
+<div class="ui-g">
+  <p-table #dt [columns]="cols" [value]="_clients" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 5em">Edit</th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+        <th style="width: 5em">Delete</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td style="text-align: center">
+          <i class="fa fa-edit fa-150x" pTooltip="Edit Holiday" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
+            (click)="editCustomer(rowData)"></i>
+        </td>
+        <td *ngFor="let col of columns">
+          <div *ngIf="col.header.indexOf('Inactive') >= 0">
+            <div *ngIf="rowData['Inactive'] === true;else next">
+              Yes
+            </div>
+            <ng-template #next>
+              No
+            </ng-template>
+          </div>
+          <div *ngIf="col.header.indexOf('Inactive') == -1">
+            {{rowData[col.field]}}
+          </div>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['used'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused client" style="cursor:pointer;color:red"
+            tooltipPosition="bottom" (click)="deleteClient(rowData)"></i>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+
+
+<p-dialog header="{{clientHdr}}" [(visible)]="clientDialog" [responsive]="true" showEffect="fade" [modal]="true"
+  [width]="830">
+  <form [formGroup]="_frm">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          Client Code *<br>
+          <div style="height:5px"></div>
+          <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode">
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          Client Name *<br>
+          <div style="height:5px"></div>
+          <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName">
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          Billing Cycle *<br>
+          <div style="height:5px"></div>
+          <p-dropdown [options]="_billingCycle" [(ngModel)]="selectedCycle" formControlName="billingCycle"></p-dropdown>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          PO Number *<br>
+          <div style="height:5px"></div>
+          <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber">
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          Customer Number *<br>
+          <div style="height:5px"></div>
+          <p-dropdown [options]="_customerNames" [(ngModel)]="selectedCustomer" 
+            formControlName="customerName"></p-dropdown>
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          Parent Company *<br>
+          <div style="height:5px"></div>
+          <p-dropdown [options]="_companies" [(ngModel)]="selectedCompany"  formControlName="parentCompany"></p-dropdown>
+        </div>
+      </div>
+    </div>
+    <p-footer>
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <button pButton label="Save" (click)="saveclient()" [disabled]="hasFormErrors()"></button>
+            &nbsp;
+            <button pButton label="Cancel" (click)="cancelClient()"></button>
+          </div>
+        </div>
+      </div>
+    </p-footer>
+  </form>
+</p-dialog>

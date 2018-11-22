@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays, Projects
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -61,4 +61,44 @@ export class TimesystemService {
   }
 
 
+  getAppSettings(): any {
+    const params = new HttpParams();
+    return this.http.get<AppSettings[]>(this.url + 'GetAppSettings', { params });
+  }
+
+  getEmployee(EmployeeID: string, LoginID: string, Password: string): any {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID !== '' ? EmployeeID : '0')
+      .set('LoginID', LoginID)
+      .set('Password', Password);
+    return this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
+  }
+
+  EmployeeValidateByLoginID(LoginID: string): any {
+    const params = new HttpParams()
+      .set('LoginID', LoginID);
+    return this.http.get<LoginErrorMessage[]>(this.url + 'EmployeeValidateByLoginID', { params });
+  }
+
+  EmployeeValidateByCredentials(AttemptsLimit: string, LoginID: string, Password: string): any {
+    const params = new HttpParams()
+      .set('LoginID', LoginID)
+      .set('Password', Password)
+      .set('AttemptsLimit', AttemptsLimit);
+    return this.http.get<LoginErrorMessage[]>(this.url + 'EmployeeValidateByCredentials', { params });
+  }
+  getCustomers() {
+    return this.http.get<Customers[]>(this.url + 'GetCustomers');
+  }
+  getUsedCustomers() {
+    return this.http.get<Customers[]>(this.url + 'GetUsedCustomers');
+  }
+  getClients() {
+    return this.http.get<Clients[]>(this.url + 'GetClients');
+  }
+  getUsedBillingCodes(code: string) {
+    const params = new HttpParams()
+      .set('code', code);
+    return this.http.get<Clients[]>(this.url + 'GetBillingProjects', { params });
+  }
 }
