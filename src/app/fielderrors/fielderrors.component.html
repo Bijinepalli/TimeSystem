@@ -1,9 +1,10 @@
-<div class="ui-message ui-messages-error" style="padding:0px;color:red!important;border:0px;text-align:right;" *ngIf="fieldErrors(fieldName)">
-  <!-- <i class="fa fa-close" style="height:20px;"> -->
-    <span *ngIf="fieldErrors(fieldName).required" style="padding:5px;">{{ niceName}} is required</span>
-    <span *ngIf="fieldErrors(fieldName).minlength" style="padding:5px;">{{ niceName}} must be {{
-      fieldErrors(fieldName).minlength.requiredLength }} characters</span>
-    <span *ngIf="fieldErrors(fieldName).maxlength" style="padding:5px;">{{ niceName}} must not exceed {{
-      fieldErrors(fieldName).maxlength.requiredLength }} characters</span>
-  <!-- </i> -->
+<div class="ui-message ui-messages-error" style="padding:0px;color:red!important;border:0px;text-align:right;font-size:12px;"
+  *ngIf="fieldErrors(fieldName)">
+  <div *ngIf="fieldErrors(fieldName).required" style="padding:5px;">{{ niceName}} is required.</div>
+  <div *ngIf="fieldErrors(fieldName).minlength" style="padding:5px;">{{ niceName}} must atleast be {{
+    fieldErrors(fieldName).minlength.requiredLength }} characters.</div>
+  <div *ngIf="fieldErrors(fieldName).maxlength" style="padding:5px;">{{ niceName}} must not exceed {{
+    fieldErrors(fieldName).maxlength.requiredLength }} characters.</div>
+  <div *ngIf="fieldErrors(fieldName).strong" style="padding:5px;">{{ niceName}} should contain atleast 3 out of 4 of
+    the following – Upper case, Lower case, Numeric or Symbols.</div>
 </div>

@@ -1,19 +1,112 @@
-.borderBlack
-{
-  border:solid 1px darksalmon;
+#header {
+  background-color: #fff;
+  height: 70px;
+  position: fixed;
+  top: 0px;
+  z-index: 99;
+  width: 100%;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
+}
+
+#top-logo {
+  height: 60px;
+}
+
+.topBar {
+  padding: .5em .5em .2em .8em;
+}
+
+#content-body {
+  /* top: 60px; */
+  position: absolute;
+  background: linear-gradient(135deg, #fff 0%, #f3f6f8 100%);
+}
+
+#content-body::before {
+  content: "";
+  position: fixed;
+  left: -22%;
+  top: 95%;
+  right: 0;
+  width: 125%;
+  height: 100%;
+  background: linear-gradient(135deg, #f3f6f8 0%, #fff 100%);
+  transform: rotate(15deg);
+}
+
+.imageLogo {
+  width: 260px;
+  height: 60px;
+}
+
+.userInfo {
+  color: blue;
+  text-align: right;
+  vertical-align: middle;
+}
+
+.borderBlack {
+  border: solid 1px darksalmon;
 }
 
 .positionMiddle {
-    position: absolute;
-    top: 40%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    box-shadow:0 10px 50px 0 #b3b3b3;
-    border-top-left-radius : 0.5em;
-    border-top-right-radius: 0.5em;
-  }
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 10px 50px 0 #b3b3b3;
+  border-top-left-radius: 0.5em;
+  border-top-right-radius: 0.5em;
+}
 
-  .alignText{
-      padding-top:3%;
-      text-align: right;
+.alignText {
+  padding-top: 3%;
+  text-align: right;
+}
+
+.LoginButton {
+  color: #fff;
+  background-color:#3eb7f5!important;
+  /* background-color:#96307E!important; */
+  padding: 5px 5px!important;
+  border-radius: 5px;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.1s linear;
+  border-color:#fff!important;
+}
+
+.LoginButton:hover {
+  background-color:#2db3f8 !important;
+  /* background-color: #ac3791!important; */
+}
+
+.TimeSystemTitle {
+  font: 400 18px/22px "Gotham SSm A", "Gotham SSm B", "Proxima Nova", "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: rgb(49, 49, 49);
+  text-align: center;
+  text-transform: none;
+}
+
+/* 
+@media only screen and (max-width: 1000px) {
+  #content-body {
+    top: 60px;
   }
+}
+
+@media only screen and (max-width: 800px) {
+  #content-body {
+    top: 60px;
+  }
+}
+
+@media only screen and (max-width: 640px) {
+  #content-body {
+    top: 120px;
+  }
+  .userInfo {
+    background: lightcyan;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
+  }
+} */

@@ -19,48 +19,97 @@
   </ng-template>
 </p-toast>
 
-<form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-  <div class="ui-g-12 ui-md-3 positionMiddle">
-    <div class="ui-g-12 ui-md-12" style="border:solid 1px #b3b3b3;border-top-left-radius:0.5em;border-top-right-radius:0.5em;">
-      <div class="ui-g ui-g-nopad" style="border-bottom: solid 2px black;">
-        <div class="ui-g-12 ui-md-12" style="font-size:2em; font-family: sans-serif; font-weight: bold;text-align:center">
-          Time System
-        </div>
-      </div>
-      <div class="ui-g  ui-fluid">
-        <div class="ui-g-12 ui-md-12" style="padding-top:4%">
-          <div class="ui-inputgroup">
-            <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+
+<!-- <div class="ui-g" id="header">
+  <div class="ui-g-12 ui-md-3 ui-lg-3 topBar">
+    <img src="../../assets/images/ebixconsulting.jpg" class="imageLogo">
+  </div>
+  <div class="ui-g-12 ui-md-9 ui-lg-9 userInfo">
+   
+  </div>
+</div> -->
+
+<div class="ui-g ui-g-nopad">
+  <div id="content-body" class="ui-g-12">
+    <div class="ui-g-12" style="min-height: 800px">
+      <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+        <div class="ui-g-12 ui-md-4 ui-lg-3 positionMiddle">
+          <div class="ui-g-12 ui-md-12" align="center">
+            <img src="../../assets/images/ebixconsulting.jpg" class="imageLogo">
+          </div>
+          <div class="ui-g-12 ui-md-12 TimeSystemTitle">
+            Log in to <b>Time System</b>
+          </div>
+          <div class="ui-g-12 ui-md-12">
             <input id="username" type="text" pInputText placeholder="Username" formControlName="username" value="Name"
-              style="color: black; background-color: white">
+              style="color: black; background-color: white;width:100%;">
           </div>
-        </div>
-        <div class="ui-g-12 ui-md-12">
-          <app-fielderrors style="width:100%" [form]="signInForm" field="username" nicename="Username">
-          </app-fielderrors>
-        </div>
-      </div>
-      <div class="ui-g  ui-fluid">
-        <div class="ui-g-12 ui-md-12">
-          <div class="ui-inputgroup">
-            <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
-            <input type="password" pInputText placeholder="Password" formControlName="password" value="password" style="color: black; background-color: white">
+          <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: right;">
+            <app-fielderrors style="width:100%" [form]="signInForm" field="username" nicename="Username">
+            </app-fielderrors>
           </div>
+          <div class="ui-g-12 ui-md-12">
+            <input type="password" pInputText placeholder="Password" formControlName="password" value="password" style="color: black; background-color: white;width:100%;">
+          </div>
+          <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: right;">
+            <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">
+            </app-fielderrors>
+          </div>
+          <div class="ui-g-12 ui-md-12">
+            <button style="width:100%" pButton type="submit" [disabled]="hasFormErrors()" class="LoginButton" label="Login"></button>
+          </div>
+          <!-- <div class="ui-g-12 ui-md-12">
+            <button style="width:100%" pButton label="Forgot Password"></button>
+          </div> -->
+          <!-- <div class="ui-g-12 ui-md-12" style="border:solid 1px #b3b3b3;border-top-left-radius:0.5em;border-top-right-radius:0.5em;">
+            <div class="ui-g ui-g-nopad" style="border-bottom: solid 2px black;">
+              <div class="ui-g-12 ui-md-12" style="font-size:2em; font-family: sans-serif; font-weight: bold;text-align:center">
+                Login
+              </div>
+            </div>
+            <div class="ui-g  ui-fluid">
+              <div class="ui-g-12 ui-md-12" style="padding-top:4%">
+                <div class="ui-inputgroup">
+                  <span class="ui-inputgroup-addon"><i class="fa fa-user"></i></span>
+                  <input id="username" type="text" pInputText placeholder="Username" formControlName="username" value="Name"
+                    style="color: black; background-color: white">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-12">
+                <app-fielderrors style="width:100%" [form]="signInForm" field="username" nicename="Username">
+                </app-fielderrors>
+              </div>
+            </div>
+            <div class="ui-g  ui-fluid">
+              <div class="ui-g-12 ui-md-12">
+                <div class="ui-inputgroup">
+                  <span class="ui-inputgroup-addon"><i class="fa fa-key"></i></span>
+                  <input type="password" pInputText placeholder="Password" formControlName="password" value="password"
+                    style="color: black; background-color: white">
+                </div>
+              </div>
+              <div class="ui-g-12 ui-md-12">
+                <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">
+                </app-fielderrors>
+              </div>
+            </div>
+            <div class="ui-g">
+              <div class="ui-g-12 ui-md-8" style="text-align: right;vertical-align: middle;">
+                <a (click)="navigateTo('/menu/dashboard')">Forgot Password</a> 
+              </div>
+              <div class="ui-g-12 ui-md-4">
+                <button style="width:100%" pButton type="submit" [disabled]="hasFormErrors()" class="LoginButton" label="Login"></button>
+              </div>
+            </div>
+            <div *ngIf="isIEOrEdge" style="color:red;text-align:left;padding:5px;font-size: 0.75em">
+              Note: Attachments not supported in EDGE, Please choose Chrome to get the best use of the functionality.
+            </div>
+          </div> -->
         </div>
-        <div class="ui-g-12 ui-md-12">
-          <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">
-          </app-fielderrors>
-        </div>
-      </div>
-      <div class="ui-g">
-        <div class="ui-g-12 ui-md-8"></div>
-        <div class="ui-g-12 ui-md-4">
-          <button style="width:100%" pButton type="submit" [disabled]="hasFormErrors()" label="Sign In"></button>
-        </div>
-      </div>
-      <div *ngIf="isIEOrEdge" style="color:red;text-align:left;padding:5px;font-size: 0.75em">
-        Note: Attachments not supported in EDGE, Please choose Chrome to get the best use of the functionality.
-      </div>
+      </form>
+    </div>
+    <div style="text-align: center" class="ui-g-12">
+      © Copyright Ebix Consulting
     </div>
   </div>
-</form>
+</div>
