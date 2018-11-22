@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -50,6 +50,14 @@ export class TimesystemService {
       .set('code', code);
     const data1 = this.http.get<Projects[]>(this.url + 'GetProjects');
     const data2 = this.http.get<Projects[]>(this.url + 'GetBillingProjects', { params });
+    return forkJoin([data1, data2]);
+  }
+
+  getNonBillables(code: string) {
+    const params = new HttpParams()
+      .set('code', code);
+    const data1 = this.http.get<NonBillables[]>(this.url + 'GetNonBillables');
+    const data2 = this.http.get<NonBillables[]>(this.url + 'GetBillingProjects', { params });
     return forkJoin([data1, data2]);
   }
 

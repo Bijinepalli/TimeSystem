@@ -68,7 +68,7 @@ export class HolidaysComponent implements OnInit {
           this.visibleHelp = true;
         }
       );
-    
+
   }
 
   getHolidays() {

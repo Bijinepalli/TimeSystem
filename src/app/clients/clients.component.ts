@@ -73,13 +73,6 @@ export class ClientsComponent implements OnInit {
             this._recData = this._clients.length + ' clients found';
           } else {
             this._clients = data;
-            this.cols = [
-              { field: 'ClientName', header: 'Client Name' },
-              { field: 'Key', header: 'Code' },
-              { field: 'Inactive', header: 'Inactive' },
-              { field: 'CustomerName', header: 'Customer Name' },
-              { field: 'PONumber', header: 'PO#' },
-            ];
             this._recData = data.length + ' clients found';
           }
           this.getUsedClients();
@@ -106,12 +99,23 @@ export class ClientsComponent implements OnInit {
       );
   }
   clickButton(event: any) {
-    this.cols = [
-      { field: 'ClientName', header: 'Client Name' },
-      { field: 'Key', header: 'Code' },
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'PONumber', header: 'PO#' },
-    ];
+    if (this.selectedType === 'Both') {
+      this.cols = [
+        { field: 'ClientName', header: 'Client Name' },
+        { field: 'Key', header: 'Code' },
+        { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'PONumber', header: 'PO#' },
+        { field: 'Inactive', header: 'Inactive' },
+
+      ];
+    } else {
+      this.cols = [
+        { field: 'ClientName', header: 'Client Name' },
+        { field: 'Key', header: 'Code' },
+        { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'PONumber', header: 'PO#' },
+      ];
+    }
     this.getClients();
   }
   deleteClient(dataRow: any) {

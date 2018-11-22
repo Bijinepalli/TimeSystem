@@ -105,13 +105,13 @@ export class LoginComponent implements OnInit {
     if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
 
       this.signInForm = this.fb.group({
-        username: ['', [Validators.required]],
+        username: ['ramesh.rao', [Validators.required]],
         password: ['']
       });
     } else {
       this.signInForm = this.fb.group({
-        username: ['', [Validators.required]],
-        password: ['', [
+        username: ['ramesh.rao', [Validators.required]],
+        password: ['pa55w0rd@', [
           Validators.required,
           Validators.minLength(8),
           PasswordValidator.strong
@@ -181,7 +181,7 @@ export class LoginComponent implements OnInit {
         (data) => {
           console.log('Validate Credentials Errors -');
           console.log(data);
-          if (data !== undefined && data !== null && data.length > 0) {
+          if (data !== undefined && data !== null) {
             this.ValidateCredentialsErrors = data;
             if (this.ValidateCredentialsErrors.length > 0) {
               this.msgSvc.add({

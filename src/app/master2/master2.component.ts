@@ -97,7 +97,7 @@ export class Master2Component implements OnInit {
               command: (event) => handleSelected(event), title: 'Project'
             },
             {
-              label: 'Non-Billables', icon: 'fa fa-coffee', routerLink: ['/menu/user'],
+              label: 'Non-Billables', icon: 'fa fa-coffee', routerLink: ['/menu/nonbillables'],
               command: (event) => handleSelected(event), title: 'Non-Billables'
             },
             {

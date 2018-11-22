@@ -35,6 +35,15 @@ export class Projects {
     CanBeDeleted: number;
 }
 
+export class NonBillables {
+    Id: number;
+    Key: string;
+    ProjectName: string;
+    Inactive: boolean;
+    CreatedOn: string;
+    CanBeDeleted: number;
+}
+
 export class AppSettings {
     Id?: number;
     DataKey?: string;

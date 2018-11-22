@@ -53,6 +53,7 @@ import { CompaniesComponent } from './companies/companies.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { CustomersComponent } from './customers/customers.component';
 import { ClientsComponent } from './clients/clients.component';
+import { NonbillablesComponent } from './nonbillables/nonbillables.component';
 
 
 
@@ -69,6 +70,8 @@ const appRoutes: Routes = [
       { path: 'projects', component: ProjectsComponent },
       { path: 'customers', component: CustomersComponent },
       { path: 'clients', component: ClientsComponent },
+      { path: 'nonbillables', component: NonbillablesComponent },
+
 
 
       // { path: 'burndown', component: BurndownchartComponent },
@@ -110,6 +113,7 @@ const appRoutes: Routes = [
     ProjectsComponent,
     CustomersComponent,
     ClientsComponent,
+    NonbillablesComponent,
   ],
   imports: [
     BrowserAnimationsModule,
