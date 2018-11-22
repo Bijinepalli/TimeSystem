@@ -14,6 +14,7 @@ import { map } from 'rxjs/operators';
 export class TimesystemService {
 
   private ipaddress = 'http://172.16.32.67/';
+  private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
@@ -47,15 +48,17 @@ export class TimesystemService {
   getProjects(code: string) {
     const params = new HttpParams()
       .set('code', code);
-    const data1 =  this.http.get<Projects[]>(this.url + 'GetProjects');
-    const data2 =  this.http.get<Projects[]>(this.url + 'GetBillingProjects', {params});
+    const data1 = this.http.get<Projects[]>(this.url + 'GetProjects');
+    const data2 = this.http.get<Projects[]>(this.url + 'GetBillingProjects', { params });
     return forkJoin([data1, data2]);
   }
 
 
 
-  getHelp(): Observable<any> {
-    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm').pipe(
-      map(response => response['_body']));
+  getHelp(filename: string): Observable<any> {
+    return this.http.get(this.helpipaddress + filename, { responseType: 'text' }).pipe(
+      map(res => res.toString()));
   }
+
+
 }

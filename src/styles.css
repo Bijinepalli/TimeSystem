@@ -65,3 +65,9 @@ body .ui-slidemenu {
   background-color: blanchedalmond;
   padding:2px;
 }
+
+.helpDisplayClass
+{
+  color:black;
+  font-size: 10pt;
+}

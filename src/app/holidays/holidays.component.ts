@@ -26,6 +26,9 @@ export class HolidaysComponent implements OnInit {
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
 
+  helpText: any;
+  visibleHelp = false;
+
   ngOnInit() {
 
     this._years = [
@@ -55,6 +58,17 @@ export class HolidaysComponent implements OnInit {
     this._frm.addControl('holidayName', new FormControl(null, Validators.required));
     this._frm.addControl('holidayDate', new FormControl(null, Validators.required));
 
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          this.helpText = data;
+          this.visibleHelp = true;
+        }
+      );
+    
   }
 
   getHolidays() {
