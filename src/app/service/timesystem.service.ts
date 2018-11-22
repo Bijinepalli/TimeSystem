@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays
+  Holidays, Companies, CompanyHolidays, Projects
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -37,12 +39,23 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('year', year)
       .set('companyId', companyId);
-      const data1 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesAssignedHoliday', { params });
-      const data2 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesNotAssignedHoliday', { params });
-      return forkJoin([data1, data2]);
+    const data1 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesAssignedHoliday', { params });
+    const data2 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesNotAssignedHoliday', { params });
+    return forkJoin([data1, data2]);
   }
 
-  getHelp() {
-    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm');
+  getProjects(code: string) {
+    const params = new HttpParams()
+      .set('code', code);
+    const data1 =  this.http.get<Projects[]>(this.url + 'GetProjects');
+    const data2 =  this.http.get<Projects[]>(this.url + 'GetBillingProjects', {params});
+    return forkJoin([data1, data2]);
+  }
+
+
+
+  getHelp(): Observable<any> {
+    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm').pipe(
+      map(response => response['_body']));
   }
 }

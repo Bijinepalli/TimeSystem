@@ -1,3 +1,8 @@
+export class DrpList {
+    label: string;
+    value: string;
+}
+
 export class Holidays {
     Id: number;
     HolidayName: string;
@@ -18,4 +23,14 @@ export class CompanyHolidays {
     HolidayName: string;
     HolidayDate: string;
     DisplayName: string;
+}
+
+export class Projects {
+    Id: number;
+    Key: string;
+    ProjectName: string;
+    Inactive: boolean;
+    CompanyId: number;
+    CreatedOn: string;
+    CanBeDeleted: number;
 }
