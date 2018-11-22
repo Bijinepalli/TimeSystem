@@ -7,7 +7,7 @@
     <div class="ui-g-12 ui-md-6 ui-lg-6"></div>
     <div class="ui-g-12 ui-md-4 ui-lg-4"></div>
     <div class="ui-g-12 ui-md-2 ui-lg-2 helpClass ui-g-nopad">
-      <a href="#"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('CustomerSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
@@ -76,8 +76,12 @@
 </div>
 
 
-<p-dialog header="{{customerHdr}}" [(visible)]="customerDialog" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="830">
+<p-dialog [(visible)]="customerDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="830">
+  <p-header>
+    {{customerHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('CustomerUpdate.htm')"></i>
+  </p-header>
   <form [formGroup]="_frm">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -108,3 +112,6 @@
     </p-footer>
   </form>
 </p-dialog>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+</p-sidebar>
