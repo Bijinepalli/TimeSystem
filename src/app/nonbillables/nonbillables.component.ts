@@ -18,6 +18,8 @@ export class NonbillablesComponent implements OnInit {
   nonBillableDialog: boolean;
   nonBillableHdr: string;
   _createdOn: string;
+  visibleHelp: boolean;
+  helpText: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService) { }
@@ -159,6 +161,21 @@ export class NonbillablesComponent implements OnInit {
 
   saveNonBillable() {
     this.nonBillableDialog = false;
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+
+        }
+      );
+
   }
 
   hasFormErrors() {

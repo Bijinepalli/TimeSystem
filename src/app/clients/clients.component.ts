@@ -35,6 +35,8 @@ export class ClientsComponent implements OnInit {
   clientCreatedOn: string;
   selectActiveInactive: string[] = [];
 
+  visibleHelp: boolean;
+  helpText: string;
   // tslint:disable-next-line:max-line-length
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) {
   }
