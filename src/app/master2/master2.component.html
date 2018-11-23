@@ -1,30 +1,33 @@
 <div class="ui-g" id="header">
-
-  <div class="ui-g-12 ui-md-5 ui-lg-3 topBar">
-    <div class="ui-g-1 ui-md-3" id="minigutter">
+  <div class="ui-g-7 ui-md-7 topBar">
+    <div class="ui-g-1 ui-md-5" id="minigutter">
       <span class="fa fa-bars fa-2x" (click)="OpenMenu()"></span>
     </div>
-    <div class="ui-g-11 ui-md-9 ui-lg-10 ui-g-nopad">
-      <img src="../../assets/images/ebixconsulting.jpg" class="imageLogo">
+    <div class="ui-g-11 ui-md-9 ui-g-nopad">
+      <img src="../../assets/images/ebixconsulting.jpg">
     </div>
   </div>
-  <div class="ui-g-12 ui-md-3 ui-lg-2 ui-g-nopad semiTopbar" style="vertical-align: middle">
-    <div class="ui-g-6 ui-md-12 ui-lg-6" style="text-align: center;">
+  <!--<div class="ui-g-3 ui-md-2 ui-g-nopad semiTopbar" style="vertical-align: middle">
+    <div class="ui-g-6 ui-md-6" style="text-align: center;">
       Timesheets
     </div>
-    <div class="ui-g-6 ui-md-12 ui-lg-6" style="text-align: center;">
+    <div class="ui-g-6 ui-md-6" style="text-align: center;">
       Pay Stubs
     </div>
-  </div>
-  <div class="ui-g-12 ui-md-3 ui-lg-2" id="minigutter" style="display: none">
+  </div>-->
+  <!--<div class="ui-g-12 ui-md-3 ui-lg-2" id="minigutter" style="display: none">
     <p-slideMenu #menu [model]="headerMenu" [popup]="true" [viewportHeight]="150" class="leftNav1"></p-slideMenu>
     <button #btn type="button" pButton icon="pi pi-bars" label="Menu" class="clearText" (click)="menu.toggle($event)"></button>
-  </div>
-  <div class="ui-g-12 ui-md-4 ui-lg-7 ui-g-nopad userInfo" id="notifications" style="text-align: right">
-    Hello, Ramesh{{_userName}}
-    &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="bottom" (click)="navigateTo('/menu/dashboard')"></button>&nbsp;
-    <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="bottom" (click)="logout()" class="ui-button-danger"
-      style="padding-right:30px"></button>&nbsp;&nbsp;
+  </div>-->
+  <div class="ui-g-5 ui-md-5 ui-g-nopad userInfo" id="notifications" style="text-align: right">
+    <div class="ui-g-6 ui-md-9" style="text-align:right">
+      Hello, Ramesh{{_userName}}
+    </div>
+    <div class="ui-g-6 ui-md-3" style="text-align:right">
+      &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="bottom" (click)="navigateTo('/menu/dashboard')"></button>&nbsp;
+      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="bottom" (click)="logout()" class="ui-button-danger"
+        style="padding-right:0px"></button>&nbsp;&nbsp;
+    </div>
   </div>
 
 </div>

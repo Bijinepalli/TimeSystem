@@ -1,0 +1,19 @@
+.dialogWidth {
+    width:830px;
+}
+
+.ui-dialog.ui-dialog-responsive {
+    width:830px !important;   
+}
+
+@media only screen and (max-width: 640px) {
+    .dialogWidth {
+      width: 500px;
+    }
+  }
+
+  @media only screen and (max-width: 2000px) {
+    .dialogWidth {
+      width: 830;
+    }
+  }

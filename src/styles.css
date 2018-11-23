@@ -102,4 +102,13 @@ body .ui-slidemenu {
   color: black !important;
   
   }
+
+ 
   
+ 
+
+ /* @media screen and (max-width: 40em) {
+    .ui-dialog.ui-dialog-responsive {
+        width: 550px !important;
+    }
+}*/
