@@ -6,11 +6,11 @@ import { Menu } from 'primeng/components/menu/menu';
 declare var jQuery: any;
 
 @Component({
-  selector: 'app-master2',
-  templateUrl: './master2.component.html',
-  styleUrls: ['./master2.component.css']
+  selector: 'app-masterreports',
+  templateUrl: './masterreports.component.html',
+  styleUrls: ['./masterreports.component.css']
 })
-export class Master2Component implements OnInit {
+export class MasterreportsComponent implements OnInit {
   public visibleHelp = false;
   fullName = 'Welcome';
   title = 'My Master Page...';
