@@ -54,6 +54,7 @@ import { ProjectsComponent } from './projects/projects.component';
 import { CustomersComponent } from './customers/customers.component';
 import { ClientsComponent } from './clients/clients.component';
 import { NonbillablesComponent } from './nonbillables/nonbillables.component';
+import { EmployeesComponent } from './employees/employees.component';
 
 
 
@@ -114,6 +115,7 @@ const appRoutes: Routes = [
     CustomersComponent,
     ClientsComponent,
     NonbillablesComponent,
+    EmployeesComponent,
   ],
   imports: [
     BrowserAnimationsModule,
