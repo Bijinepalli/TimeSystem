@@ -7,7 +7,7 @@
     <div class="ui-g-12 ui-md-6"></div>
     <div class="ui-g-12 ui-md-4"></div>
     <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('HolidaySelect.htm')" style="cursor: pointer;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('HolidaySelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
@@ -56,12 +56,12 @@
             (click)="editHoliday(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
-            <div *ngIf="col.header.indexOf('Date') >= 0">
-                {{rowData[col.field]}}
-            </div>
-            <div *ngIf="col.header.indexOf('Date') == -1">
-                {{rowData[col.field]}}
-            </div>
+          <div *ngIf="col.header.indexOf('Date') >= 0">
+            {{rowData[col.field]}}
+          </div>
+          <div *ngIf="col.header.indexOf('Date') == -1">
+            {{rowData[col.field]}}
+          </div>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['InUse'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused holiday" style="cursor:pointer;color:red"
@@ -72,8 +72,13 @@
   </p-table>
 </div>
 
-<p-dialog header="{{holidayHdr}}" [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="830">
+
+<p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="830">
+  <p-header>
+    {{holidayHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('HolidayUpdate.htm')"></i>
+  </p-header>
   <form [formGroup]="_frm">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
@@ -87,8 +92,7 @@
         <div class="ui-g-12 ui-md-12">
           Date * (mm-dd-yyyy)<br>
           <div style="height:5px"></div>
-          <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="holidayDate"></p-calendar> 
+          <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate"></p-calendar>
         </div>
       </div>
     </div>
@@ -106,6 +110,6 @@
   </form>
 </p-dialog>
 
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md" >
-    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
 </p-sidebar>

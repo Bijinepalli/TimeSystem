@@ -22,6 +22,8 @@ export class CustomersComponent implements OnInit {
   customerDialog = false;
   customerHdr = 'Add Customer';
   _frm = new FormGroup({});
+  visibleHelp: boolean;
+  helpText: string;
 
 
   // tslint:disable-next-line:max-line-length
@@ -56,11 +58,7 @@ export class CustomersComponent implements OnInit {
             this._recData = this._customers.length + ' customers found';
           } else {
             this._customers = data;
-            this.cols = [
-              { field: 'CustomerName', header: 'Customer Name' },
-              { field: 'CustomerNumber', header: 'Customer Number' },
-              { field: 'Inactive', header: 'Inactive' },
-            ];
+
             this._recData = data.length + ' customers found';
           }
           this.getUsedCustomers();
@@ -87,10 +85,18 @@ export class CustomersComponent implements OnInit {
       );
   }
   clickButton(event: any) {
-    this.cols = [
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'CustomerNumber', header: 'Customer Number' },
-    ];
+    if (this.selectedType === 'Both') {
+      this.cols = [
+        { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'CustomerNumber', header: 'Customer Number' },
+        { field: 'Inactive', header: 'Inactive' },
+      ];
+    } else {
+      this.cols = [
+        { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'CustomerNumber', header: 'Customer Number' },
+      ];
+    }
     this.getCustomers();
   }
   deleteCustomer(dataRow: any) {
@@ -133,6 +139,21 @@ export class CustomersComponent implements OnInit {
   }
   cancelCustomer() {
     this.customerDialog = false;
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+
+        }
+      );
+
   }
 
   hasFormErrors() {
