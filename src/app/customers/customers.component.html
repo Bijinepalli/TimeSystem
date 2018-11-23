@@ -55,13 +55,9 @@
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
-            <div *ngIf="rowData['Inactive'] === true;else next">
-              Yes
-            </div>
-            <ng-template #next>
-              No
-            </ng-template>
+            {{rowData[col.field] === true ? 'Yes' : 'No'}}
           </div>
+
           <div *ngIf="col.header.indexOf('Inactive') == -1">
             {{rowData[col.field]}}
           </div>

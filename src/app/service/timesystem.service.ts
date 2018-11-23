@@ -14,8 +14,9 @@ import { map } from 'rxjs/operators';
 export class TimesystemService {
 
   private ipaddress = 'http://172.16.32.67/';
+  private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
-  private url = this.ipaddress + 'TimeSystemService/';
+  private url = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {

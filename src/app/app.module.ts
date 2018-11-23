@@ -58,6 +58,7 @@ import { EmployeesComponent } from './employees/employees.component';
 import { MasterreportsComponent } from './reports/masterreports/masterreports.component';
 import { ReportsdashboardComponent } from './reports/reportsdashboard/reportsdashboard.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
 
 
 
@@ -76,6 +77,9 @@ const appRoutes: Routes = [
       { path: 'clients', component: ClientsComponent },
       { path: 'nonbillables', component: NonbillablesComponent },
       { path: 'configuration', component: ConfigurationComponent },
+      { path: 'employees', component: EmployeesComponent },
+      { path: 'addemployee', component: AddEmployeeComponent },
+      { path: 'addemployee/:id', component: AddEmployeeComponent },
 
 
       // { path: 'burndown', component: BurndownchartComponent },
@@ -128,6 +132,8 @@ const appRoutes: Routes = [
     MasterreportsComponent,
     ReportsdashboardComponent,
     ConfigurationComponent,
+    EmployeesComponent,
+    AddEmployeeComponent
   ],
   imports: [
     BrowserAnimationsModule,

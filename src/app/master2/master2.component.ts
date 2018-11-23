@@ -77,7 +77,7 @@ export class Master2Component implements OnInit {
               command: (event) => handleSelected(event), title: 'Dashboard'
             },
             {
-              label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/inv/invdashboard'],
+              label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/menu/employees'],
               command: (event) => handleSelected(event), title: 'Employees'
             },
             {
