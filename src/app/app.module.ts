@@ -55,6 +55,9 @@ import { CustomersComponent } from './customers/customers.component';
 import { ClientsComponent } from './clients/clients.component';
 import { NonbillablesComponent } from './nonbillables/nonbillables.component';
 import { EmployeesComponent } from './employees/employees.component';
+import { MasterreportsComponent } from './reports/masterreports/masterreports.component';
+import { ReportsdashboardComponent } from './reports/reportsdashboard/reportsdashboard.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
 
 
 
@@ -72,7 +75,7 @@ const appRoutes: Routes = [
       { path: 'customers', component: CustomersComponent },
       { path: 'clients', component: ClientsComponent },
       { path: 'nonbillables', component: NonbillablesComponent },
-
+      { path: 'configuration', component: ConfigurationComponent },
 
 
       // { path: 'burndown', component: BurndownchartComponent },
@@ -88,6 +91,13 @@ const appRoutes: Routes = [
       // { path: 'issuetracker', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
+    ]
+  },
+  {
+    path: 'menureports',
+    component: MasterreportsComponent,
+    children: [
+      { path: 'dashboard', component: ReportsdashboardComponent },
     ]
   },
   // {
@@ -115,7 +125,9 @@ const appRoutes: Routes = [
     CustomersComponent,
     ClientsComponent,
     NonbillablesComponent,
-    EmployeesComponent,
+    MasterreportsComponent,
+    ReportsdashboardComponent,
+    ConfigurationComponent,
   ],
   imports: [
     BrowserAnimationsModule,
