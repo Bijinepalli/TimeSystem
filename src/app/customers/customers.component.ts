@@ -56,11 +56,7 @@ export class CustomersComponent implements OnInit {
             this._recData = this._customers.length + ' customers found';
           } else {
             this._customers = data;
-            this.cols = [
-              { field: 'CustomerName', header: 'Customer Name' },
-              { field: 'CustomerNumber', header: 'Customer Number' },
-              { field: 'Inactive', header: 'Inactive' },
-            ];
+
             this._recData = data.length + ' customers found';
           }
           this.getUsedCustomers();
@@ -87,10 +83,18 @@ export class CustomersComponent implements OnInit {
       );
   }
   clickButton(event: any) {
-    this.cols = [
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'CustomerNumber', header: 'Customer Number' },
-    ];
+    if (this.selectedType === 'Both') {
+      this.cols = [
+        { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'CustomerNumber', header: 'Customer Number' },
+        { field: 'Inactive', header: 'Inactive' },
+      ];
+    } else {
+      this.cols = [
+        { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'CustomerNumber', header: 'Customer Number' },
+      ];
+    }
     this.getCustomers();
   }
   deleteCustomer(dataRow: any) {

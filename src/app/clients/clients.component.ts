@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { Clients } from '../model/objects';
+import { Clients, Customers, Companies } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -25,15 +25,24 @@ export class ClientsComponent implements OnInit {
   clientHdr = 'Add Client';
   _frm = new FormGroup({});
   _billingCycle: SelectItem[];
-  _companies: SelectItem[];
+  _billingCycleDefault: SelectItem[];
   _customerNames: SelectItem[];
-
+  _companyNames: SelectItem[];
+  _customers: Customers[] = [];
+  _companies: Companies[] = [];
+  IsEdit = false;
   selectedCycle: string;
+  clientCreatedOn: string;
+  selectActiveInactive: string[] = [];
+
   // tslint:disable-next-line:max-line-length
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) {
   }
 
   ngOnInit() {
+    // Add Controls to the Form
+    this.addControls();
+
     this.types = [
       { label: 'Active', value: 'Active' },
       { label: 'Inactive', value: 'Inactive' },
@@ -41,14 +50,24 @@ export class ClientsComponent implements OnInit {
     ];
     this.selectedType = 'Active';
 
+
+    // Drop down loading Section - BEGIN
     this._billingCycle = [
-      { label: '', value: '' },
+      { label: 'Please select', value: '' },
       { label: 'Bi-Weekly', value: 'B' },
       { label: 'Monthly', value: 'M' },
       { label: 'Weekly', value: 'W' }
     ];
-    this.selectedCycle = 'M';
+    this._billingCycleDefault = [{ label: 'Monthly', value: 'M' }];
 
+    // Initialize the item arrays
+    this._customerNames = [{ label: 'Please select', value: '' }];
+    this._companyNames = [{ label: 'Please select', value: '' }];
+
+    this.getCompanies();
+    this.getCustomers();
+    this.getClients();
+    // Drop down loading Section - END
 
     this.cols = [
       { field: 'ClientName', header: 'Client Name' },
@@ -57,8 +76,6 @@ export class ClientsComponent implements OnInit {
       { field: 'PONumber', header: 'PO#' },
     ];
     this.selectedType = 'Active';
-    this.getClients();
-    this.addControls();
   }
 
   getClients() {
@@ -90,11 +107,8 @@ export class ClientsComponent implements OnInit {
               this._clients[i].used = 1;
             } else {
               this._clients[i].used = 0;
-              console.log('unused');
             }
           }
-          console.log(this._clients);
-          console.log(this._clientsUsed);
         }
       );
   }
@@ -106,7 +120,6 @@ export class ClientsComponent implements OnInit {
         { field: 'CustomerName', header: 'Customer Name' },
         { field: 'PONumber', header: 'PO#' },
         { field: 'Inactive', header: 'Inactive' },
-
       ];
     } else {
       this.cols = [
@@ -140,6 +153,7 @@ export class ClientsComponent implements OnInit {
   }
 
   editClient(data: Clients) {
+    this.IsEdit = true;
     this.clientDialog = true;
     this.clientHdr = 'Edit Client';
     this.resetForm();
@@ -150,8 +164,12 @@ export class ClientsComponent implements OnInit {
     this._frm.controls['clientName'].setValue(data.ClientName);
     this._frm.controls['billingCycle'].setValue(data.BillingCycle);
     this._frm.controls['poNumber'].setValue(data.PONumber);
-    this._frm.controls['customerName'].setValue(data.CustomerName);
-    this._frm.controls['parentCompany'].setValue(data.Key);
+    this._frm.controls['customerName'].setValue(data.CustomerId);
+    this._frm.controls['parentCompany'].setValue(data.CompanyId);
+    this.clientCreatedOn = data.CreatedOn;
+    if (data.Inactive) {
+      this._frm.controls['checkActive'].setValue(data.Inactive === true ? 'true' : 'false');
+    }
   }
   addControls() {
     this._frm.addControl('clientCode', new FormControl(null, Validators.required));
@@ -160,14 +178,38 @@ export class ClientsComponent implements OnInit {
     this._frm.addControl('poNumber', new FormControl(null, Validators.required));
     this._frm.addControl('customerName', new FormControl(null, Validators.required));
     this._frm.addControl('parentCompany', new FormControl(null, Validators.required));
+    this._frm.addControl('checkActive', new FormControl(null));
   }
-  saveCustomer() {
+  saveClient() {
     this.clientDialog = false;
   }
-  cancelCustomer() {
+  cancelClient() {
     this.clientDialog = false;
   }
-
+  getCustomers() {
+    this.timesysSvc.getCustomers()
+      .subscribe(
+        (data) => {
+          this._customers = data;
+          for (let i = 0; i < this._customers.length; i++) {
+            this._customerNames.push({ label: this._customers[i].CustomerName, value: this._customers[i].Id });
+          }
+          console.log(this._customers.length + 'Customer');
+        }
+      );
+  }
+  getCompanies() {
+    this.timesysSvc.getCompanies()
+      .subscribe(
+        (data) => {
+          this._companies = data;
+          for (let i = 0; i < this._companies.length; i++) {
+            this._companyNames.push({ label: this._companies[i].CompanyName, value: this._companies[i].Id });
+          }
+          console.log(this._companies.length + 'Company');
+        }
+      );
+  }
   hasFormErrors() {
     return !this._frm.valid;
   }
