@@ -47,10 +47,8 @@ export class HolidaysComponent implements OnInit {
       this._dialogwidth = 830;
     }
   }
-=======
   helpText: any;
   visibleHelp = false;
-
 >>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509
   ngOnInit() {
     this._dialogwidth = 830;
