@@ -6,7 +6,6 @@ import {
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommaExpr } from '@angular/compiler';
-import { map } from 'rxjs/operators';
 
 
 @Injectable({

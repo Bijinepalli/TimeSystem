@@ -30,7 +30,6 @@ export class HolidaysComponent implements OnInit {
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
 
-<<<<<<< HEAD
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     // console.log("Width: " + event.target.innerWidth);
@@ -49,7 +48,7 @@ export class HolidaysComponent implements OnInit {
   }
   helpText: any;
   visibleHelp = false;
->>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509
+
   ngOnInit() {
     this._dialogwidth = 830;
     this._years = [

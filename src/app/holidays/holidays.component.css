@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-@media screen and (max-width: 640px) {
-    body .ui-dialog{
-        width: 500px !important;
-    }
-}
-@media screen and (max-width: 880px) and (min-width: 641px) {
-    body .ui-dialog {
-        width: 600px !important;
-    }
-}
-@media screen and (max-width: 1024px) and (min-width: 882px) {
-    body .ui-dialog {
-        width: 830px !important;
-    }
-}
-=======
 .dialogWidth {
     width:830px;
 }
@@ -34,4 +17,3 @@
       width: 830;
     }
   }
->>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509
