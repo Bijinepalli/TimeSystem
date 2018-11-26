@@ -30,6 +30,7 @@ export class HolidaysComponent implements OnInit {
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
 
+<<<<<<< HEAD
   @HostListener('window:resize', ['$event'])
   onResize(event) {
     // console.log("Width: " + event.target.innerWidth);
@@ -46,6 +47,11 @@ export class HolidaysComponent implements OnInit {
       this._dialogwidth = 830;
     }
   }
+=======
+  helpText: any;
+  visibleHelp = false;
+
+>>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509
   ngOnInit() {
     this._dialogwidth = 830;
     this._years = [
@@ -74,6 +80,21 @@ export class HolidaysComponent implements OnInit {
 
     this._frm.addControl('holidayName', new FormControl(null, Validators.required));
     this._frm.addControl('holidayDate', new FormControl(null, Validators.required));
+
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+
+        }
+      );
 
   }
 

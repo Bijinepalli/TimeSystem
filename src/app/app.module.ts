@@ -31,6 +31,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
 import { DataViewModule } from 'primeng/dataview';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import {PickListModule} from 'primeng/picklist';
+import {SelectButtonModule} from 'primeng/selectbutton';
 
 
 import { ToastModule } from 'primeng/toast';
@@ -49,7 +50,15 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { Master2Component } from './master2/master2.component';
 import { HolidaysComponent } from './holidays/holidays.component';
 import { CompaniesComponent } from './companies/companies.component';
-
+import { ProjectsComponent } from './projects/projects.component';
+import { CustomersComponent } from './customers/customers.component';
+import { ClientsComponent } from './clients/clients.component';
+import { NonbillablesComponent } from './nonbillables/nonbillables.component';
+import { EmployeesComponent } from './employees/employees.component';
+import { MasterreportsComponent } from './reports/masterreports/masterreports.component';
+import { ReportsdashboardComponent } from './reports/reportsdashboard/reportsdashboard.component';
+import { ConfigurationComponent } from './configuration/configuration.component';
+import { AddEmployeeComponent } from './add-employee/add-employee.component';
 
 
 
@@ -63,6 +72,14 @@ const appRoutes: Routes = [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'holidays', component: HolidaysComponent },
       { path: 'companies', component: CompaniesComponent },
+      { path: 'projects', component: ProjectsComponent },
+      { path: 'customers', component: CustomersComponent },
+      { path: 'clients', component: ClientsComponent },
+      { path: 'nonbillables', component: NonbillablesComponent },
+      { path: 'configuration', component: ConfigurationComponent },
+      { path: 'employees', component: EmployeesComponent },
+      { path: 'addemployee', component: AddEmployeeComponent },
+      { path: 'addemployee/:id', component: AddEmployeeComponent },
 
 
       // { path: 'burndown', component: BurndownchartComponent },
@@ -78,6 +95,13 @@ const appRoutes: Routes = [
       // { path: 'issuetracker', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
+    ]
+  },
+  {
+    path: 'menureports',
+    component: MasterreportsComponent,
+    children: [
+      { path: 'dashboard', component: ReportsdashboardComponent },
     ]
   },
   // {
@@ -101,6 +125,15 @@ const appRoutes: Routes = [
     Master2Component,
     HolidaysComponent,
     CompaniesComponent,
+    ProjectsComponent,
+    CustomersComponent,
+    ClientsComponent,
+    NonbillablesComponent,
+    MasterreportsComponent,
+    ReportsdashboardComponent,
+    ConfigurationComponent,
+    EmployeesComponent,
+    AddEmployeeComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -149,7 +182,7 @@ const appRoutes: Routes = [
     FileUploadModule,
     RouterModule.forRoot(appRoutes), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
-    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule
+    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule
   ],
   providers: [TimesystemService, MessageService, ConfirmationService],
   bootstrap: [AppComponent]

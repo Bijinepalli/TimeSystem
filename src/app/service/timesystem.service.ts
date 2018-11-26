@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommaExpr } from '@angular/compiler';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +15,7 @@ import { CommaExpr } from '@angular/compiler';
 export class TimesystemService {
 
   private ipaddress = 'http://172.16.32.67/';
+  private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
@@ -38,13 +41,80 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('year', year)
       .set('companyId', companyId);
-      const data1 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesAssignedHoliday', { params });
-      const data2 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesNotAssignedHoliday', { params });
-      return forkJoin([data1, data2]);
+    const data1 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesAssignedHoliday', { params });
+    const data2 = this.http.get<CompanyHolidays[]>(this.url + 'GetCompaniesNotAssignedHoliday', { params });
+    return forkJoin([data1, data2]);
   }
 
-  getHelp() {
-    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm');
+  getProjects(code: string) {
+    const params = new HttpParams()
+      .set('code', code);
+    const data1 = this.http.get<Projects[]>(this.url + 'GetProjects');
+    const data2 = this.http.get<Projects[]>(this.url + 'GetBillingProjects', { params });
+    return forkJoin([data1, data2]);
+  }
+
+  getNonBillables(code: string) {
+    const params = new HttpParams()
+      .set('code', code);
+    const data1 = this.http.get<NonBillables[]>(this.url + 'GetNonBillables');
+    const data2 = this.http.get<NonBillables[]>(this.url + 'GetBillingProjects', { params });
+    return forkJoin([data1, data2]);
+  }
+
+
+
+  getHelp(filename: string): Observable<any> {
+    return this.http.get(this.helpipaddress + filename, { responseType: 'text' }).pipe(
+      map(res => res.toString()));
+  }
+
+
+  getAppSettings(): any {
+    const params = new HttpParams();
+    return this.http.get<AppSettings[]>(this.url + 'GetAppSettings', { params });
+  }
+
+  getEmployee(EmployeeID: string, LoginID: string, Password: string): any {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID !== '' ? EmployeeID : '0')
+      .set('LoginID', LoginID)
+      .set('Password', Password);
+    return this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
+  }
+
+  EmployeeValidateByLoginID(LoginID: string): any {
+    const params = new HttpParams()
+      .set('LoginID', LoginID);
+    return this.http.get<LoginErrorMessage[]>(this.url + 'EmployeeValidateByLoginID', { params });
+  }
+
+  EmployeeValidateByCredentials(AttemptsLimit: string, LoginID: string, Password: string): any {
+    const params = new HttpParams()
+      .set('LoginID', LoginID)
+      .set('Password', Password)
+      .set('AttemptsLimit', AttemptsLimit);
+    return this.http.get<LoginErrorMessage[]>(this.url + 'EmployeeValidateByCredentials', { params });
+  }
+  getCustomers() {
+    return this.http.get<Customers[]>(this.url + 'GetCustomers');
+  }
+  getUsedCustomers() {
+    return this.http.get<Customers[]>(this.url + 'GetUsedCustomers');
+  }
+  getClients() {
+    return this.http.get<Clients[]>(this.url + 'GetClients');
+  }
+  getUsedBillingCodes(code: string) {
+    const params = new HttpParams()
+      .set('code', code);
+    return this.http.get<Clients[]>(this.url + 'GetBillingProjects', { params });
+  }
+  getAllEmployee(isActiveIndex: number, isSalariedIndex: number) {
+    const params = new HttpParams()
+      .set('isActiveIndex', isActiveIndex.toString())
+      .set('isSalariedIndex', isSalariedIndex.toString());
+    return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
   }
 
   getHTMLBody(): Observable<any> {

@@ -1,0 +1,104 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    Employee
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-6 ui-lg-6"></div>
+    <div class="ui-g-12 ui-md-4 ui-lg-4"></div>
+    <div class="ui-g-12 ui-md-2 ui-lg-2 helpClass ui-g-nopad">
+      <a (click)="showHelp('CustomerSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Customer" tooltipPosition="bottom" class="ui-button-info"
+      label="Add New Employee" (click)=addEmployee()></button>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-6 ui-lg-2">
+    Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"></p-selectButton>
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-2">
+    <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="clickButton($event)"></p-selectButton>
+  </div>
+</div>
+
+
+<div class="ui-g">
+  <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 3em"></th>
+        <th style="width: 5em">Edit</th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+        <th style="width: 8em">Terminate</th>
+        <th style="width: 5em">Clients</th>
+        <th style="width: 5em">Projects</th>
+        <th style="width: 5em">Non-Billable</th>
+        <th style="width: 5em">Rates</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td style="text-align: center">
+          <i *ngIf="rowData['IsLocked'] === 'True'" class="fa fa-lock fa-150x" pTooltip="Please click here to unlock the user"
+            style="cursor:pointer;color:orange" tooltipPosition="bottom" (click)="unlockEmployee(rowData)"></i>
+        </td>
+        <td style="text-align: center">
+          <i class="fa fa-edit fa-150x" pTooltip="Please click here to edit the employee" style="cursor:pointer;color:cyan"
+            tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
+        </td>
+        <td *ngFor="let col of columns">
+          <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
+            {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+          </div>
+          <div *ngIf="col.header.indexOf('Inactive') == -1 && col.header.indexOf('Salaried') ==-1">
+            {{rowData[col.field]}}
+          </div>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x" pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
+            style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="deleteEmployee(rowData)"></i>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+            class="fa fa-user-secret fa-150x" pTooltip="Manage the clients assigned to this employee" style="cursor:pointer;color:yellow"
+            tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+            class="fa fa-sticky-note-o fa-150x" pTooltip="Manage the billable projects assigned to this employee" style="cursor:pointer;color:chartreuse"
+            tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+            class="fa fa-coffee fa-150x" pTooltip="Manage the non-billable items assigned to this employee" style="cursor:pointer;color:lightsalmon"
+            tooltipPosition="bottom" (click)="manageNonBillables(rowData)"></i>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+            class="fa fa-credit-card fa-150x" pTooltip="Manage the rate information assigned to this employee" style="cursor:pointer;color:cornsilk"
+            tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
+        </td>
+      </tr>
+    </ng-template>
+
+  </p-table>
+</div>

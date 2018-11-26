@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @media screen and (max-width: 640px) {
     body .ui-dialog{
         width: 500px !important;
@@ -13,3 +14,24 @@
         width: 830px !important;
     }
 }
+=======
+.dialogWidth {
+    width:830px;
+}
+
+.ui-dialog.ui-dialog-responsive {
+    width:830px !important;   
+}
+
+@media only screen and (max-width: 640px) {
+    .dialogWidth {
+      width: 500px;
+    }
+  }
+
+  @media only screen and (max-width: 2000px) {
+    .dialogWidth {
+      width: 830;
+    }
+  }
+>>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509

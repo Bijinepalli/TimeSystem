@@ -1,0 +1,64 @@
+<div class="ui-g" id="header">
+
+    <div class="ui-g-12 ui-md-5 ui-lg-3 topBar">
+      <div class="ui-g-1 ui-md-3" id="minigutter">
+        <span class="fa fa-bars fa-2x" (click)="OpenMenu()"></span>
+      </div>
+      <div class="ui-g-11 ui-md-9 ui-lg-10 ui-g-nopad">
+        <img src="../../assets/images/ebixconsulting.jpg" class="imageLogo">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-3 ui-lg-2 ui-g-nopad semiTopbar" style="vertical-align: middle">
+      <div class="ui-g-6 ui-md-12 ui-lg-6" style="text-align: center;">
+        Timesheets
+      </div>
+      <div class="ui-g-6 ui-md-12 ui-lg-6" style="text-align: center;">
+        Pay Stubs
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-3 ui-lg-2" id="minigutter" style="display: none">
+      <p-slideMenu #menu [model]="headerMenu" [popup]="true" [viewportHeight]="150" class="leftNav1"></p-slideMenu>
+      <button #btn type="button" pButton icon="pi pi-bars" label="Menu" class="clearText" (click)="menu.toggle($event)"></button>
+    </div>
+    <div class="ui-g-12 ui-md-4 ui-lg-7 ui-g-nopad userInfo" id="notifications" style="text-align: right">
+      Hello, Ramesh{{_userName}}
+      &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="bottom" (click)="navigateTo('/menu/dashboard')"></button>&nbsp;
+      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="bottom" (click)="logout()" class="ui-button-danger"
+        style="padding-right:30px"></button>&nbsp;&nbsp;
+    </div>
+  
+  </div>
+  
+  <div class="ui-g ui-g-nopad" id="sideMenu">
+  
+    <div class="ui-g-2 ui-g-nopad" id="sidegutter">
+  
+      <div id="sidenav" style="padding: 2px;overflow:auto;">
+  
+        <p-menu #bigMenu [model]="menuItems" class="leftNav1"></p-menu>
+  
+      </div>
+  
+    </div>
+  
+    <div class="ui-g-2" id="minigutter">
+      <p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000" [modal]="true">
+        <div style="overflow: auto;height: 500px;scrollbar-highlight-color: aqua">
+          <!-- <p-menu #smallMenu [model]="miniMenuItems" class="leftNav1"></p-menu> -->
+          <p-menu #smallMenu [model]="menuItems" class="leftNav1"></p-menu>
+        </div>
+      </p-sidebar>
+    </div>
+  
+  
+    <div id="content-body" class="ui-g-11">
+      <div class="ui-g-12" style="min-height: 800px">
+        <router-outlet></router-outlet>
+      </div>
+      <div style="text-align: center" class="ui-g-12">
+        © Copyright Ebix Consulting
+      </div>
+    </div>
+  
+  
+  </div>
