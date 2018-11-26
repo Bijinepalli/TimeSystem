@@ -56,12 +56,12 @@
             (click)="editHoliday(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
-            <div *ngIf="col.header.indexOf('Date') >= 0">
-                {{rowData[col.field]}}
-            </div>
-            <div *ngIf="col.header.indexOf('Date') == -1">
-                {{rowData[col.field]}}
-            </div>
+          <div *ngIf="col.header.indexOf('Date') >= 0">
+            {{rowData[col.field]}}
+          </div>
+          <div *ngIf="col.header.indexOf('Date') == -1">
+            {{rowData[col.field]}}
+          </div>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['InUse'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused holiday" style="cursor:pointer;color:red"
@@ -72,8 +72,12 @@
   </p-table>
 </div>
 
-<p-dialog header="{{holidayHdr}}" [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="830">
+<p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="_dialogwidth" styleClass="dialogHeader">
+  <p-header>
+    <!-- header="{{holidayHdr}}" -->
+    {{holidayHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get help adding or updating a holiday" style="cursor:pointer; font-size: 18px; color: orange; vertical-align: middle" (click)="getHolidayHelp()"></i>
+  </p-header>
   <form [formGroup]="_frm">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
@@ -87,8 +91,7 @@
         <div class="ui-g-12 ui-md-12">
           Date * (mm-dd-yyyy)<br>
           <div style="height:5px"></div>
-          <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="holidayDate"></p-calendar> 
+          <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate"></p-calendar>
         </div>
       </div>
     </div>
@@ -105,3 +108,8 @@
     </p-footer>
   </form>
 </p-dialog>
+
+<p-sidebar [(visible)]="_sidebarHelp" *ngIf="_helpPage" position="right" [baseZIndex]="10000" styleClass="sidebarHelp" 
+  [dismissible]="true">
+  <div  [innerHTML]="_helpPage"></div>
+</p-sidebar>

@@ -4,6 +4,7 @@ import {
   Holidays, Companies, CompanyHolidays
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { CommaExpr } from '@angular/compiler';
 
 @Injectable({
@@ -45,4 +46,9 @@ export class TimesystemService {
   getHelp() {
     return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm');
   }
+
+  getHTMLBody(): Observable<any> {
+    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm', {responseType: 'text'}).pipe(
+    map(res => res.toString()));
+    }
 }
