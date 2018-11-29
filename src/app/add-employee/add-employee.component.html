@@ -1,0 +1,142 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    Add Employee
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-6 ui-lg-6"></div>
+    <div class="ui-g-12 ui-md-4 ui-lg-4"></div>
+    <div class="ui-g-12 ui-md-2 ui-lg-2 helpClass ui-g-nopad">
+      <a (click)="showHelp('ClientsSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+
+<form [formGroup]="_frm">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-2" style="text-align: right">
+        *Last Name :
+      </div>
+      <div class="ui-g-12 ui-md-3">
+        <input type="text" style="width: 100%" pInputText placeholder="Last Name" formControlName="lastName">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        *First Name :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <input type="text" style="width: 100%" pInputText placeholder="First Name" formControlName="firstName">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        Nick Name :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <input type="text" style="width: 100%" pInputText placeholder="Nick Name" formControlName="nickName">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        *Payroll ID :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <input type="text" style="width: 100%" pInputText placeholder="Payroll ID" formControlName="payrollId">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        *Email Address :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <input type="text" style="width: 100%" pInputText placeholder="Email Address" formControlName="emailAddress">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        Secondary Email Address :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <input type="text" style="width: 100%" pInputText placeholder="Secondary Email Address" formControlName="secondaryEmailAddress">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        Security Level :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-dropdown autoWidth="false" [style]="{'width':'100%'}" [options]="_securityLevel" [(ngModel)]="_securityLevelDefault"
+          formControlName="securityLevel"></p-dropdown>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-4 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        Hire Date (mm-dd-yyyy) :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-calendar [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true" [readonlyInput]="true"
+          dateFormat="mm-dd-yy" formControlName="hireDate"></p-calendar>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2" style="text-align: right">
+        Hours Per Day :
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <input type="text" style="width: 100%" pInputText placeholder="Hours Per Day" formControlName="hoursPerDay">
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox name="groupname" value="True" label="Salaried Employee " formControlName="salariedEmployee"></p-checkbox>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox value="True" label="Employee Must Submit Timesheets" formControlName="employeTimesheets"></p-checkbox>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox value="True" label="Employee is Eligible for Incentive Pay" formControlName="employeIncentive"></p-checkbox>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox value="True" label="Employee follows company holiday schedule" formControlName="employeeSchedule"></p-checkbox>
+      </div>
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox value="True" label="Company Officer" formControlName="companyOfficer"></p-checkbox>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-6">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-6">
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <button pButton label="Save" (click)="saveEmployee()" [disabled]="hasFormErrors()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelEmployee()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</form>

@@ -53,7 +53,7 @@ export class AppSettings {
 }
 
 export class Employee {
-    ID?: string;
+    ID?: number;
     UserLevel?: string;
     LoginID?: string;
     FirstName?: string;
@@ -61,25 +61,27 @@ export class Employee {
     Password?: string;
     NickName?: string;
     EmailAddress?: string;
-    Inactive?: string;
-    Salaried?: string;
-    SubmitsTime?: string;
-    PayAvailableAlert?: string;
-    IPayEligible?: string;
-    Officer?: string;
+    Inactive?: boolean;
+    Salaried?: boolean;
+    SubmitsTime?: boolean;
+    PayAvailableAlert?: boolean;
+    IPayEligible?: boolean;
+    Officer?: boolean;
     HireDate?: string;
     TimeStamp?: string;
-    CompanyHolidays?: string;
+    CompanyHolidays?: boolean;
     HoursPerDay?: string;
     SSMA_TimeStamp?: string;
     SecondaryEmailAddress?: string;
     PasswordUpdatedOn?: string;
-    IsLocked?: string;
-    NoOfAttempts?: string;
+    IsLocked?: boolean;
+    NoOfAttempts?: number;
     FailureAttemptOn?: string;
     PasswordExpiresOn?: string;
     TerminationDate?: string;
     StartDate?: string;
+    PayRoleID: string;
+
 }
 
 export class LoginErrorMessage {
