@@ -115,11 +115,11 @@ export class TimesystemService {
       .set('code', code);
     return this.http.get<Clients[]>(this.url + 'GetBillingProjects', { params });
   }
-  getAllEmployee(isActiveIndex: number, isSalariedIndex: number) {
+  getAllEmployee(InActive: string, Salaried: string) {
     const params = new HttpParams()
-      .set('isActiveIndex', isActiveIndex.toString())
-      .set('isSalariedIndex', isSalariedIndex.toString());
-    return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
+      .set('InActive', InActive.toString())
+      .set('Salaried', Salaried.toString());
+    return this.http.get<Employee[]>(this.localurl + 'ListAllEmployee', { params });
   }
 
   getNonBillablesAssignToEmployee(EmployeeID: number) {

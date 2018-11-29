@@ -170,4 +170,7 @@ export class MasterreportsComponent implements OnInit {
   OpenMenu() {
     this.visibleSidebar = true;
   }
+  navigateTo() {
+    this.router.navigate(['/menu/dashboard']);
+  }
 }

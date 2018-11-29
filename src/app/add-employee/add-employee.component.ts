@@ -51,7 +51,7 @@ export class AddEmployeeComponent implements OnInit {
       );
   }
   getEmployees() {
-    this.timesysSvc.getAllEmployee(2, 2)
+    this.timesysSvc.getAllEmployee('', '')
       .subscribe(
         (data) => {
           this._employees = data;

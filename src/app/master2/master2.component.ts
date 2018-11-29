@@ -188,4 +188,7 @@ export class Master2Component implements OnInit {
   OpenMenu() {
     this.visibleSidebar = true;
   }
+  navigateTo() {
+    this.router.navigate(['/menu/dashboard']);
+  }
 }

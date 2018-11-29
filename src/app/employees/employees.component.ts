@@ -40,7 +40,7 @@ export class EmployeesComponent implements OnInit {
     ];
     this.salaryTypes = [
       { label: 'Salaried', value: 0 },
-      { label: 'Inactive', value: 1 },
+      { label: 'Hourly', value: 1 },
       { label: 'Both', value: 2 }
     ];
     this.selectedType = 0;
@@ -57,10 +57,22 @@ export class EmployeesComponent implements OnInit {
   }
 
   getEmployees() {
-    console.log(this.selectedType, this.selectedSalaryType);
-    this.timesysSvc.getAllEmployee(this.selectedType, this.selectedSalaryType)
+    let _InActive = '';
+    let _Salaried = '';
+    if (this.selectedType !== 2) {
+      _InActive = this.selectedType.toString();
+    }
+    if (this.selectedSalaryType === 0) {
+      _Salaried = '1';
+    } else if (this.selectedSalaryType === 1) {
+      _Salaried = '0';
+    }
+    console.log('InActive - ' + _InActive + ' , ' + 'Salaried - ' + _Salaried);
+
+    this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
+          console.log(data);
           this._employees = data;
           this._recData = this._employees.length + ' customers found';
         }
