@@ -116,6 +116,17 @@
         <p-checkbox value="True" label="Employee follows company holiday schedule" formControlName="employeeSchedule"></p-checkbox>
       </div>
     </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="isEdit">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox value="True" label="Inactive" formControlName="inactiveForm"></p-checkbox>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-6">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-6">
+      </div>
+    </div>
     <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
       <div class="ui-g-12 ui-md-12 ui-lg-2">
       </div>
@@ -127,7 +138,19 @@
       <div class="ui-g-12 ui-md-12 ui-lg-6">
       </div>
     </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="isEdit">
+      <div class="ui-g-12 ui-md-12 ui-lg-2">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-3">
+        <p-checkbox value="True" class="checkboxLabel" label="Reset Password" formControlName="resetPassword"></p-checkbox>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-6">
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-6">
+      </div>
+    </div>
   </div>
+
   <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -139,4 +162,6 @@
       </div>
     </div>
   </p-footer>
+
+  
 </form>

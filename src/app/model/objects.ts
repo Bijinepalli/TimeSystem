@@ -108,3 +108,13 @@ export class Clients {
     CreatedOn: string;
     used: number;
 }
+export class MasterPages {
+    ID?: number;
+    ModuleName?: string;
+    PageName?: string;
+    Controller?: string;
+    HasView?: number;
+    HasEdit?: number;
+    Role?: string;
+    PageId?: number;
+}

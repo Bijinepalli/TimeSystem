@@ -11,8 +11,20 @@
     </div>
   </div>
 </div>
+<p-tabView (onChange)="onTabChange($event)">
+  <p-tabPanel header="App Settings">
+    <ng-template pTemplate="content">
+      <app-appsettings></app-appsettings>
+    </ng-template>
+  </p-tabPanel>
+  <p-tabPanel header="Page Settings">
+    <ng-template pTemplate="content">
+      <app-accessrights></app-accessrights>
+    </ng-template>
+  </p-tabPanel>
+</p-tabView>
 
-
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md" >
-    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md">
+  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
 </p-sidebar>
+<p-toast></p-toast>

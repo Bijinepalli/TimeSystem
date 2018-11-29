@@ -162,5 +162,18 @@ overflow-y: auto;
       height: 20px;
       content: none;
     }
+
+    #content-body {
+      top: 60px;
+      position: absolute;
+      left: 315px;
+  }
+
+  :host ::ng-deep .ui-menuitem-link{
+    padding: 0.615em 0.857em !important;
+    color: #dedede;
+    font-weight: normal;
+    border-radius: 0;
+  }
     
     

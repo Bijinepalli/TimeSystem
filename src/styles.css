@@ -130,3 +130,10 @@ body .ui-slidemenu {
         width: 550px !important;
     }
 }*/
+<<<<<<< HEAD
+=======
+
+.checkboxLabel .ui-chkbox-label{
+  color: red !important;
+}
+>>>>>>> eca1a9c21e0e52c35dbc4871423d544491604571

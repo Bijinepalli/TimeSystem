@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { Clients, Customers, Companies } from '../model/objects';
+import { BillingCode } from '../model/constants';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -25,7 +26,7 @@ export class ClientsComponent implements OnInit {
   clientHdr = 'Add Client';
   _frm = new FormGroup({});
   _billingCycle: SelectItem[];
-  _billingCycleDefault: SelectItem[];
+  _billingCycleDefault: string;
   _customerNames: SelectItem[];
   _companyNames: SelectItem[];
   _customers: Customers[] = [];
@@ -34,6 +35,7 @@ export class ClientsComponent implements OnInit {
   selectedCycle: string;
   clientCreatedOn: string;
   selectActiveInactive: string[] = [];
+  _billingCodes: BillingCode;
 
   visibleHelp: boolean;
   helpText: string;
@@ -60,7 +62,7 @@ export class ClientsComponent implements OnInit {
       { label: 'Monthly', value: 'M' },
       { label: 'Weekly', value: 'W' }
     ];
-    this._billingCycleDefault = [{ label: 'Monthly', value: 'M' }];
+    this._billingCycleDefault = 'M';
 
     // Initialize the item arrays
     this._customerNames = [{ label: 'Please select', value: '' }];
@@ -77,7 +79,6 @@ export class ClientsComponent implements OnInit {
       { field: 'CustomerName', header: 'Customer Name' },
       { field: 'PONumber', header: 'PO#' },
     ];
-    this.selectedType = 'Active';
   }
 
   getClients() {
@@ -99,7 +100,9 @@ export class ClientsComponent implements OnInit {
       );
   }
   getUsedClients() {
-    this.timesysSvc.getUsedBillingCodes('TANDM')
+    this._billingCodes = new BillingCode();
+    console.log(this._billingCodes.Client);
+    this.timesysSvc.getUsedBillingCodes(this._billingCodes.Client)
       .subscribe(
         (data) => {
           this._clientsUsed = data;
