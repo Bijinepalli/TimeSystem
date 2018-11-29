@@ -122,12 +122,6 @@ export class TimesystemService {
     return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
   }
 
-<<<<<<< HEAD
-  getHTMLBody(): Observable<any> {
-    return this.http.get('http://172.16.32.67/ECTS/TimeSystem/help/HolidayUpdate.htm', {responseType: 'text'}).pipe(
-    map(res => res.toString()));
-    }
-=======
   getNonBillablesAssignToEmployee(EmployeeID: number) {
     const params = new HttpParams()
       .set('EmployeeID', EmployeeID.toString());
@@ -178,5 +172,4 @@ export class TimesystemService {
     const body = JSON.stringify(_appsettingsselection);
     return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
   }
->>>>>>> eca1a9c21e0e52c35dbc4871423d544491604571
 }
