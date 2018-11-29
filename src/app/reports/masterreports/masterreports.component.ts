@@ -73,62 +73,44 @@ export class MasterreportsComponent implements OnInit {
         case 'A':
           this.menuItems = [
             {
-              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
-              command: (event) => handleSelected(event), title: 'Dashboard'
+              label: 'Billing Code Related',
+              items: [
+                { label: 'List Client, Project, Non-Billable Items', icon: 'pi pi-fw pi-plus' },
+                { label: 'Employee Hours by Billing Code', icon: 'pi pi-fw pi-folder' },
+                { label: 'Employees by Billing Code', icon: 'pi pi-fw pi-folder' },
+                { label: 'Hours by Employee', icon: 'pi pi-fw pi-clock' },
+                { label: 'Weekly Hours by Employee', icon: 'pi pi-fw pi-calendar-plus' },
+                { label: 'Unused Billing Codes', icon: 'pi pi-fw pi-folder' },
+                { label: 'Holidays', icon: 'pi pi-fw pi-calendar' },
+                { label: 'Non-Billable Hours Across Months', icon: 'pi pi-fw pi-calendar-minus' },
+                { label: 'Billable Hours by Client or Project', icon: 'pi pi-fw pi-dollar' }
+              ]
             },
             {
-              label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/inv/invdashboard'],
-              command: (event) => handleSelected(event), title: 'Employees'
+              label: 'Timesheet Related',
+              items: [
+                { label: 'Employee Timesheets', icon: 'pi pi-fw pi-user-plus' },
+                { label: 'Hours by Timesheet Category', icon: 'pi pi-fw pi-user-minus' },
+                { label: 'Payroll', icon: 'pi pi-fw pi-user-plus' },
+                { label: 'Period End Hours', icon: 'pi pi-fw pi-user-minus' },
+                { label: 'Outstanding Timesheets', icon: 'pi pi-fw pi-user-plus' },
+              ]
             },
             {
-              label: 'Holidays', icon: 'fa fa-book', routerLink: ['/menu/holidays'],
-              command: (event) => handleSelected(event), title: 'Holidays'
+              label: 'Employee Related',
+              items: [
+                { label: 'List Employees', icon: 'pi pi-fw pi-user-plus' },
+                { label: 'Employee Hours', icon: 'pi pi-fw pi-user-minus' },
+                { label: 'Employee Login Data', icon: 'pi pi-fw pi-user-minus' }
+              ]
             },
             {
-              label: 'Companies', icon: 'fa fa-building', routerLink: ['/menu/companies'],
-              command: (event) => handleSelected(event), title: 'Companies'
-            },
-            {
-              label: 'Billing Codes', icon: 'fa fa-files-o', routerLink: ['/projects'],
-              command: (event) => handleSelected(event), title: 'Billing Codes'
-            },
-            {
-              label: 'Project', icon: 'fa fa-sticky-note-o', routerLink: ['/menu/projects'],
-              command: (event) => handleSelected(event), title: 'Project'
-            },
-            {
-              label: 'Non-Billables', icon: 'fa fa-coffee', routerLink: ['/menu/nonbillables'],
-              command: (event) => handleSelected(event), title: 'Non-Billables'
-            },
-            {
-              label: 'Customers', icon: 'fa fa-users', routerLink: ['/menu/customers'],
-              command: (event) => handleSelected(event), title: 'Customers'
-            },
-            {
-              label: 'Clients', icon: 'fa fa-user-secret', routerLink: ['/menu/clients'],
-              command: (event) => handleSelected(event), title: 'Clients'
-            },
-            {
-              label: 'Year End', icon: 'fa fa-calendar', routerLink: ['/menu/user'],
-              command: (event) => handleSelected(event), title: 'Year End'
-            },
-            {
-              label: 'Email', icon: 'fa fa-envelope', routerLink: ['/menu/user'],
-              command: (event) => handleSelected(event), title: 'Email'
-            },
-            {
-              label: 'Error Log', icon: 'fa fa-exclamation-triangle', routerLink: ['/menu/user'],
-              command: (event) => handleSelected(event), title: 'Error Log'
-            },
-            {
-              label: 'Reports', icon: 'fa fa-folder', routerLink: ['/menureports/dashboard'],
-              command: (event) => handleSelected(event), title: 'Reports'
-            },
-            {
-              label: 'Configuration', icon: 'fa fa-cog', routerLink: ['/menu/configuration'],
-              command: (event) => handleSelected(event), title: 'Configuration'
-            },
-          ];
+              label: 'Invoice Related',
+              items: [
+                { label: 'Invoice Data by Customer', icon: 'pi pi-fw pi-user-plus' },
+                { label: 'Employee - Client Rates', icon: 'pi pi-fw pi-user-minus' },
+              ]
+            }];
           break;
         case 'PM':
           this.menuItems = [
