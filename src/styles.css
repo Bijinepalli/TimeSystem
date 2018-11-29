@@ -112,3 +112,7 @@ body .ui-slidemenu {
         width: 550px !important;
     }
 }*/
+
+.checkboxLabel .ui-chkbox-label{
+  color: red !important;
+}

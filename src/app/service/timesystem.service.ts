@@ -1,21 +1,27 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
 import { map } from 'rxjs/operators';
 
-
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
 @Injectable({
   providedIn: 'root'
 })
 export class TimesystemService {
 
   private ipaddress = 'http://172.16.32.67/';
+  private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
+  private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -114,5 +120,56 @@ export class TimesystemService {
       .set('isActiveIndex', isActiveIndex.toString())
       .set('isSalariedIndex', isSalariedIndex.toString());
     return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
+  }
+
+  getNonBillablesAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<NonBillables[]>(this.url + 'ListNonBillablesAssignedToEmployee', { params });
+  }
+  getNonBillablesNotAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<NonBillables[]>(this.url + 'ListNonBillablesNotAssignedToEmployee', { params });
+  }
+
+  getProjectsAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Projects[]>(this.url + 'ListProjectsAssignedToEmployee', { params });
+  }
+  getProjectsNotAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Projects[]>(this.url + 'ListProjectsNotAssignedToEmployee', { params });
+  }
+
+  getClientsAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Clients[]>(this.url + 'ListClientsAssignedToEmployee', { params });
+  }
+  getClientsNotAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Clients[]>(this.url + 'ListClientsNotAssignedToEmployee', { params });
+  }
+  getMasterPages() {
+    return this.http.get<MasterPages[]>(this.url + 'ListMasterPages');
+  }
+
+  getPagesbyRoles(role: string) {
+    const params = new HttpParams()
+      .set('role', role);
+    return this.http.get<MasterPages[]>(this.url + 'GetPagesByRole', { params });
+  }
+
+  InsertAccessRights(_attr: MasterPages[]): Observable<MasterPages[]> {
+    const body = JSON.stringify(_attr);
+    return this.http.post<MasterPages[]>(this.url + 'InsertAccessRights', body, httpOptions);
+  }
+  updateAppSettings(_appsettingsselection: AppSettings[]) {
+    const body = JSON.stringify(_appsettingsselection);
+    return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
   }
 }

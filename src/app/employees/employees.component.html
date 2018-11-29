@@ -102,3 +102,120 @@
 
   </p-table>
 </div>
+
+
+
+<p-dialog [(visible)]="nonBillablesIcon" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth"
+  [width]="800">
+  <p-header>
+    {{employeePopupHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('AssignCompanyHolidays.htm')"></i>
+  </p-header>
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12">
+        <p-pickList [target]="_nonBillablesAssignToEmp" [source]="_nonBillablesNotAssignToEmp" filterBy="ProjectName"
+          sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
+          [showSourceControls]="false" [showTargetControls]="false" sourceFilterPlaceholder="Search by {{_popUpHeader}}Name"
+          targetFilterPlaceholder="Search by {{_popUpHeader}}Name" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
+          (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+          <ng-template let-attr pTemplate="item">
+            <div class="ui-helper-clearfix">
+              {{attr.ProjectName}}
+            </div>
+          </ng-template>
+
+        </p-pickList>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Save" (click)="saveNonBillables()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelNonBillables()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="projectsIcon" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth" [width]="800">
+  <p-header>
+    {{employeePopupHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('AssignCompanyHolidays.htm')"></i>
+  </p-header>
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12">
+        <p-pickList [target]="_projectsAssignToEmp" [source]="_projectsNotAssignToEmp" filterBy="ProjectName"
+          sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
+          [showSourceControls]="false" [showTargetControls]="false" sourceFilterPlaceholder="Search by {{_popUpHeader}}Name"
+          targetFilterPlaceholder="Search by {{_popUpHeader}}Name" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
+          (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+          <ng-template let-attr pTemplate="item">
+            <div class="ui-helper-clearfix">
+              {{attr.ProjectName}}
+            </div>
+          </ng-template>
+
+        </p-pickList>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Save" (click)="saveProjects()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelProjects()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="clientsIcon" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth" [width]="800">
+  <p-header>
+    {{employeePopupHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('AssignCompanyHolidays.htm')"></i>
+  </p-header>
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12">
+        <p-pickList [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName" sourceHeader="Unassigned {{_popUpHeader}}s"
+          targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true" [showSourceControls]="false"
+          [showTargetControls]="false" sourceFilterPlaceholder="Search by {{_popUpHeader}}Name" targetFilterPlaceholder="Search by {{_popUpHeader}}Name"
+          [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()"
+          (onMoveToSource)="sortSource()">
+          <ng-template let-attr pTemplate="item">
+            <div class="ui-helper-clearfix">
+              {{attr.ClientName}}
+            </div>
+          </ng-template>
+
+        </p-pickList>
+      </div>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Save" (click)="saveClients()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelClients()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
