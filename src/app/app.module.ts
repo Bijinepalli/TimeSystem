@@ -59,6 +59,7 @@ import { MasterreportsComponent } from './reports/masterreports/masterreports.co
 import { ReportsdashboardComponent } from './reports/reportsdashboard/reportsdashboard.component';
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
+import { RatesComponent } from './rates/rates.component';
 
 
 
@@ -133,7 +134,8 @@ const appRoutes: Routes = [
     ReportsdashboardComponent,
     ConfigurationComponent,
     EmployeesComponent,
-    AddEmployeeComponent
+    AddEmployeeComponent,
+    RatesComponent
   ],
   imports: [
     BrowserAnimationsModule,

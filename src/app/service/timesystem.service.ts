@@ -14,8 +14,10 @@ import { map } from 'rxjs/operators';
 export class TimesystemService {
 
   private ipaddress = 'http://172.16.32.67/';
+  private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
+  private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -79,7 +81,7 @@ export class TimesystemService {
       .set('EmployeeID', EmployeeID !== '' ? EmployeeID : '0')
       .set('LoginID', LoginID)
       .set('Password', Password);
-    return this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
+    return this.http.get<Employee[]>(this.localurl + 'GetEmployee', { params });
   }
 
   EmployeeValidateByLoginID(LoginID: string): any {
@@ -113,6 +115,39 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('isActiveIndex', isActiveIndex.toString())
       .set('isSalariedIndex', isSalariedIndex.toString());
-    return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
+    return this.http.get<Employee[]>(this.localurl + 'ListAllEmployee', { params });
+  }
+
+  getNonBillablesAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<NonBillables[]>(this.localurl + 'ListNonBillablesAssignedToEmployee', { params });
+  }
+  getNonBillablesNotAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<NonBillables[]>(this.localurl + 'ListNonBillablesNotAssignedToEmployee', { params });
+  }
+
+  getProjectsAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Projects[]>(this.localurl + 'ListProjectsAssignedToEmployee', { params });
+  }
+  getProjectsNotAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Projects[]>(this.localurl + 'ListProjectsNotAssignedToEmployee', { params });
+  }
+
+  getClientsAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Clients[]>(this.localurl + 'ListClientsAssignedToEmployee', { params });
+  }
+  getClientsNotAssignToEmployee(EmployeeID: number) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString());
+    return this.http.get<Clients[]>(this.localurl + 'ListClientsNotAssignedToEmployee', { params });
   }
 }

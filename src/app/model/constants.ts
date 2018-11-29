@@ -34,4 +34,3 @@ export class DateFormats {
     public DisplayMonthDayFormat = 'MM-dd';
     public DisplayTimeStampFormat = 'MM-dd-yyyy hh:mm:ss tt';
 }
-

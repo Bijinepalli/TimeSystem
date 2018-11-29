@@ -17,9 +17,10 @@ export class AddEmployeeComponent implements OnInit {
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute) { }
   _frm = new FormGroup({});
   _securityLevel: SelectItem[];
-  _securityLevelDefault: SelectItem[];
+  _securityLevelDefault: string;
   _employeeId: number;
   _employees: Employee[] = null;
+  isEdit = false;
   ngOnInit() {
     this.addControls();
 
@@ -30,11 +31,14 @@ export class AddEmployeeComponent implements OnInit {
       { label: 'Payroll', value: 'Y' },
       { label: 'Billing', value: 'B' },
     ];
-    this._securityLevelDefault = [{ label: 'Employee', value: 'V' }];
+    this._securityLevelDefault = 'E';
 
     this.activatedRoute.params.subscribe((params) => {
       this._employeeId = params['id'] === undefined ? -1 : params['id'];
       this.getEmployees();
+      if (this._employeeId !== -1) {
+        this.isEdit = true;
+      }
     });
 
   }
@@ -74,6 +78,7 @@ export class AddEmployeeComponent implements OnInit {
     this._frm.controls['employeIncentive'].setValue(data.IPayEligible);
     this._frm.controls['employeeSchedule'].setValue(data.CompanyHolidays);
     this._frm.controls['companyOfficer'].setValue(data.Officer);
+    this._frm.controls['inactiveForm'].setValue(data.Inactive);
   }
   addControls() {
     this._frm.addControl('lastName', new FormControl(null, Validators.required));
@@ -82,7 +87,7 @@ export class AddEmployeeComponent implements OnInit {
     this._frm.addControl('payrollId', new FormControl(null, Validators.required));
     this._frm.addControl('emailAddress', new FormControl(null, Validators.required));
     this._frm.addControl('secondaryEmailAddress', new FormControl(null, null));
-    this._frm.addControl('securityLevel', new FormControl(null));
+    this._frm.addControl('securityLevel', new FormControl('E'));
     this._frm.addControl('hireDate', new FormControl(null));
     this._frm.addControl('hoursPerDay', new FormControl(null));
     this._frm.addControl('salariedEmployee', new FormControl(null));
@@ -90,6 +95,8 @@ export class AddEmployeeComponent implements OnInit {
     this._frm.addControl('employeIncentive', new FormControl(null));
     this._frm.addControl('employeeSchedule', new FormControl(null));
     this._frm.addControl('companyOfficer', new FormControl(null));
+    this._frm.addControl('inactiveForm', new FormControl(null));
+    this._frm.addControl('resetPassword', new FormControl(null));
   }
 
   hasFormErrors() {
