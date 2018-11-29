@@ -60,8 +60,8 @@ import { ReportsdashboardComponent } from './reports/reportsdashboard/reportsdas
 import { ConfigurationComponent } from './configuration/configuration.component';
 import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { RatesComponent } from './rates/rates.component';
-
-
+import { AccessrightsComponent } from './accessrights/accessrights.component';
+import { AppsettingsComponent } from './appsettings/appsettings.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -81,8 +81,8 @@ const appRoutes: Routes = [
       { path: 'employees', component: EmployeesComponent },
       { path: 'addemployee', component: AddEmployeeComponent },
       { path: 'addemployee/:id', component: AddEmployeeComponent },
-
-
+      { path: 'accessrights', component: AccessrightsComponent },
+      { path: 'appsettings', component: AppsettingsComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -135,7 +135,9 @@ const appRoutes: Routes = [
     ConfigurationComponent,
     EmployeesComponent,
     AddEmployeeComponent,
-    RatesComponent
+    RatesComponent,
+    AccessrightsComponent,
+    AppsettingsComponent
   ],
   imports: [
     BrowserAnimationsModule,

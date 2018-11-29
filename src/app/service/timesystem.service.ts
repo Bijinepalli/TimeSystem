@@ -1,13 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
 import { map } from 'rxjs/operators';
 
-
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
 @Injectable({
   providedIn: 'root'
 })
@@ -149,5 +153,23 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('EmployeeID', EmployeeID.toString());
     return this.http.get<Clients[]>(this.url + 'ListClientsNotAssignedToEmployee', { params });
+  }
+  getMasterPages() {
+    return this.http.get<MasterPages[]>(this.url + 'ListMasterPages');
+  }
+
+  getPagesbyRoles(role: string) {
+    const params = new HttpParams()
+      .set('role', role);
+    return this.http.get<MasterPages[]>(this.url + 'GetPagesByRole', { params });
+  }
+
+  InsertAccessRights(_attr: MasterPages[]): Observable<MasterPages[]> {
+    const body = JSON.stringify(_attr);
+    return this.http.post<MasterPages[]>(this.url + 'InsertAccessRights', body, httpOptions);
+  }
+  updateAppSettings(_appsettingsselection: AppSettings[]) {
+    const body = JSON.stringify(_appsettingsselection);
+    return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
   }
 }
