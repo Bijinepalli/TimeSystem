@@ -18,7 +18,7 @@ export class AccessrightsComponent implements OnInit {
   _selectedPage: MasterPages;
   _roles: SelectItem[];
   selectedRole: SelectItem[];
-  _disableEdit: boolean = true;
+  _disableEdit = true;
   pageFormgroup: FormGroup;
   _showGrid = false;
 
@@ -68,8 +68,7 @@ export class AccessrightsComponent implements OnInit {
     if (chk === true) {
       this.pageFormgroup.controls['chkPage_' + id].setValue(true);
       this.pageFormgroup.controls['editSwitch_' + id].enable();
-    }
-    else {
+    } else {
       this.pageFormgroup.controls['chkPage_' + id].setValue(false);
       this.pageFormgroup.controls['editSwitch_' + id].setValue(false);
       this.pageFormgroup.controls['editSwitch_' + id].disable();
@@ -84,18 +83,17 @@ export class AccessrightsComponent implements OnInit {
   }
 
   savePages() {
-    let allSelections: MasterPages[] = [];
+    const allSelections: MasterPages[] = [];
     for (let i = 0; i < this._pages.length; i++) {
       this._selectedPage = new MasterPages;
-      let chk = this.pageFormgroup.get('chkPage_' + this._pages[i].ID).value;
+      const chk = this.pageFormgroup.get('chkPage_' + this._pages[i].ID).value;
       if (chk === true) {
         this._selectedPage.Role = this.pageFormgroup.get('roleDrp').value;
         this._selectedPage.PageId = i + 1;
         this._selectedPage.HasView = 1;
         if (this.pageFormgroup.controls['editSwitch_' + this._pages[i].ID].value === true) {
           this._selectedPage.HasEdit = 1;
-        }
-        else {
+        } else {
           this._selectedPage.HasEdit = 0;
         }
         allSelections.push(this._selectedPage);
@@ -123,7 +121,7 @@ export class AccessrightsComponent implements OnInit {
         if (data != null) {
           this._pagesbyroles = data;
           for (let i = 0; i < this._pagesbyroles.length; i++) {
-            let id = this._pagesbyroles[i].PageId;
+            const id = this._pagesbyroles[i].PageId;
             if (this._pagesbyroles[i].HasView) {
               this.pageFormgroup.controls['chkPage_' + id].setValue(true);
               this.pageFormgroup.controls['editSwitch_' + id].enable();

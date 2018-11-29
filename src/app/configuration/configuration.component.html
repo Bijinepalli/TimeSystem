@@ -14,16 +14,12 @@
 <p-tabView (onChange)="onTabChange($event)">
   <p-tabPanel header="App Settings">
     <ng-template pTemplate="content">
-      <div class="ui-g">
-        <div *ngFor="let appSetting of appSettings">
-          {{appSetting.DataKey}}
-        </div>
-      </div>
+      <app-appsettings></app-appsettings>
     </ng-template>
   </p-tabPanel>
   <p-tabPanel header="Page Settings">
     <ng-template pTemplate="content">
-
+      <app-accessrights></app-accessrights>
     </ng-template>
   </p-tabPanel>
 </p-tabView>

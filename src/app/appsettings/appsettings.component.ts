@@ -66,12 +66,6 @@ export class AppsettingsComponent implements OnInit {
       this.appSettingsFormGroup.addControl('hdnAppSettingVal_' + this._appsettings[i].Id, new FormControl({ value: this._appsettings[i].Value }, null));
     }
   }
-  // setFormValues() {
-  //   for (let i = 0; i < this._appsettings.length; i++) {
-  //     this.appSettingsFormGroup.controls['chkAppSetting_' + this._appsettings[i].Id].setValue(true);
-  //     this.appSettingsFormGroup.controls['txtAppSettingVal_' + this._appsettings[i].Id].enable();
-  //   }
-  // }
 
   toggleControls(id: string) {
     let chk: boolean;
@@ -85,7 +79,7 @@ export class AppsettingsComponent implements OnInit {
       this._appsettingsselection.push(id);
       this.appSettingsFormGroup.controls['chkAppSetting_' + id].setValue(true);
     } else {
-      let idx = this._appsettingsselection.indexOf(id);
+      const idx = this._appsettingsselection.indexOf(id);
       if (idx !== -1) {
         return this._appsettingsselection.splice(idx, 1);
       }
@@ -98,18 +92,15 @@ export class AppsettingsComponent implements OnInit {
 
     for (let i = 0; i < this._appsettingsselection.length; i++) {
       appsettings = new AppSettings();
-      let _Id = this._appsettingsselection[i];
+      const _Id = this._appsettingsselection[i];
+      const chk = this.appSettingsFormGroup.controls['chkAppSetting_' + _Id];
+      const txt = this.appSettingsFormGroup.controls['txtAppSettingVal_' + _Id];
 
-
-      let chk = this.appSettingsFormGroup.controls['chkAppSetting_' + _Id];
-      let txt = this.appSettingsFormGroup.controls['txtAppSettingVal_' + _Id];
-      // if (chk.value === true) {
       appsettings.Id = +_Id;
       appsettings.Value = txt.value;
       appsettings.DataKey = '';
       appsettings.Description = '';
       appsettings.Type = '';
-      //}
 
       this._appsettingInsert.push(appsettings);
     }
@@ -117,7 +108,7 @@ export class AppsettingsComponent implements OnInit {
       this._appsettingInsert = [];
       this._appsettingsselection = [];
       this.getAppSettings();
-    })
+    });
 
   }
   CancelClick() {
@@ -125,8 +116,5 @@ export class AppsettingsComponent implements OnInit {
     this._appsettingsselection = [];
     this.getAppSettings();
   }
-
-
-
 
 }
