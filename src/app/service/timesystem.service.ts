@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages
+  // tslint:disable-next-line:max-line-length
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -171,5 +172,11 @@ export class TimesystemService {
   updateAppSettings(_appsettingsselection: AppSettings[]) {
     const body = JSON.stringify(_appsettingsselection);
     return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
+  }
+  getLeftNavMenu(role: string) {
+    console.log(role);
+    const params = new HttpParams()
+      .set('role', role);
+    return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
   }
 }

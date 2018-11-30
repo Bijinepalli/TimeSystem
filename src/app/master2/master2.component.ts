@@ -2,6 +2,8 @@ import { Component, ViewChild, OnInit, AfterViewInit, Input } from '@angular/cor
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
+import { TimesystemService } from '../service/timesystem.service';
+import { MasterPages, LeftNavMenu } from '../model/objects';
 
 declare var jQuery: any;
 
@@ -17,16 +19,19 @@ export class Master2Component implements OnInit {
   public show = false;
   solutionName = '';
 
+  menuItems: LeftNavMenu[];
 
-  headerMenu: MenuItem[];
-  menuItems: MenuItem[];
-  miniMenuItems: MenuItem[];
+  // headerMenu: MenuItem[];
+  // menuItems: MenuItem[];
+  // miniMenuItems: MenuItem[];
   visibleSidebar = false;
   @ViewChild('bigMenu') bigMenu: Menu;
   @ViewChild('smallMenu') smallMenu: Menu;
   userOptions: any;
+  // newmenuItems: MenuItem[];
+  submenu: MenuItem[];
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private timesysSvc: TimesystemService) {
 
   }
 
@@ -52,11 +57,11 @@ export class Master2Component implements OnInit {
     };
     this.getNavItems();
 
-    this.miniMenuItems = [];
-    this.menuItems.forEach((item: MenuItem) => {
-      const miniItem = { icon: item.icon, routerLink: item.routerLink, title: item.title };
-      this.miniMenuItems.push(miniItem);
-    });
+    // this.miniMenuItems = [];
+    // this.menuItems.forEach((item: MenuItem) => {
+    //   const miniItem = { icon: item.icon, routerLink: item.routerLink, title: item.title };
+    //   this.miniMenuItems.push(miniItem);
+    // });
 
   }
 
@@ -69,105 +74,115 @@ export class Master2Component implements OnInit {
         const selected = jQuery(event.originalEvent.target).closest('a');
         selected.addClass('menu-selected');
       };
-      switch (localStorage.getItem('UserRole').toString()) {
-        case 'A':
-          this.menuItems = [
-            {
-              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
-              command: (event) => handleSelected(event), title: 'Dashboard'
-            },
-            {
-              label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/menu/employees'],
-              command: (event) => handleSelected(event), title: 'Employees'
-            },
-            {
-              label: 'Holidays', icon: 'fa fa-book', routerLink: ['/menu/holidays'],
-              command: (event) => handleSelected(event), title: 'Holidays'
-            },
-            {
-              label: 'Companies', icon: 'fa fa-building', routerLink: ['/menu/companies'],
-              command: (event) => handleSelected(event), title: 'Companies'
-            },
-            {
-              label: 'Billing Codes', icon: 'fa fa-files-o', routerLink: ['/projects'],
-              command: (event) => handleSelected(event), title: 'Billing Codes'
-            },
-            {
-              label: 'Project', icon: 'fa fa-sticky-note-o', routerLink: ['/menu/projects'],
-              command: (event) => handleSelected(event), title: 'Project'
-            },
-            {
-              label: 'Non-Billables', icon: 'fa fa-coffee', routerLink: ['/menu/nonbillables'],
-              command: (event) => handleSelected(event), title: 'Non-Billables'
-            },
-            {
-              label: 'Customers', icon: 'fa fa-users', routerLink: ['/menu/customers'],
-              command: (event) => handleSelected(event), title: 'Customers'
-            },
-            {
-              label: 'Clients', icon: 'fa fa-user-secret', routerLink: ['/menu/clients'],
-              command: (event) => handleSelected(event), title: 'Clients'
-            },
-            {
-              label: 'Year End', icon: 'fa fa-calendar', routerLink: ['/menu/user'],
-              command: (event) => handleSelected(event), title: 'Year End'
-            },
-            {
-              label: 'Email', icon: 'fa fa-envelope', routerLink: ['/menu/user'],
-              command: (event) => handleSelected(event), title: 'Email'
-            },
-            {
-              label: 'Error Log', icon: 'fa fa-exclamation-triangle', routerLink: ['/menu/user'],
-              command: (event) => handleSelected(event), title: 'Error Log'
-            },
-            {
-              label: 'Reports', icon: 'fa fa-folder', routerLink: ['/menureports/dashboard'],
-              command: (event) => handleSelected(event), title: 'Reports'
-            },
-            {
-              label: 'Configuration', icon: 'fa fa-cog', routerLink: ['/menu/configuration'],
-              command: (event) => handleSelected(event), title: 'Configuration'
-            },
-          ];
-          break;
-        case 'PM':
-          this.menuItems = [
-            {
-              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
-              command: (event) => handleSelected(event), title: 'Dashboard'
-            },
-            {
-              label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/inv/invdashboard'],
-              command: (event) => handleSelected(event), title: 'Employees'
-            },
-            {
-              label: 'Reports', icon: 'fa fa-folder', routerLink: ['/menu/schedule'],
-              command: (event) => handleSelected(event), title: 'Reports'
-            },
-          ];
-          break;
-        case 'E':
-          break;
-        default:
-          this.menuItems = [
-            {
-              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
-              command: (event) => handleSelected(event), title: 'Dashboard'
-            },
-          ];
-          break;
-      }
 
-      this.headerMenu = [
-        {
-          label: 'Timesheets', routerLink: ['/inv/invdashboard'],
-          command: (event) => handleSelected(event), title: 'Employees'
-        },
-        {
-          label: 'Pay Stubs', routerLink: ['/menu/schedule'],
-          command: (event) => handleSelected(event), title: 'Reports'
-        },
-      ];
+      this.timesysSvc.getLeftNavMenu(localStorage.getItem('UserRole').toString())
+        .subscribe(
+          (data) => {
+            // this.buildMenu(data);
+            console.log('yes');
+            this.menuItems = data;
+          }
+        );
+
+      // switch (localStorage.getItem('UserRole').toString()) {
+      //   case 'A':
+      //     this.menuItems = [
+      //       {
+      //         label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
+      //         command: (event) => handleSelected(event), title: 'Dashboard'
+      //       },
+      //       {
+      //         label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/menu/employees'],
+      //         command: (event) => handleSelected(event), title: 'Employees'
+      //       },
+      //       {
+      //         label: 'Holidays', icon: 'fa fa-book', routerLink: ['/menu/holidays'],
+      //         command: (event) => handleSelected(event), title: 'Holidays'
+      //       },
+      //       {
+      //         label: 'Companies', icon: 'fa fa-building', routerLink: ['/menu/companies'],
+      //         command: (event) => handleSelected(event), title: 'Companies'
+      //       },
+      //       {
+      //         label: 'Billing Codes', icon: 'fa fa-files-o', routerLink: ['/projects'],
+      //         command: (event) => handleSelected(event), title: 'Billing Codes'
+      //       },
+      //       {
+      //         label: 'Project', icon: 'fa fa-sticky-note-o', routerLink: ['/menu/projects'],
+      //         command: (event) => handleSelected(event), title: 'Project'
+      //       },
+      //       {
+      //         label: 'Non-Billables', icon: 'fa fa-coffee', routerLink: ['/menu/nonbillables'],
+      //         command: (event) => handleSelected(event), title: 'Non-Billables'
+      //       },
+      //       {
+      //         label: 'Customers', icon: 'fa fa-users', routerLink: ['/menu/customers'],
+      //         command: (event) => handleSelected(event), title: 'Customers'
+      //       },
+      //       {
+      //         label: 'Clients', icon: 'fa fa-user-secret', routerLink: ['/menu/clients'],
+      //         command: (event) => handleSelected(event), title: 'Clients'
+      //       },
+      //       {
+      //         label: 'Year End', icon: 'fa fa-calendar', routerLink: ['/menu/user'],
+      //         command: (event) => handleSelected(event), title: 'Year End'
+      //       },
+      //       {
+      //         label: 'Email', icon: 'fa fa-envelope', routerLink: ['/menu/user'],
+      //         command: (event) => handleSelected(event), title: 'Email'
+      //       },
+      //       {
+      //         label: 'Error Log', icon: 'fa fa-exclamation-triangle', routerLink: ['/menu/user'],
+      //         command: (event) => handleSelected(event), title: 'Error Log'
+      //       },
+      //       {
+      //         label: 'Reports', icon: 'fa fa-folder', routerLink: ['/menureports/dashboard'],
+      //         command: (event) => handleSelected(event), title: 'Reports'
+      //       },
+      //       {
+      //         label: 'Configuration', icon: 'fa fa-cog', routerLink: ['/menu/configuration'],
+      //         command: (event) => handleSelected(event), title: 'Configuration'
+      //       },
+      //     ];
+      //     break;
+      //   case 'PM':
+      //     this.menuItems = [
+      //       {
+      //         label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
+      //         command: (event) => handleSelected(event), title: 'Dashboard'
+      //       },
+      //       {
+      //         label: 'Employees', icon: 'fa fa-user-circle', routerLink: ['/inv/invdashboard'],
+      //         command: (event) => handleSelected(event), title: 'Employees'
+      //       },
+      //       {
+      //         label: 'Reports', icon: 'fa fa-folder', routerLink: ['/menu/schedule'],
+      //         command: (event) => handleSelected(event), title: 'Reports'
+      //       },
+      //     ];
+      //     break;
+      //   case 'E':
+      //     break;
+      //   default:
+      //     this.menuItems = [
+      //       {
+      //         label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
+      //         command: (event) => handleSelected(event), title: 'Dashboard'
+      //       },
+      //     ];
+      //     break;
+      // }
+
+      //   this.headerMenu = [
+      //     {
+      //       label: 'Timesheets', routerLink: ['/inv/invdashboard'],
+      //       command: (event) => handleSelected(event), title: 'Employees'
+      //     },
+      //     {
+      //       label: 'Pay Stubs', routerLink: ['/menu/schedule'],
+      //       command: (event) => handleSelected(event), title: 'Reports'
+      //     },
+      //   ];
     }
   }
 
@@ -178,7 +193,7 @@ export class Master2Component implements OnInit {
 
   selectInitialMenuItemBasedOnUrl() {
     const path = document.location.pathname;
-    const menuItem = this.menuItems.find((item) => item.routerLink[0] === path);
+    const menuItem = this.menuItems.find((item) => item.routeLink[0] === path);
     if (menuItem) {
       const selectedIcon = this.bigMenu.container.querySelector(`.${menuItem.icon}`);
       jQuery(selectedIcon).closest('li').addClass('menu-selected');
@@ -190,5 +205,17 @@ export class Master2Component implements OnInit {
   }
   navigateTo() {
     this.router.navigate(['/menu/dashboard']);
+  }
+  buildMenu(pages: MasterPages[]) {
+    console.log(pages);
+
+    // const modules: string[] = new TS.Linq.Enumerator(pages).select(m => m.ModuleName).distinct().toArray();
+    // this.newmenuItems = [];
+    // for (let i = 0; i < modules.length; i++) {
+    //   this.submenu = [];
+    //   new TS.Linq.Enumerator(pages).where(m => m.ModuleName === modules[i]).forEach(m => {
+    //     this.submenu.push({ label: m.PageName, routerLink: m.Controller.toString() });
+    //   });
+    //   this.newmenuItems.push({ label: modules[i], items: this.submenu });
   }
 }

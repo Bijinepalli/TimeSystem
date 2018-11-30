@@ -118,3 +118,10 @@ export class MasterPages {
     Role?: string;
     PageId?: number;
 }
+
+export class LeftNavMenu {
+    label: string;
+    icon: string;
+    routeLink: string;
+    items: LeftNavMenu[];
+}
