@@ -32,6 +32,7 @@ export class Master2Component implements OnInit {
   EmployeeData: Employee[];
   passwordExpiry = '';
   appSettings: AppSettings[];
+  helpText: string;
 
   constructor(private router: Router, private timesysSvc: TimesystemService) {
 
@@ -194,4 +195,16 @@ export class Master2Component implements OnInit {
     this.changePasswordDialog = true;
   }
 
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
 }
