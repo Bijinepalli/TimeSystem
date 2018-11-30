@@ -120,7 +120,7 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('InActive', InActive.toString())
       .set('Salaried', Salaried.toString());
-    return this.http.get<Employee[]>(this.localurl + 'ListAllEmployee', { params });
+    return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
   }
 
   getNonBillablesAssignToEmployee(EmployeeID: number) {
@@ -177,22 +177,22 @@ export class TimesystemService {
     console.log(role);
     const params = new HttpParams()
       .set('role', role);
-    return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
+    return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
   }
   listAllClientItems(inactive: string) {
     const params = new HttpParams()
       .set('Inactive', inactive);
     console.log(params);
-    return this.http.get<Clients[]>(this.localurl + 'ListAllClientItems', { params });
+    return this.http.get<Clients[]>(this.url + 'ListAllClientItems', { params });
   }
   listAllProjectData(inactive: string) {
     const params = new HttpParams()
       .set('Inactive', inactive);
-    return this.http.get<Projects[]>(this.localurl + 'ListAllProjectData', { params });
+    return this.http.get<Projects[]>(this.url + 'ListAllProjectData', { params });
   }
   listAllBillingItems(inactive: string) {
     const params = new HttpParams()
       .set('Inactive', inactive);
-    return this.http.get<NonBillables[]>(this.localurl + 'ListBillingItems', { params });
+    return this.http.get<NonBillables[]>(this.url + 'ListBillingItems', { params });
   }
 }
