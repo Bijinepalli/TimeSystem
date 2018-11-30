@@ -78,11 +78,15 @@ export class Employee {
     IsLocked?: boolean;
     NoOfAttempts?: number;
     FailureAttemptOn?: string;
-    PasswordExpiresOn?: string;
     TerminationDate?: string;
     StartDate?: string;
     PayRoleID?: string;
-
+    IsSupervisor?: boolean;
+    IsTimesheetVerficationNeeded?: boolean;
+    SupervisorId?: number;
+    Supervisor?: string;
+    SupervisorEmail?: string;
+    LastUpdatedDays?: number;
 }
 
 export class LoginErrorMessage {

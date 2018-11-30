@@ -64,10 +64,13 @@ import { AccessrightsComponent } from './accessrights/accessrights.component';
 import { AppsettingsComponent } from './appsettings/appsettings.component';
 import { BillingcodelistingComponent } from './reports/billingcodelisting/billingcodelisting.component';
 import { ListemployeesreportsComponent } from './reports/listemployeesreports/listemployeesreports.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'changepassword/:code', component: ForgotpasswordComponent },
   {
     path: 'menu',
     component: Master2Component,
@@ -143,7 +146,9 @@ const appRoutes: Routes = [
     AccessrightsComponent,
     AppsettingsComponent,
     BillingcodelistingComponent,
-    ListemployeesreportsComponent
+    ListemployeesreportsComponent,
+    ForgotpasswordComponent,
+    ChangepasswordComponent
   ],
   imports: [
     BrowserAnimationsModule,
