@@ -179,4 +179,20 @@ export class TimesystemService {
       .set('role', role);
     return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
   }
+  listAllClientItems(inactive: string) {
+    const params = new HttpParams()
+      .set('Inactive', inactive);
+    console.log(params);
+    return this.http.get<Clients[]>(this.localurl + 'ListAllClientItems', { params });
+  }
+  listAllProjectData(inactive: string) {
+    const params = new HttpParams()
+      .set('Inactive', inactive);
+    return this.http.get<Projects[]>(this.localurl + 'ListAllProjectData', { params });
+  }
+  listAllBillingItems(inactive: string) {
+    const params = new HttpParams()
+      .set('Inactive', inactive);
+    return this.http.get<NonBillables[]>(this.localurl + 'ListBillingItems', { params });
+  }
 }
