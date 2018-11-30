@@ -81,7 +81,7 @@ export class Employee {
     PasswordExpiresOn?: string;
     TerminationDate?: string;
     StartDate?: string;
-    PayRoleID: string;
+    PayRoleID?: string;
 
 }
 

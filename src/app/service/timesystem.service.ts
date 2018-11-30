@@ -195,4 +195,16 @@ export class TimesystemService {
       .set('Inactive', inactive);
     return this.http.get<NonBillables[]>(this.url + 'ListBillingItems', { params });
   }
+  getEmployeesForReport(Inactive: string, IPayEligible: string,
+    Salaried: string, SubmitsTime: string, _CompanyHolidays: string, StartDate: string, EndDate: string): any {
+    const params = new HttpParams()
+      .set('Inactive', Inactive)
+      .set('IPayEligible', IPayEligible)
+      .set('Salaried', Salaried)
+      .set('SubmitsTime', SubmitsTime)
+      .set('CompanyHolidays', _CompanyHolidays)
+      .set('StartDate', StartDate)
+      .set('EndDate', EndDate);
+    return this.http.get<Employee[]>(this.url + 'GetEmployeesForReport', { params });
+  }
 }
