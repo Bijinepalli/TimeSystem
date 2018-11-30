@@ -62,6 +62,7 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { RatesComponent } from './rates/rates.component';
 import { AccessrightsComponent } from './accessrights/accessrights.component';
 import { AppsettingsComponent } from './appsettings/appsettings.component';
+import { BillingcodelistingComponent } from './reports/billingcodelisting/billingcodelisting.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -83,6 +84,7 @@ const appRoutes: Routes = [
       { path: 'addemployee/:id', component: AddEmployeeComponent },
       { path: 'accessrights', component: AccessrightsComponent },
       { path: 'appsettings', component: AppsettingsComponent },
+      { path: 'billingcodelisting', component: BillingcodelistingComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -137,7 +139,8 @@ const appRoutes: Routes = [
     AddEmployeeComponent,
     RatesComponent,
     AccessrightsComponent,
-    AppsettingsComponent
+    AppsettingsComponent,
+    BillingcodelistingComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -33,6 +33,7 @@ export class Projects {
     CompanyId: number;
     CreatedOn: string;
     CanBeDeleted: number;
+    CompanyName: string;
 }
 
 export class NonBillables {
@@ -107,6 +108,7 @@ export class Clients {
     Inactive: boolean;
     CreatedOn: string;
     used: number;
+    CompanyName: string;
 }
 export class MasterPages {
     ID?: number;
