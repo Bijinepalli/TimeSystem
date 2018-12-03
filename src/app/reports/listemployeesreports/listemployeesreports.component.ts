@@ -32,6 +32,9 @@ export class ListemployeesreportsComponent implements OnInit {
   _recData: any;
   _endDate: string;
   _startDate: string;
+  visibleHelp = false;
+  helpText: any;
+
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private fb: FormBuilder,
     private datePipe: DatePipe) { }
 
@@ -70,17 +73,17 @@ export class ListemployeesreportsComponent implements OnInit {
     this._holidaysselected = '';
 
     this._headerLabels = [
-      { field: 'LastName', header: 'Last Name'},
+      { field: 'LastName', header: 'Last Name' },
       { field: 'FirstName', header: 'First Name' },
-      { field: 'NickName', header: 'Nick Name'},
-      { field: 'PayRoleID', header: 'Payroll ID'},
+      { field: 'NickName', header: 'Nick Name' },
+      { field: 'PayRoleID', header: 'Payroll ID' },
       { field: 'EmailAddress', header: 'Email Address' },
-      { field: 'LoginID', header: 'Login ID'},
-      { field: 'HireDate', header: 'Hire Date'},
+      { field: 'LoginID', header: 'Login ID' },
+      { field: 'HireDate', header: 'Hire Date' },
       { field: 'UserLevel', header: 'Security' },
       { field: 'Inactive', header: 'Inactive' },
-      { field: 'Salaried', header: 'Salaried'},
-      { field: 'IPayEligible', header: 'IPay'},
+      { field: 'Salaried', header: 'Salaried' },
+      { field: 'IPayEligible', header: 'IPay' },
       { field: 'SubmitsTime', header: 'Submits Time' },
       { field: 'CompanyHolidays', header: 'Vertex Holidays' }
     ];
@@ -99,21 +102,36 @@ export class ListemployeesreportsComponent implements OnInit {
   getEmployeesForReport() {
     let _start = '';
     let _end = '';
-    if (this._startDate !== '') {
+    if (this._startDate !== '' && this._startDate !== null) {
       _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
     }
-    if (this._endDate !== '') {
+    if (this._endDate !== '' && this._endDate !== null) {
       _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
     }
+    console.log(this._startDate, this._endDate);
     console.log(_start, _end);
     this.timesysSvc.getEmployeesForReport(this._statusselected, this._Ipayselected, this._paidselected,
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
           this._listEmployeesForReport = data;
-          console.log(this._listEmployeesForReport);
           this._recData = data.length + ' matching employees';
         }
       );
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+
+        }
+      );
+
   }
 }
