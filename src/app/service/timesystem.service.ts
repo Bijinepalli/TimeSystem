@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -174,7 +174,6 @@ export class TimesystemService {
     return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
   }
   getLeftNavMenu(role: string) {
-    console.log(role);
     const params = new HttpParams()
       .set('role', role);
     return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
@@ -182,7 +181,6 @@ export class TimesystemService {
   listAllClientItems(inactive: string) {
     const params = new HttpParams()
       .set('Inactive', inactive);
-    console.log(params);
     return this.http.get<Clients[]>(this.url + 'ListAllClientItems', { params });
   }
   listAllProjectData(inactive: string) {
@@ -207,4 +205,32 @@ export class TimesystemService {
       .set('EndDate', EndDate);
     return this.http.get<Employee[]>(this.url + 'GetEmployeesForReport', { params });
   }
+
+  sendMail(_EmailOptions: EmailOptions) {
+    const body = JSON.stringify(_EmailOptions);
+    return this.http.post<EmailOptions[]>(this.url + 'SendEmail', body, httpOptions);
+
+  }
+
+  InsertForgotPasswordHistory(forgotPasswordHistory: ForgotPasswordHistory) {
+    const body = JSON.stringify(forgotPasswordHistory);
+    return this.http.post<ForgotPasswordHistory>(this.url + 'InsertForgotPasswordHistory', body, httpOptions);
+  }
+  ValidateForgotPassword(forgotPasswordHistory: ForgotPasswordHistory) {
+    const body = JSON.stringify(forgotPasswordHistory);
+    return this.http.post<ForgotPasswordHistory[]>(this.url + 'ValidateForgotPassword', body, httpOptions);
+
+  }
+  ValidateEmployeePasswordHistory(employeePasswordHistory: EmployeePasswordHistory) {
+    const body = JSON.stringify(employeePasswordHistory);
+    return this.http.post<EmployeePasswordHistory[]>(this.url + 'ValidateEmployeePasswordHistory', body, httpOptions);
+
+  }
+  Employee_UpdatePassword(employee: Employee) {
+    const body = JSON.stringify(employee);
+    return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
+  }
+
+
+
 }

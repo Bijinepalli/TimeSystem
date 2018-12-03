@@ -8,18 +8,21 @@
     </div>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad userInfo" id="notifications" style="text-align: right">
-    <div class="ui-g-7 ui-md-8 ui-lg-9" style="text-align:right;">
+    <div class="ui-g-6 ui-md-8 ui-lg-9" style="text-align:right;">
       <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="color:crimson;">
         {{fullName}}
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="font-size:14px;color:black;">
+      <!-- <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="font-size:14px;color:black;">
         {{passwordExpiry}}<a style="padding:0px 5px;color:dodgerblue;cursor: pointer;" (click)="changePasswordClick()">Click
           here to Change Password</a>
-      </div>
+      </div> -->
     </div>
-    <div class="ui-g-5 ui-md-4 ui-lg-3" style="text-align:right;">
-      &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="right" (click)="navigateTo()"></button>&nbsp;
-      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="right" (click)="logout()" class="ui-button-danger"
+    <div class="ui-g-6 ui-md-4 ui-lg-3" style="text-align:right;">
+      &nbsp;<button pButton icon="fa fa-key fa-2x" pTooltip="{{passwordExpiry}} Click to Change Password."
+        tooltipPosition="right" (click)="changePasswordClick()" class="ui-button-raised {{changePasswordButtonClass}}"></button>&nbsp;
+      &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="right" (click)="navigateTo()"
+        class="ui-button-raised"></button>&nbsp;
+      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="right" (click)="logout()" class="ui-button-raised ui-button-danger"
         style="padding-right:0px"></button>&nbsp;&nbsp;
     </div>
   </div>

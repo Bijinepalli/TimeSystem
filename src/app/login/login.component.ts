@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { AppSettings, LoginErrorMessage, Employee } from '../model/objects';
+import { AppSettings, LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 
@@ -32,6 +32,8 @@ export class LoginComponent implements OnInit {
   // Form Related Properties
 
   signInForm: FormGroup;
+  FinanceEmailAddress: string;
+  WebsiteAddress: string;
 
 
   constructor(
@@ -99,7 +101,6 @@ export class LoginComponent implements OnInit {
     this.ByPassPassword = this.GetAppSettingsValue('ByPassPassword');
     this.LoginAttemptsLimit = this.GetAppSettingsValue('LoginAttemptsLimit');
     this.PasswordExpiryDays = this.GetAppSettingsValue('PasswordExpiryDays');
-    this.LinkExpiryMin = this.GetAppSettingsValue('LinkExpiryMin');
     if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
       this.signInForm = this.fb.group({
         username: ['ramesh.rao', [Validators.required]],
@@ -203,6 +204,7 @@ export class LoginComponent implements OnInit {
                 (this.EmployeeData[0].LastName.toString() !== '') ?
                   (' ' + this.EmployeeData[0].LastName.toString()) : ''
               ));
+            localStorage.setItem('UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
             this.navigateTo('/menu/dashboard');
           }
         }
@@ -214,15 +216,50 @@ export class LoginComponent implements OnInit {
   }
 
   SendEmailForgotPassword() {
-    const Msg = 'Email is sent with a link to Change Password that will expire in ' + this.LinkExpiryMin + ' minutes.';
-    this.msgSvc.add({
-      key: 'alert',
-      sticky: true,
-      severity: 'info',
-      summary: 'Mail Sent!',
-      detail: Msg
-    });
-    this.navigateTo('/changepassword/code');
+
+    this.LinkExpiryMin = this.GetAppSettingsValue('LinkExpiryMin');
+    this.WebsiteAddress = this.GetAppSettingsValue('WebsiteAddress');
+    this.FinanceEmailAddress = this.GetAppSettingsValue('FinanceEmailAddress');
+
+    this.timesysSvc.getEmployee('', this.currentFormControls.username.value, '')
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this.EmployeeData = data;
+
+            let forgotPasswordHistory: ForgotPasswordHistory = {};
+            forgotPasswordHistory.EmployeeID = +(this.EmployeeData[0].ID.toString());
+            forgotPasswordHistory.EmailAddress = this.EmployeeData[0].EmailAddress.toString();
+            this.timesysSvc.InsertForgotPasswordHistory(forgotPasswordHistory).subscribe(dataForgot => {
+              if (dataForgot !== null) {
+                forgotPasswordHistory = dataForgot;
+                const _EmailOptions: EmailOptions = {};
+                _EmailOptions.From = this.FinanceEmailAddress;
+                _EmailOptions.EmailType = 'Forgot Password';
+                _EmailOptions.To = this.EmployeeData[0].EmailAddress.toString();
+                _EmailOptions.SendAdmin = false;
+                _EmailOptions.SendOnlyAdmin = false;
+                _EmailOptions.ReplyTo = '';
+                const BodyParams: string[] = [];
+                BodyParams.push(this.WebsiteAddress + 'changepassword/' + forgotPasswordHistory.UniqueCode.toString());
+                BodyParams.push(this.LinkExpiryMin);
+                _EmailOptions.BodyParams = BodyParams;
+                console.log(_EmailOptions);
+                this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+                  const Msg = 'Email is sent with a link to Change Password that will expire in ' + this.LinkExpiryMin + ' minutes.';
+                  this.msgSvc.add({
+                    key: 'alert',
+                    sticky: true,
+                    severity: 'info',
+                    summary: 'Mail Sent!',
+                    detail: Msg
+                  });
+                });
+              }
+            });
+          }
+        }
+      );
   }
 
 

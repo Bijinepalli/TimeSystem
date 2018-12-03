@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { AppSettings, LoginErrorMessage, Employee } from '../model/objects';
+import { AppSettings, LoginErrorMessage, Employee, EmailOptions, EmployeePasswordHistory } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 
@@ -25,6 +25,8 @@ export class ChangepasswordComponent implements OnInit {
 
   // Form Related Properties
   signInForm: FormGroup;
+  FinanceEmailAddress = '';
+  PasswordHistoryCheckLength: any;
 
   constructor(
     private router: Router,
@@ -112,7 +114,7 @@ export class ChangepasswordComponent implements OnInit {
     if (this.signInForm.invalid) {
       return;
     } else {
-      this.SendEmailChangePassword();
+      this.SubmitFunctionality();
     }
   }
 
@@ -122,16 +124,42 @@ export class ChangepasswordComponent implements OnInit {
 
   // Business Logic Methods
 
-  SendEmailChangePassword() {
-    const Msg = 'Your Password has been changed. Please continue to login page.';
-    this.msgSvc.add({
-      key: 'alert',
-      sticky: true,
-      severity: 'info',
-      summary: 'Mail Sent!',
-      detail: Msg
+  SubmitFunctionality() {
+    this.PasswordHistoryCheckLength = this.GetAppSettingsValue('PasswordHistoryCheckLength');
+    const employeePasswordHistory: EmployeePasswordHistory = {};
+    employeePasswordHistory.CheckLength = this.PasswordHistoryCheckLength;
+    employeePasswordHistory.Password = this.currentFormControls.password.value;
+    this.timesysSvc.ValidateEmployeePasswordHistory(employeePasswordHistory).subscribe(_employeePasswordHistory => {
+      if (_employeePasswordHistory !== null && _employeePasswordHistory.length > 0) {
+
+      } else {
+        this.UpdatePassword();
+      }
     });
-    // this.navigateTo('/login');
+  }
+
+  UpdatePassword() {
+
+
+    this.SendEmailChangePassword();
+  }
+
+  SendEmailChangePassword() {
+    this.FinanceEmailAddress = this.GetAppSettingsValue('FinanceEmailAddress');
+
+    const _EmailOptions: EmailOptions = {};
+    _EmailOptions.From = this.FinanceEmailAddress;
+    _EmailOptions.EmailType = 'Change Password';
+    _EmailOptions.To = localStorage.getItem('UserEmailAddress');
+    _EmailOptions.SendAdmin = false;
+    _EmailOptions.SendOnlyAdmin = false;
+    _EmailOptions.ReplyTo = '';
+    const BodyParams: string[] = [];
+    BodyParams.push('pa55w0rd!!');
+    _EmailOptions.BodyParams = BodyParams;
+    this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+      this.navigateTo('/login');
+    });
   }
 
 }
