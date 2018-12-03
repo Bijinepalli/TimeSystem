@@ -19,7 +19,7 @@ export class Master2Component implements OnInit {
 
   public visibleHelp = false;
   public show = false;
-  fullName = 'Welcome';
+  fullName = 'Hello';
   title = 'My Master Page...';
   solutionName = '';
 
@@ -29,6 +29,7 @@ export class Master2Component implements OnInit {
 
   userOptions: any;
   changePasswordDialog = false;
+  changePasswordButtonClass = 'ui-button-success';
   EmployeeData: Employee[];
   passwordExpiry = '';
   appSettings: AppSettings[];
@@ -71,7 +72,7 @@ export class Master2Component implements OnInit {
 
   Initialisations() {
     this.menuItems = [];
-    this.fullName = 'Welcome';
+    this.fullName = 'Hello';
 
     const validateUser: boolean = this.getUserDetails();
     if (validateUser) {
@@ -103,7 +104,7 @@ export class Master2Component implements OnInit {
     if (localStorage.getItem('currentUser') !== undefined &&
       localStorage.getItem('currentUser') !== null &&
       localStorage.getItem('currentUser') !== '') {
-      this.fullName = 'Welcome , ' + localStorage.getItem('currentUser');
+      this.fullName = 'Hello , ' + localStorage.getItem('currentUser');
     }
   }
 
@@ -115,14 +116,20 @@ export class Master2Component implements OnInit {
             this.EmployeeData = data;
             // const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
             // if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
-            //   const PasswordExpiryDays = this.GetAppSettingsValue('PasswordExpiryDays');
+            const PasswordExpiryDays = this.GetAppSettingsValue('PasswordExpiryDays');
             //   const ExpiryDays = +PasswordExpiryDays - PasswordLastUpdatedDays;
             const ExpiryDays = 0;
             if (ExpiryDays > 0) {
               this.passwordExpiry = 'Your password will expire in ' + (ExpiryDays).toString() + ' days.';
+              if (ExpiryDays > ((+PasswordExpiryDays) / 2)) {
+               // this.changePasswordButtonClass = 'ui-button-info';
+              } else {
+               // this.changePasswordButtonClass = 'ui-button-warning';
+              }
             } else {
               if (ExpiryDays === 0) {
                 this.passwordExpiry = 'Your password expires today.';
+               // this.changePasswordButtonClass = 'ui-button-danger';
               } else {
                 this.logout();
               }

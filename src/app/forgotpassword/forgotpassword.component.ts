@@ -5,7 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { AppSettings, LoginErrorMessage, Employee } from '../model/objects';
+import { AppSettings, LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 
@@ -24,6 +24,9 @@ export class ForgotpasswordComponent implements OnInit {
 
   // Form Related Properties
   signInForm: FormGroup;
+  LinkExpiryMin = '';
+  WebsiteAddress = '';
+  FinanceEmailAddress = '';
 
   constructor(
     private router: Router,
@@ -122,15 +125,21 @@ export class ForgotpasswordComponent implements OnInit {
   // Business Logic Methods
 
   SendEmailChangePassword() {
-    const Msg = 'Your Password has been changed. Please continue to login page.';
-    this.msgSvc.add({
-      key: 'alert',
-      sticky: true,
-      severity: 'info',
-      summary: 'Mail Sent!',
-      detail: Msg
+    this.FinanceEmailAddress = this.GetAppSettingsValue('FinanceEmailAddress');
+
+    const _EmailOptions: EmailOptions = {};
+    _EmailOptions.From = this.FinanceEmailAddress;
+    _EmailOptions.EmailType = 'Change Password';
+    _EmailOptions.To = localStorage.getItem('UserEmailAddress');
+    _EmailOptions.SendAdmin = false;
+    _EmailOptions.SendOnlyAdmin = false;
+    _EmailOptions.ReplyTo = '';
+    const BodyParams: string[] = [];
+    BodyParams.push('pa55w0rd!!');
+    _EmailOptions.BodyParams = BodyParams;
+    this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+      this.navigateTo('/login');
     });
-    // this.navigateTo('/login');
   }
 
 }
