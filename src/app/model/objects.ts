@@ -87,6 +87,8 @@ export class Employee {
     Supervisor?: string;
     SupervisorEmail?: string;
     LastUpdatedDays?: number;
+    CreatedBy?: number;
+    DecryptedPassword?: string;
 }
 
 export class LoginErrorMessage {
@@ -146,4 +148,26 @@ export class BillingCodesSpecial {
     value: string;
     codeStatus: string;
     relStatus: string;
+}
+export class EmailOptions {
+    EmailType?: string;
+    From?: string;
+    To?: string;
+    ReplyTo?: string;
+    BodyParams?: string[];
+    SendAdmin?: boolean;
+    SendOnlyAdmin?: boolean;
+}
+export class ForgotPasswordHistory {
+    Id?: number;
+    EmployeeID?: number;
+    UniqueCode?: string;
+    EmailAddress?: string;
+    LinkExpiryMin?: number;
+}
+export class EmployeePasswordHistory {
+    Id?: number;
+    EmployeeID?: number;
+    Password?: string;
+    CheckLength?: number;
 }
