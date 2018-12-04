@@ -33,6 +33,7 @@ export class Projects {
     CompanyId: number;
     CreatedOn: string;
     CanBeDeleted: number;
+    CompanyName: string;
 }
 
 export class NonBillables {
@@ -77,11 +78,17 @@ export class Employee {
     IsLocked?: boolean;
     NoOfAttempts?: number;
     FailureAttemptOn?: string;
-    PasswordExpiresOn?: string;
     TerminationDate?: string;
     StartDate?: string;
-    PayRoleID: string;
-
+    PayRoleID?: string;
+    IsSupervisor?: boolean;
+    IsTimesheetVerficationNeeded?: boolean;
+    SupervisorId?: number;
+    Supervisor?: string;
+    SupervisorEmail?: string;
+    LastUpdatedDays?: number;
+    CreatedBy?: number;
+    DecryptedPassword?: string;
 }
 
 export class LoginErrorMessage {
@@ -107,6 +114,7 @@ export class Clients {
     Inactive: boolean;
     CreatedOn: string;
     used: number;
+    CompanyName: string;
 }
 export class MasterPages {
     ID?: number;
@@ -117,4 +125,34 @@ export class MasterPages {
     HasEdit?: number;
     Role?: string;
     PageId?: number;
+}
+
+export class LeftNavMenu {
+    label: string;
+    icon: string;
+    routeLink: string;
+    items: LeftNavMenu[];
+}
+
+export class EmailOptions {
+    EmailType?: string;
+    From?: string;
+    To?: string;
+    ReplyTo?: string;
+    BodyParams?: string[];
+    SendAdmin?: boolean;
+    SendOnlyAdmin?: boolean;
+}
+export class ForgotPasswordHistory {
+    Id?: number;
+    EmployeeID?: number;
+    UniqueCode?: string;
+    EmailAddress?: string;
+    LinkExpiryMin?: number;
+}
+export class EmployeePasswordHistory {
+    Id?: number;
+    EmployeeID?: number;
+    Password?: string;
+    CheckLength?: number;
 }

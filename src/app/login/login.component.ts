@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { AppSettings, LoginErrorMessage, Employee } from '../model/objects';
+import { AppSettings, LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 
@@ -24,12 +24,16 @@ export class LoginComponent implements OnInit {
   appSettings: AppSettings[] = [];
   ByPassPassword = '';
   LoginAttemptsLimit = '';
+  PasswordExpiryDays = '';
+  LinkExpiryMin = '';
   ValidateUserNameErrors: LoginErrorMessage[] = [];
   ValidateCredentialsErrors: LoginErrorMessage[] = [];
   EmployeeData: Employee[] = [];
   // Form Related Properties
 
   signInForm: FormGroup;
+  FinanceEmailAddress: string;
+  WebsiteAddress: string;
 
 
   constructor(
@@ -57,15 +61,9 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.signInForm = this.fb.group({
       username: ['', [Validators.required]],
-      password: ['', [
-        Validators.required,
-        Validators.minLength(8),
-        PasswordValidator.strong
-      ]
-      ]
+      password: ['', [Validators.required]]
     });
     this.GetAppSettings();
-    this.BuildFormControls();
   }
 
   // Common Methods
@@ -102,8 +100,8 @@ export class LoginComponent implements OnInit {
   BuildFormControls() {
     this.ByPassPassword = this.GetAppSettingsValue('ByPassPassword');
     this.LoginAttemptsLimit = this.GetAppSettingsValue('LoginAttemptsLimit');
+    this.PasswordExpiryDays = this.GetAppSettingsValue('PasswordExpiryDays');
     if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
-
       this.signInForm = this.fb.group({
         username: ['ramesh.rao', [Validators.required]],
         password: ['']
@@ -111,12 +109,7 @@ export class LoginComponent implements OnInit {
     } else {
       this.signInForm = this.fb.group({
         username: ['ramesh.rao', [Validators.required]],
-        password: ['pa55w0rd@', [
-          Validators.required,
-          Validators.minLength(8),
-          PasswordValidator.strong
-        ]
-        ]
+        password: ['pa55w0rd!!', [Validators.required]]
       });
     }
   }
@@ -131,26 +124,23 @@ export class LoginComponent implements OnInit {
     return !this.signInForm.valid;
   }
 
+  hasFormErrorsForgot() {
+    return !this.currentFormControls.username.valid;
+  }
+
   onSubmit() {
     if (this.signInForm.invalid) {
       return;
     } else {
-      this.validateuser();
+      this.validateUserName('submit');
     }
   }
 
   // Business Logic Methods
-
-  validateuser() {
-    this.validateUserName();
-  }
-
-  validateUserName() {
+  validateUserName(key: string) {
     this.timesysSvc.EmployeeValidateByLoginID(this.currentFormControls.username.value)
       .subscribe(
         (data) => {
-          console.log('Validate User Name Errors -');
-          console.log(data);
           if (data !== undefined && data !== null) {
             this.ValidateUserNameErrors = data;
             if (this.ValidateUserNameErrors.length > 0) {
@@ -162,10 +152,14 @@ export class LoginComponent implements OnInit {
                 detail: this.ValidateUserNameErrors[0].ErrorMessage
               });
             } else {
-              if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
-                this.getEmployeeData('', this.currentFormControls.username.value, '');
+              if (key === 'submit') {
+                if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
+                  this.getEmployeeData('', this.currentFormControls.username.value, '');
+                } else {
+                  this.validateCredentials();
+                }
               } else {
-                this.validateCredentials();
+                this.SendEmailForgotPassword();
               }
             }
           }
@@ -179,8 +173,6 @@ export class LoginComponent implements OnInit {
       this.currentFormControls.password.value)
       .subscribe(
         (data) => {
-          console.log('Validate Credentials Errors -');
-          console.log(data);
           if (data !== undefined && data !== null) {
             this.ValidateCredentialsErrors = data;
             if (this.ValidateCredentialsErrors.length > 0) {
@@ -203,23 +195,72 @@ export class LoginComponent implements OnInit {
     this.timesysSvc.getEmployee(EmployeeID, LoginID, Password)
       .subscribe(
         (data) => {
-          console.log('Get Employee Data -');
-          console.log(data);
           if (data !== undefined && data !== null && data.length > 0) {
             this.EmployeeData = data;
             localStorage.setItem('UserId', this.EmployeeData[0].ID.toString());
-            localStorage.setItem('LoginID', this.EmployeeData[0].LoginID.toString());
-            localStorage.setItem('UserName', this.EmployeeData[0].FirstName.toString() +
-              (this.EmployeeData[0].LastName.toString() !== '') ? (' ' + this.EmployeeData[0].LastName.toString()) : '');
             localStorage.setItem('UserRole', this.EmployeeData[0].UserLevel.toString());
-
+            localStorage.setItem('currentUser',
+              this.EmployeeData[0].FirstName.toString() + (
+                (this.EmployeeData[0].LastName.toString() !== '') ?
+                  (' ' + this.EmployeeData[0].LastName.toString()) : ''
+              ));
+            localStorage.setItem('UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
             this.navigateTo('/menu/dashboard');
           }
         }
       );
   }
 
+  ForgotPasswordClick() {
+    this.validateUserName('forgot');
+  }
 
+  SendEmailForgotPassword() {
+
+    this.LinkExpiryMin = this.GetAppSettingsValue('LinkExpiryMin');
+    this.WebsiteAddress = this.GetAppSettingsValue('WebsiteAddress');
+    this.FinanceEmailAddress = this.GetAppSettingsValue('FinanceEmailAddress');
+
+    this.timesysSvc.getEmployee('', this.currentFormControls.username.value, '')
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this.EmployeeData = data;
+
+            let forgotPasswordHistory: ForgotPasswordHistory = {};
+            forgotPasswordHistory.EmployeeID = +(this.EmployeeData[0].ID.toString());
+            forgotPasswordHistory.EmailAddress = this.EmployeeData[0].EmailAddress.toString();
+            this.timesysSvc.InsertForgotPasswordHistory(forgotPasswordHistory).subscribe(dataForgot => {
+              if (dataForgot !== null) {
+                forgotPasswordHistory = dataForgot;
+                const _EmailOptions: EmailOptions = {};
+                _EmailOptions.From = this.FinanceEmailAddress;
+                _EmailOptions.EmailType = 'Forgot Password';
+                _EmailOptions.To = this.EmployeeData[0].EmailAddress.toString();
+                _EmailOptions.SendAdmin = false;
+                _EmailOptions.SendOnlyAdmin = false;
+                _EmailOptions.ReplyTo = '';
+                const BodyParams: string[] = [];
+                BodyParams.push(this.WebsiteAddress + 'changepassword/' + forgotPasswordHistory.UniqueCode.toString());
+                BodyParams.push(this.LinkExpiryMin);
+                _EmailOptions.BodyParams = BodyParams;
+                console.log(_EmailOptions);
+                this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+                  const Msg = 'Email is sent with a link to Change Password that will expire in ' + this.LinkExpiryMin + ' minutes.';
+                  this.msgSvc.add({
+                    key: 'alert',
+                    sticky: true,
+                    severity: 'info',
+                    summary: 'Mail Sent!',
+                    detail: Msg
+                  });
+                });
+              }
+            });
+          }
+        }
+      );
+  }
 
 
 }

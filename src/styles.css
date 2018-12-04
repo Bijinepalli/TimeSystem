@@ -119,10 +119,7 @@ body .ui-slidemenu {
   background-color: #FBFCC5 !important;
   color: black !important;
   
-  }
-
- 
-  
+  } 
  
 
  /* @media screen and (max-width: 40em) {
@@ -134,3 +131,19 @@ body .ui-slidemenu {
 .checkboxLabel .ui-chkbox-label{
   color: red !important;
 }
+<<<<<<< HEAD
+=======
+
+body .ui-panel .ui-panel-content {
+  padding: 0.571em 1em;
+  border: 1px solid !important;
+  background-color: #e7e7e7 !important;
+  color: #dedede;
+  padding: 0.571em 1em;
+}
+.ui-panel .ui-panel-footer {
+  border-width: 1px 0 0;
+  padding: .25em .5em;
+  text-align: left !important;
+}
+>>>>>>> 402e359999273b49353b54f561204f221c3ebfca

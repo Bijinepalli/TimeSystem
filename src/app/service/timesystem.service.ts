@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages
+  // tslint:disable-next-line:max-line-length
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -115,10 +116,10 @@ export class TimesystemService {
       .set('code', code);
     return this.http.get<Clients[]>(this.url + 'GetBillingProjects', { params });
   }
-  getAllEmployee(isActiveIndex: number, isSalariedIndex: number) {
+  getAllEmployee(InActive: string, Salaried: string) {
     const params = new HttpParams()
-      .set('isActiveIndex', isActiveIndex.toString())
-      .set('isSalariedIndex', isSalariedIndex.toString());
+      .set('InActive', InActive.toString())
+      .set('Salaried', Salaried.toString());
     return this.http.get<Employee[]>(this.url + 'ListAllEmployee', { params });
   }
 
@@ -172,4 +173,64 @@ export class TimesystemService {
     const body = JSON.stringify(_appsettingsselection);
     return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
   }
+  getLeftNavMenu(role: string) {
+    const params = new HttpParams()
+      .set('role', role);
+    return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
+  }
+  listAllClientItems(inactive: string) {
+    const params = new HttpParams()
+      .set('Inactive', inactive);
+    return this.http.get<Clients[]>(this.url + 'ListAllClientItems', { params });
+  }
+  listAllProjectData(inactive: string) {
+    const params = new HttpParams()
+      .set('Inactive', inactive);
+    return this.http.get<Projects[]>(this.url + 'ListAllProjectData', { params });
+  }
+  listAllBillingItems(inactive: string) {
+    const params = new HttpParams()
+      .set('Inactive', inactive);
+    return this.http.get<NonBillables[]>(this.url + 'ListBillingItems', { params });
+  }
+  getEmployeesForReport(Inactive: string, IPayEligible: string,
+    Salaried: string, SubmitsTime: string, _CompanyHolidays: string, StartDate: string, EndDate: string): any {
+    const params = new HttpParams()
+      .set('Inactive', Inactive)
+      .set('IPayEligible', IPayEligible)
+      .set('Salaried', Salaried)
+      .set('SubmitsTime', SubmitsTime)
+      .set('CompanyHolidays', _CompanyHolidays)
+      .set('StartDate', StartDate)
+      .set('EndDate', EndDate);
+    return this.http.get<Employee[]>(this.url + 'GetEmployeesForReport', { params });
+  }
+
+  sendMail(_EmailOptions: EmailOptions) {
+    const body = JSON.stringify(_EmailOptions);
+    return this.http.post<EmailOptions[]>(this.url + 'SendEmail', body, httpOptions);
+
+  }
+
+  InsertForgotPasswordHistory(forgotPasswordHistory: ForgotPasswordHistory) {
+    const body = JSON.stringify(forgotPasswordHistory);
+    return this.http.post<ForgotPasswordHistory>(this.url + 'InsertForgotPasswordHistory', body, httpOptions);
+  }
+  ValidateForgotPassword(forgotPasswordHistory: ForgotPasswordHistory) {
+    const body = JSON.stringify(forgotPasswordHistory);
+    return this.http.post<ForgotPasswordHistory[]>(this.url + 'ValidateForgotPassword', body, httpOptions);
+
+  }
+  ValidateEmployeePasswordHistory(employeePasswordHistory: EmployeePasswordHistory) {
+    const body = JSON.stringify(employeePasswordHistory);
+    return this.http.post<EmployeePasswordHistory[]>(this.url + 'ValidateEmployeePasswordHistory', body, httpOptions);
+
+  }
+  Employee_UpdatePassword(employee: Employee) {
+    const body = JSON.stringify(employee);
+    return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
+  }
+
+
+
 }

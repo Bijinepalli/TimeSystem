@@ -1,60 +1,50 @@
 <div class="ui-g" id="header">
-  <div class="ui-g-7 ui-md-7 topBar">
-    <div class="ui-g-1 ui-md-5" id="minigutter">
+  <div class="ui-g-12 ui-md-6 ui-lg-6 topBar">
+    <div class="ui-g-2 ui-md-2" id="minigutter">
       <span class="fa fa-bars fa-2x" (click)="OpenMenu()"></span>
     </div>
-    <div class="ui-g-11 ui-md-9 ui-g-nopad">
-      <img src="../../assets/images/ebixconsulting.jpg">
+    <div class="ui-g-10 ui-md-10 ui-g-nopad">
+      <img src="assets/images/ebixconsulting.jpg">
     </div>
   </div>
-  <!--<div class="ui-g-3 ui-md-2 ui-g-nopad semiTopbar" style="vertical-align: middle">
-    <div class="ui-g-6 ui-md-6" style="text-align: center;">
-      Timesheets
+  <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad userInfo" id="notifications" style="text-align: right">
+    <div class="ui-g-6 ui-md-8 ui-lg-9" style="text-align:right;">
+      <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="color:crimson;">
+        {{fullName}}
+      </div>
+      <!-- <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="font-size:14px;color:black;">
+        {{passwordExpiry}}<a style="padding:0px 5px;color:dodgerblue;cursor: pointer;" (click)="changePasswordClick()">Click
+          here to Change Password</a>
+      </div> -->
     </div>
-    <div class="ui-g-6 ui-md-6" style="text-align: center;">
-      Pay Stubs
-    </div>
-  </div>-->
-  <!--<div class="ui-g-12 ui-md-3 ui-lg-2" id="minigutter" style="display: none">
-    <p-slideMenu #menu [model]="headerMenu" [popup]="true" [viewportHeight]="150" class="leftNav1"></p-slideMenu>
-    <button #btn type="button" pButton icon="pi pi-bars" label="Menu" class="clearText" (click)="menu.toggle($event)"></button>
-  </div>-->
-  <div class="ui-g-5 ui-md-5 ui-g-nopad userInfo" id="notifications" style="text-align: right">
-    <div class="ui-g-6 ui-md-9" style="text-align:right">
-      Hello, Ramesh{{_userName}}
-    </div>
-    <div class="ui-g-6 ui-md-3" style="text-align:right">
-      &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="bottom" (click)="navigateTo('/menu/dashboard')"></button>&nbsp;
-      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="bottom" (click)="logout()" class="ui-button-danger"
+    <div class="ui-g-6 ui-md-4 ui-lg-3" style="text-align:right;">
+      &nbsp;<button pButton icon="fa fa-key fa-2x" pTooltip="{{passwordExpiry}} Click to Change Password."
+        tooltipPosition="right" (click)="changePasswordClick()" class="ui-button-raised {{changePasswordButtonClass}}"></button>&nbsp;
+      &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="right" (click)="navigateTo()"
+        class="ui-button-raised"></button>&nbsp;
+      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="right" (click)="logout()" class="ui-button-raised ui-button-danger"
         style="padding-right:0px"></button>&nbsp;&nbsp;
     </div>
   </div>
-
 </div>
 
 <div class="ui-g ui-g-nopad" id="sideMenu">
 
   <div class="ui-g-2 ui-g-nopad" id="sidegutter">
-
-    <div id="sidenav" style="padding: 2px;overflow:auto;">
-
+    <div id="sidenav" style="padding: 2px;overflow:auto;width: 13%; word-wrap: break-word;">
       <p-menu #bigMenu [model]="menuItems" class="leftNav1"></p-menu>
-
     </div>
-
   </div>
 
   <div class="ui-g-2" id="minigutter">
     <p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000" [modal]="true">
       <div style="overflow: auto;height: 500px;scrollbar-highlight-color: aqua">
-        <!-- <p-menu #smallMenu [model]="miniMenuItems" class="leftNav1"></p-menu> -->
         <p-menu #smallMenu [model]="menuItems" class="leftNav1"></p-menu>
       </div>
     </p-sidebar>
   </div>
 
-
-  <div id="content-body" class="ui-g-11">
+  <div id="content-body" class="ui-g-10">
     <div class="ui-g-12" style="min-height: 800px">
       <router-outlet></router-outlet>
     </div>
@@ -63,5 +53,13 @@
     </div>
   </div>
 
+  <p-dialog [(visible)]="changePasswordDialog" [width]="500" [responsive]="true" showEffect="fade" [modal]="true">
+    <p-header>
+      Change Password
+      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+        (click)="showHelp('HolidayUpdate.htm')"></i>
+    </p-header>
+    <app-changepassword></app-changepassword>
+  </p-dialog>
 
 </div>

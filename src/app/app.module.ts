@@ -62,10 +62,16 @@ import { AddEmployeeComponent } from './add-employee/add-employee.component';
 import { RatesComponent } from './rates/rates.component';
 import { AccessrightsComponent } from './accessrights/accessrights.component';
 import { AppsettingsComponent } from './appsettings/appsettings.component';
+import { BillingcodelistingComponent } from './reports/billingcodelisting/billingcodelisting.component';
+import { ListemployeesreportsComponent } from './reports/listemployeesreports/listemployeesreports.component';
+import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
+import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'changepassword/:code', component: ForgotpasswordComponent },
   {
     path: 'menu',
     component: Master2Component,
@@ -83,6 +89,9 @@ const appRoutes: Routes = [
       { path: 'addemployee/:id', component: AddEmployeeComponent },
       { path: 'accessrights', component: AccessrightsComponent },
       { path: 'appsettings', component: AppsettingsComponent },
+      { path: 'billingcodelisting', component: BillingcodelistingComponent },
+      { path: 'listemployeesreports', component: ListemployeesreportsComponent },
+      { path: 'employeelogindata', component: EmployeelogindataComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -137,7 +146,12 @@ const appRoutes: Routes = [
     AddEmployeeComponent,
     RatesComponent,
     AccessrightsComponent,
-    AppsettingsComponent
+    AppsettingsComponent,
+    BillingcodelistingComponent,
+    ListemployeesreportsComponent,
+    ForgotpasswordComponent,
+    ChangepasswordComponent,
+    EmployeelogindataComponent
   ],
   imports: [
     BrowserAnimationsModule,

@@ -7,4 +7,6 @@
     fieldErrors(fieldName).maxlength.requiredLength }} characters.</div>
   <div *ngIf="fieldErrors(fieldName).strong" style="padding:5px;">{{ niceName}} should contain atleast 3 out of 4 of
     the following – Upper case, Lower case, Numeric or Symbols.</div>
+  <div *ngIf="fieldErrors(fieldName).validateEqualPassword" style="padding:5px;">Confirm Password mismatches Password.</div>
+  <div *ngIf="fieldErrors(fieldName).validateEqualConfirmPassword" style="padding:5px;">Password mismatches Confirm Password.</div>  
 </div>

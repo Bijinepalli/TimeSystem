@@ -12,6 +12,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./add-employee.component.css']
 })
 export class AddEmployeeComponent implements OnInit {
+  visibleHelp: boolean;
+  helpText: string;
 
   // tslint:disable-next-line:max-line-length
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute) { }
@@ -51,7 +53,7 @@ export class AddEmployeeComponent implements OnInit {
       );
   }
   getEmployees() {
-    this.timesysSvc.getAllEmployee(2, 2)
+    this.timesysSvc.getAllEmployee('', '')
       .subscribe(
         (data) => {
           this._employees = data;
@@ -101,6 +103,21 @@ export class AddEmployeeComponent implements OnInit {
 
   hasFormErrors() {
     return !this._frm.valid;
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+
+        }
+      );
+
   }
 
   resetForm() {

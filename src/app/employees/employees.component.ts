@@ -31,6 +31,8 @@ export class EmployeesComponent implements OnInit {
   nonBillablesIcon = false;
   projectsIcon = false;
   clientsIcon = false;
+  visibleHelp: boolean;
+  helpText: string;
   // tslint:disable-next-line:max-line-length
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) {
     this.types = [
@@ -40,7 +42,7 @@ export class EmployeesComponent implements OnInit {
     ];
     this.salaryTypes = [
       { label: 'Salaried', value: 0 },
-      { label: 'Inactive', value: 1 },
+      { label: 'Hourly', value: 1 },
       { label: 'Both', value: 2 }
     ];
     this.selectedType = 0;
@@ -57,10 +59,22 @@ export class EmployeesComponent implements OnInit {
   }
 
   getEmployees() {
-    console.log(this.selectedType, this.selectedSalaryType);
-    this.timesysSvc.getAllEmployee(this.selectedType, this.selectedSalaryType)
+    let _InActive = '';
+    let _Salaried = '';
+    if (this.selectedType !== 2) {
+      _InActive = this.selectedType.toString();
+    }
+    if (this.selectedSalaryType === 0) {
+      _Salaried = '1';
+    } else if (this.selectedSalaryType === 1) {
+      _Salaried = '0';
+    }
+    console.log('InActive - ' + _InActive + ' , ' + 'Salaried - ' + _Salaried);
+
+    this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
+          console.log(data);
           this._employees = data;
           this._recData = this._employees.length + ' customers found';
         }
@@ -227,6 +241,22 @@ export class EmployeesComponent implements OnInit {
       );
     }
   }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+
+        }
+      );
+
+  }
+
   sortSource() {
     /**** Very very important code */
     if (this._nonBillablesNotAssignToEmp != null && this._nonBillablesNotAssignToEmp.length > 0) {

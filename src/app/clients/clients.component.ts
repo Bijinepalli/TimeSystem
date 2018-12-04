@@ -37,6 +37,9 @@ export class ClientsComponent implements OnInit {
   selectActiveInactive: string[] = [];
   _billingCodes: BillingCode;
 
+  selectedCustomer: any;
+  selectedCompany: any;
+
   visibleHelp: boolean;
   helpText: string;
   // tslint:disable-next-line:max-line-length
