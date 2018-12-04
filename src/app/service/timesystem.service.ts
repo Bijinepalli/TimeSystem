@@ -2,11 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
+  , BillingCodesSpecial
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
 import { map } from 'rxjs/operators';
+import { SelectItem } from 'primeng/api';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -206,5 +208,41 @@ export class TimesystemService {
       .set('StartDate', StartDate)
       .set('EndDate', EndDate);
     return this.http.get<Employee[]>(this.url + 'GetEmployeesForReport', { params });
+  }
+
+  listAllClientItemsForBillingCodes(keys: SelectItem[], codeStatus: string, relStatus: string) {
+    const params = new HttpParams()
+      .set('keys', keys.join())
+      .set('codeStatus', codeStatus)
+      .set('relStatus', relStatus);
+    console.log(params);
+    return this.http.get<BillingCodes[]>(this.localurl + 'ListAllClientItemsForBillingCodes', { params });
+  }
+  listAllProjectDataForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
+    const params = new HttpParams()
+      .set('keys', keys)
+      .set('codeStatus', codeStatus)
+      .set('relStatus', relStatus);
+    return this.http.get<BillingCodes[]>(this.localurl + 'ListAllProjectsDataForBillingCodes', { params });
+  }
+  listAllBillingItemsForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
+    const params = new HttpParams()
+      .set('keys', keys)
+      .set('codeStatus', codeStatus)
+      .set('relStatus', relStatus);
+    return this.http.get<BillingCodes[]>(this.localurl + 'ListAllBillingItemsForBillingCodes', { params });
+  }
+
+  listAllClientItemsForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.localurl + 'ListAllClientItemsForBillingCodesPost', body, httpOptions);
+  }
+  listAllProjectDataForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.localurl + 'ListAllProjectsDataForBillingCodesPost', body, httpOptions);
+  }
+  listAllBillingItemsForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.localurl + 'ListAllBillingItemsForBillingCodesPost', body, httpOptions);
   }
 }

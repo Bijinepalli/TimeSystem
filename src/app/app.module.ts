@@ -66,6 +66,7 @@ import { BillingcodelistingComponent } from './reports/billingcodelisting/billin
 import { ListemployeesreportsComponent } from './reports/listemployeesreports/listemployeesreports.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -90,6 +91,7 @@ const appRoutes: Routes = [
       { path: 'appsettings', component: AppsettingsComponent },
       { path: 'billingcodelisting', component: BillingcodelistingComponent },
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
+      { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -148,7 +150,8 @@ const appRoutes: Routes = [
     BillingcodelistingComponent,
     ListemployeesreportsComponent,
     ForgotpasswordComponent,
-    ChangepasswordComponent
+    ChangepasswordComponent,
+    EmployeesbybillingcodeComponent
   ],
   imports: [
     BrowserAnimationsModule,

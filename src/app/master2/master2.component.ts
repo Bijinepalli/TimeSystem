@@ -154,6 +154,7 @@ export class Master2Component implements OnInit {
         .subscribe(
           (data) => {
             this.menuItems = data;
+            console.log(JSON.stringify(this.menuItems));
           });
     }
   }

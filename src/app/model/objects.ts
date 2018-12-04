@@ -131,3 +131,19 @@ export class LeftNavMenu {
     routeLink: string;
     items: LeftNavMenu[];
 }
+
+
+export class BillingCodes {
+    Key: string;
+    Name: string;
+    LastName: string;
+    FirstName: string;
+    Salaried: boolean;
+    Inactive: boolean;
+    InactiveRel: boolean;
+}
+export class BillingCodesSpecial {
+    value: string;
+    codeStatus: string;
+    relStatus: string;
+}
