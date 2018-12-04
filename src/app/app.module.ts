@@ -153,7 +153,8 @@ const appRoutes: Routes = [
     ListemployeesreportsComponent,
     ForgotpasswordComponent,
     ChangepasswordComponent,
-    EmployeelogindataComponent
+    EmployeelogindataComponent,
+    EmployeesbybillingcodeComponent,
   ],
   imports: [
     BrowserAnimationsModule,
