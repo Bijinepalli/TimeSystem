@@ -105,9 +105,14 @@ export class AppsettingsComponent implements OnInit {
       this._appsettingInsert.push(appsettings);
     }
     this.timesysSvc.updateAppSettings(this._appsettingInsert).subscribe(data => {
-      this._appsettingInsert = [];
-      this._appsettingsselection = [];
-      this.getAppSettings();
+      if (data != null && data[0].Id > 0) {
+        this._appsettingInsert = [];
+        this._appsettingsselection = [];
+        this.getAppSettings();
+        this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Saved Successfully' });
+      } else {
+        this.msgSvc.add({ key: 'saveSuccess', severity: 'warn', summary: 'Info Message', detail: 'An Error Occurred' });
+      }
     });
 
   }

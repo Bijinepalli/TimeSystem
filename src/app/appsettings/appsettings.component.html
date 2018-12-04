@@ -51,7 +51,7 @@
       </p-table>
     </p-scrollPanel>
     <p-footer>
-      <div class="ui-g">
+      <div class="ui-g" style="text-align: right">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
             <button pButton label="Save" type="submit" [disabled]="hasFormErrors()"></button>
@@ -61,5 +61,6 @@
         </div>
       </div>
     </p-footer>
+    <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess"></p-toast>
   </form>
 </div>
