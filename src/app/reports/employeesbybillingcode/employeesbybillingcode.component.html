@@ -63,7 +63,7 @@
   </div>
   <div class="ui-g-12 ui-md-2">
     <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-      (click)=generateReport()></button>
+      [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
   </div>
   <div class="ui-g-12 ui-md-2">
     <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
@@ -103,6 +103,8 @@
     </ng-template>
   </p-table>
 </div>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
 <!-- <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
   <div class="ui-g-12 ui-md-12 ui-lg-12">
     <div class="ui-g-12 ui-md-12 ui-lg-12">
