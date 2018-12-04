@@ -5,7 +5,7 @@ import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { SanitizeHtmlPipe } from '../sharedpipes/sanitizeHtmlString.pipe'
+import { SanitizeHtmlPipe } from '../sharedpipes/sanitizeHtmlString.pipe';
 import { Observable } from 'rxjs';
 
 @Component({
@@ -29,25 +29,9 @@ export class HolidaysComponent implements OnInit {
   holidayDialog = false;
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
-
-  @HostListener('window:resize', ['$event'])
-  onResize(event) {
-    // console.log("Width: " + event.target.innerWidth);
-    if (event.target.innerWidth <= 640) {
-      console.log("Less than 640");
-      this._dialogwidth = 500;
-    }
-    else if (event.target.innerWidth <= 840 && event.target.innerWidth > 640) {
-      console.log("Greater than 640");
-      this._dialogwidth = 600;
-    }
-    else {
-      console.log(this._dialogwidth);
-      this._dialogwidth = 830;
-    }
-  }
   helpText: any;
   visibleHelp = false;
+
 
   ngOnInit() {
     this._dialogwidth = 830;
@@ -162,17 +146,4 @@ export class HolidaysComponent implements OnInit {
     this._frm.updateValueAndValidity();
     this._frm.reset();
   }
-
-  getHolidayHelp() {
-    this.timesysSvc.getHTMLBody()
-      .subscribe(
-        (data) => {
-          this._sidebarHelp = true;
-          let parser = new DOMParser();
-          let parsedHtml = parser.parseFromString(data, 'text/html');
-          this._helpPage = parsedHtml.getElementsByTagName("body")[0].innerHTML;
-        }
-      );
-  }
-
 }
