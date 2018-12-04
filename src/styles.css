@@ -131,9 +131,6 @@ body .ui-slidemenu {
 .checkboxLabel .ui-chkbox-label{
   color: red !important;
 }
-<<<<<<< HEAD
-=======
-
 body .ui-panel .ui-panel-content {
   padding: 0.571em 1em;
   border: 1px solid !important;
@@ -146,4 +143,7 @@ body .ui-panel .ui-panel-content {
   padding: .25em .5em;
   text-align: left !important;
 }
->>>>>>> 402e359999273b49353b54f561204f221c3ebfca
+
+.panelEmpBilling .ui-panel .ui-panel-content{
+  background-color: black !important;
+}

@@ -1,0 +1,113 @@
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    Employees By Billing Code Listing
+  </div>
+  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+    <div class="ui-g-3 ui-md-6"></div>
+    <div class="ui-g-3 ui-md-4"></div>
+    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
+      <a (click)="showHelp()" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g" *ngIf="!showBillingCodeList && !changeCodeList">
+  <div class="ui-g-12 ui-md-3">
+    Select: <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+  </div>
+  <div class="ui-g-12 ui-md-7">
+    <button pButton pTooltip="Show Billing Codes that match your choice" tooltipPosition="bottom" class="ui-button-info"
+      label="Show Billing Codes" (click)=showBillingCodes()></button>
+  </div>
+</div>
+<div *ngIf="changeCodeList">
+  <div class="ui-g-12 ui-md-4">
+    <button pButton pTooltip="Change your Billing Codes selection" tooltipPosition="bottom" class="ui-button-info"
+      label="Change Codes" (click)="changeCodes()"></button>
+  </div>
+  <div class="ui-g-12 ui-md-4">
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
+      label="Start Over" (click)="startOver()"></button>
+  </div>
+</div>
+<div class="ui-g  ui-g-nopad">
+  <div class="ui-g-6 ui-md-12">
+    <p-checkbox *ngIf="showBillingCodeList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
+  </div>
+</div>
+<div *ngIf="showBillingCodeList">
+
+  <p-panel class="panelEmpBilling">
+    <p-header>
+      <h3 class="first">{{_selectString}}</h3>
+    </p-header>
+    <p-scrollPanel [style]="{height: '400px'}">
+      <div class="ui-g" style="margin-bottom:10px">
+        <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
+          <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
+            (click)="selectcheck()"></p-checkbox>
+        </div>
+      </div>
+    </p-scrollPanel>
+    <p-footer>
+      <h3 class="first">{{_selectcheckbox.length}} record(s) selected</h3>
+    </p-footer>
+  </p-panel>
+</div>
+
+<div class="ui-g" style="padding-top: 5px" *ngIf="showBillingCodeList">
+  <div class="ui-g-12 ui-md-5">
+    Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus" [(ngModel)]="selectedassignStatus"></p-selectButton>
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+      (click)=generateReport()></button>
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
+  </div>
+</div>
+<div class="ui-g-12" *ngIf="showReport">
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
+        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns">
+          <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+            <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+          </div>
+          <ng-template #defaultColumn>
+            {{rowData[col.field]}}
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<!-- <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
+  <div class="ui-g-12 ui-md-12 ui-lg-12">
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+      <button pButton label="Save" (click)="savePages()"></button>
+      &nbsp;
+      <button pButton label="Cancel" (click)="cancelPages()"></button>
+    </div>
+  </div> -->

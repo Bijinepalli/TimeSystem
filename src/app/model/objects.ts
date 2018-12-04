@@ -134,6 +134,21 @@ export class LeftNavMenu {
     items: LeftNavMenu[];
 }
 
+
+export class BillingCodes {
+    Key: string;
+    Name: string;
+    LastName: string;
+    FirstName: string;
+    Salaried: boolean;
+    Inactive: boolean;
+    InactiveRel: boolean;
+}
+export class BillingCodesSpecial {
+    value: string;
+    codeStatus: string;
+    relStatus: string;
+}
 export class EmailOptions {
     EmailType?: string;
     From?: string;
