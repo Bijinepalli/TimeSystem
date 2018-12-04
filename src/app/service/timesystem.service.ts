@@ -214,34 +214,34 @@ export class TimesystemService {
       .set('codeStatus', codeStatus)
       .set('relStatus', relStatus);
     console.log(params);
-    return this.http.get<BillingCodes[]>(this.localurl + 'ListAllClientItemsForBillingCodes', { params });
+    return this.http.get<BillingCodes[]>(this.url + 'ListAllClientItemsForBillingCodes', { params });
   }
   listAllProjectDataForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
     const params = new HttpParams()
       .set('keys', keys)
       .set('codeStatus', codeStatus)
       .set('relStatus', relStatus);
-    return this.http.get<BillingCodes[]>(this.localurl + 'ListAllProjectsDataForBillingCodes', { params });
+    return this.http.get<BillingCodes[]>(this.url + 'ListAllProjectsDataForBillingCodes', { params });
   }
   listAllBillingItemsForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
     const params = new HttpParams()
       .set('keys', keys)
       .set('codeStatus', codeStatus)
       .set('relStatus', relStatus);
-    return this.http.get<BillingCodes[]>(this.localurl + 'ListAllBillingItemsForBillingCodes', { params });
+    return this.http.get<BillingCodes[]>(this.url + 'ListAllBillingItemsForBillingCodes', { params });
   }
 
   listAllClientItemsForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
-    return this.http.post<BillingCodes[]>(this.localurl + 'ListAllClientItemsForBillingCodesPost', body, httpOptions);
+    return this.http.post<BillingCodes[]>(this.url + 'ListAllClientItemsForBillingCodesPost', body, httpOptions);
   }
   listAllProjectDataForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
-    return this.http.post<BillingCodes[]>(this.localurl + 'ListAllProjectsDataForBillingCodesPost', body, httpOptions);
+    return this.http.post<BillingCodes[]>(this.url + 'ListAllProjectsDataForBillingCodesPost', body, httpOptions);
   }
   listAllBillingItemsForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
-    return this.http.post<BillingCodes[]>(this.localurl + 'ListAllBillingItemsForBillingCodesPost', body, httpOptions);
+    return this.http.post<BillingCodes[]>(this.url + 'ListAllBillingItemsForBillingCodesPost', body, httpOptions);
   }
   sendMail(_EmailOptions: EmailOptions) {
     const body = JSON.stringify(_EmailOptions);
