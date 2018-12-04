@@ -32,6 +32,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   _recData = 0;
   cols: any;
   _billingCodesSpecial: BillingCodesSpecial;
+  showSpinner = false;
+
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService) {
     this.types = [
@@ -66,6 +68,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   ngOnInit() {
   }
   showBillingCodes() {
+    this.showSpinner = true;
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
@@ -80,6 +83,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
           }
           this._selectString = 'Clients (' + this._clients.length + ' matching codes found)';
           this.showBillingCodeList = true;
+          this.showSpinner = false;
         }
       );
     } else if (this.selectedBillingType === 1) {
@@ -95,6 +99,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
           }
           this._selectString = 'Projects (' + this._projects.length + ' matching codes found)';
           this.showBillingCodeList = true;
+          this.showSpinner = false;
         }
       );
     } else {
@@ -110,6 +115,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
           }
           this._selectString = 'Non Billables (' + this._nonBillables.length + ') matching codes found';
           this.showBillingCodeList = true;
+          this.showSpinner = false;
         }
       );
     }
@@ -131,6 +137,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     }
   }
   generateReport() {
+    this.showSpinner = true;
     if (this._selectcheckbox.length > 0) {
       this._billingCodesSpecial = new BillingCodesSpecial();
       console.log(this._selectcheckbox.length, this._displayCheckBoxes.length);
@@ -154,6 +161,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
             this.showBillingCodeList = false;
             this.showReport = true;
             this.changeCodeList = true;
+            this.showSpinner = false;
           }
         );
       } else if (this.selectedBillingType === 1) {
@@ -165,6 +173,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
             this.showBillingCodeList = false;
             this.showReport = true;
             this.changeCodeList = true;
+            this.showSpinner = false;
           }
         );
       } else {
@@ -176,6 +185,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
             this.showBillingCodeList = false;
             this.showReport = true;
             this.changeCodeList = true;
+            this.showSpinner = false;
           }
         );
       }
@@ -190,6 +200,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.selectedassignStatus = 0;
+    this.showSpinner = false;
   }
   changeCodes() {
     this.changeCodeList = false;
