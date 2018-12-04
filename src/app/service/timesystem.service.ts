@@ -178,7 +178,7 @@ export class TimesystemService {
   getLeftNavMenu(role: string) {
     const params = new HttpParams()
       .set('role', role);
-    return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
+    return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
   }
   listAllClientItems(inactive: string) {
     const params = new HttpParams()

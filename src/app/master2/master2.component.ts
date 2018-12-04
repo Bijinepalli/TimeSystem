@@ -24,6 +24,7 @@ export class Master2Component implements OnInit {
   solutionName = '';
 
   menuItems: MenuItem[];
+  dashboard: MenuItem[];
   submenu: MenuItem[];
   visibleSidebar = false;
 
@@ -122,14 +123,14 @@ export class Master2Component implements OnInit {
             if (ExpiryDays > 0) {
               this.passwordExpiry = 'Your password will expire in ' + (ExpiryDays).toString() + ' days.';
               if (ExpiryDays > ((+PasswordExpiryDays) / 2)) {
-               // this.changePasswordButtonClass = 'ui-button-info';
+                // this.changePasswordButtonClass = 'ui-button-info';
               } else {
-               // this.changePasswordButtonClass = 'ui-button-warning';
+                // this.changePasswordButtonClass = 'ui-button-warning';
               }
             } else {
               if (ExpiryDays === 0) {
                 this.passwordExpiry = 'Your password expires today.';
-               // this.changePasswordButtonClass = 'ui-button-danger';
+                // this.changePasswordButtonClass = 'ui-button-danger';
               } else {
                 this.logout();
               }
@@ -161,6 +162,10 @@ export class Master2Component implements OnInit {
         .subscribe(
           (data) => {
             this.menuItems = data;
+            this.dashboard = [{ label: 'Dashboard', routerLink: '/menu/dashboard' },
+            { label: 'Timesheets', routerLink: '/menu/dashboard' },
+            { label: 'Pay Stubs', routerLink: '/menu/dashboard' }
+            ];
             console.log(JSON.stringify(this.menuItems));
           });
     }
