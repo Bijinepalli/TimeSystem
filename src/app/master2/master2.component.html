@@ -53,18 +53,19 @@
 <div class="ui-g ui-g-nopad" id="sideMenu">
 
   <div class="ui-g-2 ui-g-nopad" id="sidegutter">
-    <div id="sidenav" style="padding: 2px;overflow:auto;width: 13%; word-wrap: break-word;">
-      <p-menu #bigMenu [model]="menuItems" class="leftNav1"></p-menu>
+    <div id="sidenav">
+      <p-menu #bigMenu [model]="dashboard" class="leftNav1"></p-menu>
+      <p-panelMenu #bigMenu [model]="menuItems" class="leftNav1"></p-panelMenu>
     </div>
   </div>
 
-  <div class="ui-g-2" id="minigutter">
+  <!-- <div class="ui-g-2" id="minigutter">
     <p-sidebar [(visible)]="visibleSidebar" [baseZIndex]="10000" [modal]="true">
       <div style="overflow: auto;height: 500px;scrollbar-highlight-color: aqua">
         <p-menu #smallMenu [model]="menuItems" class="leftNav1"></p-menu>
       </div>
     </p-sidebar>
-  </div>
+  </div> -->
 
   <div id="content-body" class="ui-g-10">
     <div class="ui-g-12" style="min-height: 800px">

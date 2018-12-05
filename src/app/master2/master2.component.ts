@@ -25,6 +25,7 @@ export class Master2Component implements OnInit {
   solutionName = '';
 
   menuItems: MenuItem[];
+  dashboard: MenuItem[];
   submenu: MenuItem[];
   visibleSidebar = false;
 
@@ -116,9 +117,6 @@ export class Master2Component implements OnInit {
                   this.logout();
                 }
               }
-              // } else {
-              //   this.logout();
-              // }
             }
           }
         }
@@ -144,6 +142,11 @@ export class Master2Component implements OnInit {
         .subscribe(
           (data) => {
             this.menuItems = data;
+            this.dashboard = [{ label: 'Dashboard', routerLink: '/menu/dashboard' },
+            { label: 'Timesheets', routerLink: '/menu/dashboard' },
+            { label: 'Pay Stubs', routerLink: '/menu/dashboard' }
+            ];
+            console.log(JSON.stringify(this.menuItems));
           });
     }
   }

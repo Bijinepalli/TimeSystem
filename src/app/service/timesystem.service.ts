@@ -3,10 +3,12 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Email
+  , BillingCodes, BillingCodesSpecial
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
 import { map } from 'rxjs/operators';
+import { SelectItem } from 'primeng/api';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -176,7 +178,7 @@ export class TimesystemService {
   getLeftNavMenu(role: string) {
     const params = new HttpParams()
       .set('role', role);
-    return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
+    return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
   }
   listAllClientItems(inactive: string) {
     const params = new HttpParams()
@@ -206,6 +208,41 @@ export class TimesystemService {
     return this.http.get<Employee[]>(this.url + 'GetEmployeesForReport', { params });
   }
 
+  listAllClientItemsForBillingCodes(keys: SelectItem[], codeStatus: string, relStatus: string) {
+    const params = new HttpParams()
+      .set('keys', keys.join())
+      .set('codeStatus', codeStatus)
+      .set('relStatus', relStatus);
+    console.log(params);
+    return this.http.get<BillingCodes[]>(this.url + 'ListAllClientItemsForBillingCodes', { params });
+  }
+  listAllProjectDataForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
+    const params = new HttpParams()
+      .set('keys', keys)
+      .set('codeStatus', codeStatus)
+      .set('relStatus', relStatus);
+    return this.http.get<BillingCodes[]>(this.url + 'ListAllProjectsDataForBillingCodes', { params });
+  }
+  listAllBillingItemsForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
+    const params = new HttpParams()
+      .set('keys', keys)
+      .set('codeStatus', codeStatus)
+      .set('relStatus', relStatus);
+    return this.http.get<BillingCodes[]>(this.url + 'ListAllBillingItemsForBillingCodes', { params });
+  }
+
+  listAllClientItemsForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListAllClientItemsForBillingCodesPost', body, httpOptions);
+  }
+  listAllProjectDataForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListAllProjectsDataForBillingCodesPost', body, httpOptions);
+  }
+  listAllBillingItemsForBillingCodesPost(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListAllBillingItemsForBillingCodesPost', body, httpOptions);
+  }
   sendMail(_EmailOptions: EmailOptions) {
     const body = JSON.stringify(_EmailOptions);
     return this.http.post<EmailOptions[]>(this.url + 'SendEmail', body, httpOptions);

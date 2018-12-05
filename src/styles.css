@@ -126,3 +126,13 @@ body .ui-panel .ui-panel-content {
   padding: .25em .5em;
   text-align: left !important;
 }
+
+.panelEmpBilling .ui-panel .ui-panel-content{
+  background-color: black !important;
+}
+.positionMiddle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  }

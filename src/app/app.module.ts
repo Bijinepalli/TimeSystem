@@ -30,9 +30,9 @@ import { AccordionModule } from 'primeng/accordion';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { DataViewModule } from 'primeng/dataview';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {PickListModule} from 'primeng/picklist';
-import {SelectButtonModule} from 'primeng/selectbutton';
-
+import { PickListModule } from 'primeng/picklist';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 import { ToastModule } from 'primeng/toast';
 
@@ -66,6 +66,7 @@ import { BillingcodelistingComponent } from './reports/billingcodelisting/billin
 import { ListemployeesreportsComponent } from './reports/listemployeesreports/listemployeesreports.component';
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
+import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
 import { CommonService } from './service/common.service';
 import { MailsComponent } from './mails/mails.component';
@@ -93,6 +94,7 @@ const appRoutes: Routes = [
       { path: 'appsettings', component: AppsettingsComponent },
       { path: 'billingcodelisting', component: BillingcodelistingComponent },
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
+      { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
       { path: 'mails', component: MailsComponent },
     ]
@@ -142,7 +144,8 @@ const appRoutes: Routes = [
     ForgotpasswordComponent,
     ChangepasswordComponent,
     EmployeelogindataComponent,
-    MailsComponent
+    MailsComponent,
+    EmployeesbybillingcodeComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -191,7 +194,7 @@ const appRoutes: Routes = [
     FileUploadModule,
     RouterModule.forRoot(appRoutes), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
-    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule
+    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
   ],
   providers: [TimesystemService, MessageService, ConfirmationService, CommonService,
     { provide: APP_INITIALIZER, useFactory: jokesProviderFactory, deps: [CommonService], multi: true }
