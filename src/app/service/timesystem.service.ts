@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Email
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -231,6 +231,25 @@ export class TimesystemService {
     return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
   }
 
+  getEmails(_email: Email) {
+    const params = new HttpParams()
+      .set('EmailType', _email.EmailType);
+    return this.http.get<Email[]>(this.localurl + 'Email_Get', { params });
+  }
 
+  Email_InsertOrUpdate(_email: Email) {
+    const body = JSON.stringify(_email);
+    return this.http.post<Employee>(this.localurl + 'Email_InsertOrUpdate', body, httpOptions);
+  }
+
+  Email_Delete(_email: Email) {
+    const body = JSON.stringify(_email);
+    return this.http.post<Employee>(this.localurl + 'Email_Delete', body, httpOptions);
+  }
+
+  getEmailSignature() {
+    const params = new HttpParams();
+    return this.http.get<Email[]>(this.localurl + 'EmailSignature_Get', { params });
+  }
 
 }

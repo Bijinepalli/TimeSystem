@@ -1,9 +1,10 @@
 import { Component, ViewChild, OnInit, AfterViewInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
-import { MenuItem } from 'primeng/primeng';
+import { MenuItem, MessageService } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
 import { TimesystemService } from '../service/timesystem.service';
-import { MasterPages, LeftNavMenu, Employee, AppSettings } from '../model/objects';
+import { MasterPages, LeftNavMenu, Employee } from '../model/objects';
+import { CommonService } from '../service/common.service';
 
 declare var jQuery: any;
 
@@ -32,10 +33,14 @@ export class Master2Component implements OnInit {
   changePasswordButtonClass = 'ui-button-success';
   EmployeeData: Employee[];
   passwordExpiry = '';
-  appSettings: AppSettings[];
+
   helpText: string;
 
-  constructor(private router: Router, private timesysSvc: TimesystemService) {
+  constructor(
+    private router: Router,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+    private msgSvc: MessageService) {
 
   }
 
@@ -45,29 +50,7 @@ export class Master2Component implements OnInit {
   }
 
   ngOnInit() {
-    this.GetAppSettings();
     this.Initialisations();
-  }
-
-
-  GetAppSettings() {
-    this.appSettings = [];
-    this.timesysSvc.getAppSettings()
-      .subscribe(
-        (data) => {
-          this.appSettings = data;
-        }
-      );
-  }
-  GetAppSettingsValue(DataKey: string): any {
-    let AppSettingsValue = '';
-    if (this.appSettings !== undefined && this.appSettings !== null && this.appSettings.length > 0) {
-      const AppsettingsVal: AppSettings = this.appSettings.find(m => m.DataKey === DataKey);
-      if (AppsettingsVal !== undefined && AppsettingsVal !== null) {
-        AppSettingsValue = AppsettingsVal.Value;
-      }
-    }
-    return AppSettingsValue;
   }
 
   Initialisations() {
@@ -114,29 +97,29 @@ export class Master2Component implements OnInit {
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this.EmployeeData = data;
-            // const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
-            // if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
-            const PasswordExpiryDays = this.GetAppSettingsValue('PasswordExpiryDays');
-            //   const ExpiryDays = +PasswordExpiryDays - PasswordLastUpdatedDays;
-            const ExpiryDays = 0;
-            if (ExpiryDays > 0) {
-              this.passwordExpiry = 'Your password will expire in ' + (ExpiryDays).toString() + ' days.';
-              if (ExpiryDays > ((+PasswordExpiryDays) / 2)) {
-               // this.changePasswordButtonClass = 'ui-button-info';
+            const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
+            if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
+              const PasswordExpiryDays = this.commonSvc.getAppSettingsValue('PasswordExpiryDays');
+              const ExpiryDays = +PasswordExpiryDays - PasswordLastUpdatedDays;
+              if (ExpiryDays > 0) {
+                this.passwordExpiry = 'Your password will expire in ' + (ExpiryDays).toString() + ' days.';
+                if (ExpiryDays > ((+PasswordExpiryDays) / 2)) {
+                  // this.changePasswordButtonClass = 'ui-button-info';
+                } else {
+                  // this.changePasswordButtonClass = 'ui-button-warning';
+                }
               } else {
-               // this.changePasswordButtonClass = 'ui-button-warning';
+                if (ExpiryDays === 0) {
+                  this.passwordExpiry = 'Your password expires today.';
+                  // this.changePasswordButtonClass = 'ui-button-danger';
+                } else {
+                  this.logout();
+                }
               }
-            } else {
-              if (ExpiryDays === 0) {
-                this.passwordExpiry = 'Your password expires today.';
-               // this.changePasswordButtonClass = 'ui-button-danger';
-              } else {
-                this.logout();
-              }
+              // } else {
+              //   this.logout();
+              // }
             }
-            // } else {
-            //   this.logout();
-            // }
           }
         }
       );
@@ -213,5 +196,8 @@ export class Master2Component implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  onReject() {
+    this.msgSvc.clear('alert');
   }
 }

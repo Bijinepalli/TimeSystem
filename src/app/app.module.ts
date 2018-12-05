@@ -1,7 +1,7 @@
 
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -67,6 +67,8 @@ import { ListemployeesreportsComponent } from './reports/listemployeesreports/li
 import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.component';
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+import { CommonService } from './service/common.service';
+import { MailsComponent } from './mails/mails.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -92,19 +94,7 @@ const appRoutes: Routes = [
       { path: 'billingcodelisting', component: BillingcodelistingComponent },
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
-      // { path: 'burndown', component: BurndownchartComponent },
-      // { path: 'startnewsprint', component: StartnewsprintComponent },
-      // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
-      // { path: 'searchissue/:id', component: SearchissueComponent },
-      // { path: 'addissue', component: AddissueComponent },
-      // { path: 'addissue/:id', component: AddissueComponent },
-      // { path: 'addissue/:id/:sid/:mode', component: AddissueComponent },
-      // { path: 'addissue/:id/:sid/:mode/:ts', component: AddissueComponent },
-      // { path: 'editsubtask/:id/:sprintid/:subtaskid/:mode', component: EditsubtaskComponent },
-      // { path: 'addsprint', component: AddsprintComponent },
-      // { path: 'issuetracker', component: IssuetrackerComponent },
-      // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
-      // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
+      { path: 'mails', component: MailsComponent },
     ]
   },
   {
@@ -151,7 +141,8 @@ const appRoutes: Routes = [
     ListemployeesreportsComponent,
     ForgotpasswordComponent,
     ChangepasswordComponent,
-    EmployeelogindataComponent
+    EmployeelogindataComponent,
+    MailsComponent
   ],
   imports: [
     BrowserAnimationsModule,
@@ -202,7 +193,13 @@ const appRoutes: Routes = [
     InplaceModule, ScrollPanelModule, TieredMenuModule,
     KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule
   ],
-  providers: [TimesystemService, MessageService, ConfirmationService],
+  providers: [TimesystemService, MessageService, ConfirmationService, CommonService,
+    { provide: APP_INITIALIZER, useFactory: jokesProviderFactory, deps: [CommonService], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function jokesProviderFactory(provider: CommonService) {
+  return () => provider.setAppSettings();
+}
