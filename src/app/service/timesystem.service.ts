@@ -178,7 +178,7 @@ export class TimesystemService {
   getLeftNavMenu(role: string) {
     const params = new HttpParams()
       .set('role', role);
-    return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
+    return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
   }
   listAllClientItems(inactive: string) {
     const params = new HttpParams()
@@ -271,22 +271,22 @@ export class TimesystemService {
   getEmails(_email: Email) {
     const params = new HttpParams()
       .set('EmailType', _email.EmailType);
-    return this.http.get<Email[]>(this.localurl + 'Email_Get', { params });
+    return this.http.get<Email[]>(this.url + 'Email_Get', { params });
   }
 
   Email_InsertOrUpdate(_email: Email) {
     const body = JSON.stringify(_email);
-    return this.http.post<Employee>(this.localurl + 'Email_InsertOrUpdate', body, httpOptions);
+    return this.http.post<Employee>(this.url + 'Email_InsertOrUpdate', body, httpOptions);
   }
 
   Email_Delete(_email: Email) {
     const body = JSON.stringify(_email);
-    return this.http.post<Employee>(this.localurl + 'Email_Delete', body, httpOptions);
+    return this.http.post<Employee>(this.url + 'Email_Delete', body, httpOptions);
   }
 
   getEmailSignature() {
     const params = new HttpParams();
-    return this.http.get<Email[]>(this.localurl + 'EmailSignature_Get', { params });
+    return this.http.get<Email[]>(this.url + 'EmailSignature_Get', { params });
   }
 
 }
