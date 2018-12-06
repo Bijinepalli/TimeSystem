@@ -1,0 +1,35 @@
+.weekDay
+{
+    background-color:white;
+    color:black;
+    text-align:right;
+    width:60px;
+    margin-right:5px;
+}
+.weekEnd
+{
+    background-color:gold;
+    color:red;
+    text-align:right;
+    width:60px;
+    margin-right:5px;
+}
+
+.weekEndLabel
+{
+    border:0px;
+    background-color: transparent; 
+    text-align:right;
+    width:60px;
+    margin-right:5px;
+    color:red;
+}
+.weekDayLabel
+{
+    border:0px;
+    background-color: transparent; 
+    text-align:right;
+    width:60px;
+    margin-right:5px;
+    color:black;
+}
