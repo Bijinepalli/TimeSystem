@@ -200,16 +200,13 @@ export class Master2Component implements OnInit {
         }
       );
   }
-<<<<<<< HEAD
 
   goto() {
     window.alert('123');
     window.location.href = 'http://www.cnn.com/';
   }
 
-=======
   onReject() {
     this.msgSvc.clear('alert');
   }
->>>>>>> 8b22da21215af9b8ce838de812cf8ad620ed343a
 }
