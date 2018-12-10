@@ -1,7 +1,7 @@
 
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -68,8 +68,13 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+<<<<<<< HEAD
 import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimesheet.component';
 
+=======
+import { CommonService } from './service/common.service';
+import { MailsComponent } from './mails/mails.component';
+>>>>>>> 8b22da21215af9b8ce838de812cf8ad620ed343a
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -96,6 +101,7 @@ const appRoutes: Routes = [
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
+<<<<<<< HEAD
       { path: 'maintaintimesheet', component: MaintaintimesheetComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -109,6 +115,9 @@ const appRoutes: Routes = [
       // { path: 'issuetracker', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
+=======
+      { path: 'mails', component: MailsComponent },
+>>>>>>> 8b22da21215af9b8ce838de812cf8ad620ed343a
     ]
   },
   {
@@ -156,6 +165,7 @@ const appRoutes: Routes = [
     ForgotpasswordComponent,
     ChangepasswordComponent,
     EmployeelogindataComponent,
+    MailsComponent,
     EmployeesbybillingcodeComponent,
     MaintaintimesheetComponent,
   ],
@@ -208,7 +218,13 @@ const appRoutes: Routes = [
     InplaceModule, ScrollPanelModule, TieredMenuModule,
     KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
   ],
-  providers: [TimesystemService, MessageService, ConfirmationService],
+  providers: [TimesystemService, MessageService, ConfirmationService, CommonService,
+    { provide: APP_INITIALIZER, useFactory: jokesProviderFactory, deps: [CommonService], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function jokesProviderFactory(provider: CommonService) {
+  return () => provider.setAppSettings();
+}
