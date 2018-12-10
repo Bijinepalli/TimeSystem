@@ -68,6 +68,9 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+import { PaystubsComponent } from './paystubs/paystubs.component';
+import { TimesheetsComponent } from './timesheets/timesheets.component';
+import { SelecttimesheetperiodComponent } from './selecttimesheetperiod/selecttimesheetperiod.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -94,6 +97,9 @@ const appRoutes: Routes = [
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
+      { path: 'paystubs', component: PaystubsComponent },
+      { path: 'timesheets', component: TimesheetsComponent },
+      { path: 'selecttimesheetperiod', component: SelecttimesheetperiodComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -155,6 +161,9 @@ const appRoutes: Routes = [
     ChangepasswordComponent,
     EmployeelogindataComponent,
     EmployeesbybillingcodeComponent,
+    PaystubsComponent,
+    TimesheetsComponent,
+    SelecttimesheetperiodComponent,
   ],
   imports: [
     BrowserAnimationsModule,

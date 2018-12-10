@@ -171,3 +171,54 @@ export class EmployeePasswordHistory {
     Password?: string;
     CheckLength?: number;
 }
+export class TimeSheet {
+    Id: number;
+    EmployeeId: number;
+    PeriodEnd: string;
+    Redubmitted: boolean;
+    Submitted: boolean;
+    SubmitDate: string;
+    Comments: string;
+    SevenDay: string;
+    TimeStamp: string;
+    SemiMonthly: string;
+    Hours: number;
+    ApprovalStatus: string;
+    SupervisorComments: string;
+}
+export class TimeSheetForEmplyoee {
+    Id: number;
+    EmployeeId: number;
+    PeriodEnd: string;
+    Redubmitted: string;
+    Submitted: string;
+    SubmitDate: string;
+    SemiMonthly: string;
+    Hours: number;
+    ApprovalStatus: string;
+}
+export class TimePeriods {
+    PresentPeriodEnd: string;
+    FuturePeriodEnd: string;
+    PastPeriodEnd: string;
+}
+export class TimeSheetBinding {
+    value: number;
+    label: string;
+    code: string;
+}
+export class TimeSheetForApproval {
+    Id: number;
+    EmployeeId: number;
+    SupervisorId: number;
+    TimesheetId: number;
+    PeriodEnd: string;
+    EmployeeName: string;
+    Status: string;
+    Comments: string;
+    CreatedOn: string;
+    CreatedBy: string;
+    UpdatedOn: string;
+    UpdatedBy: string;
+}
+

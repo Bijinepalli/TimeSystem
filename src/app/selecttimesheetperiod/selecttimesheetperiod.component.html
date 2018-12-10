@@ -1,0 +1,58 @@
+<p-toast position="center" key="alert" (onClose)="onReject()" [modal]="true" [baseZIndex]="5000">
+    <ng-template let-message pTemplate="message">
+      <div class="ui-g ui-fluid ui-g-nopad">
+        <div class="ui-g-12 ui-md-2" align="center">
+          <i class="pi pi-exclamation-triangle" style="font-size: 2em;margin:2px;"></i>
+        </div>
+        <div class="ui-g-12 ui-md-10" align="left">
+          <h4 style="margin:5px;" [innerHTML]="message.detail | sanitizeHtmlString"></h4>
+        </div>
+      </div>
+      <div class="ui-g ui-fluid ui-g-nopad">
+        <div class="ui-g-12" align="right">
+          <button type="button" pButton (click)="onReject()" label="Ok" class="ui-button-secondary"></button>
+        </div>
+      </div>
+    </ng-template>
+  </p-toast>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    Create a New Timesheet
+  </div>
+  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+    <div class="ui-g-3 ui-md-6"></div>
+    <div class="ui-g-3 ui-md-4"></div>
+    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
+      <a (click)="showHelp('HolidaySelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-2" style="text-align: right">
+    Select a Date:
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <p-dropdown [options]="_timePeriods" [(ngModel)]="selectTimePeriod" [style]="{'width':'100%'}"></p-dropdown>
+  </div>
+</div>
+
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-2" style="text-align: right">
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <p-checkbox name="groupname" binary="true" label="Create an Empty Timesheet " value="false" [(ngModel)]="selectedValues"></p-checkbox>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-2" style="text-align: right">
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Create New Timesheet" tooltipPosition="bottom" class="ui-button-info"
+      label="Create" (click)=CreateTS()></button>
+  </div>
+  <div class="ui-g-12 ui-md-2" *ngIf="showConfirm">
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Confirm your Choice" tooltipPosition="bottom" class="ui-button-info"
+      label="Confirm" (click)=ConfirmTS()></button>
+  </div>
+</div>

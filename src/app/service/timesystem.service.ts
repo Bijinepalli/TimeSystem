@@ -3,7 +3,8 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
-  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory
+  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory
+  , EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee, TimePeriods, TimeSheetBinding, TimeSheetForApproval
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -267,7 +268,34 @@ export class TimesystemService {
     const body = JSON.stringify(employee);
     return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
   }
+  getEmployeeTimeSheetList(employeeId: string, showEveryOne: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('ShowEveryOne', showEveryOne);
+    return this.http.get<TimeSheetForEmplyoee[]>(this.localurl + 'GetEmployeeTimeSheetList', { params });
+  }
 
-
-
+  getPresentFuturePastPeriodEndList() {
+    // return this.http.get<TimePeriods[]>(this.url + 'GetPresentPeriodEndList', { });
+    const data1 = this.http.get<TimePeriods[]>(this.localurl + 'GetPresentPeriodEndList');
+    const data2 = this.http.get<TimePeriods[]>(this.localurl + 'GetFuturePeriodEndList');
+    const data3 = this.http.get<TimePeriods[]>(this.localurl + 'GetPastPeriodEndList');
+    return forkJoin([data1, data2, data3]);
+  }
+  getTimeSheetAfterDateDetails(employeeId: string, hireDate: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('HireDate', hireDate);
+    return this.http.get<TimeSheetBinding[]>(this.localurl + 'GetTimeSheetAfterDateDetails', { params });
+  }
+  getTimeSheetDetails(timeSheetId: string) {
+    const params = new HttpParams()
+      .set('TimeSheetId', timeSheetId);
+    return this.http.get<TimeSheet[]>(this.localurl + 'GetTimeSheetDetails', { params });
+  }
+  getTimeSheetForApprovalCheck(employeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId);
+    return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsCheck', { params });
+  }
 }
