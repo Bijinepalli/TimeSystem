@@ -4,9 +4,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { AppSettings, LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from '../model/objects';
+import { LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
+import { CommonService } from '../service/common.service';
 
 
 @Component({
@@ -21,20 +22,15 @@ export class LoginComponent implements OnInit {
   // Global or Common Properties
   returnUrl: string;
   isIEOrEdge = false;
-  appSettings: AppSettings[] = [];
+
   ByPassPassword = '';
-  LoginAttemptsLimit = '';
-  PasswordExpiryDays = '';
-  LinkExpiryMin = '';
+
   ValidateUserNameErrors: LoginErrorMessage[] = [];
   ValidateCredentialsErrors: LoginErrorMessage[] = [];
   EmployeeData: Employee[] = [];
   // Form Related Properties
 
   signInForm: FormGroup;
-  FinanceEmailAddress: string;
-  WebsiteAddress: string;
-
 
   constructor(
     private router: Router,
@@ -44,6 +40,7 @@ export class LoginComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
   ) {
 
   }
@@ -59,11 +56,7 @@ export class LoginComponent implements OnInit {
     localStorage.clear();
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-    this.signInForm = this.fb.group({
-      username: ['', [Validators.required]],
-      password: ['', [Validators.required]]
-    });
-    this.GetAppSettings();
+    this.BuildFormControls();
   }
 
   // Common Methods
@@ -76,31 +69,8 @@ export class LoginComponent implements OnInit {
     this.msgSvc.clear('alert');
   }
 
-  GetAppSettings() {
-    this.appSettings = [];
-    this.timesysSvc.getAppSettings()
-      .subscribe(
-        (data) => {
-          this.appSettings = data;
-          this.BuildFormControls();
-        }
-      );
-  }
-  GetAppSettingsValue(DataKey: string): any {
-    let AppSettingsValue = '';
-    if (this.appSettings !== undefined && this.appSettings !== null && this.appSettings.length > 0) {
-      const AppsettingsVal: AppSettings = this.appSettings.find(m => m.DataKey === DataKey);
-      if (AppsettingsVal !== undefined && AppsettingsVal !== null) {
-        AppSettingsValue = AppsettingsVal.Value;
-      }
-    }
-    return AppSettingsValue;
-  }
-
   BuildFormControls() {
-    this.ByPassPassword = this.GetAppSettingsValue('ByPassPassword');
-    this.LoginAttemptsLimit = this.GetAppSettingsValue('LoginAttemptsLimit');
-    this.PasswordExpiryDays = this.GetAppSettingsValue('PasswordExpiryDays');
+    this.ByPassPassword = this.commonSvc.getAppSettingsValue('ByPassPassword');
     if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
       this.signInForm = this.fb.group({
         username: ['ramesh.rao', [Validators.required]],
@@ -168,7 +138,8 @@ export class LoginComponent implements OnInit {
   }
 
   validateCredentials() {
-    this.timesysSvc.EmployeeValidateByCredentials(this.LoginAttemptsLimit,
+    this.timesysSvc.EmployeeValidateByCredentials(
+      this.commonSvc.getAppSettingsValue('LoginAttemptsLimit'),
       this.currentFormControls.username.value,
       this.currentFormControls.password.value)
       .subscribe(
@@ -218,9 +189,9 @@ export class LoginComponent implements OnInit {
 
   SendEmailForgotPassword() {
 
-    this.LinkExpiryMin = this.GetAppSettingsValue('LinkExpiryMin');
-    this.WebsiteAddress = this.GetAppSettingsValue('WebsiteAddress');
-    this.FinanceEmailAddress = this.GetAppSettingsValue('FinanceEmailAddress');
+    const LinkExpiryMin = this.commonSvc.getAppSettingsValue('LinkExpiryMin');
+    const WebsiteAddress = this.commonSvc.getAppSettingsValue('WebsiteAddress');
+    const FinanceEmailAddress = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
 
     this.timesysSvc.getEmployee('', this.currentFormControls.username.value, '')
       .subscribe(
@@ -235,19 +206,18 @@ export class LoginComponent implements OnInit {
               if (dataForgot !== null) {
                 forgotPasswordHistory = dataForgot;
                 const _EmailOptions: EmailOptions = {};
-                _EmailOptions.From = this.FinanceEmailAddress;
+                _EmailOptions.From = FinanceEmailAddress;
                 _EmailOptions.EmailType = 'Forgot Password';
                 _EmailOptions.To = this.EmployeeData[0].EmailAddress.toString();
                 _EmailOptions.SendAdmin = false;
                 _EmailOptions.SendOnlyAdmin = false;
                 _EmailOptions.ReplyTo = '';
                 const BodyParams: string[] = [];
-                BodyParams.push(this.WebsiteAddress + 'changepassword/' + forgotPasswordHistory.UniqueCode.toString());
-                BodyParams.push(this.LinkExpiryMin);
+                BodyParams.push(WebsiteAddress + 'changepassword/' + forgotPasswordHistory.UniqueCode.toString());
+                BodyParams.push(LinkExpiryMin);
                 _EmailOptions.BodyParams = BodyParams;
-                console.log(_EmailOptions);
                 this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-                  const Msg = 'Email is sent with a link to Change Password that will expire in ' + this.LinkExpiryMin + ' minutes.';
+                  const Msg = 'Email is sent with a link to Change Password that will expire in ' + LinkExpiryMin + ' minutes.';
                   this.msgSvc.add({
                     key: 'alert',
                     sticky: true,

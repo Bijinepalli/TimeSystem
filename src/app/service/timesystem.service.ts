@@ -4,7 +4,7 @@ import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
   , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory
-  , EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee, TimePeriods, TimeSheetBinding, TimeSheetForApproval
+  , EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee, TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -179,7 +179,7 @@ export class TimesystemService {
   getLeftNavMenu(role: string) {
     const params = new HttpParams()
       .set('role', role);
-    return this.http.get<LeftNavMenu[]>(this.localurl + 'GetLeftNavMenu', { params });
+    return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
   }
   listAllClientItems(inactive: string) {
     const params = new HttpParams()
@@ -298,4 +298,25 @@ export class TimesystemService {
       .set('EmployeeId', employeeId);
     return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsCheck', { params });
   }
+  getEmails(_email: Email) {
+    const params = new HttpParams()
+      .set('EmailType', _email.EmailType);
+    return this.http.get<Email[]>(this.url + 'Email_Get', { params });
+  }
+
+  Email_InsertOrUpdate(_email: Email) {
+    const body = JSON.stringify(_email);
+    return this.http.post<Employee>(this.url + 'Email_InsertOrUpdate', body, httpOptions);
+  }
+
+  Email_Delete(_email: Email) {
+    const body = JSON.stringify(_email);
+    return this.http.post<Employee>(this.url + 'Email_Delete', body, httpOptions);
+  }
+
+  getEmailSignature() {
+    const params = new HttpParams();
+    return this.http.get<Email[]>(this.url + 'EmailSignature_Get', { params });
+  }
+
 }

@@ -222,3 +222,16 @@ export class TimeSheetForApproval {
     UpdatedBy: string;
 }
 
+
+export class Email {
+    ID?: number;
+    EmailTypeId?: number;
+    EmailType?: string;
+    Subject?: string;
+    Body?: string;
+    Signature?: string;
+    HighPriority?: boolean;
+    SubjectIsTemplate?: boolean;
+    BodyIsTemplate?: boolean;
+    AddSignature?: boolean;
+}
