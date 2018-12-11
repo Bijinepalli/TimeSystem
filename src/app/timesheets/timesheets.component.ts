@@ -58,4 +58,23 @@ export class TimesheetsComponent implements OnInit {
   OpenHoursCharged() {
 
   }
+  viewTimeSheet(rowData: TimeSheetForEmplyoee) {
+    this.router.navigate(['/menu/maintaintimesheet/' + rowData.Id]);
+  }
+  editTimeSheet(rowData: TimeSheetForEmplyoee) {
+    this.confSvc.confirm({
+      message: 'Do you want to edit the timesheet?',
+      accept: () => {
+        this.router.navigate(['/menu/maintaintimesheet/' + rowData.Id]);
+      }
+    });
+  }
+  deleteTimeSheet(rowData: TimeSheetForEmplyoee) {
+    this.confSvc.confirm({
+      message: 'Do you want to delete the timesheet?',
+      accept: () => {
+        this.getTimeSheets();
+      }
+    });
+  }
 }

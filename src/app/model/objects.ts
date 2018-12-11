@@ -186,6 +186,18 @@ export class TimeSheet {
     ApprovalStatus: string;
     SupervisorComments: string;
 }
+export class TimeLine {
+    Id: number;
+    TimeSheetId: number;
+    ChargeId: number;
+    ChargeType: string;
+}
+export class TimeCell {
+    Id: number;
+    TimeLineId: number;
+    CalendarDate: string;
+    Hours: number;
+}
 export class TimeSheetForEmplyoee {
     Id: number;
     EmployeeId: number;

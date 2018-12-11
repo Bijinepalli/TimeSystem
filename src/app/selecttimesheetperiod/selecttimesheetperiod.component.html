@@ -1,20 +1,3 @@
-<p-toast position="center" key="alert" (onClose)="onReject()" [modal]="true" [baseZIndex]="5000">
-    <ng-template let-message pTemplate="message">
-      <div class="ui-g ui-fluid ui-g-nopad">
-        <div class="ui-g-12 ui-md-2" align="center">
-          <i class="pi pi-exclamation-triangle" style="font-size: 2em;margin:2px;"></i>
-        </div>
-        <div class="ui-g-12 ui-md-10" align="left">
-          <h4 style="margin:5px;" [innerHTML]="message.detail | sanitizeHtmlString"></h4>
-        </div>
-      </div>
-      <div class="ui-g ui-fluid ui-g-nopad">
-        <div class="ui-g-12" align="right">
-          <button type="button" pButton (click)="onReject()" label="Ok" class="ui-button-secondary"></button>
-        </div>
-      </div>
-    </ng-template>
-  </p-toast>
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
     Create a New Timesheet
@@ -51,8 +34,5 @@
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Create New Timesheet" tooltipPosition="bottom" class="ui-button-info"
       label="Create" (click)=CreateTS()></button>
   </div>
-  <div class="ui-g-12 ui-md-2" *ngIf="showConfirm">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Confirm your Choice" tooltipPosition="bottom" class="ui-button-info"
-      label="Confirm" (click)=ConfirmTS()></button>
-  </div>
 </div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425"></p-confirmDialog>

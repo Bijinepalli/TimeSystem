@@ -106,6 +106,8 @@ const appRoutes: Routes = [
       { path: 'selecttimesheetperiod', component: SelecttimesheetperiodComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       { path: 'maintaintimesheet', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id/:periodEnd', component: MaintaintimesheetComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
       // { path: 'searchissue/:id', component: SearchissueComponent },

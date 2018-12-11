@@ -23,7 +23,8 @@
 </div>
 
 <div class="ui-g">
-  <p-checkbox name="groupname" binary="true" label="Show All Timesheets " value="false" [(ngModel)]="selectedValues" (onChange)="ShowAllTimesheets()"></p-checkbox>
+  <p-checkbox name="groupname" binary="true" label="Show All Timesheets " value="false" [(ngModel)]="selectedValues"
+    (onChange)="ShowAllTimesheets()"></p-checkbox>
 </div>
 <div class="ui-g">
   <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
@@ -42,6 +43,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
+        <th style="width: 5em">View/Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
@@ -50,6 +52,12 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
+        <td style="text-align: center">
+          <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x" pTooltip="Edit this TimeSheet" style="cursor:pointer;color:lightblue"
+            tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i>
+          <i *ngIf="rowData['Submitted'] === 'Yes'" class="fa fa-eye fa-150x" pTooltip="View this TimeSheet" style="cursor:pointer;color:greenyellow"
+            tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
+        </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Date') >= 0">
             {{rowData[col.field]}}
@@ -66,3 +74,4 @@
     </ng-template>
   </p-table>
 </div>
+<p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425"></p-confirmDialog>

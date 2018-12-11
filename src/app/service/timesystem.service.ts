@@ -4,7 +4,7 @@ import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
   , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory
-  , EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee, TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email
+  , EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee, TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, TimeLine, TimeCell
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -318,5 +318,29 @@ export class TimesystemService {
     const params = new HttpParams();
     return this.http.get<Email[]>(this.url + 'EmailSignature_Get', { params });
   }
+  getEmployeeClientProjectNonBillableDetails(employeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId);
+    return this.http.get<TimeSheetBinding[]>(this.localurl + 'GetEmployeeClientProjectNonBillableDetails', { params });
+  }
 
+  getTimesheetTimeLineTimeCellDetails(timeSheetId: string) {
+    const params = new HttpParams().set('TimeSheetId', timeSheetId);
+
+    const data1 = this.http.get<TimeSheet[]>(this.localurl + 'GetTimeSheetDetails', { params });
+    const data2 = this.http.get<TimeLine[]>(this.localurl + 'GetTimeLineDetails', { params });
+    const data3 = this.http.get<TimeCell[]>(this.localurl + 'GetTimeCellDetails', { params });
+
+    return forkJoin([data1, data2, data3]);
+  }
+  getUnSubmittedTimeSheetDetails(employeeId: string, periodEnd: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('PeriodEnd', periodEnd);
+    return this.http.get<TimeSheet[]>(this.localurl + 'GetUnSubmittedTimeSheetDetails', { params });
+  }
+  timesheetCopyInsert(timeSheet: TimeSheet) {
+    const body = JSON.stringify(timeSheet);
+    return this.http.post<number>(this.localurl + 'TimesheetCopyInsert', body, httpOptions);
+  }
 }
