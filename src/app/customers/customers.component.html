@@ -35,7 +35,7 @@
           <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:100%">
         </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad"  style="text-align: right">
+        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -52,7 +52,7 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center">
-          <i class="fa fa-edit fa-150x" pTooltip="Edit Holiday" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
+          <i class="fa fa-edit fa-150x" pTooltip="Edit Customer" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
             (click)="editCustomer(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
@@ -65,7 +65,7 @@
           </div>
         </td>
         <td style="text-align: center">
-          <i *ngIf="rowData['used'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused customer" style="cursor:pointer;color:red"
+          <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x" pTooltip="Delete this unused customer" style="cursor:pointer;color:red"
             tooltipPosition="bottom" (click)="deleteCustomer(rowData)"></i>
         </td>
       </tr>
@@ -94,6 +94,12 @@
           Customer Number *<br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Customer Number" formControlName="customerNumber">
+        </div>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <div style="height:5px"></div>
+          <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"></p-checkbox>
         </div>
       </div>
     </div>

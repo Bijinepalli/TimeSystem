@@ -1,20 +1,26 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Holidays } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
-import { Router } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-holidays',
   templateUrl: './holidays.component.html',
-  styleUrls: ['./holidays.component.css']
+  styleUrls: ['./holidays.component.css'],
+  providers: [DatePipe],
 })
 export class HolidaysComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) { }
+  constructor(
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private datePipe: DatePipe,
+  ) { }
   _holidays: Holidays[] = [];
   _yec: YearEndCodes = new YearEndCodes();
   _years; any;
@@ -25,12 +31,12 @@ export class HolidaysComponent implements OnInit {
   holidayDialog = false;
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
-
+  _selectedHoliday: Holidays;
+  _IsEdit = false;
   helpText: any;
   visibleHelp = false;
 
   ngOnInit() {
-
     this._years = [
       { label: '2010', value: '2010' },
       { label: '2011', value: '2011' },
@@ -50,86 +56,65 @@ export class HolidaysComponent implements OnInit {
       { field: 'HolidayName', header: 'Holiday Name' },
       { field: 'HolidayDate', header: 'Date' },
     ];
+
     const _date: Date = new Date();
-
     this.selectedYear = _date.getFullYear();
+
     this.getHolidays();
-
-    this._frm.addControl('holidayName', new FormControl(null, Validators.required));
-    this._frm.addControl('holidayDate', new FormControl(null, Validators.required));
-
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-
-        }
-      );
-
+    this.addControls();
   }
 
   getHolidays() {
-    console.log(this._yec.HolidayCode + this.selectedYear);
     this.timesysSvc.getHolidays(this.selectedYear, this._yec.HolidayCode + this.selectedYear)
       .subscribe(
         (data) => {
-          this._holidays = data;
-          this._recData = data.length + ' holidays found';
+          if (data !== undefined && data !== null) {
+            this._holidays = data;
+            this._recData = data.length + ' holidays found';
+          }
+          else {
+            this._holidays = [];
+            this._recData = 'No holidays found';
+          }
         }
       );
   }
 
-  deleteHoliday(data: Holidays) {
-    this.confSvc.confirm({
-      message: 'Are you sure you want to delete ' + data.HolidayName + '?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        /* do nothing */
-      },
-      reject: () => {
-        /* do nothing */
-      }
-
-    });
-  }
-
   addHoliday() {
-    this.holidayDialog = true;
-    this.holidayHdr = 'Add New Holiday';
+    this._IsEdit = false;
+    this._selectedHoliday = {};
     this.resetForm();
-    this.addControls(undefined);
+    this.setDataToControls(this._selectedHoliday);
+    this.holidayHdr = 'Add New Holiday';
+    this.holidayDialog = true;
   }
 
   editHoliday(data: Holidays) {
-    this.holidayDialog = true;
-    this.holidayHdr = 'Edit Holiday';
+    this._IsEdit = true;
+    this._selectedHoliday = data;
     this.resetForm();
-    this.addControls(data);
+    this.setDataToControls(data);
+    this.holidayHdr = 'Edit Holiday';
+    this.holidayDialog = true;
   }
 
-  addControls(data: Holidays) {
+  addControls() {
+    this._frm.addControl('holidayName',
+      new FormControl(null,
+        [Validators.required,
+        Validators.pattern('^[a-zA-Z0-9\\040\\047\\055]*$'),
+        ]
+      ));
+    this._frm.addControl('holidayDate', new FormControl(null, Validators.required));
+  }
+
+  setDataToControls(data: Holidays) {
     if (data === undefined) {
       this._frm.controls['holidayDate'].setValue(new Date());
     } else {
       this._frm.controls['holidayName'].setValue(data.HolidayName);
       this._frm.controls['holidayDate'].setValue(data.HolidayDate);
     }
-  }
-
-  cancelHoliday() {
-    this.holidayDialog = false;
-  }
-
-  saveHoliday() {
-    this.holidayDialog = false;
   }
 
   hasFormErrors() {
@@ -143,5 +128,97 @@ export class HolidaysComponent implements OnInit {
     this._frm.reset();
   }
 
+  clearControls() {
+    this._IsEdit = false;
+    this._selectedHoliday = null;
+    this.resetForm();
+    this.holidayHdr = 'Add New Holiday';
+    this.holidayDialog = false;
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
+
+  cancelHoliday() {
+    this.clearControls();
+  }
+
+  saveHoliday() {
+    if (this._IsEdit === false) {
+      if (this._selectedHoliday === undefined || this._selectedHoliday === null) {
+        this._selectedHoliday = {};
+      }
+      this._selectedHoliday.Id = -1;
+    }
+    this._selectedHoliday.HolidayName = this._frm.controls['holidayName'].value.toString().trim();
+    this._selectedHoliday.HolidayDate = this.datePipe.transform(this._frm.controls['holidayDate'].value, 'yyyy/MM/dd');
+    this._selectedHoliday.CalendarYear = new Date(this._selectedHoliday.HolidayDate).getFullYear();
+    this.SaveHolidaySPCall();
+  }
+  deleteHoliday(data: Holidays) {
+    this.confSvc.confirm({
+      message: 'Are you sure you want to delete ' + data.HolidayName + '?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        /* do nothing */
+        this.timesysSvc.Holiday_Delete(data)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== null && outputData.ErrorMessage !== '') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess',
+                  severity: 'success',
+                  summary: 'Info Message',
+                  detail: 'Holiday deleted successfully'
+                });
+                this.getHolidays();
+              }
+            });
+      },
+      reject: () => {
+        /* do nothing */
+      }
+
+    });
+  }
+
+  SaveHolidaySPCall() {
+    this.timesysSvc.Holiday_InsertOrUpdate(this._selectedHoliday)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== null && outputData.ErrorMessage !== '') {
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'error',
+              summary: 'Error!',
+              detail: outputData.ErrorMessage
+            });
+          } else {
+            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Holiday saved successfully' });
+            this.clearControls();
+            this.getHolidays();
+          }
+        });
+  }
 
 }

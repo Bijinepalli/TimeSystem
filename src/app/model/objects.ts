@@ -4,45 +4,48 @@ export class DrpList {
 }
 
 export class Holidays {
-    Id: number;
-    HolidayName: string;
-    HolidayDate: string;
-    CalendarYear: number;
-    InUse: number;
+    Id?: number;
+    HolidayName?: string;
+    HolidayDate?: string;
+    CalendarYear?: number;
+    InUse?: number;
 }
 
 export class Companies {
-    Id: number;
-    CompanyName: string;
-    DefaultCompany: string;
-    HolidaysInUse: number;
+    Id?: number;
+    CompanyName?: string;
+    DefaultCompany?: boolean;
+    HolidaysInUse?: number;
 }
 
 export class CompanyHolidays {
-    Id: number;
-    HolidayName: string;
-    HolidayDate: string;
-    DisplayName: string;
+    Id?: number;
+    HolidayName?: string;
+    HolidayDate?: string;
+    DisplayName?: string;
+    CompanyId?: number;
 }
 
 export class Projects {
-    Id: number;
-    Key: string;
-    ProjectName: string;
-    Inactive: boolean;
-    CompanyId: number;
-    CreatedOn: string;
-    CanBeDeleted: number;
-    CompanyName: string;
+    Id?: number;
+    Key?: string;
+    ProjectName?: string;
+    Inactive?: boolean;
+    CompanyId?: number;
+    CreatedOn?: string;
+    CanBeDeleted?: number;
+    CompanyName?: string;
+    ChargeType?: string;
 }
 
 export class NonBillables {
-    Id: number;
-    Key: string;
-    ProjectName: string;
-    Inactive: boolean;
-    CreatedOn: string;
-    CanBeDeleted: number;
+    Id?: number;
+    Key?: string;
+    ProjectName?: string;
+    Inactive?: boolean;
+    CreatedOn?: string;
+    CanBeDeleted?: number;
+    ChargeType?: string;
 }
 
 export class AppSettings {
@@ -95,26 +98,27 @@ export class LoginErrorMessage {
     ErrorMessage?: string;
 }
 export class Customers {
-    Id: number;
-    CustomerNumber: string;
-    CustomerName: string;
-    Inactive: boolean;
-    used: number;
+    Id?: number;
+    CustomerNumber?: string;
+    CustomerName?: string;
+    Inactive?: boolean;
+    InUse?: boolean;
 }
 
 export class Clients {
-    Id: number;
-    CompanyId: number;
-    CustomerId: number;
-    Key: string;
-    ClientName: string;
-    CustomerName: string;
-    BillingCycle: string;
-    PONumber: string;
-    Inactive: boolean;
-    CreatedOn: string;
-    used: number;
-    CompanyName: string;
+    Id?: number;
+    Key?: string;
+    ClientName?: string;
+    CompanyId?: number;
+    CompanyName?: string;
+    CustomerId?: number;
+    CustomerName?: string;
+    BillingCycle?: string;
+    PONumber?: string;
+    Inactive?: boolean;
+    CreatedOn?: string;
+    InUse?: boolean;
+    ChargeType?: string;
 }
 export class MasterPages {
     ID?: number;

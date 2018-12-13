@@ -35,7 +35,7 @@
           <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:100%">
         </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad"  style="text-align: right">
+        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -72,46 +72,51 @@
   </p-table>
 </div>
 
-<p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="500">
+<p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
   <p-header>
-      {{projectHdr}}
-      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('ProjectUpdate.htm')"></i>
-    </p-header>
+    {{projectHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('ProjectUpdate.htm')"></i>
+  </p-header>
   <form [formGroup]="_frm">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Project Code *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Project Code" formControlName="projectCode">
+          <input type="text" pInputText style="width:100%" placeholder="Project Code" formControlName="projectCode"
+            pToolTip="Unique project code">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Project Name *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Project Name" formControlName="projectName">
+          <input type="text" pInputText style="width:100%" placeholder="Project Name" formControlName="projectName"
+            pToolTip="Unique project name">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Parent Company<br>
           <div style="height:5px"></div>
-          <p-dropdown appendTo="body" [options]="_companies" formControlName="parentCompany" placeholder="" [style]="{'width':'99%'}"></p-dropdown>
+          <p-dropdown appendTo="body" [options]="_companies" placeholder="Select Company" formControlName="parentCompany"
+            pToolTip="The company whose holiday schedule this project follows and changing this would affect existing timesheets."
+            [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12" *ngIf="_projectId !== '' ">
+      <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
-          <p-checkbox name="chk1" value="true" label="Inactive" formControlName="projectStatus" inputId="chkProject"></p-checkbox>
+          <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
+            pToolTip="Check to mark this project as inactive. It will not be allowed on new timesheets 
+          and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12" *ngIf="_projectId !== '' ">
+      <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
-          Created On: {{_createdOn}}
+          Created On: {{_selectedProject.CreatedOn}}
         </div>
       </div>
     </div>

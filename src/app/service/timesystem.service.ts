@@ -20,7 +20,7 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.67/';
+  private ipaddress = 'http://172.16.32.57/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -106,9 +106,6 @@ export class TimesystemService {
   }
   getCustomers() {
     return this.http.get<Customers[]>(this.url + 'GetCustomers');
-  }
-  getUsedCustomers() {
-    return this.http.get<Customers[]>(this.url + 'GetUsedCustomers');
   }
   getClients() {
     return this.http.get<Clients[]>(this.url + 'GetClients');
@@ -274,19 +271,99 @@ export class TimesystemService {
     return this.http.get<Email[]>(this.url + 'Email_Get', { params });
   }
 
-  Email_InsertOrUpdate(_email: Email) {
-    const body = JSON.stringify(_email);
-    return this.http.post<Employee>(this.url + 'Email_InsertOrUpdate', body, httpOptions);
-  }
-
-  Email_Delete(_email: Email) {
-    const body = JSON.stringify(_email);
-    return this.http.post<Employee>(this.url + 'Email_Delete', body, httpOptions);
-  }
-
-  getEmailSignature() {
+  EmailSignature_Get() {
     const params = new HttpParams();
     return this.http.get<Email[]>(this.url + 'EmailSignature_Get', { params });
+  }
+
+  Email_InsertOrUpdate(_inputData: Email) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Email_InsertOrUpdate', body, httpOptions);
+  }
+
+  Email_Delete(_inputData: Email) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Email_Delete', body, httpOptions);
+  }
+
+  Holiday_InsertOrUpdate(_inputData: Holidays) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Holiday_InsertOrUpdate', body, httpOptions);
+  }
+
+  Holiday_Delete(_inputData: Holidays) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Holiday_Delete', body, httpOptions);
+  }
+
+  Company_InsertOrUpdate(_inputData: Companies) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Company_InsertOrUpdate', body, httpOptions);
+  }
+
+  Company_Delete(_inputData: Companies) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Company_Delete', body, httpOptions);
+  }
+
+  CompanyHolidays_DeleteAndInsert(_inputData: CompanyHolidays[]) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'CompanyHolidays_DeleteAndInsert', body, httpOptions);
+  }
+
+  Customer_InsertOrUpdate(_inputData: Customers) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Customer_InsertOrUpdate', body, httpOptions);
+  }
+
+  Customer_Delete(_inputData: Customers) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Customer_Delete', body, httpOptions);
+  }
+
+  Project_InsertOrUpdate(_inputData: Projects) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Project_InsertOrUpdate', body, httpOptions);
+  }
+
+  Project_Delete(_inputData: Projects) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Project_Delete', body, httpOptions);
+  }
+
+  NonBillable_InsertOrUpdate(_inputData: NonBillables) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'NonBillable_InsertOrUpdate', body, httpOptions);
+  }
+
+  NonBillable_Delete(_inputData: NonBillables) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'NonBillable_Delete', body, httpOptions);
+  }
+
+  Client_InsertOrUpdate(_inputData: Clients) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Client_InsertOrUpdate', body, httpOptions);
+  }
+
+  Client_Delete(_inputData: Clients) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Client_Delete', body, httpOptions);
+  }
+
+  Employee_InsertOrUpdate(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_InsertOrUpdate', body, httpOptions);
+  }
+
+  Employee_Terminate(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Terminate', body, httpOptions);
+  }
+
+  Employee_ResetPassword(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_ResetPassword', body, httpOptions);
   }
 
 }
