@@ -68,6 +68,8 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimesheet.component';
+
 import { CommonService } from './service/common.service';
 import { MailsComponent } from './mails/mails.component';
 
@@ -96,6 +98,19 @@ const appRoutes: Routes = [
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
+      { path: 'maintaintimesheet', component: MaintaintimesheetComponent },
+      // { path: 'startnewsprint', component: StartnewsprintComponent },
+      // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
+      // { path: 'searchissue/:id', component: SearchissueComponent },
+      // { path: 'addissue', component: AddissueComponent },
+      // { path: 'addissue/:id', component: AddissueComponent },
+      // { path: 'addissue/:id/:sid/:mode', component: AddissueComponent },
+      // { path: 'addissue/:id/:sid/:mode/:ts', component: AddissueComponent },
+      // { path: 'editsubtask/:id/:sprintid/:subtaskid/:mode', component: EditsubtaskComponent },
+      // { path: 'addsprint', component: AddsprintComponent },
+      // { path: 'issuetracker', component: IssuetrackerComponent },
+      // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
+      // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
       { path: 'mails', component: MailsComponent },
     ]
   },
@@ -146,6 +161,7 @@ const appRoutes: Routes = [
     EmployeelogindataComponent,
     MailsComponent,
     EmployeesbybillingcodeComponent,
+    MaintaintimesheetComponent,
   ],
   imports: [
     BrowserAnimationsModule,

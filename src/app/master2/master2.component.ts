@@ -146,7 +146,7 @@ export class Master2Component implements OnInit {
             { label: 'Timesheets', routerLink: '/menu/dashboard' },
             { label: 'Pay Stubs', routerLink: '/menu/dashboard' }
             ];
-            console.log(JSON.stringify(this.menuItems));
+            // console.log(JSON.stringify(this.menuItems));
           });
     }
   }
@@ -200,6 +200,12 @@ export class Master2Component implements OnInit {
         }
       );
   }
+
+  goto() {
+    window.alert('123');
+    window.location.href = 'http://www.cnn.com/';
+  }
+
   onReject() {
     this.msgSvc.clear('alert');
   }
