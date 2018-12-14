@@ -3,7 +3,7 @@
     background-color:white;
     color:black;
     text-align:right;
-    width:60px;
+    width:55px;
     margin-right:5px;
 }
 .weekEnd
@@ -11,7 +11,7 @@
     background-color:gold;
     color:red;
     text-align:right;
-    width:60px;
+    width:55px;
     margin-right:5px;
 }
 
@@ -20,7 +20,7 @@
     border:0px;
     background-color: transparent; 
     text-align:right;
-    width:60px;
+    width:55px;
     margin-right:5px;
     color:red;
 }
@@ -29,7 +29,14 @@
     border:0px;
     background-color: transparent; 
     text-align:right;
-    width:60px;
+    width:55px;
     margin-right:5px;
     color:black;
+}
+.weekTotals{
+    background-color: lightgreen; 
+    width:65px;
+    margin-right:5px;
+    color: black;
+    text-align:right;
 }

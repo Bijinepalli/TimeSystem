@@ -275,12 +275,10 @@ export class TimesystemService {
     return this.http.get<TimeSheetForEmplyoee[]>(this.localurl + 'GetEmployeeTimeSheetList', { params });
   }
 
-  getPresentFuturePastPeriodEndList() {
+  getTimeSheetPeridos() {
     // return this.http.get<TimePeriods[]>(this.url + 'GetPresentPeriodEndList', { });
-    const data1 = this.http.get<TimePeriods[]>(this.localurl + 'GetPresentPeriodEndList');
-    const data2 = this.http.get<TimePeriods[]>(this.localurl + 'GetFuturePeriodEndList');
-    const data3 = this.http.get<TimePeriods[]>(this.localurl + 'GetPastPeriodEndList');
-    return forkJoin([data1, data2, data3]);
+    const data1 = this.http.get<TimePeriods[]>(this.localurl + 'GetTimeSheetPeridos');
+    return data1;
   }
   getTimeSheetAfterDateDetails(employeeId: string, hireDate: string) {
     const params = new HttpParams()
@@ -327,7 +325,7 @@ export class TimesystemService {
   getTimesheetTimeLineTimeCellDetails(timeSheetId: string) {
     const params = new HttpParams().set('TimeSheetId', timeSheetId);
 
-    const data1 = this.http.get<TimeSheet[]>(this.localurl + 'GetTimeSheetDetails', { params });
+    const data1 = this.http.get<TimeSheet[]>(this.localurl + 'GetTimeSheetDetailsDateChange', { params });
     const data2 = this.http.get<TimeLine[]>(this.localurl + 'GetTimeLineDetails', { params });
     const data3 = this.http.get<TimeCell[]>(this.localurl + 'GetTimeCellDetails', { params });
 

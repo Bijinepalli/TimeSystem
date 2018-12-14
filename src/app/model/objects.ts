@@ -213,6 +213,7 @@ export class TimePeriods {
     PresentPeriodEnd: string;
     FuturePeriodEnd: string;
     PastPeriodEnd: string;
+    RowNumber: number;
 }
 export class TimeSheetBinding {
     value: number;
