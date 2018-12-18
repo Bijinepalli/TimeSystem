@@ -3,10 +3,8 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Email
-  , BillingCodes, BillingCodesSpecial
-} from '../model/objects';
+  , BillingCodes, BillingCodesSpecial, BillingCodesPendingTimesheet, AssignForEmployee} from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
-import { CommaExpr } from '@angular/compiler';
 import { map } from 'rxjs/operators';
 import { SelectItem } from 'primeng/api';
 
@@ -20,11 +18,10 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.67/';
+  private ipaddress = 'http://172.16.32.57/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
-  private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -351,9 +348,19 @@ export class TimesystemService {
     return this.http.post<LoginErrorMessage>(this.url + 'Client_Delete', body, httpOptions);
   }
 
-  Employee_InsertOrUpdate(_inputData: Employee) {
+  Employee_Insert(_inputData: Employee) {
     const body = JSON.stringify(_inputData);
-    return this.http.post<LoginErrorMessage>(this.url + 'Employee_InsertOrUpdate', body, httpOptions);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Insert', body, httpOptions);
+  }
+
+  Employee_Update(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Update', body, httpOptions);
+  }
+
+  Employee_Unlock(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Unlock', body, httpOptions);
   }
 
   Employee_Terminate(_inputData: Employee) {
@@ -364,6 +371,21 @@ export class TimesystemService {
   Employee_ResetPassword(_inputData: Employee) {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'Employee_ResetPassword', body, httpOptions);
+  }
+
+  PendingTimesheet_BillingCodes_Get(_inputData: BillingCodesPendingTimesheet) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<BillingCodesPendingTimesheet[]>(this.url + 'PendingTimesheet_BillingCodes_Get', body, httpOptions);
+  }
+
+  AssignForEmployee(_inputData: AssignForEmployee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'AssignForEmployee', body, httpOptions);
+  }
+
+  Supervisor_Get() {
+    const params = new HttpParams();
+    return this.http.get<SelectItem[]>(this.url + 'Supervisor_Get', { params });
   }
 
 }

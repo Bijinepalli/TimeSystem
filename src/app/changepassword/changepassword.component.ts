@@ -133,11 +133,11 @@ export class ChangepasswordComponent implements OnInit {
     employee.CreatedBy = +localStorage.getItem('UserId');
     employee.Password = this.currentFormControls.password.value;
     this.timesysSvc.Employee_UpdatePassword(employee).subscribe(_employee => {
-      this.SendEmailChangePassword();
+      this.SendEmailChangePassword(this.currentFormControls.password.value);
     });
   }
 
-  SendEmailChangePassword() {
+  SendEmailChangePassword(NewPassword: string) {
     const _EmailOptions: EmailOptions = {};
     _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
     _EmailOptions.EmailType = 'Change Password';
@@ -146,7 +146,7 @@ export class ChangepasswordComponent implements OnInit {
     _EmailOptions.SendOnlyAdmin = false;
     _EmailOptions.ReplyTo = '';
     const BodyParams: string[] = [];
-    BodyParams.push('pa55w0rd!!');
+    BodyParams.push(NewPassword);
     _EmailOptions.BodyParams = BodyParams;
     this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
       this.navigateTo('/login');

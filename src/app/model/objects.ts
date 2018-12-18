@@ -1,6 +1,6 @@
 export class DrpList {
-    label: string;
-    value: string;
+    label?: string;
+    value?: string;
 }
 
 export class Holidays {
@@ -92,6 +92,9 @@ export class Employee {
     LastUpdatedDays?: number;
     CreatedBy?: number;
     DecryptedPassword?: string;
+    NonBillableID?: string;
+    BenchID?: string;
+    HolidayID?: string;
 }
 
 export class LoginErrorMessage {
@@ -188,3 +191,16 @@ export class Email {
     BodyIsTemplate?: boolean;
     AddSignature?: boolean;
 }
+
+export class BillingCodesPendingTimesheet {
+    EmployeeID?: number;
+    ChargeID?: string;
+    ChargeType?: string;
+    AssignType?: string;
+}
+
+export class AssignForEmployee {
+    UpdateItems?: BillingCodesPendingTimesheet;
+    AddItems?: BillingCodesPendingTimesheet[];
+}
+

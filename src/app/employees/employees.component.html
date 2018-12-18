@@ -42,13 +42,13 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 3em"></th>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em">Unlock</th>
+        <th style="width: 3em">Edit</th>
+        <th style="width: 7em">Terminate</th>
+        <th style="width: 7em">Reset Password</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 8em">Reset Password</th>
-        <th style="width: 8em">Terminate</th>
         <th style="width: 5em">Clients</th>
         <th style="width: 5em">Projects</th>
         <th style="width: 5em">Non-Billable</th>
@@ -65,6 +65,14 @@
           <i class="fa fa-edit fa-150x" pTooltip="Please click here to edit the employee" style="cursor:pointer;color:cyan"
             tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
         </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x" pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
+            style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
+            style="cursor:pointer;color:aquamarine" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
+        </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
             {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
@@ -72,14 +80,6 @@
           <div *ngIf="col.header.indexOf('Inactive') == -1 && col.header.indexOf('Salaried') ==-1">
             {{rowData[col.field]}}
           </div>
-        </td>
-        <td style="text-align: center">
-          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
-            style="cursor:pointer;color:aquamarine" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
-        </td>
-        <td style="text-align: center">
-          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x" pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
-            style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
@@ -135,13 +135,13 @@
           appendTo="body" pToolTip="Employee's first name">
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
-        Nick Name *<br>
+        Nick Name<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Nick Name" formControlName="frmNickName" appendTo="body"
           pToolTip="The name the employee prefers to go by">
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
-        Login ID *<br>
+        Login ID<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Login ID" formControlName="frmLoginID" appendTo="body"
           pToolTip="The ID the employee logs in to the Extranet with">
@@ -159,19 +159,19 @@
           appendTo="body" pToolTip="Employee's email address.">
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
-        Secondary Email Address *<br>
+        Secondary Email Address<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Secondary Email Address" formControlName="frmSecondaryEmailAddress"
           appendTo="body" pToolTip="Employee's secondary email address.">
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
-        Security Level <br>
+        Security Level<br>
         <div style="height:5px"></div>
         <p-dropdown appendTo="body" [options]="_SecurityLevels" placeholder="Select Security Level" formControlName="frmSecurityLevel"
           pToolTip="Employee's security level" [style]="{'width':'99%'}"></p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
-        Hours Per Day *<br>
+        Hours Per Day<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Hours Per Day" formControlName="frmHoursPerDay"
           appendTo="body" pToolTip="The number of hours the employee is expected to work per day">
@@ -253,7 +253,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="nonBillableDialog" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth"
-  [width]="800">
+  [width]="800" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -291,7 +291,8 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth" [width]="800">
+<p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth" [width]="800"
+  [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -329,7 +330,8 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="clientDialog" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth" [width]="800">
+<p-dialog [(visible)]="clientDialog" [responsive]="true" showEffect="fade" [modal]="true" class="dialogWidth" [width]="800"
+  [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -367,7 +369,8 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500" [closeOnEscape]="false"
+  [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
