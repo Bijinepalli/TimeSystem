@@ -3,11 +3,10 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
-  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory
-  , EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee, TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, TimeLine, TimeCell
+  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee,
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, TimeLine, TimeCell, AssignForEmployee, BillingCodesPendingTimesheet
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
-import { CommaExpr } from '@angular/compiler';
 import { map } from 'rxjs/operators';
 import { SelectItem } from 'primeng/api';
 
@@ -21,11 +20,10 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.67/';
+  private ipaddress = 'http://172.16.32.57/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
-  private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -107,9 +105,6 @@ export class TimesystemService {
   }
   getCustomers() {
     return this.http.get<Customers[]>(this.url + 'GetCustomers');
-  }
-  getUsedCustomers() {
-    return this.http.get<Customers[]>(this.url + 'GetUsedCustomers');
   }
   getClients() {
     return this.http.get<Clients[]>(this.url + 'GetClients');
@@ -272,29 +267,29 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
       .set('ShowEveryOne', showEveryOne);
-    return this.http.get<TimeSheetForEmplyoee[]>(this.localurl + 'GetEmployeeTimeSheetList', { params });
+    return this.http.get<TimeSheetForEmplyoee[]>(this.url + 'GetEmployeeTimeSheetList', { params });
   }
 
   getTimeSheetPeridos() {
     // return this.http.get<TimePeriods[]>(this.url + 'GetPresentPeriodEndList', { });
-    const data1 = this.http.get<TimePeriods[]>(this.localurl + 'GetTimeSheetPeridos');
+    const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');
     return data1;
   }
   getTimeSheetAfterDateDetails(employeeId: string, hireDate: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
       .set('HireDate', hireDate);
-    return this.http.get<TimeSheetBinding[]>(this.localurl + 'GetTimeSheetAfterDateDetails', { params });
+    return this.http.get<TimeSheetBinding[]>(this.url + 'GetTimeSheetAfterDateDetails', { params });
   }
   getTimeSheetDetails(timeSheetId: string) {
     const params = new HttpParams()
       .set('TimeSheetId', timeSheetId);
-    return this.http.get<TimeSheet[]>(this.localurl + 'GetTimeSheetDetails', { params });
+    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetDetails', { params });
   }
   getTimeSheetForApprovalCheck(employeeId: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsCheck', { params });
+    return this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
   }
   getEmails(_email: Email) {
     const params = new HttpParams()
@@ -302,32 +297,137 @@ export class TimesystemService {
     return this.http.get<Email[]>(this.url + 'Email_Get', { params });
   }
 
-  Email_InsertOrUpdate(_email: Email) {
-    const body = JSON.stringify(_email);
-    return this.http.post<Employee>(this.url + 'Email_InsertOrUpdate', body, httpOptions);
-  }
-
-  Email_Delete(_email: Email) {
-    const body = JSON.stringify(_email);
-    return this.http.post<Employee>(this.url + 'Email_Delete', body, httpOptions);
-  }
-
-  getEmailSignature() {
+  EmailSignature_Get() {
     const params = new HttpParams();
     return this.http.get<Email[]>(this.url + 'EmailSignature_Get', { params });
+  }
+
+  Email_InsertOrUpdate(_inputData: Email) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Email_InsertOrUpdate', body, httpOptions);
+  }
+
+  Email_Delete(_inputData: Email) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Email_Delete', body, httpOptions);
+  }
+
+  Holiday_InsertOrUpdate(_inputData: Holidays) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Holiday_InsertOrUpdate', body, httpOptions);
+  }
+
+  Holiday_Delete(_inputData: Holidays) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Holiday_Delete', body, httpOptions);
+  }
+
+  Company_InsertOrUpdate(_inputData: Companies) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Company_InsertOrUpdate', body, httpOptions);
+  }
+
+  Company_Delete(_inputData: Companies) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Company_Delete', body, httpOptions);
+  }
+
+  CompanyHolidays_DeleteAndInsert(_inputData: CompanyHolidays[]) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'CompanyHolidays_DeleteAndInsert', body, httpOptions);
+  }
+
+  Customer_InsertOrUpdate(_inputData: Customers) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Customer_InsertOrUpdate', body, httpOptions);
+  }
+
+  Customer_Delete(_inputData: Customers) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Customer_Delete', body, httpOptions);
+  }
+
+  Project_InsertOrUpdate(_inputData: Projects) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Project_InsertOrUpdate', body, httpOptions);
+  }
+
+  Project_Delete(_inputData: Projects) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Project_Delete', body, httpOptions);
+  }
+
+  NonBillable_InsertOrUpdate(_inputData: NonBillables) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'NonBillable_InsertOrUpdate', body, httpOptions);
+  }
+
+  NonBillable_Delete(_inputData: NonBillables) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'NonBillable_Delete', body, httpOptions);
+  }
+
+  Client_InsertOrUpdate(_inputData: Clients) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Client_InsertOrUpdate', body, httpOptions);
+  }
+
+  Client_Delete(_inputData: Clients) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Client_Delete', body, httpOptions);
+  }
+
+  Employee_Insert(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Insert', body, httpOptions);
+  }
+
+  Employee_Update(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Update', body, httpOptions);
+  }
+
+  Employee_Unlock(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Unlock', body, httpOptions);
+  }
+
+  Employee_Terminate(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Terminate', body, httpOptions);
+  }
+
+  Employee_ResetPassword(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_ResetPassword', body, httpOptions);
+  }
+
+  PendingTimesheet_BillingCodes_Get(_inputData: BillingCodesPendingTimesheet) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<BillingCodesPendingTimesheet[]>(this.url + 'PendingTimesheet_BillingCodes_Get', body, httpOptions);
+  }
+
+  AssignForEmployee(_inputData: AssignForEmployee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'AssignForEmployee', body, httpOptions);
+  }
+
+  Supervisor_Get() {
+    const params = new HttpParams();
+    return this.http.get<SelectItem[]>(this.url + 'Supervisor_Get', { params });
   }
   getEmployeeClientProjectNonBillableDetails(employeeId: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetBinding[]>(this.localurl + 'GetEmployeeClientProjectNonBillableDetails', { params });
+    return this.http.get<TimeSheetBinding[]>(this.url + 'GetEmployeeClientProjectNonBillableDetails', { params });
   }
 
   getTimesheetTimeLineTimeCellDetails(timeSheetId: string) {
     const params = new HttpParams().set('TimeSheetId', timeSheetId);
 
-    const data1 = this.http.get<TimeSheet[]>(this.localurl + 'GetTimeSheetDetailsDateChange', { params });
-    const data2 = this.http.get<TimeLine[]>(this.localurl + 'GetTimeLineDetails', { params });
-    const data3 = this.http.get<TimeCell[]>(this.localurl + 'GetTimeCellDetails', { params });
+    const data1 = this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetDetailsDateChange', { params });
+    const data2 = this.http.get<TimeLine[]>(this.url + 'GetTimeLineDetails', { params });
+    const data3 = this.http.get<TimeCell[]>(this.url + 'GetTimeCellDetails', { params });
 
     return forkJoin([data1, data2, data3]);
   }
@@ -335,10 +435,10 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
       .set('PeriodEnd', periodEnd);
-    return this.http.get<TimeSheet[]>(this.localurl + 'GetUnSubmittedTimeSheetDetails', { params });
+    return this.http.get<TimeSheet[]>(this.url + 'GetUnSubmittedTimeSheetDetails', { params });
   }
   timesheetCopyInsert(timeSheet: TimeSheet) {
     const body = JSON.stringify(timeSheet);
-    return this.http.post<number>(this.localurl + 'TimesheetCopyInsert', body, httpOptions);
+    return this.http.post<number>(this.url + 'TimesheetCopyInsert', body, httpOptions);
   }
 }

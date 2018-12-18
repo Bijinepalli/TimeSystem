@@ -84,26 +84,28 @@
         <div class="ui-g-12 ui-md-12">
           Item Code *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode">
+          <input type="text" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode" pToolTip="Unique non-billable item code">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Item Name *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName">
+          <input type="text" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName" pToolTip="Unique non-billable item name">
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12" *ngIf="_nonBillableItemId !== '' ">
+      <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
-          <p-checkbox name="chk1" value="true" label="Inactive" formControlName="itemStatus" inputId="chkItem"></p-checkbox>
+          <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
+            pToolTip="Check to mark this non-billable item as inactive. It will not be allowed on new timesheets 
+          and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12" *ngIf="_nonBillableItemId !== '' ">
+      <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
-          Created On: {{_createdOn}}
+          Created On: {{_selectedNonBillable.CreatedOn}}
         </div>
       </div>
     </div>
