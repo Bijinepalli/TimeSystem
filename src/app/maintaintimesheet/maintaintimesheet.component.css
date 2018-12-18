@@ -40,3 +40,14 @@
     color: black;
     text-align:right;
 }
+
+.comments
+{
+    background-color:white;
+    color:black;
+width: 100%;
+height: 100px;
+}
+.errorBox{
+    border: 1px solid red;
+}

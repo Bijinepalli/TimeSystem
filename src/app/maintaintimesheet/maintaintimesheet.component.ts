@@ -4,9 +4,11 @@ import { Holidays, TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods,
 import { YearEndCodes } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { from } from 'rxjs';
+import { OverlayPanelModule, OverlayPanel } from 'primeng/overlaypanel';
+import { InputTextModule } from 'primeng/primeng';
 
 @Component({
   selector: 'app-maintaintimesheet',
@@ -44,6 +46,13 @@ export class MaintaintimesheetComponent implements OnInit {
   timeSheetForm = new FormGroup({});
   _timePeriods: TimePeriods[];
   _employee: Employee[];
+  _errorDailyGrandArray: number[] = [];
+  _errorDailyTANDMArray: number[] = [];
+  _errorHourlyTANDMArray: number[] = [];
+  _errorDailyProjBillArray: number[] = [];
+  _errorHourlyProjBillArray: number[] = [];
+  _errorDailyNonBillArray: number[] = [];
+  _errorHourlyNonBillArray: number[] = [];
   //   this.activatedRoute.params.subscribe((params) => {
   //   this._employeeId = params['id'] === undefined ? -1 : params['id'];
   //   this.getEmployees();
@@ -146,8 +155,6 @@ export class MaintaintimesheetComponent implements OnInit {
   addFormControls() {
     let i = 0;
     try {
-
-
       for (i = 0; i < this._timeTandM.length; i++) {
         /* Dropdown building */
         const attrN = 'drpTandM_' + i + '';
@@ -258,14 +265,26 @@ export class MaintaintimesheetComponent implements OnInit {
     }
     this.setValues();
   }
-
-  setValues() {
+  TANDMTotalCalculation() {
     /* TANDM Daily Total Calculation */
+    this._errorDailyTANDMArray = [];
+    this._errorHourlyTANDMArray = [];
+    let WeeklyTANDMDefaultHoursTotal = 0;
     for (let j = 0; j < this._DateArray.length; j++) {
       let dayHoursTotal = 0;
       for (let i = 0; i < this._timeTandM.length; i++) {
         const hour = this.timeSheetForm.get('txttimeTandMHours_' + i + '_' + j).value;
+        if (hour > 24) {
+          this._errorHourlyTANDMArray.push(j);
+        }
         dayHoursTotal += +hour;
+      }
+      const defaultHour = this.timeSheetForm.get('txttimeTandMHoursDefault_' + j).value;
+      if (defaultHour > 0) {
+        dayHoursTotal += +defaultHour;
+      }
+      if (dayHoursTotal > 24) {
+        this._errorDailyTANDMArray.push(j);
       }
       this.timeSheetForm.controls['txtTANDMDailyTotals_' + j].setValue(this.decimal.transform(dayHoursTotal, '1.2-2'));
     }
@@ -279,20 +298,42 @@ export class MaintaintimesheetComponent implements OnInit {
       }
       this.timeSheetForm.controls['txtTANDMWeeklyTotals_' + i].setValue(this.decimal.transform(WeeklyHoursTotal, '1.2-2'));
     }
+    for (let j = 0; j < this._DateArray.length; j++) {
+      const defaultHour = this.timeSheetForm.get('txttimeTandMHoursDefault_' + j).value;
+      if (defaultHour > 0) {
+        WeeklyTANDMDefaultHoursTotal += +defaultHour;
+      }
+    }
+    this.timeSheetForm.controls['txtTANDMDailyTotalDefault'].setValue(this.decimal.transform(WeeklyTANDMDefaultHoursTotal, '1.2-2'));
     /* TANDM All Weeks Total Calculation */
     let AllWeeksTANDMHoursTotal = 0;
     for (let i = 0; i < this._timeTandM.length; i++) {
       const hour = this.timeSheetForm.get('txtTANDMWeeklyTotals_' + i).value;
       AllWeeksTANDMHoursTotal += +hour;
     }
+    AllWeeksTANDMHoursTotal += +this.timeSheetForm.get('txtTANDMDailyTotalDefault').value;
     this.timeSheetForm.controls['txtTANDMTotalWeeks'].setValue(this.decimal.transform(AllWeeksTANDMHoursTotal, '1.2-2'));
-
+  }
+  ProjBillTotalCalculation() {
     /* ProjBill Daily Total Calculation */
+    this._errorDailyProjBillArray = [];
+    this._errorHourlyProjBillArray = [];
+    let WeeklyProjBillDefaultHoursTotal = 0;
     for (let j = 0; j < this._DateArray.length; j++) {
       let dayHoursTotal = 0;
       for (let i = 0; i < this._timeProjBill.length; i++) {
         const hour = this.timeSheetForm.get('txtProjBillHours_' + i + '_' + j).value;
+        if (hour > 24) {
+          this._errorHourlyProjBillArray.push(j);
+        }
         dayHoursTotal += +hour;
+      }
+      const defaultHour = this.timeSheetForm.get('txtProjBillHoursDefault_' + j).value;
+      if (defaultHour > 0) {
+        dayHoursTotal += +defaultHour;
+      }
+      if (dayHoursTotal > 24) {
+        this._errorDailyProjBillArray.push(j);
       }
       this.timeSheetForm.controls['txtProjBillDailyTotals_' + j].setValue(this.decimal.transform(dayHoursTotal, '1.2-2'));
     }
@@ -306,20 +347,42 @@ export class MaintaintimesheetComponent implements OnInit {
       }
       this.timeSheetForm.controls['txtProjBillWeeklyTotals_' + i].setValue(this.decimal.transform(WeeklyHoursTotal, '1.2-2'));
     }
+    for (let j = 0; j < this._DateArray.length; j++) {
+      const defaultHour = this.timeSheetForm.get('txtProjBillHoursDefault_' + j).value;
+      if (defaultHour > 0) {
+        WeeklyProjBillDefaultHoursTotal += +defaultHour;
+      }
+    }
+    this.timeSheetForm.controls['txtProjBillDailyTotalDefault'].setValue(this.decimal.transform(WeeklyProjBillDefaultHoursTotal, '1.2-2'));
     /* ProjBill All Weeks Total Calculation */
     let AllWeeksProjBillHoursTotal = 0;
     for (let i = 0; i < this._timeProjBill.length; i++) {
       const hour = this.timeSheetForm.get('txtProjBillWeeklyTotals_' + i).value;
       AllWeeksProjBillHoursTotal += +hour;
     }
+    AllWeeksProjBillHoursTotal += +this.timeSheetForm.get('txtProjBillDailyTotalDefault').value;
     this.timeSheetForm.controls['txtProjBillTotalWeeks'].setValue(this.decimal.transform(AllWeeksProjBillHoursTotal, '1.2-2'));
-
+  }
+  NonBillTotalCalculation() {
     /* NonBill Daily Total Calculation */
+    this._errorDailyNonBillArray = [];
+    this._errorHourlyNonBillArray = [];
+    let WeeklyNonBillDefaultHoursTotal = 0;
     for (let j = 0; j < this._DateArray.length; j++) {
       let dayHoursTotal = 0;
       for (let i = 0; i < this._timeNONbill.length; i++) {
         const hour = this.timeSheetForm.get('txtNonBillHours_' + i + '_' + j).value;
+        if (hour > 24) {
+          this._errorHourlyNonBillArray.push(j);
+        }
         dayHoursTotal += +hour;
+      }
+      const defaultHour = this.timeSheetForm.get('txtNonBillHoursDefault_' + j).value;
+      if (defaultHour > 0) {
+        dayHoursTotal += +defaultHour;
+      }
+      if (dayHoursTotal > 24) {
+        this._errorDailyNonBillArray.push(j);
       }
       this.timeSheetForm.controls['txtNonBillDailyTotals_' + j].setValue(this.decimal.transform(dayHoursTotal, '1.2-2'));
     }
@@ -333,29 +396,47 @@ export class MaintaintimesheetComponent implements OnInit {
       }
       this.timeSheetForm.controls['txtNonBillWeeklyTotals_' + i].setValue(this.decimal.transform(WeeklyHoursTotal, '1.2-2'));
     }
+    for (let j = 0; j < this._DateArray.length; j++) {
+      const defaultHour = this.timeSheetForm.get('txtNonBillHoursDefault_' + j).value;
+      if (defaultHour > 0) {
+        WeeklyNonBillDefaultHoursTotal += +defaultHour;
+      }
+    }
+    this.timeSheetForm.controls['txtNonBillDailyTotalDefault'].setValue(this.decimal.transform(WeeklyNonBillDefaultHoursTotal, '1.2-2'));
     /* NonBill All Weeks Total Calculation */
     let AllWeeksNonBillHoursTotal = 0;
     for (let i = 0; i < this._timeNONbill.length; i++) {
       const hour = this.timeSheetForm.get('txtNonBillWeeklyTotals_' + i).value;
       AllWeeksNonBillHoursTotal += +hour;
     }
+    AllWeeksNonBillHoursTotal += +this.timeSheetForm.get('txtNonBillDailyTotalDefault').value;
     this.timeSheetForm.controls['txtNonBillTotalWeeks'].setValue(this.decimal.transform(AllWeeksNonBillHoursTotal, '1.2-2'));
-
+  }
+  setValues() {
+    this.TANDMTotalCalculation();
+    this.ProjBillTotalCalculation();
+    this.NonBillTotalCalculation();
+    /* Grand Total Calculation */
+    this._errorDailyGrandArray = [];
     for (let j = 0; j < this._DateArray.length; j++) {
       const TANDhour = this.timeSheetForm.get('txtTANDMDailyTotals_' + j).value;
       const ProjBillhour = this.timeSheetForm.get('txtProjBillDailyTotals_' + j).value;
       const NonBillhour = this.timeSheetForm.get('txtNonBillDailyTotals_' + j).value;
-
+      const grandTotal = ((+TANDhour) + (+ProjBillhour) + (+NonBillhour));
       // tslint:disable-next-line:max-line-length
-      this.timeSheetForm.controls['txtDailyGrandTotal_' + j].setValue(this.decimal.transform(((+TANDhour) + (+ProjBillhour) + (+NonBillhour)), '1.2-2'));
+      this.timeSheetForm.controls['txtDailyGrandTotal_' + j].setValue(this.decimal.transform(grandTotal, '1.2-2'));
+      if (grandTotal > 24) {
+        this._errorDailyGrandArray.push(j);
+      }
     }
 
     const TANDhourTotalWeek = this.timeSheetForm.get('txtTANDMTotalWeeks').value;
     const ProjBillhourTotalWeek = this.timeSheetForm.get('txtProjBillTotalWeeks').value;
     const NonBillhourTotalWeek = this.timeSheetForm.get('txtNonBillTotalWeeks').value;
+    const grandWeeklyTotal = ((+TANDhourTotalWeek) + (+ProjBillhourTotalWeek) + (+NonBillhourTotalWeek));
 
     // tslint:disable-next-line:max-line-length
-    this.timeSheetForm.controls['txtWeeklyGrandTotal'].setValue(this.decimal.transform(((+TANDhourTotalWeek) + (+ProjBillhourTotalWeek) + (+NonBillhourTotalWeek)), '1.2-2'));
+    this.timeSheetForm.controls['txtWeeklyGrandTotal'].setValue(this.decimal.transform(grandWeeklyTotal, '1.2-2'));
 
   }
   get f() {
@@ -380,8 +461,27 @@ export class MaintaintimesheetComponent implements OnInit {
 
     this.timeSheetForm.addControl('drpNonBillDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
     this.timeSheetForm.addControl('txtNonBillDailyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+    this.timeSheetForm.addControl('txtComments', new FormControl(null, null));
   }
   hoursOnChange() {
     this.setValues();
+  }
+  hourRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
+    if (control.value !== undefined && (isNaN(control.value) || control.value < 18 || control.value > 45)) {
+      return { 'ageRange': true };
+    }
+    return null;
+  }
+  Save() {
+    console.log(this._errorDailyNonBillArray.length);
+    console.log(this._errorDailyProjBillArray.length);
+    console.log(this._errorDailyNonBillArray.length);
+    // tslint:disable-next-line:max-line-length
+    if (this._errorDailyNonBillArray.length > 0 || this._errorDailyProjBillArray.length > 0 || this._errorDailyNonBillArray.length > 0 || this._errorHourlyNonBillArray.length || this._errorHourlyProjBillArray.length > 0 || this._errorHourlyTANDMArray.length > 0) {
+      alert('error');
+    }
+  }
+  Submit() {
+
   }
 }
