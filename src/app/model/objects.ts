@@ -179,37 +179,48 @@ export class EmployeePasswordHistory {
     CheckLength?: number;
 }
 export class TimeSheet {
-    Id: number;
-    EmployeeId: number;
-    PeriodEnd: string;
-    Redubmitted: boolean;
-    Submitted: boolean;
-    SubmitDate: string;
-    Comments: string;
-    SevenDay: string;
-    TimeStamp: string;
-    SemiMonthly: string;
-    Hours: number;
-    ApprovalStatus: string;
-    SupervisorComments: string;
+    Id?: number;
+    EmployeeId?: number;
+    PeriodEnd?: string;
+    Resubmitted?: boolean;
+    Submitted?: boolean;
+    SubmitDate?: string;
+    Comments?: string;
+    SevenDay?: string;
+    TimeStamp?: string;
+    SemiMonthly?: string;
+    Hours?: number;
+    ApprovalStatus?: string;
+    SupervisorComments?: string;
 }
 export class TimeLine {
-    Id: number;
-    TimeSheetId: number;
-    ChargeId: number;
-    ChargeType: string;
+    Id?: number;
+    TimeSheetId?: number;
+    ChargeId?: number;
+    ChargeType?: string;
 }
 export class TimeCell {
-    Id: number;
-    TimeLineId: number;
-    CalendarDate: string;
-    Hours: number;
+    Id?: number;
+    TimeLineId?: number;
+    CalendarDate?: string;
+    Hours?: number;
 }
+
+export class TimeSheetSubmit {
+    timeSheet?: TimeSheet;
+    timeLineAndTimeCellArr?: TimeLineAndTimeCell[];
+}
+
+export class TimeLineAndTimeCell {
+    timeLine?: TimeLine;
+    timeCell?: TimeCell[];
+}
+
 export class TimeSheetForEmplyoee {
     Id: number;
     EmployeeId: number;
     PeriodEnd: string;
-    Redubmitted: string;
+    Resubmitted: string;
     Submitted: string;
     SubmitDate: string;
     SemiMonthly: string;

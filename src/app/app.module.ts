@@ -220,7 +220,7 @@ const appRoutes: Routes = [
     OverlayPanelModule,
     ProgressSpinnerModule, ProgressBarModule, BlockUIModule, SplitButtonModule,
     FileUploadModule,
-    RouterModule.forRoot(appRoutes), AccordionModule,
+    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
     KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
   ],

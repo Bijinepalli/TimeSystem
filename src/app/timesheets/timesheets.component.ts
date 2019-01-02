@@ -15,6 +15,7 @@ export class TimesheetsComponent implements OnInit {
   _timeSheets: TimeSheetForEmplyoee[];
   selectedValues: Boolean;
   cols: any[];
+  _recData: string;
   constructor(private timesysSvc: TimesystemService, private router: Router
     , private msgSvc: MessageService, private confSvc: ConfirmationService) { }
 
@@ -31,25 +32,21 @@ export class TimesheetsComponent implements OnInit {
     this.getTimeSheets();
   }
   getTimeSheets() {
-    if (this.selectedValues) {
-      this.timesysSvc.getEmployeeTimeSheetList((localStorage.getItem('UserId')), '1')
-        .subscribe(
-          (data) => {
+    const Mode = this.selectedValues ? '1' : '0';
+    this.timesysSvc.getEmployeeTimeSheetList((localStorage.getItem('UserId')), Mode)
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
             this._timeSheets = data;
+            this._recData = this._timeSheets.length + ' records found';
+          } else {
+            this._timeSheets = [];
+            this._recData = 'No records found';
           }
-        );
-    } else {
-      this.timesysSvc.getEmployeeTimeSheetList((localStorage.getItem('UserId')), '0')
-        .subscribe(
-          (data) => {
-            this._timeSheets = data;
-          }
-        );
-    }
-
+        }
+      );
   }
   ShowAllTimesheets() {
-    console.log(this.selectedValues);
     this.getTimeSheets();
   }
   addTimesheet() {

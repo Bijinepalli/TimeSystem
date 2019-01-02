@@ -4,7 +4,8 @@ import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
   , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, TimeSheet, TimeSheetForEmplyoee,
-  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, TimeLine, TimeCell, AssignForEmployee, BillingCodesPendingTimesheet
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, TimeLine, TimeCell, AssignForEmployee,
+  BillingCodesPendingTimesheet, TimeLineAndTimeCell, TimeSheetSubmit
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -24,6 +25,7 @@ export class TimesystemService {
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
+  private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -440,5 +442,9 @@ export class TimesystemService {
   timesheetCopyInsert(timeSheet: TimeSheet) {
     const body = JSON.stringify(timeSheet);
     return this.http.post<number>(this.url + 'TimesheetCopyInsert', body, httpOptions);
+  }
+  TimeLineAndTimeCell_DeleteAndInsert(_inputData: TimeSheetSubmit) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
   }
 }
