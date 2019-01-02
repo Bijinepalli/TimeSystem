@@ -147,12 +147,9 @@ body .ui-panel .ui-panel-content {
 .panelEmpBilling .ui-panel .ui-panel-content{
   background-color: black !important;
 }
-<<<<<<< HEAD
-=======
 .positionMiddle {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   }
->>>>>>> e7c26bb7245f47e4fc327020fc60b2cd7e66894c
