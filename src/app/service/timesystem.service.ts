@@ -459,18 +459,18 @@ export class TimesystemService {
 
     return forkJoin([data1, data2, data3]);
   }
-getUnSubmittedTimeSheetDetails(employeeId: string, periodEnd: string) {
-  const params = new HttpParams()
-    .set('EmployeeId', employeeId)
-    .set('PeriodEnd', periodEnd);
-  return this.http.get<TimeSheet[]>(this.url + 'GetUnSubmittedTimeSheetDetails', { params });
-}
-timesheetCopyInsert(timeSheet: TimeSheet) {
-  const body = JSON.stringify(timeSheet);
-  return this.http.post<number>(this.url + 'TimesheetCopyInsert', body, httpOptions);
-}
-TimeLineAndTimeCell_DeleteAndInsert(_inputData: TimeSheetSubmit) {
-  const body = JSON.stringify(_inputData);
-  return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
-}
+  getUnSubmittedTimeSheetDetails(employeeId: string, periodEnd: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('PeriodEnd', periodEnd);
+    return this.http.get<TimeSheet[]>(this.url + 'GetUnSubmittedTimeSheetDetails', { params });
+  }
+  timesheetCopyInsert(timeSheet: TimeSheet) {
+    const body = JSON.stringify(timeSheet);
+    return this.http.post<number>(this.url + 'TimesheetCopyInsert', body, httpOptions);
+  }
+  TimeLineAndTimeCell_DeleteAndInsert(_inputData: TimeSheetSubmit) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
+  }
 }
