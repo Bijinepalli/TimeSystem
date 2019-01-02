@@ -521,4 +521,63 @@ export class TimesystemService {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
   }
+  getBillableHours(code: string, key: string, codeInactive: string, assignInactive: string, startDate: string, endDate: string) {
+    const params = new HttpParams()
+      .set('code', code)
+      .set('key', key)
+      .set('codeInactive', codeInactive)
+      .set('assignInactive', assignInactive)
+      .set('startDate', startDate)
+      .set('endDate', endDate);
+    return this.http.get<BillingCodes[]>(this.url + 'GetBillableHours', { params });
+  }
+
+  getHolidayYears() {
+    return this.http.get<Holidays[]>(this.url + 'ListHolidayYears');
+  }
+  getHolidayList(year: string) {
+    const params = new HttpParams()
+      .set('year', year);
+    return this.http.get<Holidays[]>(this.url + 'GetHolidayList', { params });
+  }
+  getInvoiceData(invoiceDate: string, startDate: string, endDate: string, divisionid: string, productcode: string,
+    selectedValue: string, formattedStart: string, formattedEnd: string) {
+    const params = new HttpParams()
+      .set('invoiceDate', invoiceDate)
+      .set('startDate', startDate)
+      .set('endDate', endDate)
+      .set('divisionid', divisionid)
+      .set('productcode', productcode)
+      .set('billingcycle', selectedValue)
+      .set('formattedStart', formattedStart)
+      .set('formattedEnd', formattedEnd);
+    return this.http.get<Invoice[]>(this.url + 'GetInvoiceData', { params });
+  }
+  getNonBillableHourGroups(Id: string) {
+    const params = new HttpParams()
+      .set('Id', Id);
+    return this.http.get<NonBillables[]>(this.url + 'GetNonBillableHourGroups', { params });
+  }
+  getNonBillableCodesforGroup(GroupID: number, Subgroup: number) {
+    const params = new HttpParams()
+      .set('GroupID', GroupID.toString())
+      .set('Subgroup', Subgroup.toString());
+    return this.http.get<NonBillables[]>(this.url + 'GetNonBillableCodesForReportGroup', { params });
+  }
+
+  getNonBillableHours(startdate: string, enddate: string, Id: string) {
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate)
+      .set('id', Id);
+    return this.http.get<any>(this.url + 'GetNonBillableSoftwareHours', { params });
+  }
+  getUnusedBillingCodes(codetype: string, usagetype: string, datesince: string) {
+    const params = new HttpParams()
+      .set('codetype', codetype)
+      .set('usagetype', usagetype)
+      .set('datesince', datesince);
+    return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
+  }
+
 }
