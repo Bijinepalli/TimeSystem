@@ -5,9 +5,10 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { AppSettings, LoginErrorMessage, Employee, EmailOptions, EmployeePasswordHistory } from '../model/objects';
+import { Employee, EmailOptions, EmployeePasswordHistory } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
+import { CommonService } from '../service/common.service';
 
 
 @Component({
@@ -20,13 +21,12 @@ export class ChangepasswordComponent implements OnInit {
   // Component Related Properties
 
   // Global or Common Properties
-  appSettings: AppSettings[] = [];
+
 
 
   // Form Related Properties
   signInForm: FormGroup;
-  FinanceEmailAddress = '';
-  PasswordHistoryCheckLength: any;
+
 
   constructor(
     private router: Router,
@@ -36,6 +36,7 @@ export class ChangepasswordComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
   ) {
 
   }
@@ -49,7 +50,6 @@ export class ChangepasswordComponent implements OnInit {
 
   Initialisations() {
     this.BuildFormControls();
-    this.GetAppSettings();
   }
 
   // Common Methods
@@ -62,25 +62,7 @@ export class ChangepasswordComponent implements OnInit {
     this.msgSvc.clear('alert');
   }
 
-  GetAppSettings() {
-    this.appSettings = [];
-    this.timesysSvc.getAppSettings()
-      .subscribe(
-        (data) => {
-          this.appSettings = data;
-        }
-      );
-  }
-  GetAppSettingsValue(DataKey: string): any {
-    let AppSettingsValue = '';
-    if (this.appSettings !== undefined && this.appSettings !== null && this.appSettings.length > 0) {
-      const AppsettingsVal: AppSettings = this.appSettings.find(m => m.DataKey === DataKey);
-      if (AppsettingsVal !== undefined && AppsettingsVal !== null) {
-        AppSettingsValue = AppsettingsVal.Value;
-      }
-    }
-    return AppSettingsValue;
-  }
+
 
   BuildFormControls() {
     this.signInForm = this.fb.group({
@@ -125,13 +107,21 @@ export class ChangepasswordComponent implements OnInit {
   // Business Logic Methods
 
   SubmitFunctionality() {
-    this.PasswordHistoryCheckLength = this.GetAppSettingsValue('PasswordHistoryCheckLength');
+    const PasswordHistoryCheckLength = this.commonSvc.getAppSettingsValue('PasswordHistoryCheckLength');
     const employeePasswordHistory: EmployeePasswordHistory = {};
-    employeePasswordHistory.CheckLength = this.PasswordHistoryCheckLength;
+    employeePasswordHistory.EmployeeID = +localStorage.getItem('UserId');
+    employeePasswordHistory.CheckLength = PasswordHistoryCheckLength;
     employeePasswordHistory.Password = this.currentFormControls.password.value;
     this.timesysSvc.ValidateEmployeePasswordHistory(employeePasswordHistory).subscribe(_employeePasswordHistory => {
       if (_employeePasswordHistory !== null && _employeePasswordHistory.length > 0) {
-
+        this.msgSvc.add({
+          key: 'alert',
+          sticky: true,
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'Password already used. Please change the password to a different one from the last '
+            + PasswordHistoryCheckLength.ToString() + ' passwords'
+        });
       } else {
         this.UpdatePassword();
       }
@@ -139,23 +129,25 @@ export class ChangepasswordComponent implements OnInit {
   }
 
   UpdatePassword() {
-
-
-    this.SendEmailChangePassword();
+    const employee: Employee = {};
+    employee.ID = +localStorage.getItem('UserId');
+    employee.CreatedBy = +localStorage.getItem('UserId');
+    employee.Password = this.currentFormControls.password.value;
+    this.timesysSvc.Employee_UpdatePassword(employee).subscribe(_employee => {
+      this.SendEmailChangePassword(this.currentFormControls.password.value);
+    });
   }
 
-  SendEmailChangePassword() {
-    this.FinanceEmailAddress = this.GetAppSettingsValue('FinanceEmailAddress');
-
+  SendEmailChangePassword(NewPassword: string) {
     const _EmailOptions: EmailOptions = {};
-    _EmailOptions.From = this.FinanceEmailAddress;
+    _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
     _EmailOptions.EmailType = 'Change Password';
     _EmailOptions.To = localStorage.getItem('UserEmailAddress');
     _EmailOptions.SendAdmin = false;
     _EmailOptions.SendOnlyAdmin = false;
     _EmailOptions.ReplyTo = '';
     const BodyParams: string[] = [];
-    BodyParams.push('pa55w0rd!!');
+    BodyParams.push(NewPassword);
     _EmailOptions.BodyParams = BodyParams;
     this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
       this.navigateTo('/login');

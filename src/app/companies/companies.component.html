@@ -52,10 +52,10 @@
             (click)="editCompany(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
-          <div *ngIf="col.header.indexOf('Date') >= 0">
-            {{rowData[col.field]}}
+          <div *ngIf="col.header.indexOf('Default') >= 0">
+            {{rowData[col.field] === true ? 'Yes' : 'No'}}
           </div>
-          <div *ngIf="col.header.indexOf('Date') == -1">
+          <div *ngIf="col.header.indexOf('Default') == -1">
             {{rowData[col.field]}}
           </div>
         </td>
@@ -105,9 +105,9 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save Holidays" (click)="saveCompanyHolidays()"></button>
+          <button pButton label="Save Holidays" (click)="saveCompanyHoliday()"></button>
           &nbsp;
-          <button pButton label="Cancel" (click)="cancelCompany()"></button>
+          <button pButton label="Cancel" (click)="cancelCompanyHoliday()"></button>
         </div>
       </div>
     </div>
@@ -132,7 +132,8 @@
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
-          <p-checkbox name="chk1" value="Yes" label="Default" formControlName="companyDefault" inputId="chkCompany"></p-checkbox>
+          <p-checkbox binary="true" label="Default" [(ngModel)]="chkDefaultCompany" [ngModelOptions]="{standalone: true}" 
+          pTooltip="Indicates that this is the default company to use for salaried employees"></p-checkbox>
         </div>
       </div>
     </div>
