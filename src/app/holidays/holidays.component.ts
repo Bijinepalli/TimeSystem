@@ -71,8 +71,7 @@ export class HolidaysComponent implements OnInit {
           if (data !== undefined && data !== null) {
             this._holidays = data;
             this._recData = data.length + ' holidays found';
-          }
-          else {
+          } else {
             this._holidays = [];
             this._recData = 'No holidays found';
           }
