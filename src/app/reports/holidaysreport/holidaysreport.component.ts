@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { TimesystemService } from '../service/timesystem.service';
+import { TimesystemService } from '../../service/timesystem.service';
 import { SelectItem } from 'primeng/api';
-import { Holidays } from '../model/objects';
+import { Holidays } from '../../model/objects';
 
 @Component({
   selector: 'app-holidaysreport',

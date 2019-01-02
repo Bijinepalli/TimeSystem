@@ -68,7 +68,7 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
-import { HolidaysreportComponent } from './holidaysreport/holidaysreport.component';
+import { HolidaysreportComponent } from './reports/holidaysreport/holidaysreport.component';
 import { UnusedbillingcodesComponent } from './reports/unusedbillingcodes/unusedbillingcodes.component';
 import { BillablehoursComponent } from './reports/billablehours/billablehours.component';
 import { NonbillablehoursComponent } from './reports/nonbillablehours/nonbillablehours.component';
