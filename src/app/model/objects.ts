@@ -9,6 +9,7 @@ export class Holidays {
     HolidayDate?: string;
     CalendarYear?: number;
     InUse?: number;
+    CompanyName?: string;
 }
 
 export class Companies {
@@ -45,6 +46,14 @@ export class NonBillables {
     Inactive?: boolean;
     CreatedOn?: string;
     CanBeDeleted?: number;
+    Group1?: string;
+    Group2?: string;
+    LastName?: string;
+    FirstName?: string;
+    CalendarDate?: string;
+    Hours?: string;
+    ID1?: number;
+    ID2?: number;
     ChargeType?: string;
 }
 
@@ -165,6 +174,7 @@ export class BillingCodes {
     TANDM?: string;
     Project?: string;
     NonBill?: string;
+    CalendarDate?: string;
 }
 export class BillingCodesSpecial {
     value?: string;
@@ -222,6 +232,11 @@ export class TimeSheet {
     ApprovalStatus?: string;
     SupervisorComments?: string;
     PeriodEndDate?: string;
+    LastName?: string;
+    FirstName?: string;
+    EmployeeID?: number;
+    ClientID?: number;
+    EffectiveDate?: string;
 }
 export class TimeLine {
     Id?: number;
@@ -322,10 +337,7 @@ export class Invoice {
     ClientName?: string;
     PONumber?: string;
     Inactive: boolean;
-    LastName?: string;
-    FirstName?: string;
-    EmployeeID?: number;
-    ClientID?: number;
-    EffectiveDate?: string;
 }
+
+
 

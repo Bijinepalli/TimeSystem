@@ -3,6 +3,7 @@ import { TimesystemService } from '../service/timesystem.service';
 import { SelectItem } from 'primeng/api';
 import { MasterPages } from '../model/objects';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
+import { ConfirmationService, MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-accessrights',
@@ -22,7 +23,8 @@ export class AccessrightsComponent implements OnInit {
   pageFormgroup: FormGroup;
   _showGrid = false;
 
-  constructor(private timesysSvc: TimesystemService, private fb: FormBuilder, ) { }
+  constructor(private timesysSvc: TimesystemService, private fb: FormBuilder, private confSvc: ConfirmationService,
+    private msgSvc: MessageService) { }
 
   // @Input() set disableControl( condition : boolean ) {
   //   const action = condition ? 'disable' : 'enable';
@@ -89,7 +91,7 @@ export class AccessrightsComponent implements OnInit {
       const chk = this.pageFormgroup.get('chkPage_' + this._pages[i].ID).value;
       if (chk === true) {
         this._selectedPage.Role = this.pageFormgroup.get('roleDrp').value;
-        this._selectedPage.PageId = i + 1;
+        this._selectedPage.PageId = this._pages[i].ID;
         this._selectedPage.HasView = 1;
         if (this.pageFormgroup.controls['editSwitch_' + this._pages[i].ID].value === true) {
           this._selectedPage.HasEdit = 1;
@@ -102,7 +104,12 @@ export class AccessrightsComponent implements OnInit {
     this.timesysSvc.InsertAccessRights(allSelections)
       .subscribe(
         (data) => {
-          this.getPages();
+          if (data != null && data[0].Role.toString() === this.pageFormgroup.get('roleDrp').value.toString()) {
+            this.getPages();
+            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Saved Successfully' });
+          } else {
+            this.msgSvc.add({ key: 'saveSuccess', severity: 'warn', summary: 'Info Message', detail: 'An Error Occurred' });
+          }
         });
   }
 

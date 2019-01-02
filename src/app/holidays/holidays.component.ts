@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, HostListener } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Holidays } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SanitizeHtmlPipe } from '../sharedpipes/sanitizeHtmlString.pipe';
+import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -27,16 +29,20 @@ export class HolidaysComponent implements OnInit {
   selectedYear: any;
   cols: any;
   _recData: any;
-
+  _helpPage: any;
+  _sidebarHelp = false;
+  _dialogwidth: number;
   holidayDialog = false;
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
-  _selectedHoliday: Holidays;
-  _IsEdit = false;
   helpText: any;
   visibleHelp = false;
 
+  _selectedHoliday: Holidays;
+  _IsEdit = false;
+
   ngOnInit() {
+    this._dialogwidth = 830;
     this._years = [
       { label: '2010', value: '2010' },
       { label: '2011', value: '2011' },

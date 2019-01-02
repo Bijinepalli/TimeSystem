@@ -77,7 +77,25 @@ body .ui-slidemenu {
 .dialogHeader .ui-dialog-titlebar.ui-widget-header {
   background-color: lightcyan !important;
   color: #0078d7 !important;
-  }
+}
+
+/*To make the background of the dialog's body white*/
+/* .ui-dialog.dialogHeader .ui-dialog-content {
+  background-color: white !important;
+  color: #0078d7 !important;
+} */
+
+.ui-dialog-titlebar.ui-widget-header {
+  background-color: lightyellow !important;
+  color: black !important;
+}
+
+
+.ui-sidebar.sidebarHelp {
+  background-color: #FBFCC5 !important;
+   color: black !important;
+   width:400px;
+}
   
   
   
@@ -113,7 +131,6 @@ body .ui-slidemenu {
 .checkboxLabel .ui-chkbox-label{
   color: red !important;
 }
-
 body .ui-panel .ui-panel-content {
   padding: 0.571em 1em;
   border: 1px solid !important;
