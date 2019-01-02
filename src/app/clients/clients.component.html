@@ -15,7 +15,7 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Client" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Client" (click)=addClient()></button>
+      label="Add New Client" *ngIf="!_HasEdit" (click)=addClient()></button>
   </div>
 </div>
 <div class="ui-g">
@@ -35,23 +35,23 @@
           <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:100%">
         </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad"  style="text-align: right">
+        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 5em">Delete</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i class="fa fa-edit fa-150x" pTooltip="Edit Holiday" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
             (click)="editClient(rowData)"></i>
         </td>
@@ -64,7 +64,7 @@
             {{rowData[col.field]}}
           </div>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x" pTooltip="Delete this unused client" style="cursor:pointer;color:red"
             tooltipPosition="bottom" (click)="deleteClient(rowData)"></i>
         </td>
@@ -74,7 +74,7 @@
 </div>
 
 
-<p-dialog [(visible)]="clientDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500" >
+<p-dialog [(visible)]="clientDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
   <p-header>
     {{clientHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -87,7 +87,7 @@
           Client Code *<br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode"
-          appendTo="body" pToolTip="Unique client code that matches what's in the payroll system" >
+            appendTo="body" pToolTip="Unique client code that matches what's in the payroll system">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -95,7 +95,7 @@
           Client Name *<br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName"
-          appendTo="body" pToolTip="Unique client name that matches what's in the payroll system" >
+            appendTo="body" pToolTip="Unique client name that matches what's in the payroll system">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -103,15 +103,15 @@
           Billing Cycle <br>
           <div style="height:5px"></div>
           <p-dropdown appendTo="body" [options]="_billingCycle" placeholder="Select Billing Cycle" formControlName="billingCycle"
-          pToolTip="The billing cycle used for this client." [style]="{'width':'99%'}"></p-dropdown>
+            pToolTip="The billing cycle used for this client." [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           PO Number <br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber"
-          appendTo="body" pToolTip="Purchase order number" >
+          <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber" appendTo="body"
+            pToolTip="Purchase order number">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -119,7 +119,7 @@
           Customer Number <br>
           <div style="height:5px"></div>
           <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer" formControlName="customerName"
-          pToolTip="The customer to invoice for hours charged to this client." [style]="{'width':'99%'}"></p-dropdown>
+            pToolTip="The customer to invoice for hours charged to this client." [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -127,14 +127,15 @@
           Parent Company <br>
           <div style="height:5px"></div>
           <p-dropdown appendTo="body" [options]="_companyNames" placeholder="Select Company" formControlName="parentCompany"
-          pToolTip="The company whose holiday schedule this client follows. Disabled if changing this would affect existing timesheets." [style]="{'width':'99%'}"></p-dropdown>
+            pToolTip="The company whose holiday schedule this client follows. Disabled if changing this would affect existing timesheets."
+            [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div style="height:5px"></div>
           <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
-          pTooltip="Check to mark this client as inactive. It will not be allowed on new timesheets 
+            pTooltip="Check to mark this client as inactive. It will not be allowed on new timesheets 
           and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
         </div>
       </div>
@@ -149,7 +150,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" (click)="saveClient()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveClient()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelClient()"></button>
           </div>

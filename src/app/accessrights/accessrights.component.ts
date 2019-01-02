@@ -123,7 +123,7 @@ export class AccessrightsComponent implements OnInit {
   }
 
   getPagesbyRole(role: string) {
-    this.timesysSvc.getPagesbyRoles(role)
+    this.timesysSvc.getPagesbyRoles(role, '0')
       .subscribe((data) => {
         if (data != null) {
           this._pagesbyroles = data;

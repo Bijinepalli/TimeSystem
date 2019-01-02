@@ -149,10 +149,14 @@ export class MasterPages {
 }
 
 export class LeftNavMenu {
-    label: string;
-    icon: string;
-    routeLink: string;
-    items: LeftNavMenu[];
+    label?: string;
+    icon?: string;
+    routerLink?: string;
+    queryParams?: {
+        [k: string]: string;
+    };
+    items?: LeftNavMenu[];
+    // skipLocationChange?: boolean;
 }
 
 

@@ -15,7 +15,7 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Customer" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Customer" (click)=addCustomer()></button>
+      label="Add New Customer" *ngIf="!_HasEdit" (click)=addCustomer()></button>
   </div>
 </div>
 <div class="ui-g">
@@ -42,18 +42,18 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 5em">Delete</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i class="fa fa-edit fa-150x" pTooltip="Edit Customer" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
-            (click)="editCustomer(rowData)"></i>
+          (click)="editCustomer(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
@@ -64,7 +64,7 @@
             {{rowData[col.field]}}
           </div>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x" pTooltip="Delete this unused customer" style="cursor:pointer;color:red"
             tooltipPosition="bottom" (click)="deleteCustomer(rowData)"></i>
         </td>
@@ -107,7 +107,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" (click)="saveCustomer()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveCustomer()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelCustomer()"></button>
           </div>

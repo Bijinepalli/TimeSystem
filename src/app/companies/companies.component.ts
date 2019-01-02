@@ -1,11 +1,10 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ErrorHandler } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Companies, CompanyHolidays } from '../model/objects';
 import { YearEndCodes, BillingCode } from '../model/constants';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Footer } from 'primeng/primeng';
 import { CommonService } from '../service/common.service';
 
 @Component({
@@ -18,8 +17,13 @@ export class CompaniesComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router,
-    private msgSvc: MessageService, private confSvc: ConfirmationService, private commonSvc: CommonService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
 
   _companies: Companies[] = [];
   _companyHours: Companies[] = [];
@@ -44,8 +48,10 @@ export class CompaniesComponent implements OnInit {
   _availableHolidays: CompanyHolidays[] = [];
   _years: any;
 
-  ngOnInit() {
+  _HasEdit = false;
 
+  ngOnInit() {
+    this.CheckSecurity();
     this.cols = [
       { field: 'CompanyName', header: 'Company Name' },
       { field: 'DefaultCompany', header: 'Default' },
@@ -70,6 +76,23 @@ export class CompaniesComponent implements OnInit {
     this.getCompanyUsedHours();
     this.addControls();
   }
+
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+                if (data[0].HasEdit) {
+                  this._HasEdit = true;
+                }
+            }
+          });
+      }
+    });
+  }
+
   getCompanyUsedHours() {
     this.timesysSvc.getCompaniesWithUseHours(this._bc.NonBillable, this._yec.HolidayCode)
       .subscribe(

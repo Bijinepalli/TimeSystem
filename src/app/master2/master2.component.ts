@@ -1,17 +1,19 @@
 import { Component, ViewChild, OnInit, AfterViewInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
-import { MenuItem, MessageService } from 'primeng/primeng';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MenuItem, MessageService, ConfirmationService } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
 import { TimesystemService } from '../service/timesystem.service';
 import { MasterPages, LeftNavMenu, Employee } from '../model/objects';
 import { CommonService } from '../service/common.service';
+import { DatePipe } from '@angular/common';
 
 declare var jQuery: any;
 
 @Component({
   selector: 'app-master2',
   templateUrl: './master2.component.html',
-  styleUrls: ['./master2.component.css']
+  styleUrls: ['./master2.component.css'],
+  providers: [DatePipe],
 })
 export class Master2Component implements OnInit {
 
@@ -36,12 +38,17 @@ export class Master2Component implements OnInit {
   passwordExpiry = '';
 
   helpText: string;
+  loginTime: string;
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
-    private msgSvc: MessageService) {
+    private datePipe: DatePipe,
+  ) {
 
   }
 
@@ -87,8 +94,14 @@ export class Master2Component implements OnInit {
   getUserName() {
     if (localStorage.getItem('currentUser') !== undefined &&
       localStorage.getItem('currentUser') !== null &&
-      localStorage.getItem('currentUser') !== '') {
-      this.fullName = 'Hello , ' + localStorage.getItem('currentUser');
+      localStorage.getItem('currentUser').toString() !== '') {
+      this.fullName = 'Hello , ' + localStorage.getItem('currentUser').toString();
+      if (localStorage.getItem('PayRollName') !== undefined &&
+        localStorage.getItem('PayRollName') !== null &&
+        localStorage.getItem('PayRollName').toString() !== '') {
+        this.fullName += ' (' + localStorage.getItem('PayRollName').toString() + ') ';
+      }
+      this.loginTime = this.datePipe.transform(Date(), 'dd MMMM yyyy');
     }
   }
 
@@ -138,7 +151,7 @@ export class Master2Component implements OnInit {
           }
         }
       };
-      this.timesysSvc.getLeftNavMenu(localStorage.getItem('UserRole').toString())
+      this.timesysSvc.getLeftNavMenu(localStorage.getItem('UserRole').toString(), '0')
         .subscribe(
           (data) => {
             this.menuItems = data;

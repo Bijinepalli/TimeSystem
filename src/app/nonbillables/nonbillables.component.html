@@ -15,7 +15,7 @@
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Non-Billable Item" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Non-Billable Item" (click)=addNonBillable()></button>
+      label="Add New Non-Billable Item" *ngIf="!_HasEdit" (click)=addNonBillable()></button>
   </div>
 </div>
 <div class="ui-g">
@@ -35,23 +35,23 @@
           <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:100%">
         </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad"  style="text-align: right">
+        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 5em">Delete</th>
+        <th style="width: 5em" *ngIf="!_HasEdit"> Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i class="fa fa-edit fa-150x" pTooltip="Edit Non-Billable Item" style="cursor:pointer;color:cyan"
             tooltipPosition="bottom" (click)="editNonBillable(rowData)"></i>
         </td>
@@ -63,7 +63,7 @@
             {{rowData[col.field]}}
           </div>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused non-billable item"
             style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="deleteNonBillable(rowData)"></i>
         </td>
@@ -113,7 +113,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" (click)="saveNonBillable()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveNonBillable()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelNonBillable()"></button>
           </div>

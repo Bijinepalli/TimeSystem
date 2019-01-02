@@ -177,6 +177,7 @@ export class LoginComponent implements OnInit {
                   (' ' + this.EmployeeData[0].LastName.toString()) : ''
               ));
             localStorage.setItem('UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
+            localStorage.setItem('PayRollName', this.EmployeeData[0].PayRoleID.toString());
             let PasswordExpired = false;
             const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
             if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
