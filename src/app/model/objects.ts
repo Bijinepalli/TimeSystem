@@ -122,6 +122,11 @@ export class Clients {
     CreatedOn?: string;
     InUse?: boolean;
     ChargeType?: string;
+    EffectiveDate?: string;
+    Rate?: string;
+    EmployeeID?: number;
+    RateID?: number;
+    RateMode?: string;
 }
 export class MasterPages {
     ID?: number;
@@ -202,5 +207,20 @@ export class BillingCodesPendingTimesheet {
 export class AssignForEmployee {
     UpdateItems?: BillingCodesPendingTimesheet;
     AddItems?: BillingCodesPendingTimesheet[];
+}
+export class Invoice {
+    Id?: number;
+    InvoiceDate?: string;
+    DivisionNumber?: number;
+    CustomerNumber?: string;
+    ProductCode?: string;
+    Hours?: string;
+    Rate?: string;
+    Amount?: string;
+    StartDate?: string;
+    EndDate?: string;
+    ClientName?: string;
+    PONumber?: string;
+    Inactive: boolean;
 }
 

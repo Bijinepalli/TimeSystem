@@ -109,6 +109,7 @@ export class ChangepasswordComponent implements OnInit {
   SubmitFunctionality() {
     const PasswordHistoryCheckLength = this.commonSvc.getAppSettingsValue('PasswordHistoryCheckLength');
     const employeePasswordHistory: EmployeePasswordHistory = {};
+    employeePasswordHistory.EmployeeID = +localStorage.getItem('UserId');
     employeePasswordHistory.CheckLength = PasswordHistoryCheckLength;
     employeePasswordHistory.Password = this.currentFormControls.password.value;
     this.timesysSvc.ValidateEmployeePasswordHistory(employeePasswordHistory).subscribe(_employeePasswordHistory => {

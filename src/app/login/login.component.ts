@@ -176,7 +176,28 @@ export class LoginComponent implements OnInit {
                   (' ' + this.EmployeeData[0].LastName.toString()) : ''
               ));
             localStorage.setItem('UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
-            this.navigateTo('/menu/dashboard');
+            let PasswordExpired = false;
+            const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
+            if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
+              const PasswordExpiryDays = this.commonSvc.getAppSettingsValue('PasswordExpiryDays');
+              const ExpiryDays = +PasswordExpiryDays - PasswordLastUpdatedDays;
+              if (ExpiryDays < 0) {
+                PasswordExpired = true;
+              }
+            }
+            if (PasswordExpired) {
+              let forgotPasswordHistory: ForgotPasswordHistory = {};
+              forgotPasswordHistory.EmployeeID = +(this.EmployeeData[0].ID.toString());
+              forgotPasswordHistory.EmailAddress = this.EmployeeData[0].EmailAddress.toString();
+              this.timesysSvc.InsertForgotPasswordHistory(forgotPasswordHistory).subscribe(dataForgot => {
+                if (dataForgot !== null) {
+                  forgotPasswordHistory = dataForgot;
+                  this.navigateTo('/changepassword/' + forgotPasswordHistory.UniqueCode.toString());
+                }
+              });
+            } else {
+              this.navigateTo('/menu/dashboard');
+            }
           }
         }
       );

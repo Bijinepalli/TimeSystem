@@ -3,7 +3,8 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Email
-  , BillingCodes, BillingCodesSpecial, BillingCodesPendingTimesheet, AssignForEmployee} from '../model/objects';
+  , BillingCodes, BillingCodesSpecial, BillingCodesPendingTimesheet, AssignForEmployee, Invoice
+} from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { SelectItem } from 'primeng/api';
@@ -386,6 +387,31 @@ export class TimesystemService {
   Supervisor_Get() {
     const params = new HttpParams();
     return this.http.get<SelectItem[]>(this.url + 'Supervisor_Get', { params });
+  }
+  getEmployeeRates(EmployeeID: number): any {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString() !== '0' ? EmployeeID.toString() : '0');
+    return this.http.get<Invoice[]>(this.url + 'GetEmployeeRates', { params });
+  }
+  getEmployeeforRates(EmployeeID: number): any {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID.toString() !== '0' ? EmployeeID.toString() : '0');
+    return this.http.get<Employee[]>(this.url + 'Rates_GetEmployee', { params });
+  }
+
+  listClientforRateId(RateID: number): any {
+    const params = new HttpParams()
+      .set('RateID', RateID.toString() !== '0' ? RateID.toString() : '0');
+    return this.http.get<Clients[]>(this.url + 'ListClientForRateID', { params });
+  }
+  getRate(RateID: number): any {
+    const params = new HttpParams()
+      .set('RateID', RateID.toString() !== '0' ? RateID.toString() : '0');
+    return this.http.get<Clients[]>(this.url + 'GetRate', { params });
+  }
+  updateRate(_inputData: Clients) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'UpdateRate', body, httpOptions);
   }
 
 }
