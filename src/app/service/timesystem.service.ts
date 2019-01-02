@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
-  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Email
-  , BillingCodes, BillingCodesSpecial, BillingCodesPendingTimesheet, AssignForEmployee, Invoice
+  Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables,
+  MasterPages, LeftNavMenu, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory,
+  BillingCodes, BillingCodesSpecial, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email,
+  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,6 +26,7 @@ export class TimesystemService {
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
+  private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -262,7 +266,34 @@ export class TimesystemService {
     const body = JSON.stringify(employee);
     return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
   }
+  getEmployeeTimeSheetList(employeeId: string, showEveryOne: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('ShowEveryOne', showEveryOne);
+    return this.http.get<TimeSheetForEmplyoee[]>(this.url + 'GetEmployeeTimeSheetList', { params });
+  }
 
+  getTimeSheetPeridos() {
+    // return this.http.get<TimePeriods[]>(this.url + 'GetPresentPeriodEndList', { });
+    const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');
+    return data1;
+  }
+  getTimeSheetAfterDateDetails(employeeId: string, hireDate: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('HireDate', hireDate);
+    return this.http.get<TimeSheetBinding[]>(this.url + 'GetTimeSheetAfterDateDetails', { params });
+  }
+  getTimeSheetDetails(timeSheetId: string) {
+    const params = new HttpParams()
+      .set('TimeSheetId', timeSheetId);
+    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetDetails', { params });
+  }
+  getTimeSheetForApprovalCheck(employeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId);
+    return this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
+  }
   getEmails(_email: Email) {
     const params = new HttpParams()
       .set('EmailType', _email.EmailType);
@@ -413,5 +444,33 @@ export class TimesystemService {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'UpdateRate', body, httpOptions);
   }
+  getEmployeeClientProjectNonBillableDetails(employeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId);
+    return this.http.get<TimeSheetBinding[]>(this.url + 'GetEmployeeClientProjectNonBillableDetails', { params });
+  }
 
+  getTimesheetTimeLineTimeCellDetails(timeSheetId: string) {
+    const params = new HttpParams().set('TimeSheetId', timeSheetId);
+
+    const data1 = this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetDetailsDateChange', { params });
+    const data2 = this.http.get<TimeLine[]>(this.url + 'GetTimeLineDetails', { params });
+    const data3 = this.http.get<TimeCell[]>(this.url + 'GetTimeCellDetails', { params });
+
+    return forkJoin([data1, data2, data3]);
+  }
+getUnSubmittedTimeSheetDetails(employeeId: string, periodEnd: string) {
+  const params = new HttpParams()
+    .set('EmployeeId', employeeId)
+    .set('PeriodEnd', periodEnd);
+  return this.http.get<TimeSheet[]>(this.url + 'GetUnSubmittedTimeSheetDetails', { params });
+}
+timesheetCopyInsert(timeSheet: TimeSheet) {
+  const body = JSON.stringify(timeSheet);
+  return this.http.post<number>(this.url + 'TimesheetCopyInsert', body, httpOptions);
+}
+TimeLineAndTimeCell_DeleteAndInsert(_inputData: TimeSheetSubmit) {
+  const body = JSON.stringify(_inputData);
+  return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
+}
 }

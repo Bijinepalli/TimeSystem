@@ -170,6 +170,7 @@ export class LoginComponent implements OnInit {
             this.EmployeeData = data;
             localStorage.setItem('UserId', this.EmployeeData[0].ID.toString());
             localStorage.setItem('UserRole', this.EmployeeData[0].UserLevel.toString());
+            localStorage.setItem('HireDate', this.EmployeeData[0].HireDate.toString());
             localStorage.setItem('currentUser',
               this.EmployeeData[0].FirstName.toString() + (
                 (this.EmployeeData[0].LastName.toString() !== '') ?

@@ -68,6 +68,9 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+import { PaystubsComponent } from './paystubs/paystubs.component';
+import { TimesheetsComponent } from './timesheets/timesheets.component';
+import { SelecttimesheetperiodComponent } from './selecttimesheetperiod/selecttimesheetperiod.component';
 import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimesheet.component';
 
 import { CommonService } from './service/common.service';
@@ -98,7 +101,13 @@ const appRoutes: Routes = [
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
+      { path: 'paystubs', component: PaystubsComponent },
+      { path: 'timesheets', component: TimesheetsComponent },
+      { path: 'selecttimesheetperiod', component: SelecttimesheetperiodComponent },
+      // { path: 'burndown', component: BurndownchartComponent },
       { path: 'maintaintimesheet', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id/:periodEnd', component: MaintaintimesheetComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
       // { path: 'searchissue/:id', component: SearchissueComponent },
@@ -161,6 +170,9 @@ const appRoutes: Routes = [
     EmployeelogindataComponent,
     MailsComponent,
     EmployeesbybillingcodeComponent,
+    PaystubsComponent,
+    TimesheetsComponent,
+    SelecttimesheetperiodComponent,
     MaintaintimesheetComponent,
   ],
   imports: [
@@ -208,7 +220,7 @@ const appRoutes: Routes = [
     OverlayPanelModule,
     ProgressSpinnerModule, ProgressBarModule, BlockUIModule, SplitButtonModule,
     FileUploadModule,
-    RouterModule.forRoot(appRoutes), AccordionModule,
+    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
     KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
   ],

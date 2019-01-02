@@ -143,8 +143,8 @@ export class Master2Component implements OnInit {
           (data) => {
             this.menuItems = data;
             this.dashboard = [{ label: 'Dashboard', routerLink: '/menu/dashboard' },
-            { label: 'Timesheets', routerLink: '/menu/dashboard' },
-            { label: 'Pay Stubs', routerLink: '/menu/dashboard' }
+            { label: 'Timesheets', routerLink: '/menu/timesheets' },
+            { label: 'Pay Stubs', routerLink: '/menu/paystubs' }
             ];
             // console.log(JSON.stringify(this.menuItems));
           });
