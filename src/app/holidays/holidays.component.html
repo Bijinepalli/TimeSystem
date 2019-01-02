@@ -75,20 +75,12 @@
   </p-table>
 </div>
 
-<<<<<<< HEAD
-<p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="_dialogwidth" styleClass="dialogHeader">
-  <p-header>
-    <!-- header="{{holidayHdr}}" -->
-    {{holidayHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get help adding or updating a holiday" style="cursor:pointer; font-size: 18px; color: orange; vertical-align: middle" (click)="getHolidayHelp()"></i>
-=======
 
 <p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true" >
   <p-header>
     {{holidayHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('HolidayUpdate.htm')"></i>
->>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509
   </p-header>
   <form [formGroup]="_frm">
     <div class="ui-g">

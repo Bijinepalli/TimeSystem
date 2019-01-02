@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
-  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory
+  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Invoice, TimeSheet
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -20,7 +20,7 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.67/';
+  private ipaddress = 'http://172.16.32.53/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -268,6 +268,70 @@ export class TimesystemService {
     return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
   }
 
+  getHolidayYears() {
+    return this.http.get<Holidays[]>(this.url + 'ListHolidayYears');
+  }
 
+  getHolidayList(year: string) {
+    const params = new HttpParams()
+      .set('year', year);
+    return this.http.get<Holidays[]>(this.url + 'GetHolidayList', { params });
+  }
+
+  getUnusedBillingCodes(codetype: string, usagetype: string, datesince: string) {
+    const params = new HttpParams()
+      .set('codetype', codetype)
+      .set('usagetype', usagetype)
+      .set('datesince', datesince);
+    return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
+  }
+
+  getBillableHours(code: string, key: string, codeInactive: string, assignInactive: string, startDate: string, endDate: string) {
+    const params = new HttpParams()
+      .set('code', code)
+      .set('key', key)
+      .set('codeInactive', codeInactive)
+      .set('assignInactive', assignInactive)
+      .set('startDate', startDate)
+      .set('endDate', endDate);
+    return this.http.get<BillingCodes[]>(this.url + 'GetBillableHours', { params });
+  }
+
+  getNonBillableHours(startdate: string, enddate: string, Id: string) {
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate)
+      .set('id', Id);
+    return this.http.get<any>(this.url + 'GetNonBillableSoftwareHours', { params });
+  }
+
+  getInvoiceData(invoiceDate: string, startDate: string, endDate: string, divisionid: string, productcode: string,
+    selectedValue: string, formattedStart: string, formattedEnd: string) {
+    const params = new HttpParams()
+      .set('invoiceDate', invoiceDate)
+      .set('startDate', startDate)
+      .set('endDate', endDate)
+      .set('divisionid', divisionid)
+      .set('productcode', productcode)
+      .set('billingcycle', selectedValue)
+      .set('formattedStart', formattedStart)
+      .set('formattedEnd', formattedEnd);
+    return this.http.get<Invoice[]>(this.url + 'GetInvoiceData', { params });
+  }
+  getNonBillableHourGroups(Id: string) {
+    const params = new HttpParams()
+      .set('Id', Id);
+    return this.http.get<NonBillables[]>(this.url + 'GetNonBillableHourGroups', { params });
+  }
+  getNonBillableCodesforGroup(GroupID: number, Subgroup: number) {
+    const params = new HttpParams()
+      .set('GroupID', GroupID.toString())
+      .set('Subgroup', Subgroup.toString());
+    return this.http.get<NonBillables[]>(this.url + 'GetNonBillableCodesForReportGroup', { params });
+  }
+
+  getDatebyPeriod() {
+    return this.http.get<TimeSheet[]>(this.url + 'GeneratePeriodEndDates');
+  }
 
 }

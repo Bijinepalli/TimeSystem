@@ -1,0 +1,123 @@
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    {{_header}}
+  </div>
+  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+    <div class="ui-g-3 ui-md-6"></div>
+    <div class="ui-g-3 ui-md-4"></div>
+    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
+      <a (click)="showHelp()" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g" *ngIf="!edit">
+  <div class="ui-g-12" style="text-align:right">
+    <button pButton pTooltip="Add a new primary group" tooltipPosition="bottom" class="ui-button-info" label="Add Primary Group"
+      (click)=addPrimaryGroup()></button>
+  </div>
+  <div class="ui-g-12">
+    <p-table #dt [columns]="cols" [value]="_groups" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto"> &nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th>Primary Report Group</th>
+          <th style="width: 5em">Delete</th>
+          <th style="width: 5em">Add Sub Group</th>
+          <th>Secondary Report Group</th>
+          <th style="width: 5em">Delete</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td>
+            <a [routerLink]="" (click)="editGroup(rowData.Group1,rowData.ID1,'main')">{{rowData['Group1']}}</a>
+          </td>
+          <td>
+            <i class="fa fa-times fa-150x" pTooltip="Delete this report group and all of its subgroups" style="cursor:pointer;color:red"
+              tooltipPosition="bottom" (click)="deleteGroup(rowData.ID1,'main')"></i>
+          </td>
+          <td>
+            <i class="fa fa-plus fa-150x" pTooltip="Click to add a new subgroup to this report group" style="cursor:pointer;color:red"
+              tooltipPosition="bottom" (click)="addSubGroup(rowData.ID1)"></i>
+          </td>
+          <td>
+            <a [routerLink]="" (click)="editGroup(rowData.Group2,rowData.ID2,'sub')">{{rowData['Group2']}}</a>
+          </td>
+          <td>
+            <i class="fa fa-times fa-150x" pTooltip="Delete this report group and all of its subgroups" style="cursor:pointer;color:red"
+              tooltipPosition="bottom" (click)="deleteGroup(rowData.ID2,'sub')"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <div class="ui-g-12" style="text-align:center">
+    <button pButton pTooltip="Cancel and return to the previous page" tooltipPosition="bottom" class="ui-button-info"
+      label="Return to Reports" (click)=returnReports()></button>
+  </div>
+</div>
+<div class="ui-g" *ngIf="edit">
+  <div class="ui-g-12 ui-md-12 ui-g-nopad">
+    <div class="ui-g-12 ui-md-2" style="text-align: right">
+      Group Name :
+    </div>
+    <div class="ui-g-12 ui-md-3">
+      <input type="text" style="width: 100%" pInputText [(ngModel)]="groupName">
+    </div>
+  </div>
+  <div class="ui-g  ui-g-nopad" *ngIf="secondarygroup" style="display: none">
+    <div class="ui-g-6 ui-md-12">
+      <p-checkbox binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
+    </div>
+  </div>
+  <div class="ui-g" *ngIf="secondarygroup" style="display:none">
+    <p-panel class="panelSecondaryGroup">
+      <p-header>
+        <h3 class="first">{{_selectString}}</h3>
+      </p-header>
+      <p-scrollPanel [style]="{height: '400px'}">
+        <div class="ui-g" style="margin-bottom:10px;color:black">
+          <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
+            <p-checkbox name="showSecondaryGroups" [value]="_dcb.value" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
+              (click)="selectcheck()"></p-checkbox>
+          </div>
+        </div>
+      </p-scrollPanel>
+      <p-footer>
+        <h3 class="first">{{_selectcheckbox.length}} record(s) selected</h3>
+      </p-footer>
+    </p-panel>
+  </div>
+  <div class="ui-g" *ngIf="secondarygroup" style="">
+    <p-pickList [target]="list2" [source]="list1" filterBy="ProjectName" sourceHeader="Unassigned {{_popUpHeader}}s"
+      targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true" [showSourceControls]="false" [showTargetControls]="false"
+      sourceFilterPlaceholder="Search by {{_popUpHeader}}Name" targetFilterPlaceholder="Search by {{_popUpHeader}}Name"
+      [sourceStyle]="{'height':'300px', 'width' : '400px'}" [targetStyle]="{'height':'300px', 'width' : '400px'}"
+      (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+      <ng-template let-column pTemplate="item">
+        <div class="ui-helper-clearfix">
+          {{column.value}}
+        </div>
+      </ng-template>
+    </p-pickList>
+  </div>
+  <div class="ui-g-12">
+    <div class="ui-g-2 ui-md-2">
+      <button pButton pTooltip="Cancel and return to the previous page" tooltipPosition="bottom" class="ui-button-info"
+        label="Cancel" (click)=cancelClick()></button>
+    </div>
+    <div class="ui-g-2 ui-md-2">
+      <button pButton pTooltip="Save this data" tooltipPosition="bottom" class="ui-button-info" label="Save" (click)=saveGroup()></button>
+    </div>
+  </div>
+</div>

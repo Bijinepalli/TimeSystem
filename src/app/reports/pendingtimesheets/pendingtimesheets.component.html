@@ -1,0 +1,52 @@
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    View Outstanding Timesheets
+  </div>
+  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+    <div class="ui-g-3 ui-md-6"></div>
+    <div class="ui-g-3 ui-md-4"></div>
+    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
+      <a (click)="showHelp()" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g-12">
+  Select a Period End :<p-dropdown [options]="dates" placeholder="Select Period End" [(ngModel)]="selectedDate" pTooltip="Pick the period end date to use. All outstanding timesheets for this period and earlier will be shown"
+    (onChange)="onDateChange($event)"></p-dropdown>
+</div>
+<div class="ui-g-12" *ngIf="showReport">
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
+        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns">
+          <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+            <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+          </div>
+          <ng-template #defaultColumn>
+            {{rowData[col.field]}}
+          </ng-template>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

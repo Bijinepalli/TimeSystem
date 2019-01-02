@@ -1,0 +1,72 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+    {{_codeHeader}}
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-6"></div>
+    <div class="ui-g-12 ui-md-4"></div>
+    <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
+      <a (click)="showHelp('ViewHolidays.htm')" style="cursor: pointer;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    </div>
+  </div>
+</div>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-3">
+    Select: <p-selectButton [options]="codeType" [(ngModel)]="selectedCodeType"></p-selectButton>
+  </div>
+  <div class="ui-g-12 ui-md-5">
+    <p-selectButton [options]="usageTypes" [(ngModel)]="selectedUsageType"></p-selectButton>
+    <p-dropdown [options]="dates" [(ngModel)]="selectedDate"></p-dropdown>
+  </div>
+  <div class="ui-g-12 ui-md-2">
+    <button pButton pTooltip="Search" tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=getReports()></button>
+  </div>
+</div>
+<div class="ui-g">
+  <p-scrollPanel [style]="{width: '100%', height: '700px'}">
+    <p-table #dt [columns]="cols" [value]="_codeList" [(selection)]="_selectedCode" [responsive]="false" dataKey="Key">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto"> &nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3em">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td>
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns">
+            {{rowData[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-scrollPanel>
+</div>
+<div class="ui-g" *ngIf="admin">
+  <div class="ui-g-6 ui-m-6" style="text-align:right">
+    <button pButton pTooltip="Delete Codes" tooltipPosition="bottom" class="ui-button-info" label="Delete Codes"
+      (click)=deleteCodes()></button>
+  </div>
+  <div class="ui-g-6 ui-m-6" style="text-align:left; display: none">
+    <button pButton pTooltip="Inactivate Codes" tooltipPosition="bottom" class="ui-button-info" label="Inactivate Codes"
+      (click)=deleteCodes()></button>
+  </div>
+</div>

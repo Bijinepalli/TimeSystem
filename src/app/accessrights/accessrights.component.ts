@@ -91,7 +91,7 @@ export class AccessrightsComponent implements OnInit {
       const chk = this.pageFormgroup.get('chkPage_' + this._pages[i].ID).value;
       if (chk === true) {
         this._selectedPage.Role = this.pageFormgroup.get('roleDrp').value;
-        this._selectedPage.PageId = i + 1;
+        this._selectedPage.PageId = this._pages[i].ID;
         this._selectedPage.HasView = 1;
         if (this.pageFormgroup.controls['editSwitch_' + this._pages[i].ID].value === true) {
           this._selectedPage.HasEdit = 1;

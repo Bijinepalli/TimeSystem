@@ -68,6 +68,14 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+import { HolidaysreportComponent } from './holidaysreport/holidaysreport.component';
+import { UnusedbillingcodesComponent } from './reports/unusedbillingcodes/unusedbillingcodes.component';
+import { BillablehoursComponent } from './reports/billablehours/billablehours.component';
+import { NonbillablehoursComponent } from './reports/nonbillablehours/nonbillablehours.component';
+import { InvoicedataComponent } from './reports/invoicedata/invoicedata.component';
+import { NonbillablehoursAddgroupComponent } from './reports/nonbillablehours-addgroup/nonbillablehours-addgroup.component';
+import { PeriodendhoursComponent } from './reports/periodendhours/periodendhours.component';
+import { PendingtimesheetsComponent } from './reports/pendingtimesheets/pendingtimesheets.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -94,6 +102,13 @@ const appRoutes: Routes = [
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
+      { path: 'holidayreports', component: HolidaysreportComponent },
+      { path: 'unusedbillingcodes', component: UnusedbillingcodesComponent },
+      { path: 'billablehours', component: BillablehoursComponent },
+      { path: 'nonbillablehours', component: NonbillablehoursComponent },
+      { path: 'nonbillableaddgroup/:id', component: NonbillablehoursAddgroupComponent },
+      { path: 'invoicedata', component: InvoicedataComponent },
+      { path: 'periodendhours', component: PeriodendhoursComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -155,6 +170,14 @@ const appRoutes: Routes = [
     ChangepasswordComponent,
     EmployeelogindataComponent,
     EmployeesbybillingcodeComponent,
+    HolidaysreportComponent,
+    UnusedbillingcodesComponent,
+    BillablehoursComponent,
+    NonbillablehoursComponent,
+    InvoicedataComponent,
+    NonbillablehoursAddgroupComponent,
+    PeriodendhoursComponent,
+    PendingtimesheetsComponent,
   ],
   imports: [
     BrowserAnimationsModule,

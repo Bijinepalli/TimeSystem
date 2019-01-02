@@ -9,6 +9,7 @@ export class Holidays {
     HolidayDate: string;
     CalendarYear: number;
     InUse: number;
+    CompanyName: string;
 }
 
 export class Companies {
@@ -43,6 +44,14 @@ export class NonBillables {
     Inactive: boolean;
     CreatedOn: string;
     CanBeDeleted: number;
+    Group1: string;
+    Group2: string;
+    LastName: string;
+    FirstName: string;
+    CalendarDate: string;
+    Hours: string;
+    ID1?: number;
+    ID2?: number;
 }
 
 export class AppSettings {
@@ -143,6 +152,8 @@ export class BillingCodes {
     Salaried: boolean;
     Inactive: boolean;
     InactiveRel: boolean;
+    CalendarDate: string;
+    Hours: number;
 }
 export class BillingCodesSpecial {
     value: string;
@@ -170,4 +181,23 @@ export class EmployeePasswordHistory {
     EmployeeID?: number;
     Password?: string;
     CheckLength?: number;
+}
+export class Invoice {
+    Id?: number;
+    InvoiceDate?: string;
+    DivisionNumber?: number;
+    CustomerNumber?: string;
+    ProductCode?: string;
+    Hours?: string;
+    Rate?: string;
+    Amount?: string;
+    StartDate?: string;
+    EndDate?: string;
+    ClientName?: string;
+    PONumber?: string;
+    Inactive: boolean;
+}
+
+export class TimeSheet {
+    PeriodEndDate: string;
 }
