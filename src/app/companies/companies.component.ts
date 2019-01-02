@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ErrorHandler } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Companies, CompanyHolidays } from '../model/objects';
 import { YearEndCodes, BillingCode } from '../model/constants';
@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Footer } from 'primeng/primeng';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-companies',
@@ -18,7 +19,7 @@ export class CompaniesComponent implements OnInit {
   helpText: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router,
-    private msgSvc: MessageService, private confSvc: ConfirmationService) { }
+    private msgSvc: MessageService, private confSvc: ConfirmationService, private commonSvc: CommonService) { }
 
   _companies: Companies[] = [];
   _companyHours: Companies[] = [];
@@ -34,12 +35,21 @@ export class CompaniesComponent implements OnInit {
   _slctedCompanyId: any;
 
   _frm = new FormGroup({});
+  chkDefaultCompany = false;
+  _selectedCompany: Companies;
+  _IsEdit = false;
 
   _slctHolidays: CompanyHolidays[] = [];
+  _slctHolidaysSaved: CompanyHolidays[] = [];
   _availableHolidays: CompanyHolidays[] = [];
   _years: any;
 
   ngOnInit() {
+
+    this.cols = [
+      { field: 'CompanyName', header: 'Company Name' },
+      { field: 'DefaultCompany', header: 'Default' },
+    ];
 
     this._years = [
       { label: '2010', value: '2010' },
@@ -57,120 +67,79 @@ export class CompaniesComponent implements OnInit {
     const _date: Date = new Date();
     this.selectedYear = _date.getFullYear();
 
-    this.cols = [
-      { field: 'CompanyName', header: 'Company Name' },
-      { field: 'DefaultCompany', header: 'Default' },
-    ];
-
     this.getCompanyUsedHours();
-
-    this._frm.addControl('companyName', new FormControl(null, Validators.required));
-    this._frm.addControl('companyDefault', new FormControl(null, null));
-
+    this.addControls();
   }
-
-  getComapanies() {
-    this.timesysSvc.getCompanies()
-      .subscribe(
-        (data) => {
-          this._companies = data;
-          this._recData = data.length + ' companies found';
-
-          for (let r = 0; r < this._companies.length; r++) {
-            const exist = this._companyHours.filter((p) => p.Id === this._companies[r].Id).length;
-            if (exist > 0) {
-              this._companies[r].HolidaysInUse = 1;
-            }
-          }
-
-        }
-      );
-  }
-
   getCompanyUsedHours() {
     this.timesysSvc.getCompaniesWithUseHours(this._bc.NonBillable, this._yec.HolidayCode)
       .subscribe(
         (data) => {
-          this._companyHours = data;
-          this.getComapanies();
-
-        }
-      );
+          if (data !== undefined && data !== null) {
+            this._companyHours = data;
+          } else {
+            this._companyHours = [];
+          }
+          this.getCompanies();
+        },
+        (error) => {
+          console.log(error);
+        });
   }
-
-  deleteCompany(data: Companies) {
-    this.confSvc.confirm({
-      message: 'Are you sure you want to delete ' + data.CompanyName + '?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        /* do nothing */
-      },
-      reject: () => {
-        /* do nothing */
-      }
-
-    });
+  getCompanies() {
+    this.timesysSvc.getCompanies()
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null) {
+            this._companies = data;
+            this._recData = data.length + ' companies found';
+            if (this._companyHours !== undefined && this._companyHours !== null && this._companyHours.length > 0) {
+              for (let r = 0; r < this._companies.length; r++) {
+                const exist = this._companyHours.filter((p) => p.Id === this._companies[r].Id).length;
+                if (exist > 0) {
+                  this._companies[r].HolidaysInUse = 1;
+                }
+              }
+            }
+          } else {
+            this._companies = [];
+            this._recData = 'No companies found';
+          }
+        },
+        (error) => {
+          console.log(error);
+        });
   }
 
   addCompany() {
-    this.companyDialog = true;
-    this.companyHdr = 'Add New Company';
+    this._IsEdit = false;
+    this._selectedCompany = {};
     this.resetForm();
-    this.addControls(undefined);
+    this.setDataToControls(this._selectedCompany);
+    this.companyHdr = 'Add New Company';
+    this.companyDialog = true;
   }
 
   editCompany(data: Companies) {
-    this.companyDialog = true;
-    this.companyHdr = 'Edit Company';
+    this._IsEdit = true;
+    this._selectedCompany = data;
     this.resetForm();
-    this.addControls(data);
+    this.setDataToControls(data);
+    this.companyHdr = 'Edit Company';
+    this.companyDialog = true;
   }
 
-  changeHolidayYear() {
-    this.getCompanyHolidays();
+  addControls() {
+    this._frm.addControl('companyName', new FormControl(null, Validators.required));
+    this.chkDefaultCompany = false;
   }
 
-  assignCompanyHolidays(Companydata: Companies) {
-    this._slctedCompanyId = Companydata.Id;
-    this.companyHolidayHdr = 'Assign Holidays to ' + Companydata.CompanyName;
-    this.companyHolidayDialog = true;
-    this.selectedYear = new Date().getFullYear();
-    this.getCompanyHolidays();
-  }
-
-  getCompanyHolidays() {
-    console.log(this.selectedYear);
-    this._slctHolidays = [];
-    this._availableHolidays = [];
-    this.timesysSvc.getCompanyHolidays(this.selectedYear.toString(), this._slctedCompanyId)
-      .subscribe((data) => {
-        this._slctHolidays = data[0];
-        this._availableHolidays = data[1];
-        console.log(data[0].length + '-' + data[1].length);
-      });
-  }
-
-  addControls(data: Companies) {
-    if (data !== undefined) {
-      this._frm.controls['companyName'].setValue(data.CompanyName);
-      this._frm.controls['companyDefault'].setValue(data.DefaultCompany);
+  setDataToControls(data: Companies) {
+    this._frm.controls['companyName'].setValue(data.CompanyName);
+    if (data.DefaultCompany !== undefined) {
+      this.chkDefaultCompany = data.DefaultCompany;
+    } else {
+      this.chkDefaultCompany = false;
     }
-  }
-
-  cancelCompany() {
-    this.companyDialog = false;
-    this.companyHolidayDialog = false;
-  }
-
-  saveCompanyHolidays() {
-    console.log(this._slctedCompanyId);
-    console.log(this._slctHolidays.length);
-    this.companyHolidayDialog = false;
-  }
-
-  saveCompany() {
-    this.companyDialog = false;
   }
 
   hasFormErrors() {
@@ -184,6 +153,14 @@ export class CompaniesComponent implements OnInit {
     this._frm.reset();
   }
 
+  clearControls() {
+    this._IsEdit = false;
+    this._selectedCompany = null;
+    this.resetForm();
+    this.companyHdr = 'Add New Company';
+    this.companyDialog = false;
+  }
+
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(
@@ -193,8 +170,10 @@ export class CompaniesComponent implements OnInit {
           const parser = new DOMParser();
           const parsedHtml = parser.parseFromString(data, 'text/html');
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
+        },
+        (error) => {
+          console.log(error);
+        });
   }
 
   sortTarget() {
@@ -212,4 +191,176 @@ export class CompaniesComponent implements OnInit {
     );
   }
 
+  cancelCompany() {
+    this.clearControls();
+  }
+
+  saveCompany() {
+    if (this._IsEdit === false) {
+      if (this._selectedCompany === undefined || this._selectedCompany === null) {
+        this._selectedCompany = {};
+      }
+      this._selectedCompany.Id = -1;
+    }
+    this._selectedCompany.CompanyName = this._frm.controls['companyName'].value.toString().trim();
+    this._selectedCompany.DefaultCompany = this.chkDefaultCompany;
+    this.SaveCompanySPCall();
+  }
+
+  SaveCompanySPCall() {
+    this.timesysSvc.Company_InsertOrUpdate(this._selectedCompany)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== null && outputData.ErrorMessage !== '') {
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'error',
+              summary: 'Error!',
+              detail: outputData.ErrorMessage
+            });
+          } else {
+            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Company saved successfully' });
+            this.clearControls();
+            this.getCompanyUsedHours();
+          }
+        },
+        (error) => {
+          console.log(error);
+        });
+  }
+
+  deleteCompany(data: Companies) {
+    this.confSvc.confirm({
+      message: 'Are you sure you want to delete ' + data.CompanyName + '?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        /* do nothing */
+        this.timesysSvc.Company_Delete(data)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== null && outputData.ErrorMessage !== '') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess',
+                  severity: 'success',
+                  summary: 'Info Message',
+                  detail: 'Company deleted successfully'
+                });
+                this.getCompanyUsedHours();
+              }
+            },
+            (error) => {
+              console.log(error);
+            });
+      },
+      reject: () => {
+        /* do nothing */
+      }
+
+    });
+  }
+
+  changeHolidayYear() {
+    this.clearControls();
+    this.getCompanyHolidays();
+  }
+
+  getCompanyHolidays() {
+    this._slctHolidays = [];
+    this._slctHolidaysSaved = [];
+    this._availableHolidays = [];
+    this.timesysSvc.getCompanyHolidays(this.selectedYear.toString(), this._slctedCompanyId)
+      .subscribe(
+        (data) => {
+          this._slctHolidays = [];
+          this._slctHolidaysSaved = [];
+          this._availableHolidays = [];
+          if (data !== undefined && data !== null && data.length > 0) {
+            if (data[0] !== undefined && data[0] !== null && data[0].length > 0) {
+              this._slctHolidays = this._slctHolidays.concat(data[0]);
+              this._slctHolidaysSaved = this._slctHolidaysSaved.concat(data[0]);
+            }
+            if (data[1] !== undefined && data[1] !== null && data[1].length > 0) {
+              this._availableHolidays = data[1];
+            }
+          }
+        },
+        (error) => {
+          console.log(error);
+        });
+  }
+
+  assignCompanyHolidays(companyData: Companies) {
+    this._slctedCompanyId = companyData.Id;
+    this.selectedYear = new Date().getFullYear();
+    this.getCompanyHolidays();
+    this.companyHolidayHdr = 'Assign Holidays to ' + companyData.CompanyName;
+    this.companyHolidayDialog = true;
+  }
+
+  saveCompanyHoliday() {
+    this.SaveCompanyHolidaySPCall();
+  }
+  cancelCompanyHoliday() {
+    if (this.commonSvc.isArrayEqual(this._slctHolidays, this._slctHolidaysSaved)) {
+      this.clearCompanyHolidaysControls();
+    } else {
+      this.confSvc.confirm({
+        message: 'You have some unsaved changes. Are you sure you want to close ?',
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          /* do nothing */
+          this.clearCompanyHolidaysControls();
+        },
+        reject: () => {
+          /* do nothing */
+        }
+      });
+    }
+  }
+
+  clearCompanyHolidaysControls() {
+    this.companyHolidayDialog = false;
+    this._slctedCompanyId = null;
+    this._slctHolidays = [];
+    this._slctHolidaysSaved = [];
+    this._availableHolidays = [];
+  }
+
+  SaveCompanyHolidaySPCall() {
+    this.timesysSvc.CompanyHolidays_DeleteAndInsert(this._slctHolidays)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== null && outputData.ErrorMessage !== '') {
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'error',
+              summary: 'Error!',
+              detail: outputData.ErrorMessage
+            });
+          } else {
+            this.msgSvc.add({
+              key: 'saveSuccess', severity: 'success', summary: 'Info Message',
+              detail: 'Company Holidays saved successfully'
+            }
+            );
+            this.clearCompanyHolidaysControls();
+            this.getCompanyUsedHours();
+          }
+        },
+        (error) => {
+          console.log(error);
+        });
+  }
 }

@@ -18,7 +18,9 @@
     <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-7">
-    <i class="fa fa-play-circle fa-2x" pTooltip="Search" style="cursor:pointer;color:cyan" (click)="getEmployeesForReport()" tooltipPosition="bottom"></i>
+      <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+      (click)=getEmployeesForReport()></button>
+    <!-- <i class="fa fa-play-circle fa-2x" pTooltip="Search" style="cursor:pointer;color:cyan" (click)="getEmployeesForReport()" tooltipPosition="bottom"></i> -->
   </div>
 </div>
 

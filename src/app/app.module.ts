@@ -1,7 +1,7 @@
 
 
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -30,9 +30,10 @@ import { AccordionModule } from 'primeng/accordion';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { DataViewModule } from 'primeng/dataview';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {PickListModule} from 'primeng/picklist';
-import {SelectButtonModule} from 'primeng/selectbutton';
+import { PickListModule } from 'primeng/picklist';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
+import { PanelMenuModule } from 'primeng/panelmenu';
 
 import { ToastModule } from 'primeng/toast';
 
@@ -76,6 +77,19 @@ import { InvoicedataComponent } from './reports/invoicedata/invoicedata.componen
 import { NonbillablehoursAddgroupComponent } from './reports/nonbillablehours-addgroup/nonbillablehours-addgroup.component';
 import { PeriodendhoursComponent } from './reports/periodendhours/periodendhours.component';
 import { PendingtimesheetsComponent } from './reports/pendingtimesheets/pendingtimesheets.component';
+import { HoursbyemployeeComponent } from './reports/hoursbyemployee/hoursbyemployee.component';
+import { WeeklyhoursbyemployeeComponent } from './reports/weeklyhoursbyemployee/weeklyhoursbyemployee.component';
+import { EmployeehoursbybillingcodeComponent } from './reports/employeehoursbybillingcode/employeehoursbybillingcode.component';
+import { EmployeeclientratesComponent } from './reports/employeeclientrates/employeeclientrates.component';
+import { HoursbytimesheetcategoryComponent } from './reports/hoursbytimesheetcategory/hoursbytimesheetcategory.component';
+import { PayrollComponent } from './reports/payroll/payroll.component';
+import { PaystubsComponent } from './paystubs/paystubs.component';
+import { TimesheetsComponent } from './timesheets/timesheets.component';
+import { SelecttimesheetperiodComponent } from './selecttimesheetperiod/selecttimesheetperiod.component';
+import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimesheet.component';
+
+import { CommonService } from './service/common.service';
+import { MailsComponent } from './mails/mails.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -109,7 +123,19 @@ const appRoutes: Routes = [
       { path: 'nonbillableaddgroup/:id', component: NonbillablehoursAddgroupComponent },
       { path: 'invoicedata', component: InvoicedataComponent },
       { path: 'periodendhours', component: PeriodendhoursComponent },
+      { path: 'hoursbyemployee', component: HoursbyemployeeComponent },
+      { path: 'weeklyhoursbyemployee', component: WeeklyhoursbyemployeeComponent },
+      { path: 'employeehoursbybillingcode', component: EmployeehoursbybillingcodeComponent },
+      { path: 'employeeclientrates', component: EmployeeclientratesComponent },
+      { path: 'hoursbytimesheetcategory', component: HoursbytimesheetcategoryComponent },
+      { path: 'payroll', component: PayrollComponent },
+      { path: 'paystubs', component: PaystubsComponent },
+      { path: 'timesheets', component: TimesheetsComponent },
+      { path: 'selecttimesheetperiod', component: SelecttimesheetperiodComponent },
       // { path: 'burndown', component: BurndownchartComponent },
+      { path: 'maintaintimesheet', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id/:periodEnd', component: MaintaintimesheetComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
       // { path: 'searchissue/:id', component: SearchissueComponent },
@@ -122,6 +148,7 @@ const appRoutes: Routes = [
       // { path: 'issuetracker', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
+      { path: 'mails', component: MailsComponent },
     ]
   },
   {
@@ -169,6 +196,7 @@ const appRoutes: Routes = [
     ForgotpasswordComponent,
     ChangepasswordComponent,
     EmployeelogindataComponent,
+    MailsComponent,
     EmployeesbybillingcodeComponent,
     HolidaysreportComponent,
     UnusedbillingcodesComponent,
@@ -178,6 +206,16 @@ const appRoutes: Routes = [
     NonbillablehoursAddgroupComponent,
     PeriodendhoursComponent,
     PendingtimesheetsComponent,
+    HoursbyemployeeComponent,
+    WeeklyhoursbyemployeeComponent,
+    EmployeehoursbybillingcodeComponent,
+    EmployeeclientratesComponent,
+    HoursbytimesheetcategoryComponent,
+    PayrollComponent,
+    PaystubsComponent,
+    TimesheetsComponent,
+    SelecttimesheetperiodComponent,
+    MaintaintimesheetComponent,
   ],
   imports: [
     BrowserAnimationsModule,
@@ -224,11 +262,17 @@ const appRoutes: Routes = [
     OverlayPanelModule,
     ProgressSpinnerModule, ProgressBarModule, BlockUIModule, SplitButtonModule,
     FileUploadModule,
-    RouterModule.forRoot(appRoutes), AccordionModule,
+    RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
-    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule
+    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
   ],
-  providers: [TimesystemService, MessageService, ConfirmationService],
+  providers: [TimesystemService, MessageService, ConfirmationService, CommonService,
+    { provide: APP_INITIALIZER, useFactory: jokesProviderFactory, deps: [CommonService], multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+export function jokesProviderFactory(provider: CommonService) {
+  return () => provider.setAppSettings();
+}

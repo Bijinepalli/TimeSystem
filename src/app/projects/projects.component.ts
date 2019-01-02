@@ -16,7 +16,6 @@ export class ProjectsComponent implements OnInit {
   _status: { label: string; value: string; }[];
   projectDialog: boolean;
   projectHdr: string;
-  _createdOn: string;
   visibleHelp: boolean;
   helpText: string;
 
@@ -24,14 +23,15 @@ export class ProjectsComponent implements OnInit {
     private confSvc: ConfirmationService) { }
 
   cols: any;
-  _projects: Projects[] = [];
-  _frm = new FormGroup({});
-
-  _recData: string;
   _bc: BillingCode = new BillingCode();
-  _projectId: any;
+  _projects: Projects[] = [];
   _companies: DrpList[] = [];
+  _recData: string;
 
+  _frm = new FormGroup({});
+  _IsEdit = false;
+  _selectedProject: Projects;
+  chkInactive = false;
 
   ngOnInit() {
 
@@ -47,14 +47,9 @@ export class ProjectsComponent implements OnInit {
       { field: 'Key', header: 'Code' },
       { field: 'CreatedOn', header: 'CreatedOn' },
     ];
-
-    this.getCompanies();
+    this.addControls();
     this.getProjects();
-
-    this._frm.addControl('projectName', new FormControl(null, Validators.required));
-    this._frm.addControl('projectCode', new FormControl(null, Validators.required));
-    this._frm.addControl('parentCompany', new FormControl(null, null));
-    this._frm.addControl('projectStatus', new FormControl(null, null));
+    this.getCompanies();
   }
 
   changeStatus() {
@@ -79,9 +74,12 @@ export class ProjectsComponent implements OnInit {
     this.timesysSvc.getCompanies()
       .subscribe(
         (data) => {
-          this._companies.push({ label: '', value: '' });
-          for (let r = 0; r < data.length; r++) {
-            this._companies.push({ label: data[r].CompanyName, value: data[r].Id.toString() });
+          if (data !== undefined && data !== null) {
+            for (let r = 0; r < data.length; r++) {
+              this._companies.push({ label: data[r].CompanyName, value: data[r].Id.toString() });
+            }
+          } else {
+            this._companies = [];
           }
         }
       );
@@ -91,93 +89,85 @@ export class ProjectsComponent implements OnInit {
     this.timesysSvc.getProjects(this._bc.Project)
       .subscribe(
         (data) => {
-          console.log(this._selectedStatus);
-          console.log(JSON.stringify(data[0]));
-          if (this._selectedStatus === '1') {
-            this._projects = data[0].filter((s) => s.Inactive === false);
-          } else if (this._selectedStatus === '0') {
-            this._projects = data[0].filter((s) => s.Inactive === true);
-          } else {
-            this._projects = data[0];
-          }
-          this._recData = this._projects.length + ' matching projects';
+          if (data !== undefined && data !== null && data.length > 0) {
+            if (data[0] !== undefined && data[0] !== null && data[0].length > 0) {
+              if (this._selectedStatus === '1') {
+                this._projects = data[0].filter((s) => s.Inactive === false);
+              } else if (this._selectedStatus === '0') {
+                this._projects = data[0].filter((s) => s.Inactive === true);
+              } else {
+                this._projects = data[0];
+              }
+              if (data[1] !== undefined && data[1] !== null && data[1].length > 0
+                && this._projects !== null && this._projects.length > 0) {
+                let _tmpCharge: Projects[] = [];
+                _tmpCharge = data[1];
 
-          let _tmpCharge: Projects[] = [];
-          _tmpCharge = data[1];
-
-          for (let r = 0; r < this._projects.length; r++) {
-            const exists = _tmpCharge.filter((f) => f.Id === this._projects[r].Id).length;
-            if (exists > 0) {
-              this._projects[r].CanBeDeleted = 1;
+                for (let r = 0; r < this._projects.length; r++) {
+                  const exists = _tmpCharge.filter((f) => f.Id === this._projects[r].Id).length;
+                  if (exists > 0) {
+                    this._projects[r].CanBeDeleted = 1;
+                  }
+                }
+              }
+            } else {
+              this._projects = [];
             }
+          } else {
+            this._projects = [];
           }
 
+          if (this._projects !== null && this._projects.length > 0) {
+            this._recData = this._projects.length + ' projects found';
+          } else {
+            this._recData = 'No projects found';
+          }
         }
       );
-  }
-
-  deleteProject(data: Projects) {
-    this.confSvc.confirm({
-      message: 'Are you sure you want to delete ' + data.ProjectName + '?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        /* do nothing */
-      },
-      reject: () => {
-        /* do nothing */
-      }
-
-    });
   }
 
   addProject() {
-    this.projectDialog = true;
-    this.projectHdr = 'Add New Project';
-    this._projectId = '';
-    this._createdOn = '';
+    this._IsEdit = false;
+    this.chkInactive = false;
+    this._selectedProject = {};
     this.resetForm();
-    this.addControls(undefined);
-  }
-
-  addControls(data: Projects) {
-    this._frm.controls['projectName'].setValue(data.ProjectName);
-    this._frm.controls['projectCode'].setValue(data.Key);
-    this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
-    this._frm.controls['projectStatus'].setValue(data.Inactive === true ? 'true' : 'false');
-
+    this.setDataToControls(this._selectedProject);
+    this.projectHdr = 'Add New Project';
+    this.projectDialog = true;
   }
 
   editProject(data: Projects) {
-    this.projectDialog = true;
-    this.projectHdr = 'Edit Project';
-    this._projectId = data.Id;
-    this._createdOn = data.CreatedOn;
+    this._IsEdit = true;
+    this.chkInactive = false;
+    this._selectedProject = data;
     this.resetForm();
-    this.addControls(data);
+    this.setDataToControls(data);
+    this.projectHdr = 'Edit Project';
+    this.projectDialog = true;
   }
 
-  cancelProject() {
-    this.projectDialog = false;
+  addControls() {
+    this._frm.addControl('projectName', new FormControl(null, Validators.required));
+    this._frm.addControl('projectCode', new FormControl(null,
+      [Validators.required,
+      Validators.pattern('^[a-zA-Z0-9\\040\\047\\046\\055\\056\\057]*$'),
+      ]
+    ));
+    this._frm.addControl('parentCompany', new FormControl(null, null));
+    this.chkInactive = false;
   }
 
-  saveProject() {
-    this.projectDialog = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-
-        }
-      );
-
+  setDataToControls(data: Projects) {
+    this._frm.controls['projectName'].setValue(data.ProjectName);
+    this._frm.controls['projectCode'].setValue(data.Key);
+    if (data.CompanyId !== undefined) {
+      this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
+    }
+    if (data.Inactive !== undefined) {
+      this.chkInactive = data.Inactive;
+    } else {
+      this.chkInactive = false;
+    }
   }
 
   hasFormErrors() {
@@ -191,5 +181,107 @@ export class ProjectsComponent implements OnInit {
     this._frm.reset();
   }
 
+  clearControls() {
+    this._IsEdit = false;
+    this._selectedProject = null;
+    this.chkInactive = false;
+    this.resetForm();
+    this.projectHdr = 'Add New Project';
+    this.projectDialog = false;
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
+
+  cancelProject() {
+    this.clearControls();
+  }
+
+  saveProject() {
+    if (this._IsEdit === false) {
+      if (this._selectedProject === undefined || this._selectedProject === null) {
+        this._selectedProject = {};
+      }
+      this._selectedProject.Id = -1;
+    }
+    this._selectedProject.ProjectName = this._frm.controls['projectName'].value.toString().trim();
+    this._selectedProject.Key = this._frm.controls['projectCode'].value.toString().toUpperCase().trim();
+    this._selectedProject.CompanyId = this._frm.controls['parentCompany'].value.toString().trim();
+    this._selectedProject.Inactive = this.chkInactive;
+    this._selectedProject.ChargeType = this._bc.Project;
+    this.SaveProjectSPCall();
+  }
+
+  SaveProjectSPCall() {
+    this.timesysSvc.Project_InsertOrUpdate(this._selectedProject)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== null && outputData.ErrorMessage !== '') {
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'error',
+              summary: 'Error!',
+              detail: outputData.ErrorMessage
+            });
+          } else {
+            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Project saved successfully' });
+            this.clearControls();
+            this.getProjects();
+          }
+        },
+        (error) => {
+          console.log(error);
+        });
+  }
+  deleteProject(data: Projects) {
+    data.ChargeType = this._bc.Project;
+    this.confSvc.confirm({
+      message: 'Are you sure you want to delete ' + data.ProjectName + '?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        /* do nothing */
+        this.timesysSvc.Project_Delete(data)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== null && outputData.ErrorMessage !== '') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess',
+                  severity: 'success',
+                  summary: 'Info Message',
+                  detail: 'Project deleted successfully'
+                });
+                this.getProjects();
+              }
+            },
+            (error) => {
+              console.log(error);
+            });
+      },
+      reject: () => {
+        /* do nothing */
+      }
+
+    });
+  }
 
 }

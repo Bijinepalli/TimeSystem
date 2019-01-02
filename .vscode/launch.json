@@ -9,7 +9,7 @@
             "type": "firefox",
             "request": "launch",
             "name": "Launch Edge against localhost",
-            "url": "http://localhost:4400",
+            "url": "http://localhost:4300",
             "webRoot": "${workspaceFolder}"
         }
     ]

@@ -14,7 +14,7 @@
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Customer" tooltipPosition="bottom" class="ui-button-info"
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Client" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Client" (click)=addClient()></button>
   </div>
 </div>
@@ -65,7 +65,7 @@
           </div>
         </td>
         <td style="text-align: center">
-          <i *ngIf="rowData['used'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused client" style="cursor:pointer;color:red"
+          <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x" pTooltip="Delete this unused client" style="cursor:pointer;color:red"
             tooltipPosition="bottom" (click)="deleteClient(rowData)"></i>
         </td>
       </tr>
@@ -86,55 +86,62 @@
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           Client Code *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode">
+          <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode"
+          appendTo="body" pToolTip="Unique client code that matches what's in the payroll system" >
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           Client Name *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName">
+          <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName"
+          appendTo="body" pToolTip="Unique client name that matches what's in the payroll system" >
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Billing Cycle *<br>
+          Billing Cycle <br>
           <div style="height:5px"></div>
-          <p-dropdown [options]="_billingCycle" [(ngModel)]="_billingCycleDefault" formControlName="billingCycle"></p-dropdown>
+          <p-dropdown appendTo="body" [options]="_billingCycle" placeholder="Select Billing Cycle" formControlName="billingCycle"
+          pToolTip="The billing cycle used for this client." [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          PO Number *<br>
+          PO Number <br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber">
+          <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber"
+          appendTo="body" pToolTip="Purchase order number" >
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Customer Number *<br>
+          Customer Number <br>
           <div style="height:5px"></div>
-          <p-dropdown appendTo="body" [options]="_customerNames" [(ngModel)]="selectedCustomer" formControlName="customerName"></p-dropdown>
+          <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer" formControlName="customerName"
+          pToolTip="The customer to invoice for hours charged to this client." [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Parent Company *<br>
+          Parent Company <br>
           <div style="height:5px"></div>
-          <p-dropdown appendTo="body" [options]="_companyNames" [(ngModel)]="selectedCompany" formControlName="parentCompany"></p-dropdown>
+          <p-dropdown appendTo="body" [options]="_companyNames" placeholder="Select Company" formControlName="parentCompany"
+          pToolTip="The company whose holiday schedule this client follows. Disabled if changing this would affect existing timesheets." [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="IsEdit">
+      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div style="height:5px"></div>
-          <p-checkbox name="groupname" value="true" [(ngModel)]="selectActiveInactive" label="Inactive" formControlName="checkActive"></p-checkbox>
+          <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
+          pTooltip="Check to mark this client as inactive. It will not be allowed on new timesheets 
+          and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="IsEdit">
+      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Created On *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" [value]="clientCreatedOn" disabled="disabled">
+          Created On: {{_selectedClient.CreatedOn}}
         </div>
       </div>
     </div>

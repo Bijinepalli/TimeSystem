@@ -38,7 +38,7 @@
           <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:100%">
         </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad"  style="text-align: right">
+        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -76,7 +76,7 @@
 </div>
 
 
-<p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true" >
+<p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true">
   <p-header>
     {{holidayHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -88,14 +88,17 @@
         <div class="ui-g-12 ui-md-12">
           Holiday Name *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Holiday Name" formControlName="holidayName">
+          <input *ngIf="!_IsEdit || !(_IsEdit && (_selectedHoliday.InUse>0))" type="text" pInputText style="width:100%"
+            placeholder="Holiday Name" formControlName="holidayName">
+          <label *ngIf="(_IsEdit && (_selectedHoliday.InUse>0))"><b>{{_selectedHoliday.HolidayName}}</b></label>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Date * (mm-dd-yyyy)<br>
           <div style="height:5px"></div>
-          <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate" appendTo="body"></p-calendar>
+          <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate"
+            appendTo="body"></p-calendar>
         </div>
       </div>
     </div>
@@ -113,12 +116,6 @@
   </form>
 </p-dialog>
 
-<<<<<<< HEAD
-<p-sidebar [(visible)]="_sidebarHelp" *ngIf="_helpPage" position="right" [baseZIndex]="10000" styleClass="sidebarHelp" 
-  [dismissible]="true">
-  <div  [innerHTML]="_helpPage"></div>
-=======
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <div [innerHtml]="helpText" class="helpDisplayClass"></div>
->>>>>>> cf14ac8b71d05484896c4c153a1bbb8b242dd509
 </p-sidebar>

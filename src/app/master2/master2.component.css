@@ -19,7 +19,7 @@
   
   #sidenav, #sidenav-mini {
     height: 100%;
-    position: fixed;
+    position: relative;
     top: 70px;
     padding-left: 0px;
     padding-top: 1em;
@@ -31,12 +31,12 @@ overflow-y: auto;
   
   #content-body {
     top: 60px;
-    position: absolute;
-    left: 250px;
+    position: relative;
+    left: 0px;
   }
   
   #sidegutter {
-    width: 340px;
+    /*width: 340px;*/
   }
   
   #minigutter {
