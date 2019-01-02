@@ -30,8 +30,8 @@ import { AccordionModule } from 'primeng/accordion';
 import { KeyFilterModule } from 'primeng/keyfilter';
 import { DataViewModule } from 'primeng/dataview';
 import { InputSwitchModule } from 'primeng/inputswitch';
-import {PickListModule} from 'primeng/picklist';
-import {SelectButtonModule} from 'primeng/selectbutton';
+import { PickListModule } from 'primeng/picklist';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 
 import { ToastModule } from 'primeng/toast';
@@ -68,6 +68,12 @@ import { ForgotpasswordComponent } from './forgotpassword/forgotpassword.compone
 import { ChangepasswordComponent } from './changepassword/changepassword.component';
 import { EmployeesbybillingcodeComponent } from './reports/employeesbybillingcode/employeesbybillingcode.component';
 import { EmployeelogindataComponent } from './reports/employeelogindata/employeelogindata.component';
+import { HoursbyemployeeComponent } from './reports/hoursbyemployee/hoursbyemployee.component';
+import { WeeklyhoursbyemployeeComponent } from './reports/weeklyhoursbyemployee/weeklyhoursbyemployee.component';
+import { EmployeehoursbybillingcodeComponent } from './reports/employeehoursbybillingcode/employeehoursbybillingcode.component';
+import { EmployeeclientratesComponent } from './reports/employeeclientrates/employeeclientrates.component';
+import { HoursbytimesheetcategoryComponent } from './reports/hoursbytimesheetcategory/hoursbytimesheetcategory.component';
+import { PayrollComponent } from './reports/payroll/payroll.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -94,6 +100,12 @@ const appRoutes: Routes = [
       { path: 'listemployeesreports', component: ListemployeesreportsComponent },
       { path: 'employeesbillingcode', component: EmployeesbybillingcodeComponent },
       { path: 'employeelogindata', component: EmployeelogindataComponent },
+      { path: 'hoursbyemployee', component: HoursbyemployeeComponent },
+      { path: 'weeklyhoursbyemployee', component: WeeklyhoursbyemployeeComponent },
+      { path: 'employeehoursbybillingcode', component: EmployeehoursbybillingcodeComponent },
+      { path: 'employeeclientrates', component: EmployeeclientratesComponent },
+      { path: 'hoursbytimesheetcategory', component: HoursbytimesheetcategoryComponent },
+      { path: 'payroll', component: PayrollComponent },
       // { path: 'burndown', component: BurndownchartComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
@@ -155,6 +167,12 @@ const appRoutes: Routes = [
     ChangepasswordComponent,
     EmployeelogindataComponent,
     EmployeesbybillingcodeComponent,
+    HoursbyemployeeComponent,
+    WeeklyhoursbyemployeeComponent,
+    EmployeehoursbybillingcodeComponent,
+    EmployeeclientratesComponent,
+    HoursbytimesheetcategoryComponent,
+    PayrollComponent,
   ],
   imports: [
     BrowserAnimationsModule,

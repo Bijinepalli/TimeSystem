@@ -3,7 +3,7 @@ import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import {
   // tslint:disable-next-line:max-line-length
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers, Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes
-  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory
+  , BillingCodesSpecial, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, Invoice, TimeSheet
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { CommaExpr } from '@angular/compiler';
@@ -20,7 +20,7 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.67/';
+  private ipaddress = 'http://172.16.32.57/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -213,7 +213,6 @@ export class TimesystemService {
       .set('keys', keys.join())
       .set('codeStatus', codeStatus)
       .set('relStatus', relStatus);
-    console.log(params);
     return this.http.get<BillingCodes[]>(this.url + 'ListAllClientItemsForBillingCodes', { params });
   }
   listAllProjectDataForBillingCodes(keys: string, codeStatus: string, relStatus: string) {
@@ -268,6 +267,52 @@ export class TimesystemService {
     return this.http.post<Employee>(this.url + 'Employee_UpdatePassword', body, httpOptions);
   }
 
+  ListClientHoursByEmployee(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListClientHoursByEmployee', body, httpOptions);
+  }
+  ListProjectHoursByEmployee(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListProjectHoursByEmployee', body, httpOptions);
+  }
+  ListNonBillableHoursByEmployee(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListNonBillableHoursByEmployee', body, httpOptions);
+  }
 
-
+  ListEmployeeHoursByClient(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByClient', body, httpOptions);
+  }
+  ListEmployeeHoursByProject(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByProject', body, httpOptions);
+  }
+  ListEmployeeHoursByNonBillable(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByNonBillable', body, httpOptions);
+  }
+  ListWeekEndClientHoursByClientByEmployee(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListWeekEndClientHoursByClientByEmployee', body, httpOptions);
+  }
+  ListEmployeeHoursByBillingCode(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
+  }
+  ListEmployeeHoursByBillingCodeClientOnly(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodeClientOnly', body, httpOptions);
+  }
+  ListEmployeeClientRates(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    console.log(body);
+    return this.http.post<Invoice[]>(this.url + 'ListEmployeeClientRates', body, httpOptions);
+  }
+  getDatebyPeriod() {
+    return this.http.get<TimeSheet[]>(this.url + 'GeneratePeriodEndDates');
+  }
+  GetTimeSheetsPerEmployeePeriodEnd(timesheet: TimeSheet) {
+    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodEnd');
+  }
 }

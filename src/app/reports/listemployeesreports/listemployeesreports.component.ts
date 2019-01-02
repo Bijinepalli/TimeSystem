@@ -103,10 +103,10 @@ export class ListemployeesreportsComponent implements OnInit {
     let _start = '';
     let _end = '';
     if (this._startDate !== '' && this._startDate !== null) {
-      _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+      _start = this.datePipe.transform(this._startDate, 'yyyy/MM/dd');
     }
     if (this._endDate !== '' && this._endDate !== null) {
-      _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
+      _end = this.datePipe.transform(this._endDate, 'yyyy/MM/dd');
     }
     console.log(this._startDate, this._endDate);
     console.log(_start, _end);

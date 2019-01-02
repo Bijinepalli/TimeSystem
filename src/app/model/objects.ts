@@ -136,18 +136,42 @@ export class LeftNavMenu {
 
 
 export class BillingCodes {
-    Key: string;
-    Name: string;
-    LastName: string;
-    FirstName: string;
-    Salaried: boolean;
-    Inactive: boolean;
-    InactiveRel: boolean;
+    Key?: string;
+    Name?: string;
+    LastName?: string;
+    FirstName?: string;
+    Salaried?: boolean;
+    Inactive?: boolean;
+    InactiveRel?: boolean;
+    ID?: number;
+    Hours?: string;
+    PeriodEnd?: string;
+    WeekEnd?: string;
+    BillingName?: string;
+    ChargeType?: string;
+    ChargeSort?: number;
+    TANDM?: string;
+    Project?: string;
+    NonBill?: string;
 }
 export class BillingCodesSpecial {
-    value: string;
-    codeStatus: string;
-    relStatus: string;
+    value?: string;
+    codeStatus?: string;
+    relStatus?: string;
+    periodEnd?: boolean;
+    startDate?: string;
+    endDate?: string;
+    sortOrder?: string;
+    billingCycle?: string;
+}
+export class Invoice {
+    LastName?: string;
+    FirstName?: string;
+    EmployeeID?: number;
+    ClientName?: string;
+    ClientID?: number;
+    Rate?: string;
+    EffectiveDate?: string;
 }
 export class EmailOptions {
     EmailType?: string;
@@ -170,4 +194,7 @@ export class EmployeePasswordHistory {
     EmployeeID?: number;
     Password?: string;
     CheckLength?: number;
+}
+export class TimeSheet {
+    PeriodEndDate: string;
 }
