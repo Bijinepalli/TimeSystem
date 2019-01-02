@@ -208,7 +208,6 @@ export class EmployeePasswordHistory {
     CheckLength?: number;
 }
 export class TimeSheet {
-    PeriodEndDate: string;
     Id?: number;
     EmployeeId?: number;
     PeriodEnd?: string;
@@ -222,6 +221,7 @@ export class TimeSheet {
     Hours?: number;
     ApprovalStatus?: string;
     SupervisorComments?: string;
+    PeriodEndDate?: string;
 }
 export class TimeLine {
     Id?: number;
