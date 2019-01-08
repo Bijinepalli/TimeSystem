@@ -15,7 +15,7 @@
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Holiday" tooltipPosition="bottom" class="ui-button-info"
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a New Holiday Date" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Holiday" *ngIf="!_HasEdit" (click)=addHoliday()></button>
   </div>
 </div>
@@ -24,7 +24,8 @@
     Select Year:
   </div>
   <div class="ui-g-9 ui-md-2">
-    <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
+    <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="getHolidays()" pTooltip="Pick the year to see holidays for. All holidays for this year will be shown"
+      tooltipPosition="bottom"></p-dropdown>
   </div>
 </div>
 
@@ -55,8 +56,8 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Edit Holiday" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
-            (click)="editHoliday(rowData)" ></i>
+          <i class="fa fa-edit fa-150x" pTooltip="Click to update this holiday" style="cursor:pointer;color:cyan"
+            tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Date') >= 0">
@@ -89,7 +90,8 @@
           Holiday Name *<br>
           <div style="height:5px"></div>
           <input *ngIf="!_IsEdit || !(_IsEdit && (_selectedHoliday.InUse>0))" type="text" pInputText style="width:100%"
-            placeholder="Holiday Name" formControlName="holidayName">
+            placeholder="Holiday Name" pTooltip="The display name for the holiday" tooltipPosition="bottom"
+            formControlName="holidayName">
           <label *ngIf="(_IsEdit && (_selectedHoliday.InUse>0))"><b>{{_selectedHoliday.HolidayName}}</b></label>
         </div>
       </div>
@@ -98,7 +100,7 @@
           Date * (mm-dd-yyyy)<br>
           <div style="height:5px"></div>
           <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate"
-            appendTo="body"></p-calendar>
+            appendTo="body" pTooltip="Select the date for the holiday" tooltipPosition="bottom"></p-calendar>
         </div>
       </div>
     </div>
@@ -106,7 +108,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveHoliday()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveHoliday()" [disabled]="hasFormErrors()"
+              pTooltip="Save the data for the client" tooltipPosition="bottom"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelHoliday()"></button>
           </div>

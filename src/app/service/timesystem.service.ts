@@ -599,7 +599,11 @@ export class TimesystemService {
       .set('year', year)
       .set('employeeno', employeeNumber);
     return this.http.get<MonthlyHours[]>(this.accessSystemURL + 'GetAccessSystemData', { params });
-
+  }
+  getOutstandingTimesheetReport(Dates: string) {
+    const params = new HttpParams()
+      .set('strDates', Dates);
+    return this.http.get<TimeSheet>(this.url + 'GetOutStandingTimesheetReport', { params });
   }
   timeSheetInsert(timesheet: TimeSheet) {
     const body = JSON.stringify(timesheet);

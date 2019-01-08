@@ -1204,6 +1204,43 @@ export class EmployeesComponent implements OnInit {
   hasFormErrorsRate() {
     return !this._frmRate.valid;
   }
+
+  deleteRate(dataRow: any) {
+    this.confSvc.confirm({
+      message: 'Are you sure you want to delete this rate?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        /* do nothing */
+        // this.timesysSvc.Employee_Terminate(dataRow)
+        //   .subscribe(
+        //     (outputData) => {
+        //       if (outputData !== null && outputData.ErrorMessage !== '') {
+        //         this.msgSvc.add({
+        //           key: 'alert',
+        //           sticky: true,
+        //           severity: 'error',
+        //           summary: 'Error!',
+        //           detail: outputData.ErrorMessage
+        //         });
+        //       } else {
+        //         this.msgSvc.add({
+        //           key: 'saveSuccess',
+        //           severity: 'success',
+        //           summary: 'Info Message',
+        //           detail: 'Employee terminated successfully'
+        //         });
+        //         this.getEmployees();
+        //       }
+        //     },
+        //     (error) => {
+        //       console.log(error);
+        //     });
+      },
+      reject: () => {
+      }
+    });
+  }
   populateTable(empId: number) {
     this._IsEditRate = false;
     this._IsAddRate = false;
@@ -1247,7 +1284,6 @@ export class EmployeesComponent implements OnInit {
 
   saveRateModal() {
     this._selectedRate = {};
-    console.log(this._frmRate);
     this._selectedRate.ClientName = this._frmRate.controls['frmClientName'].value.toString().trim();
     this._selectedRate.CustomerName = this._frmRate.controls['frmCustomerName'].value.toString().toUpperCase().trim();
     this._selectedRate.CustomerId = +this._customerId.toString();

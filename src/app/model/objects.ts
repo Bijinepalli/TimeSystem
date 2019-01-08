@@ -240,6 +240,9 @@ export class TimeSheet {
     FirstName?: string;
     ClientID?: number;
     EffectiveDate?: string;
+    Status?: string;
+    EmailAddress?: string;
+    TimesheetID?: string;
 }
 export class TimeLine {
     Id?: number;

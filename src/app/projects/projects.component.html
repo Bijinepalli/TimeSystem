@@ -14,14 +14,15 @@
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Project" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Project" *ngIf="!_HasEdit" (click)=addProject()></button>
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new project to the project billable timesheet category"
+      tooltipPosition="bottom" class="ui-button-info" label="Add New Project" *ngIf="!_HasEdit" (click)=addProject()></button>
   </div>
 </div>
 <div class="ui-g">
   <div class="ui-g-12 ui-md-12" style="text-align: left">
     Select:
-    <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()"></p-selectButton>
+    <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show projects that have this status"
+      tooltipPosition="bottom"></p-selectButton>
   </div>
 </div>
 
@@ -52,8 +53,8 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Edit Project" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
-            (click)="editProject(rowData)"></i>
+          <i class="fa fa-edit fa-150x" pTooltip="Click to update the data for this billing code" style="cursor:pointer;color:cyan"
+            tooltipPosition="bottom" (click)="editProject(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
@@ -85,7 +86,7 @@
           Project Code *<br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Project Code" formControlName="projectCode"
-            pToolTip="Unique project code">
+            pToolTip="Unique project code" tooltipPosition="bottom" appendTo="body">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
@@ -93,7 +94,7 @@
           Project Name *<br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Project Name" formControlName="projectName"
-            pToolTip="Unique project name">
+            pToolTip="Unique project name" tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
@@ -102,7 +103,7 @@
           <div style="height:5px"></div>
           <p-dropdown appendTo="body" [options]="_companies" placeholder="Select Company" formControlName="parentCompany"
             pToolTip="The company whose holiday schedule this project follows and changing this would affect existing timesheets."
-            [style]="{'width':'99%'}"></p-dropdown>
+            tooltipPosition="bottom" [style]="{'width':'99%'}"></p-dropdown>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
@@ -110,7 +111,8 @@
           <div style="height:5px"></div>
           <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
             pToolTip="Check to mark this project as inactive. It will not be allowed on new timesheets 
-          and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
+          and will remove the associated hours from all unsubmitted timesheets."
+            tooltipPosition="bottom"></p-checkbox>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
@@ -124,7 +126,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveProject()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveProject()" [disabled]="hasFormErrors()"
+              pTooltip="Save the data for this project" tooltipPosition="bottom"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelProject()"></button>
           </div>
