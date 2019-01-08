@@ -579,5 +579,8 @@ export class TimesystemService {
       .set('datesince', datesince);
     return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
   }
-
+  GetEmployeeHours(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'GetEmployeeHours', body, httpOptions);
+  }
 }

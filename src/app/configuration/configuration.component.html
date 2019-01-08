@@ -7,7 +7,7 @@
     <div class="ui-g-12 ui-md-6"></div>
     <div class="ui-g-12 ui-md-4"></div>
     <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('HolidaySelect.htm')" style="cursor: pointer;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
@@ -24,7 +24,7 @@
   </p-tabPanel>  
 </p-tabView>
 
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-sidebar>
 <p-toast></p-toast>

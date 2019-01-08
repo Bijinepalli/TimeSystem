@@ -33,6 +33,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   cols: any;
   _billingCodesSpecial: BillingCodesSpecial;
   showSpinner = false;
+  helpText: any;
+  visibleHelp = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService) {
@@ -206,5 +208,17 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.changeCodeList = false;
     this.showReport = false;
     this.showBillingCodeList = true;
+  }
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
   }
 }

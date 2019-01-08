@@ -90,6 +90,7 @@ import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimeshee
 
 import { CommonService } from './service/common.service';
 import { MailsComponent } from './mails/mails.component';
+import { EmployeehoursComponent } from './reports/employeehours/employeehours.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -130,6 +131,7 @@ const appRoutes: Routes = [
       { path: 'hoursbytimesheetcategory', component: HoursbytimesheetcategoryComponent },
       { path: 'payroll', component: PayrollComponent },
       { path: 'paystubs', component: PaystubsComponent },
+      { path: 'employeehours', component: EmployeehoursComponent },
       { path: 'timesheets', component: TimesheetsComponent },
       { path: 'selecttimesheetperiod', component: SelecttimesheetperiodComponent },
       // { path: 'burndown', component: BurndownchartComponent },
@@ -216,6 +218,7 @@ const appRoutes: Routes = [
     TimesheetsComponent,
     SelecttimesheetperiodComponent,
     MaintaintimesheetComponent,
+    EmployeehoursComponent,
   ],
   imports: [
     BrowserAnimationsModule,
