@@ -2,8 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Email } from '../model/objects';
+import { CommonService } from '../service/common.service';
 @Component({
   selector: 'app-mails',
   templateUrl: './mails.component.html',
@@ -30,12 +31,19 @@ export class MailsComponent implements OnInit {
   chkIsBodyTemplate = false;
   chkIsDefaultSignature = false;
   _emailSignature = '';
-
+  _HasEdit = false;
   // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private msgSvc: MessageService, private confSvc: ConfirmationService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
 
   ngOnInit() {
+
+    this.CheckSecurity();
     this.cols = [
       { field: 'EmailType', header: 'Email Type' },
       { field: 'Subject', header: 'Subject' },
@@ -49,7 +57,21 @@ export class MailsComponent implements OnInit {
     this.getEmails();
     this.addControls();
   }
-
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
+  }
   getEmails() {
     const _email: Email = {};
     _email.EmailType = '';

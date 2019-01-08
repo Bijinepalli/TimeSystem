@@ -15,7 +15,7 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Employee" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Employee" (click)=addEmployee()></button>
+      label="Add New Employee" *ngIf="!_HasEdit" (click)=addEmployee()></button>
   </div>
 </div>
 <div class="ui-g">
@@ -42,10 +42,10 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Unlock</th>
-        <th style="width: 3em">Edit</th>
-        <th style="width: 7em">Terminate</th>
-        <th style="width: 7em">Reset Password</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Unlock</th>
+        <th style="width: 3em" *ngIf="!_HasEdit">Edit</th>
+        <th style="width: 7em" *ngIf="!_HasEdit">Terminate</th>
+        <th style="width: 7em" *ngIf="!_HasEdit">Reset Password</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
@@ -57,19 +57,19 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['IsLocked'] === 'True'" class="fa fa-lock fa-150x" pTooltip="Please click here to unlock the user"
             style="cursor:pointer;color:orange" tooltipPosition="bottom" (click)="unlockEmployee(rowData)"></i>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i class="fa fa-edit fa-150x" pTooltip="Please click here to edit the employee" style="cursor:pointer;color:cyan"
             tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x" pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
             style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
             style="cursor:pointer;color:aquamarine" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
         </td>
@@ -243,7 +243,7 @@
     <p-footer>
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <button pButton label="Save" (click)="saveEmployee()" [disabled]="hasFormErrorsEmployee()"></button>
+          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveEmployee()" [disabled]="hasFormErrorsEmployee()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelEmployee()"></button>
         </div>
@@ -282,7 +282,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
+          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelModal()"></button>
         </div>
@@ -321,7 +321,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
+          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelModal()"></button>
         </div>
@@ -360,7 +360,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
+          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelModal()"></button>
         </div>
@@ -369,8 +369,8 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1000"
-  [closeOnEscape]="false" [closable]="false">
+<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1000" [closeOnEscape]="false"
+  [closable]="false">
   <p-header>
     Change {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -397,16 +397,16 @@
         </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th style="width: 5em">Edit</th>
+            <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field">
               {{col.header}}
             </th>
-            <th style="width: 5em">Delete</th>
+            <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
-            <td style="text-align: center">
+            <td style="text-align: center" *ngIf="!_HasEdit">
               <i class="fa fa-edit fa-150x" pTooltip="Change this rate" style="cursor:pointer;color:cyan"
                 tooltipPosition="bottom" (click)="editRate(rowData)"></i>
             </td>
@@ -418,7 +418,7 @@
                 {{rowData[col.field]}}
               </ng-template>
             </td>
-            <td style="text-align: center">
+            <td style="text-align: center" *ngIf="!_HasEdit">
               <i class="fa fa-times fa-150x" pTooltip="Delete this rate" style="cursor:pointer;color:red"
                 tooltipPosition="bottom" (click)="deleteRate(rowData)"></i>
             </td>
@@ -434,29 +434,29 @@
           Client Name:
         </div>
         <div class="ui-g-6">
-          <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}" formControlName="frmClientName" pToolTip="The client hours are charged to"
-            [style]="{'width':'85%'}"></p-dropdown>
+          <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}" formControlName="frmClientName"
+            pToolTip="The client hours are charged to" [style]="{'width':'85%'}"></p-dropdown>
         </div>
         <div class="ui-g-4" style="text-align:right">
           Customer Name:
         </div>
         <div class="ui-g-6">
-          <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
-            pToolTip="The customer to invoice this client">
+          <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName" pToolTip="The customer to invoice this client">
         </div>
         <div class="ui-g-4" style="text-align:right">
           Effective Date:
         </div>
         <div class="ui-g-6">
-          <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmEffectiveDate" appendTo="body"
-            pTooltip="The original date the employee started work"></p-calendar>
+          <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmEffectiveDate"
+            appendTo="body" pTooltip="The original date the employee started work"></p-calendar>
           (mm-dd-yyyy)
         </div>
         <div class="ui-g-4" style="text-align:right">
           Rate:
         </div>
         <div class="ui-g-6">
-          <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext" pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
+          <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext" pToolTip="The hourly invoice rate for this employee"
+            (keypress)="numberOnly($event)">
         </div>
         <div class="ui-g-4">
         </div>
@@ -471,7 +471,7 @@
       <div class="ui-g" *ngIf="_IsEditRate; else cancelbutton">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelRateModal()"></button>
           </div>

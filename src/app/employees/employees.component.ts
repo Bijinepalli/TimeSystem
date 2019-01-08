@@ -5,7 +5,7 @@ import {
   AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice
 } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
@@ -93,10 +93,20 @@ export class EmployeesComponent implements OnInit {
   chkIsLocked = false;
   _Supervisors: SelectItem[];
   _SecurityLevels: SelectItem[];
+
+  _HasEdit = false;
+
   /* #endregion */
 
   // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private msgSvc: MessageService, private confSvc: ConfirmationService, private commonSvc: CommonService, public datepipe: DatePipe) {
+  constructor(
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+    public datepipe: DatePipe
+  ) {
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -112,6 +122,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.CheckSecurity();
     this._billingCodes = new BillingCode();
     this.cols = [
       { field: 'LastName', header: 'Last Name' },
@@ -130,7 +141,21 @@ export class EmployeesComponent implements OnInit {
     this.getSupervisors();
     this.addControlsRate();
   }
-
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
+  }
   /* #region Get Calls */
   getEmployees() {
 

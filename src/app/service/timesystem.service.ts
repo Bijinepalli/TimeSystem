@@ -162,9 +162,10 @@ export class TimesystemService {
     return this.http.get<MasterPages[]>(this.url + 'ListMasterPages');
   }
 
-  getPagesbyRoles(role: string) {
+  getPagesbyRoles(Role: string, PageId: string) {
     const params = new HttpParams()
-      .set('role', role);
+      .set('Role', Role)
+      .set('PageId', PageId);
     return this.http.get<MasterPages[]>(this.url + 'GetPagesByRole', { params });
   }
 
@@ -176,9 +177,10 @@ export class TimesystemService {
     const body = JSON.stringify(_appsettingsselection);
     return this.http.post<AppSettings[]>(this.url + 'InsertAppSettings', body, httpOptions);
   }
-  getLeftNavMenu(role: string) {
+  getLeftNavMenu(Role: string, PageId: string) {
     const params = new HttpParams()
-      .set('role', role);
+      .set('Role', Role)
+      .set('PageId', PageId);
     return this.http.get<LeftNavMenu[]>(this.url + 'GetLeftNavMenu', { params });
   }
   listAllClientItems(inactive: string) {
