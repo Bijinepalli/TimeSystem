@@ -90,6 +90,10 @@ import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimeshee
 
 import { CommonService } from './service/common.service';
 import { MailsComponent } from './mails/mails.component';
+import { OutstandingtimesheetsComponent } from './outstandingtimesheets/outstandingtimesheets.component';
+import { ApprovaltimesheetsComponent } from './approvaltimesheets/approvaltimesheets.component';
+import { AccesssystemComponent } from './accesssystem/accesssystem.component';
+import { TimeFormatPipe } from './sharedpipes/timeformat';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -150,6 +154,7 @@ const appRoutes: Routes = [
       // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
       { path: 'mails', component: MailsComponent },
+      { path: 'access', component: AccesssystemComponent },
     ]
   },
   {
@@ -217,6 +222,10 @@ const appRoutes: Routes = [
     TimesheetsComponent,
     SelecttimesheetperiodComponent,
     MaintaintimesheetComponent,
+    OutstandingtimesheetsComponent,
+    ApprovaltimesheetsComponent,
+    AccesssystemComponent,
+    TimeFormatPipe,
   ],
   imports: [
     BrowserAnimationsModule,
