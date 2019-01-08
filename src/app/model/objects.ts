@@ -237,6 +237,9 @@ export class TimeSheet {
     EmployeeID?: number;
     ClientID?: number;
     EffectiveDate?: string;
+    Status?: string;
+    EmailAddress?: string;
+    TimesheetID?: string;
 }
 export class TimeLine {
     Id?: number;

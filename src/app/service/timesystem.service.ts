@@ -23,7 +23,7 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.57/';
+  private ipaddress = 'http://172.16.32.53/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -580,4 +580,9 @@ export class TimesystemService {
     return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
   }
 
+  getOutstandingTimesheetReport(Dates: string) {
+    const params = new HttpParams()
+      .set('strDates', Dates);
+    return this.http.get<TimeSheet>(this.url + 'GetOutStandingTimesheetReport', { params });
+  }
 }

@@ -1,0 +1,4 @@
+:host ::ng-deep tr.ui-state-highlight{
+    background: #323232 !important;
+    color: #dedede !important;
+}

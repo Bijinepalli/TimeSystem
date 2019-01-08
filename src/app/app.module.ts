@@ -128,6 +128,7 @@ const appRoutes: Routes = [
       { path: 'employeehoursbybillingcode', component: EmployeehoursbybillingcodeComponent },
       { path: 'employeeclientrates', component: EmployeeclientratesComponent },
       { path: 'hoursbytimesheetcategory', component: HoursbytimesheetcategoryComponent },
+      { path: 'pendingtimesheets', component: PendingtimesheetsComponent },
       { path: 'payroll', component: PayrollComponent },
       { path: 'paystubs', component: PaystubsComponent },
       { path: 'timesheets', component: TimesheetsComponent },

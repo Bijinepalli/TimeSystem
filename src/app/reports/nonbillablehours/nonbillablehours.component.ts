@@ -50,8 +50,7 @@ export class NonbillablehoursComponent implements OnInit {
     if ((dateNow.getMonth() - 1).toString() === '-1') {
       this.startDate = '12-01-' + (dateNow.getFullYear() - 1).toString();
     } else {
-      const month = this.getMonthfromDate(dateNow.getMonth().toString());
-      this.startDate = month + '-01-' + (dateNow.getFullYear().toString());
+      this.startDate = (dateNow.getMonth() + 1).toString() + '-01-' + (dateNow.getFullYear().toString());
     }
     this.endDate = (end.getMonth() + 1).toString() + '-' + end.getDate().toString() + '-' + end.getFullYear().toString();
     this.totalChecked = true;
@@ -59,37 +58,6 @@ export class NonbillablehoursComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
-
-  getMonthfromDate(month: string) {
-    let ret = '';
-    ret = '';
-    // switch (+month) {
-    //   case '1':
-    //     ret = ''
-    //     break;
-    //   case '2':
-    //     break;
-    //   case '3':
-    //     break;
-    //   case '4':
-    //     break;
-    //   case '5':
-    //     break;
-    //   case '6':
-    //     break;
-    //   case '7':
-    //     break;
-    //   case '8':
-    //     break;
-    //   case '9':
-    //     break;
-    //   case '10':
-    //     break;
-    //   case '11':
-    //     break;
-    // }
-    return ret;
   }
 
   changeReportgroup() {

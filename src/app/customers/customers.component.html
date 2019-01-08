@@ -14,13 +14,13 @@
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Customer" tooltipPosition="bottom" class="ui-button-info"
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new customer to invoice" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Customer" (click)=addCustomer()></button>
   </div>
 </div>
 <div class="ui-g">
   <div class="ui-g-12 ui-md-12 ui-lg-12">
-    Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"></p-selectButton>
+    Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)" pTooltip="Show customers that have this status" tooltipPosition="bottom"></p-selectButton>
   </div>
 </div>
 
@@ -52,7 +52,7 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center">
-          <i class="fa fa-edit fa-150x" pTooltip="Edit Customer" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
+          <i class="fa fa-edit fa-150x" pTooltip="Click to update the data for this customer" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
             (click)="editCustomer(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
@@ -86,20 +86,20 @@
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           Customer Name *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName">
+          <input type="text" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName" pTooltip="The display name for the customer" tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           Customer Number *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Customer Number" formControlName="customerNumber">
+          <input type="text" pInputText style="width:100%" placeholder="Customer Number" formControlName="customerNumber" pTooltip="The unique ID for the customer" tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div style="height:5px"></div>
-          <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"></p-checkbox>
+          <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}" pTooltip="Check to mark this customer as inactive" tooltipPosition="bottom"></p-checkbox>
         </div>
       </div>
     </div>
@@ -107,7 +107,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" (click)="saveCustomer()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" (click)="saveCustomer()" [disabled]="hasFormErrors()" pTooltip="Save the data for the customer" tooltipPosition="bottom"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelCustomer()"></button>
           </div>
