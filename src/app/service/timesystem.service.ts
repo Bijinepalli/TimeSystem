@@ -6,7 +6,7 @@ import {
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
   TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email,
-  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit
+  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -23,7 +23,8 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.57/';
+  private accessSystemURL = 'http://localhost/AccessSystem/';
+  private ipaddress = 'http://172.16.32.67/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -278,6 +279,7 @@ export class TimesystemService {
     const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');
     return data1;
   }
+
   getTimeSheetAfterDateDetails(employeeId: string, hireDate: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
@@ -292,7 +294,7 @@ export class TimesystemService {
   getTimeSheetForApprovalCheck(employeeId: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
+    return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsCheck', { params });
   }
   getEmails(_email: Email) {
     const params = new HttpParams()
@@ -579,5 +581,32 @@ export class TimesystemService {
       .set('datesince', datesince);
     return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
   }
+  getOutStandingTimesheets(empId: string, numbers: string) {
+    const params = new HttpParams()
+      .set('employeeId', empId)
+      .set('Numbers', numbers);
+    return this.http.get<TimeSheet[]>(this.localurl + 'GetOutStandingTimesheet', { params });
 
+  }
+  getPeriodEndDate() {
+    return this.http.get<TimePeriods[]>(this.localurl + 'GeneratePeriodEndDatesNew');
+  }
+  getAccessData(month: string, year: string, employeeNumber: string) {
+    const params = new HttpParams()
+      .set('month', month)
+      .set('year', year)
+      .set('employeeno', employeeNumber);
+    return this.http.get<MonthlyHours[]>(this.accessSystemURL + 'GetAccessSystemData', { params });
+
+  }
+  timeSheetInsert(timesheet: TimeSheet) {
+    const body = JSON.stringify(timesheet);
+    console.log(timesheet);
+    return this.http.post<string>(this.localurl + 'TimeSheetInsert', body, httpOptions);
+  }
+  getTimeSheetForApprovalGet(employeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId);
+    return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsGet', { params });
+  }
 }
