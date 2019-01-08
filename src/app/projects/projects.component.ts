@@ -2,9 +2,10 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from
 import { TimesystemService } from '../service/timesystem.service';
 import { Projects, DrpList } from '../model/objects';
 import { BillingCode } from '../model/constants';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-projects',
@@ -19,8 +20,13 @@ export class ProjectsComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
 
   cols: any;
   _bc: BillingCode = new BillingCode();
@@ -33,7 +39,11 @@ export class ProjectsComponent implements OnInit {
   _selectedProject: Projects;
   chkInactive = false;
 
+  _HasEdit = false;
+
   ngOnInit() {
+
+    this.CheckSecurity();
 
     this._status = [
       { label: 'Active', value: '1' },
@@ -50,6 +60,22 @@ export class ProjectsComponent implements OnInit {
     this.addControls();
     this.getProjects();
     this.getCompanies();
+  }
+
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
   }
 
   changeStatus() {

@@ -14,8 +14,8 @@
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new company to assign holidays to" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Comapny" (click)=addCompany()></button>
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new company to assign holidays to" tooltipPosition="bottom"
+      class="ui-button-info" label="Add New Comapny" *ngIf="!_HasEdit" (click)=addCompany()></button>
   </div>
 </div>
 
@@ -30,26 +30,26 @@
           <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:100%">
         </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad"  style="text-align: right">
+        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 5em">Delete</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
         <th style="width: 7em">Holidays</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
-          <i class="fa fa-edit fa-150x" pTooltip="Click to update this company" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
-            (click)="editCompany(rowData)"></i>
+        <td style="text-align: center" *ngIf="!_HasEdit">
+          <i class="fa fa-edit fa-150x" pTooltip="Click to update this company" style="cursor:pointer;color:cyan"
+            tooltipPosition="bottom" (click)="editCompany(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Default') >= 0">
@@ -59,7 +59,7 @@
             {{rowData[col.field]}}
           </div>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['HolidaysInUse'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this company. It has no hours assigned to its holidays."
             style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="deleteCompany(rowData)"></i>
         </td>
@@ -82,7 +82,8 @@
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12">
       <div class="ui-g-12 ui-md-12">
-        Year: <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="changeHolidayYear()" pTooltip="Select the year to manage holidays for" tooltipPosition="bottom"></p-dropdown>
+        Year: <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="changeHolidayYear()" pTooltip="Select the year to manage holidays for"
+          tooltipPosition="bottom"></p-dropdown>
       </div>
     </div>
     <div class="ui-g-12 ui-md-12">
@@ -104,7 +105,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save Holidays" (click)="saveCompanyHoliday()"></button>
+          <button pButton label="Save Holidays" *ngIf="!_HasEdit" (click)="saveCompanyHoliday()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelCompanyHoliday()"></button>
         </div>
@@ -125,14 +126,15 @@
         <div class="ui-g-12 ui-md-12">
           Company Name *<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Company Name" formControlName="companyName" pTooltip="Unique company name" tooltipPosition="bottom">
+          <input type="text" pInputText style="width:100%" placeholder="Company Name" formControlName="companyName"
+            pTooltip="Unique company name" tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
-          <p-checkbox binary="true" label="Default" [(ngModel)]="chkDefaultCompany" [ngModelOptions]="{standalone: true}" 
-          pTooltip="Indicates that this is the default company to use for salaried employees"></p-checkbox>
+          <p-checkbox binary="true" label="Default" [(ngModel)]="chkDefaultCompany" [ngModelOptions]="{standalone: true}"
+            pTooltip="Indicates that this is the default company to use for salaried employees"></p-checkbox>
         </div>
       </div>
     </div>
@@ -140,7 +142,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" (click)="saveCompany()" [disabled]="hasFormErrors()" pTooltip="Save the data for the company" tooltipPosition="bottom"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" pTooltip="Save the data for the company" tooltipPosition="bottom"
+              (click)="saveCompany()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelCompany()"></button>
           </div>

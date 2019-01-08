@@ -15,7 +15,7 @@
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new project to the project billable timesheet category"
-      tooltipPosition="bottom" class="ui-button-info" label="Add New Project" (click)=addProject()></button>
+      tooltipPosition="bottom" class="ui-button-info" label="Add New Project" *ngIf="!_HasEdit" (click)=addProject()></button>
   </div>
 </div>
 <div class="ui-g">
@@ -43,16 +43,16 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 5em">Delete</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i class="fa fa-edit fa-150x" pTooltip="Click to update the data for this billing code" style="cursor:pointer;color:cyan"
             tooltipPosition="bottom" (click)="editProject(rowData)"></i>
         </td>
@@ -64,7 +64,7 @@
             {{rowData[col.field]}}
           </div>
         </td>
-        <td style="text-align: center">
+        <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused project"
             style="cursor:pointer;color:red" tooltipPosition="bottom" (click)="deleteProject(rowData)"></i>
         </td>
@@ -116,7 +116,7 @@
         </div>
       </div>
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
-        <div class="ui-g-12 ui-md-12" >
+        <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
           Created On: {{_selectedProject.CreatedOn}}
         </div>
@@ -126,8 +126,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" (click)="saveProject()" [disabled]="hasFormErrors()" pTooltip="Save the data for this project"
-              tooltipPosition="bottom"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveProject()" [disabled]="hasFormErrors()"
+              pTooltip="Save the data for this project" tooltipPosition="bottom"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelProject()"></button>
           </div>

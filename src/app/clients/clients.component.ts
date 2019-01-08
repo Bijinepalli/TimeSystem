@@ -3,9 +3,10 @@ import { SelectItem } from 'primeng/api';
 import { Clients, Customers, Companies } from '../model/objects';
 import { BillingCode } from '../model/constants';
 import { TimesystemService } from '../service/timesystem.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-clients',
@@ -44,10 +45,17 @@ export class ClientsComponent implements OnInit {
   helpText: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) {
-  }
+  constructor(private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
+
+  _HasEdit = false;
 
   ngOnInit() {
+    this.CheckSecurity();
     // Add Controls to the Form
     this.addControls();
 
@@ -79,6 +87,22 @@ export class ClientsComponent implements OnInit {
       { field: 'CustomerName', header: 'Customer Name' },
       { field: 'PONumber', header: 'PO#' },
     ];
+  }
+
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
   }
 
   clickButton(event: any) {

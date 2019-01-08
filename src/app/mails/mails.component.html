@@ -15,7 +15,7 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Email" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Email" (click)="addEmail()"></button>
+      label="Add New Email" *ngIf="!_HasEdit" (click)="addEmail()"></button>
   </div>
 </div>
 
@@ -36,18 +36,18 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th style="width: 5em">Edit</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">
           {{col.header}}
         </th>
-        <th style="width: 5em">Delete</th>
+        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
-          <i class="fa fa-edit fa-150x" pTooltip="Click to update this email" style="cursor:pointer;color:cyan" tooltipPosition="bottom"
-            (click)="editEmail(rowData)"></i>
+        <td style="text-align: center" *ngIf="!_HasEdit">
+          <i class="fa fa-edit fa-150x" pTooltip="Click to update this email" style="cursor:pointer;color:cyan"
+            tooltipPosition="bottom" (click)="editEmail(rowData)"></i>
         </td>
         <td *ngFor="let col of columns" style="word-break: break-word;word-wrap: break-word;">
           <div *ngIf="(col.header.indexOf('Is High Priority') >= 0 
@@ -60,13 +60,13 @@
           <div *ngIf="!(col.header.indexOf('Is High Priority') >= 0 
               || col.header.indexOf('Is Subject Template') >= 0 
               || col.header.indexOf('Is Body Template') >= 0 
-              || col.header.indexOf('Is Signature Added') >= 0)" >
+              || col.header.indexOf('Is Signature Added') >= 0)">
             {{rowData[col.field]}}
           </div>
         </td>
-        <td style="text-align: center">
-          <i class="fa fa-times fa-150x" pTooltip="Delete Email" style="cursor:pointer;color:red"
-            tooltipPosition="bottom" (click)="deleteEmail(rowData)"></i>
+        <td style="text-align: center" *ngIf="!_HasEdit">
+          <i class="fa fa-times fa-150x" pTooltip="Delete Email" style="cursor:pointer;color:red" tooltipPosition="bottom"
+            (click)="deleteEmail(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -88,20 +88,20 @@
           <div style="height:5px"></div>
           <input *ngIf="!_IsEdit" type="text" pInputText style="width:100%" placeholder="Email Type" formControlName="txtEmailType">
           <label *ngIf="_IsEdit"><b>{{_selectedEmail.EmailType}}</b></label>
-          <br>           
+          <br>
           <div style="height:5px"></div>
-          <p-checkbox binary="true" label="High Priority"  [(ngModel)]="chkIsHighPriority" [ngModelOptions]="{standalone: true}" 
-          pToolTip="Check to indicate this email should be sent as a high priority email" ></p-checkbox>
+          <p-checkbox binary="true" label="High Priority" [(ngModel)]="chkIsHighPriority" [ngModelOptions]="{standalone: true}"
+            pToolTip="Check to indicate this email should be sent as a high priority email"></p-checkbox>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           Subject *<br>
-          <div style="height:5px"></div>          
-          <input type="text" pInputText style="width:100%" placeholder="Subject" formControlName="txtSubject"><br>          
           <div style="height:5px"></div>
-          <p-checkbox binary="true" label="Subject used as template"  [(ngModel)]="chkIsSubjectTemplate" [ngModelOptions]="{standalone: true}" 
-          pToolTip="If this is checked, the subject of the email will have additional text appended to it before being sent." ></p-checkbox>
+          <input type="text" pInputText style="width:100%" placeholder="Subject" formControlName="txtSubject"><br>
+          <div style="height:5px"></div>
+          <p-checkbox binary="true" label="Subject used as template" [(ngModel)]="chkIsSubjectTemplate"
+            [ngModelOptions]="{standalone: true}" pToolTip="If this is checked, the subject of the email will have additional text appended to it before being sent."></p-checkbox>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -110,30 +110,30 @@
           <div style="height:5px"></div>
           <textarea rows="6" style="width:100%" pInputTextarea placeholder="Body" formControlName="txtBody"></textarea>
           <div style="height:5px"></div>
-          <p-checkbox binary="true" label="Message used as template" [(ngModel)]="chkIsBodyTemplate" [ngModelOptions]="{standalone: true}" 
-          pToolTip="If this is checked, the email message will have additional text added to it before being sent. Text will be added where the {0} placeholder is located." ></p-checkbox>
+          <p-checkbox binary="true" label="Message used as template" [(ngModel)]="chkIsBodyTemplate" [ngModelOptions]="{standalone: true}"
+            pToolTip="If this is checked, the email message will have additional text added to it before being sent. Text will be added where the {0} placeholder is located."></p-checkbox>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Signature *<br> 
+          Signature *<br>
           <div style="height:5px"></div>
-          <textarea rows="4" style="width:100%" pInputTextarea placeholder="Signature" formControlName="txtSignature" 
-          pTooltip="Default signature to use for emails. Changing this text changes it on all emails that use the default signature."></textarea>
+          <textarea rows="4" style="width:100%" pInputTextarea placeholder="Signature" formControlName="txtSignature"
+            pTooltip="Default signature to use for emails. Changing this text changes it on all emails that use the default signature."></textarea>
           <div style="height:5px"></div>
           <div style="font-size:12px;">
-              NOTE: Changing the signature changes it for all emails whose 'add default signature' box is checked.
+            NOTE: Changing the signature changes it for all emails whose 'add default signature' box is checked.
           </div>
-          <p-checkbox binary="true" label="Add Default Signature" [(ngModel)]="chkIsDefaultSignature" [ngModelOptions]="{standalone: true}" 
-          pToolTip="Check to indicate if the default signature should be added to this email before sending"></p-checkbox>
+          <p-checkbox binary="true" label="Add Default Signature" [(ngModel)]="chkIsDefaultSignature" [ngModelOptions]="{standalone: true}"
+            pToolTip="Check to indicate if the default signature should be added to this email before sending"></p-checkbox>
         </div>
-      </div>      
+      </div>
     </div>
     <p-footer>
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" (click)="saveEmail()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveEmail()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelEmail()"></button>
           </div>
