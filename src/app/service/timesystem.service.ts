@@ -23,7 +23,7 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  private ipaddress = 'http://172.16.32.53/';
+  private ipaddress = 'http://172.16.32.67/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
   private url = this.ipaddress + 'TimeSystemService/';
