@@ -1,21 +1,20 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;color: coral">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;color: red">
     Payroll
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('Payroll.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
 <br>
 <div class="ui-g">
   <!-- <div class="ui-g-12 ui-md-8"></div> -->
-  <div class="ui-g-12 ui-md-4">
-    <p-accordion>
-      <p-accordionTab header="Assumptions ">
+  <div class="ui-g-12 ui-md-12">
+      <p-fieldset legend="Assumptions" [toggleable]="true" collapsed="true">
         <div>
           <b>Report Assumptions for the Pay Period:</b>
           <ul>
@@ -25,8 +24,7 @@
             <li>An employee's <i>hours per day</i> did not change. </li>
           </ul>
         </div>
-      </p-accordionTab>
-    </p-accordion>
+    </p-fieldset>
     </div>
 </div>
 
@@ -71,3 +69,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
+  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+    </p-scrollPanel>
+  </p-sidebar>

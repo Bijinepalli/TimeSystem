@@ -90,6 +90,7 @@ import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimeshee
 
 import { CommonService } from './service/common.service';
 import { MailsComponent } from './mails/mails.component';
+import { EmployeehoursComponent } from './reports/employeehours/employeehours.component';
 import { OutstandingtimesheetsComponent } from './outstandingtimesheets/outstandingtimesheets.component';
 import { ApprovaltimesheetsComponent } from './approvaltimesheets/approvaltimesheets.component';
 import { AccesssystemComponent } from './accesssystem/accesssystem.component';
@@ -135,6 +136,7 @@ const appRoutes: Routes = [
       { path: 'pendingtimesheets', component: PendingtimesheetsComponent },
       { path: 'payroll', component: PayrollComponent },
       { path: 'paystubs', component: PaystubsComponent },
+      { path: 'employeehours', component: EmployeehoursComponent },
       { path: 'timesheets', component: TimesheetsComponent },
       { path: 'selecttimesheetperiod', component: SelecttimesheetperiodComponent },
       // { path: 'burndown', component: BurndownchartComponent },
@@ -222,6 +224,7 @@ const appRoutes: Routes = [
     TimesheetsComponent,
     SelecttimesheetperiodComponent,
     MaintaintimesheetComponent,
+    EmployeehoursComponent,
     OutstandingtimesheetsComponent,
     ApprovaltimesheetsComponent,
     AccesssystemComponent,

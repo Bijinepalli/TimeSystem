@@ -26,6 +26,8 @@ export class NonbillablehoursComponent implements OnInit {
   totalChecked = false;
   showReport = false;
   rowdata: any;
+  helpText: any;
+  visibleHelp = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -122,5 +124,17 @@ export class NonbillablehoursComponent implements OnInit {
         this._headerType = 'Custom';
         break;
     }
+  }
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
   }
 }

@@ -119,7 +119,9 @@
 </div>
 
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-scrollPanel>
 </p-sidebar>
 
 

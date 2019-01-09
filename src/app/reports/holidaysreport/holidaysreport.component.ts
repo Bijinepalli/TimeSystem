@@ -16,6 +16,8 @@ export class HolidaysreportComponent implements OnInit {
   _selectedHolidays: Holidays;
   _recData: any;
   cols: any;
+  helpText: any;
+  visibleHelp = false;
 
   constructor(private timesysSvc: TimesystemService) { }
 
@@ -56,6 +58,18 @@ export class HolidaysreportComponent implements OnInit {
         (data) => {
           this._holidayList = data;
           this._recData = data.length + ' holidays found';
+        }
+      );
+  }
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
   }
