@@ -7,6 +7,8 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SanitizeHtmlPipe } from '../sharedpipes/sanitizeHtmlString.pipe';
 import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-holidays',
@@ -18,9 +20,11 @@ export class HolidaysComponent implements OnInit {
 
   // tslint:disable-next-line:max-line-length
   constructor(
+    private route: ActivatedRoute,
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
     private datePipe: DatePipe,
   ) { }
   _holidays: Holidays[] = [];
@@ -41,7 +45,12 @@ export class HolidaysComponent implements OnInit {
   _selectedHoliday: Holidays;
   _IsEdit = false;
 
+  _HasEdit = false;
+
   ngOnInit() {
+
+    this.CheckSecurity();
+
     this._dialogwidth = 830;
     this._years = [
       { label: '2010', value: '2010' },
@@ -68,6 +77,22 @@ export class HolidaysComponent implements OnInit {
 
     this.getHolidays();
     this.addControls();
+  }
+
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
   }
 
   getHolidays() {

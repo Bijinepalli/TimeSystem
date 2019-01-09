@@ -36,7 +36,7 @@
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
-  label="Start Over" (click)="startOver()"></button>
+    label="Start Over" (click)="startOver()"></button>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">

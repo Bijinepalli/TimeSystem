@@ -62,7 +62,7 @@ export class TimesheetsComponent implements OnInit {
     this.confSvc.confirm({
       message: 'Do you want to edit the timesheet?',
       accept: () => {
-        this.router.navigate(['/menu/maintaintimesheet/' + rowData.Id]);
+        this.router.navigate(['/menu/maintaintimesheet/' + rowData.Id], { skipLocationChange: true});
       }
     });
   }

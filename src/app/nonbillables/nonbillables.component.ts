@@ -2,9 +2,10 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from
 import { TimesystemService } from '../service/timesystem.service';
 import { NonBillables, DrpList } from '../model/objects';
 import { BillingCode } from '../model/constants';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-nonbillables',
@@ -20,8 +21,13 @@ export class NonbillablesComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
 
   _bc: BillingCode = new BillingCode();
   _companies: DrpList[] = [];
@@ -32,9 +38,9 @@ export class NonbillablesComponent implements OnInit {
   _IsEdit = false;
   _selectedNonBillable: NonBillables;
   chkInactive = false;
-
+  _HasEdit = false;
   ngOnInit() {
-
+    this.CheckSecurity();
     this._status = [
       { label: 'Active', value: '1' },
       { label: 'Inactive', value: '0' },
@@ -52,7 +58,21 @@ export class NonbillablesComponent implements OnInit {
     this.getNonBillables();
     this.getCompanies();
   }
-
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
+  }
   changeStatus() {
     if (this._selectedStatus === '2') {
       this.cols = [

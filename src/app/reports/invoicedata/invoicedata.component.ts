@@ -25,8 +25,8 @@ export class InvoicedataComponent implements OnInit {
   _reports: any[] = [];
   _recData = 0;
   cols: any;
-  helpText: any;
-  visibleHelp = false;
+  visibleHelp: boolean;
+  helpText: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {

@@ -91,6 +91,10 @@ import { MaintaintimesheetComponent } from './maintaintimesheet/maintaintimeshee
 import { CommonService } from './service/common.service';
 import { MailsComponent } from './mails/mails.component';
 import { EmployeehoursComponent } from './reports/employeehours/employeehours.component';
+import { OutstandingtimesheetsComponent } from './outstandingtimesheets/outstandingtimesheets.component';
+import { ApprovaltimesheetsComponent } from './approvaltimesheets/approvaltimesheets.component';
+import { AccesssystemComponent } from './accesssystem/accesssystem.component';
+import { TimeFormatPipe } from './sharedpipes/timeformat';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -129,6 +133,7 @@ const appRoutes: Routes = [
       { path: 'employeehoursbybillingcode', component: EmployeehoursbybillingcodeComponent },
       { path: 'employeeclientrates', component: EmployeeclientratesComponent },
       { path: 'hoursbytimesheetcategory', component: HoursbytimesheetcategoryComponent },
+      { path: 'pendingtimesheets', component: PendingtimesheetsComponent },
       { path: 'payroll', component: PayrollComponent },
       { path: 'paystubs', component: PaystubsComponent },
       { path: 'employeehours', component: EmployeehoursComponent },
@@ -151,6 +156,7 @@ const appRoutes: Routes = [
       // { path: 'issuetracker/:mode', component: IssuetrackerComponent },
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
       { path: 'mails', component: MailsComponent },
+      { path: 'access', component: AccesssystemComponent },
     ]
   },
   {
@@ -219,6 +225,10 @@ const appRoutes: Routes = [
     SelecttimesheetperiodComponent,
     MaintaintimesheetComponent,
     EmployeehoursComponent,
+    OutstandingtimesheetsComponent,
+    ApprovaltimesheetsComponent,
+    AccesssystemComponent,
+    TimeFormatPipe,
   ],
   imports: [
     BrowserAnimationsModule,

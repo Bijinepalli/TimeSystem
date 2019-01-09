@@ -11,25 +11,28 @@
   </div>
 </div>
 <br>
-<p-panel [toggleable]="true" header="Filter Results by:"> 
+<p-panel [toggleable]="true" header="Filter Results by:">
   <div class="ui-g">
     <div class="ui-g-1 label">
       Status:
     </div>
     <div class="ui-g-2">
-      <p-selectButton [options]="_status" [(ngModel)]="_statusselected"></p-selectButton>
+      <p-selectButton [options]="_status" [(ngModel)]="_statusselected" pTooltip="Select only inactive employees"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
     <div class="ui-g-1 label">
       Paid:
     </div>
     <div class="ui-g-2">
-      <p-selectButton [options]="_paid" [(ngModel)]="_paidselected"></p-selectButton>
+      <p-selectButton [options]="_paid" [(ngModel)]="_paidselected" pTooltip="Select only hourly employees"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
     <div class="ui-g-1 label">
       IPay:
     </div>
     <div class="ui-g-5">
-      <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected"></p-selectButton>
+      <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected" pTooltip="Select only employees that cannot get IPay"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
   </div>
   <div class="ui-g">
@@ -37,32 +40,39 @@
       TimeSheets:
     </div>
     <div class="ui-g-2">
-      <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected"></p-selectButton>
+      <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected" pTooltip="Select only employees that do not submit timesheets"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
     <div class="ui-g-1 label">
       Holidays:
     </div>
     <div class="ui-g-2">
-      <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected"></p-selectButton>
+      <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected" pTooltip="Select only employees that follow the Vertex holiday schedule"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
     <div class="ui-g-1 label">
       Hire Date From:
     </div>
     <div class="ui-g-5">
-      <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"></p-calendar>
+      <p-calendar [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+        [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
+        tooltipPosition="bottom"></p-calendar>
       <label class="label" style="padding:0px 10px">to</label>
-      <p-calendar appendTo="body" [readonlyInput]="true" [(ngModel)]="_endDate" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" ></p-calendar>
+      <p-calendar [readonlyInput]="true" [(ngModel)]="_endDate" [monthNavigator]="true" showButtonBar="true"
+        [yearNavigator]="true" yearRange="1900:2100" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
+        tooltipPosition="bottom"></p-calendar>
     </div>
   </div>
   <p-footer>
     <div style="text-align: right">
-      <i class="fa fa-play-circle fa-2x" pTooltip="Search" style="cursor:pointer;color:cyan" (click)="getEmployeesForReport()" tooltipPosition="bottom"></i>
+      <i class="fa fa-play-circle fa-2x" pTooltip="Search" style="cursor:pointer;color:cyan" (click)="getEmployeesForReport()"
+        pTooltip="Show the employees that match your choices" tooltipPosition="bottom"></i>
     </div>
   </p-footer>
 </p-panel>
 <div class="ui-g">
-  <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true" [paginator]="true" [rows]="20" [responsive]="false"
-    dataKey="Id">
+  <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true" [paginator]="true"
+    [rows]="20" [responsive]="false" dataKey="Id">
     <ng-template pTemplate="caption">
       <div style="text-align:left">
         <p-multiSelect [options]="_headerLabels" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected"
@@ -83,7 +93,7 @@
 
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn >
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn>
           {{col.header}}
         </th>
       </tr>
@@ -92,11 +102,11 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td *ngFor="let col of columns" style="word-break: break-word">
-         
-          <div  *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
-              {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
-            </div>
-            <ng-template #elsepart>{{rowData[col.field]}}</ng-template>
+
+          <div *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
+            {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+          </div>
+          <ng-template #elsepart>{{rowData[col.field]}}</ng-template>
         </td>
         <!-- <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
@@ -110,7 +120,7 @@
 
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <p-scrollPanel [style]="{width: '100%', height: '100%'}">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
   </p-scrollPanel>
 </p-sidebar>
 

@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from
 import { TimesystemService } from '../service/timesystem.service';
 import {
   Holidays, Employee,
-  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit
+  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit, TimeSheetForApproval
 } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -28,6 +28,7 @@ export class MaintaintimesheetComponent implements OnInit {
 
   _peroidStartDate: Date = new Date('2018-11-01');
   _periodEnddate: Date = new Date('2018-11-15');
+  _periodEndDateString = '';
   _days = 0;
   _DateArray: Date[] = [];
   _weekArray: number[] = [];
@@ -60,18 +61,20 @@ export class MaintaintimesheetComponent implements OnInit {
 
   _TotalValidationErrors = 0;
   _IsTimeSheetSubmitted = false;
-
+  _actualTimeSheetId = 0;
+  _timeSheetApproval: TimeSheetForApproval[];
+  _isTimesheetToAprrove = false;
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
+      this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
       this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
+      if (this._timesheetId.toString() === '-1') {
+        this._periodEndDateString = localStorage.getItem('PeriodEndDate');
+      }
     });
 
-
-    // console.log(this._peroidStartDate);
-    // console.log('dates array:' + this._DateArray.length);
     this.defaultControlsToForm();
-    this.getClientProjectCategoryDropDown();
     this.getTimesheetTimeLineTimeCellDetails();
   }
   private calculateDate(date1, date2) {
@@ -82,8 +85,9 @@ export class MaintaintimesheetComponent implements OnInit {
     // this is the actual equation that calculates the number of days.
     return days + 1;
   }
-  getClientProjectCategoryDropDown() {
-    this.timesysSvc.getEmployeeClientProjectNonBillableDetails(localStorage.getItem('UserId')).subscribe(
+  getClientProjectCategoryDropDown(timeSheetUserId: string) {
+    console.log(timeSheetUserId);
+    this.timesysSvc.getEmployeeClientProjectNonBillableDetails(timeSheetUserId).subscribe(
       (data) => {
         this.tandm = [];
         this.projectBillable = [];
@@ -110,7 +114,6 @@ export class MaintaintimesheetComponent implements OnInit {
         for (let i = 0; i < _array.length; i++) {
           this.nonBillable.push(_array[i]);
         }
-
       });
   }
   getTimesheetTimeLineTimeCellDetails() {
@@ -137,6 +140,7 @@ export class MaintaintimesheetComponent implements OnInit {
                     this._timePeriods = [];
 
                     this._employee = dataEmp;
+                    this.checkPendingTimesheets();
 
                     this._timeSheetEntries = data[0];
                     this._timeLineEntries = data[1];
@@ -169,7 +173,28 @@ export class MaintaintimesheetComponent implements OnInit {
             });
         });
     } else {
+      this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+      this.timesysSvc.getPeriodEndDate().subscribe(
+        (data1) => {
+          this._DateArray = [];
+          this._weekArray = [];
+          this._timePeriods = [];
+          const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
+          this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
+          const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
+          this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
+          this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
+          this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
+          this._tmpDt = this._peroidStartDate;
 
+          for (let i = 0; i < this._days - 1; i++) {
+            this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
+            this._DateArray.push(new Date(this._dt));
+            this._weekArray.push(new Date(this._dt).getDay());
+          }
+          this.defaultControlsToForm();
+          this.addFormControls();
+        });
     }
   }
   addFormControls() {
@@ -241,7 +266,6 @@ export class MaintaintimesheetComponent implements OnInit {
           }
         }
       }
-
       for (let j = 0; j < this._DateArray.length; j++) {
         /* Daily Totals Building */
         const txtProjBillDailyTotalHours = 'txtProjBillDailyTotals_' + j;
@@ -480,6 +504,11 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       this.timeSheetForm.enable();
     }
+    console.log(this._isTimesheetToAprrove + 'Super');
+    if (this._isTimesheetToAprrove) {
+      const superComments = this.timeSheetForm.get('txtSuperComments');
+      superComments.enable();
+    }
   }
   get f() {
     return this.timeSheetForm.controls;
@@ -641,6 +670,7 @@ export class MaintaintimesheetComponent implements OnInit {
     if (this._TotalValidationErrors === 0) {
       this.SaveSPCall(false);
     }
+
   }
 
   Submit() {
@@ -648,63 +678,121 @@ export class MaintaintimesheetComponent implements OnInit {
     if (this._TotalValidationErrors === 0) {
       this.SaveSPCall(true);
     }
+
   }
 
   SaveSPCall(submitted: boolean) {
     let timeSheetSubmit: TimeSheetSubmit;
     timeSheetSubmit = {};
-
     timeSheetSubmit.timeSheet = {};
     timeSheetSubmit.timeSheet.Id = this._timesheetId;
+    timeSheetSubmit.timeSheet.PeriodEnd = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
+
     if (this.timeSheetForm.get('txtComments') !== undefined &&
-      this.timeSheetForm.get('txtComments') !== null &&
+      this.timeSheetForm.get('txtComments') !== null && this.timeSheetForm.get('txtComments').value !== null &&
       this.timeSheetForm.get('txtComments').value.toString() !== ''
     ) {
       timeSheetSubmit.timeSheet.Comments = this.timeSheetForm.get('txtComments').value.toString();
     } else {
       timeSheetSubmit.timeSheet.Comments = '';
     }
+    timeSheetSubmit.timeSheet.EmployeeId = +localStorage.getItem('UserId');
     timeSheetSubmit.timeSheet.Submitted = submitted;
+    if (this._timesheetId.toString() === '-1') {
+      this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
+        this._timesheetId = +dataNew;
+        timeSheetSubmit.timeSheet.Id = this._timesheetId;
 
-    let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
-    timeLineAndTimeCellSaveArr = [];
-    for (let i = 0; i < this._timeTandM.length; i++) {
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i, 'TANDM');
-    }
-    this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
-    for (let i = 0; i < this._timeProjBill.length; i++) {
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i, 'PROJBILL');
-    }
-    this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
-    for (let i = 0; i < this._timeNONbill.length; i++) {
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i, 'NONBILL');
-    }
-    this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
-
-    if (timeLineAndTimeCellSaveArr.length > 0) {
-      timeSheetSubmit.timeLineAndTimeCellArr = timeLineAndTimeCellSaveArr;
-      this.timesysSvc.TimeLineAndTimeCell_DeleteAndInsert(timeSheetSubmit)
-        .subscribe(
-          (outputData) => {
-            if (outputData !== null && outputData.ErrorMessage !== '') {
-              this.msgSvc.add({
-                key: 'alert',
-                sticky: true,
-                severity: 'error',
-                summary: 'Error!',
-                detail: outputData.ErrorMessage
+        let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
+        timeLineAndTimeCellSaveArr = [];
+        for (let i = 0; i < this._timeTandM.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
+        for (let i = 0; i < this._timeProjBill.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
+        for (let i = 0; i < this._timeNONbill.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
+        if (timeLineAndTimeCellSaveArr.length > 0) {
+          timeSheetSubmit.timeLineAndTimeCellArr = timeLineAndTimeCellSaveArr;
+          this.timesysSvc.TimeLineAndTimeCell_DeleteAndInsert(timeSheetSubmit)
+            .subscribe(
+              (outputData) => {
+                if (outputData !== null && outputData.ErrorMessage !== '') {
+                  this.msgSvc.add({
+                    key: 'alert',
+                    sticky: true,
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: outputData.ErrorMessage
+                  });
+                } else {
+                  this.msgSvc.add({
+                    key: 'saveSuccess', severity: 'success'
+                    , summary: 'Info Message', detail: 'Timesheet saved successfully'
+                  });
+                  this.resetForm();
+                  this.defaultControlsToForm();
+                  this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+                  this.getTimesheetTimeLineTimeCellDetails();
+                }
+              },
+              (error) => {
+                console.log(error);
               });
-            } else {
-              this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Timesheet saved successfully' });
-              this.resetForm();
-              this.defaultControlsToForm();
-              this.getClientProjectCategoryDropDown();
-              this.getTimesheetTimeLineTimeCellDetails();
-            }
-          },
-          (error) => {
-            console.log(error);
-          });
+          if (this._actualTimeSheetId.toString() === '-1') {
+            localStorage.removeItem('PeriodEndDate');
+            this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId]);
+          }
+        }
+      });
+    } else {
+      let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
+      timeLineAndTimeCellSaveArr = [];
+      for (let i = 0; i < this._timeTandM.length; i++) {
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+      }
+      this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
+      for (let i = 0; i < this._timeProjBill.length; i++) {
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+      }
+      this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
+      for (let i = 0; i < this._timeNONbill.length; i++) {
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+      }
+      this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
+      if (timeLineAndTimeCellSaveArr.length > 0) {
+        timeSheetSubmit.timeLineAndTimeCellArr = timeLineAndTimeCellSaveArr;
+        this.timesysSvc.TimeLineAndTimeCell_DeleteAndInsert(timeSheetSubmit)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== null && outputData.ErrorMessage !== '') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess', severity: 'success'
+                  , summary: 'Info Message', detail: 'Timesheet saved successfully'
+                });
+                this.resetForm();
+                this.defaultControlsToForm();
+                this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+                this.getTimesheetTimeLineTimeCellDetails();
+              }
+            },
+            (error) => {
+              console.log(error);
+            });
+      }
     }
 
   }
@@ -755,5 +843,37 @@ export class MaintaintimesheetComponent implements OnInit {
 
   editHoliday(rowData: any) {
 
+  }
+  checkPendingTimesheets() {
+    if (this._employee.length > 0 && this._employee[0].ID.toString() !== localStorage.getItem('UserId')) {
+      this.timesysSvc.getTimeSheetForApprovalCheck(this._employee[0].ID.toString())
+        .subscribe(
+          (data) => {
+            this._timeSheetApproval = data;
+            for (let i = 0; i < this._timeSheetApproval.length; i++) {
+              if (this._timesheetId.toString() === this._timeSheetApproval[i].TimesheetId.toString()) {
+                this._isTimesheetToAprrove = true;
+                break;
+              }
+            }
+            console.log(this._isTimesheetToAprrove);
+            if (this._isTimesheetToAprrove) {
+              this.getClientProjectCategoryDropDown(this._employee[0].ID.toString());
+            } else {
+              this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+            }
+          }
+        );
+    } else {
+      this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+
+    }
+  }
+  Accept(txtSuper: any) {
+    console.log(txtSuper.value);
+    this.router.navigate(['/menu/dashboard/']);
+  }
+  Reject() {
+    this.router.navigate(['/menu/dashboard/']);
   }
 }

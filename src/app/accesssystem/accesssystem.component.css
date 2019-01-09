@@ -1,0 +1,17 @@
+.zerohrs{
+    background-color: gray !important;
+}
+.lessThan7hrs{
+    background-color: red !important;
+}
+.graterThan7hrs{
+    background-color: yellow !important;
+}
+.graterThan9hrs{
+    background-color: lightgreen !important;
+    color: black;
+}
+.weekends{
+    background-color: pink !important;
+    color: black;
+}
