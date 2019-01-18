@@ -47,7 +47,7 @@ export class CustomersComponent implements OnInit {
     ];
     this.selectedType = 'Active';
   }
-  _HasEdit = false;
+  _HasEdit = true;
 
   ngOnInit() {
     this.CheckSecurity();
@@ -61,14 +61,14 @@ export class CustomersComponent implements OnInit {
   }
 
   CheckSecurity() {
-    this._HasEdit = false;
+    this._HasEdit = true;
     this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
           .subscribe((data) => {
             if (data != null && data.length > 0) {
               if (data[0].HasEdit) {
-                this._HasEdit = true;
+                this._HasEdit = false;
               }
             }
           });
