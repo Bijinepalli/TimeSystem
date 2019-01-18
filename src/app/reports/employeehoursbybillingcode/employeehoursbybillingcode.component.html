@@ -17,11 +17,21 @@
     <div class="label" >
       Client Billing Cycle:
     </div>
-    <div class="ui-g-7">
+    <div class="ui-g-5">
       <p-selectButton [options]="billingCycle" pTooltip="Show clients with this billing cycle on the report" tooltipPosition="bottom" [(ngModel)]="selectedbillingCycle"></p-selectButton>
     </div>
+    <div class="ui-g-4">
+        <label class="label" style="padding:0px 10px;">Date From:</label>
+        
+      <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"></p-calendar>
+      <label class="label" style="padding:0px 10px;">to</label>
+      <p-calendar appendTo="body" [readonlyInput]="true"  pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" [(ngModel)]="_endDate" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" ></p-calendar>
+    </div>
+    <div class="ui-g-2 label" style="text-align: left">
+      <p-checkbox binary="true" label="Total by Billing Code" pTooltip="Check this option to include a total of hours for each billing code" tooltipPosition="bottom" [(ngModel)]="showTotals" binary="true"></p-checkbox>
+    </div>
   </div>
-  <div class="ui-g">
+  <!-- <div class="ui-g">
     <div class="ui-g-1 label">
       Date From:
     </div>
@@ -33,10 +43,12 @@
     <div class="ui-g-2 label" style="text-align: left">
       <p-checkbox binary="true" label="Total by Billing Code" pTooltip="Check this option to include a total of hours for each billing code" tooltipPosition="bottom" [(ngModel)]="showTotals" binary="true"></p-checkbox>
     </div>
-  </div>
+  </div> -->
   <p-footer>
     <div style="text-align: right">
-      <i class="fa fa-play-circle fa-2x" pTooltip="Get the client codes/run the report" style="cursor:pointer;color:cyan" (click)="showBillingCodes()" tooltipPosition="left"></i>
+      <button pButton tooltipPosition="bottom" class="ui-button-info" label="Show Billing Codes"
+      (click)=showBillingCodes() pTooltip="Get the client codes/run the report" tooltipPosition="bottom"></button>
+      <!-- <i class="fa fa-play-circle fa-2x" pTooltip="Get the client codes/run the report" style="cursor:pointer;color:cyan" (click)="showBillingCodes()" tooltipPosition="left"></i> -->
     </div>
   </p-footer>
 </p-panel>
