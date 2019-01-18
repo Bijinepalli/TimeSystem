@@ -157,7 +157,8 @@ const appRoutes: Routes = [
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
       { path: 'mails', component: MailsComponent },
       { path: 'access', component: AccesssystemComponent },
-    ]
+    ],
+    runGuardsAndResolvers: 'always',
   },
   {
     path: 'menureports',

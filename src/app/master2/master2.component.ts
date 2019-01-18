@@ -1,9 +1,9 @@
-import { Component, ViewChild, OnInit, AfterViewInit, Input } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MenuItem, MessageService, ConfirmationService } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
 import { TimesystemService } from '../service/timesystem.service';
-import { MasterPages, LeftNavMenu, Employee } from '../model/objects';
+import { LeftNavMenu, Employee } from '../model/objects';
 import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
 
@@ -42,8 +42,6 @@ export class Master2Component implements OnInit {
 
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
-    private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
@@ -54,7 +52,7 @@ export class Master2Component implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    this.selectInitialMenuItemBasedOnUrl();
+    // this.selectInitialMenuItemBasedOnUrl();
   }
 
   ngOnInit() {
@@ -73,6 +71,9 @@ export class Master2Component implements OnInit {
       }
     }
     this.getNavItems();
+    // this.router.routeReuseStrategy.shouldReuseRoute = function () {
+    //   return false;
+    // };
   }
 
   CheckAuthorisation(): boolean {
@@ -138,41 +139,98 @@ export class Master2Component implements OnInit {
 
   getNavItems() {
     if (localStorage.getItem('UserRole') !== undefined && localStorage.getItem('UserRole') !== null) {
-      const handleSelected = function (event) {
-        const allMenus = jQuery(event.originalEvent.target).closest('ul');
-        if (allMenus !== null && allMenus.length > 0) {
-          const allLinks = allMenus.find('.menu-selected');
-          if (allLinks !== null && allLinks.length > 0) {
-            allLinks.removeClass('menu-selected');
-          }
-          const selected = jQuery(event.originalEvent.target).closest('a');
-          if (selected !== null && selected.length > 0) {
-            selected.addClass('menu-selected');
-          }
-        }
-      };
       this.timesysSvc.getLeftNavMenu(localStorage.getItem('UserRole').toString(), '0')
         .subscribe(
           (data) => {
-            this.menuItems = data;
-            this.dashboard = [{ label: 'Dashboard', routerLink: '/menu/dashboard' },
-            { label: 'Timesheets', routerLink: '/menu/timesheets' },
-            { label: 'Pay Stubs', routerLink: '/menu/paystubs' }
+            // this.menuItems=data;
+            this.buildMenuItems(data);
+            this.dashboard = [{
+              label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+            },
+            { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
+            { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
             ];
-            // console.log(JSON.stringify(this.menuItems));
+            // this.selectInitialMenuItemBasedOnUrl();
           });
     }
+  }
+
+
+  buildMenuItems(data: LeftNavMenu[]) {
+    this.menuItems = [];
+    this.buildSubMenus(this.menuItems, data);
+  }
+
+  buildSubMenus(menuItem: MenuItem[], data: LeftNavMenu[]) {
+    for (let cnt = 0; cnt < data.length; cnt++) {
+      if (data[cnt].items !== undefined && data[cnt].items !== null && data[cnt].items.length > 0) {
+        let submenuItems: MenuItem[];
+        submenuItems = [];
+        this.buildSubMenus(submenuItems, data[cnt].items);
+        if (data[cnt].routerLink !== undefined && data[cnt].routerLink !== null && data[cnt].routerLink !== '') {
+          menuItem.push({
+            label: data[cnt].label,
+            queryParams: data[cnt].queryParams,
+            items: submenuItems,
+            command: (event) => this.navigateByRoute(event, data[cnt].routerLink)
+          });
+        } else {
+          menuItem.push({
+            label: data[cnt].label,
+            queryParams: data[cnt].queryParams,
+            items: submenuItems
+          });
+        }
+      } else {
+        if (data[cnt].routerLink !== undefined && data[cnt].routerLink !== null && data[cnt].routerLink !== '') {
+          menuItem.push({
+            label: data[cnt].label,
+            queryParams: data[cnt].queryParams,
+            command: (event) => this.navigateByRoute(event, data[cnt].routerLink)
+          });
+        } else {
+          menuItem.push({
+            label: data[cnt].label,
+            queryParams: data[cnt].queryParams
+          });
+        }
+      }
+    }
+  }
+
+  navigateByRoute(event, path) {
+    let queryParamsNew: any;
+    queryParamsNew = {};
+    const _np = Math.floor(Math.random() * (10000 - 1 + 1)) + 1;
+    if (event.item.queryParams !== undefined && event.item.queryParams !== null) {
+      queryParamsNew = { Id: event.item.queryParams.Id, TS: _np };
+    } else {
+      queryParamsNew = { TS: _np };
+    }
+    this.router.navigate([path], { queryParams: queryParamsNew, skipLocationChange: true });
   }
 
   selectInitialMenuItemBasedOnUrl() {
     const path = document.location.pathname;
     if (this.menuItems !== undefined && this.menuItems !== null && this.menuItems.length > 0) {
-      const menuItem = this.menuItems.find((item) => item.routerLink[0] === path);
+      let menuItem = this.getSelectedMenuItem(path, this.menuItems);
+      if (menuItem !== undefined && menuItem !== null) {
+      } else {
+        for (let cnt = 0; cnt < this.menuItems.length; cnt++) {
+          if (this.menuItems[cnt].items !== undefined && this.menuItems[cnt].items !== null && this.menuItems[cnt].items.length > 0) {
+            menuItem = this.getSelectedMenuItem(path, this.menuItems[cnt].items);
+            if (menuItem !== undefined && menuItem !== null) {
+              break;
+            }
+          }
+        }
+      }
       if (menuItem !== undefined && menuItem !== null) {
         if (this.bigMenu !== undefined &&
           this.bigMenu !== null &&
           this.bigMenu.container !== undefined &&
           this.bigMenu.container !== null) {
+
           const selectedIcon = this.bigMenu.container.querySelector(`.${menuItem.icon}`);
           if (selectedIcon !== undefined && selectedIcon !== null) {
             const menuselected = jQuery(selectedIcon).closest('li');
@@ -184,6 +242,15 @@ export class Master2Component implements OnInit {
       }
     }
   }
+
+  getSelectedMenuItem(path: string, menuItems: any): any {
+    return menuItems.find((item) =>
+      item.routerLink !== undefined &&
+      item.routerLink !== null &&
+      item.routerLink === path);
+  }
+
+
 
   OpenMenu() {
     this.visibleSidebar = true;

@@ -11,14 +11,14 @@
     </div>
   </div>
 </div>
-<div class="ui-g">
+<div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Employee" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Employee" *ngIf="!_HasEdit" (click)=addEmployee()></button>
   </div>
 </div>
-<div class="ui-g">
+<div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-6 ui-lg-3">
     Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
   </div>
@@ -28,7 +28,7 @@
 </div>
 
 <div class="ui-g">
-  <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+  <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo" [responsive]="false" dataKey="Id">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
@@ -379,7 +379,7 @@
 
   <div *ngIf="!_IsEditRate">
     <div class="ui-g-12" style="text-align:right">
-      <button pButton label="Add New Rate" (click)="addNewRate()"></button>
+      <button pButton label="Add New Rate" *ngIf="!_HasEdit" (click)="addNewRate()"></button>
     </div>
     <p-scrollPanel [style]="{width: '100%', height: '550px'}">
       <p-table #dt [columns]="_ratecols" [value]="_rates" [responsive]="false" dataKey="EmployeeID" [paginator]="true"
