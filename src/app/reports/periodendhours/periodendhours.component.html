@@ -1,12 +1,12 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px; color: orange">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px; color: red">
     Period End Hours By Employee
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp()" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('PeriodEndHours.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
@@ -56,3 +56,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
+  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+    </p-scrollPanel>
+  </p-sidebar>

@@ -52,7 +52,6 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
       this.timesysSvc.getNonBillableHourGroups((+this._Id + 1).toString())
         .subscribe(
           (data) => {
-            console.log(data);
             this._groups = data;
             this._recData = this._groups.length;
           }
@@ -125,9 +124,12 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
 
   populateCheckboxlist() {
     this.list1 = [];
+    this._popUpHeader = 'Report Group';
     this.timesysSvc.getNonBillables('1')
       .subscribe(
         (data) => {
+          console.log('gfsd');
+          console.log(data);
           if (this.selectedType < 2) {
             this._nonBillables = data[0].filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
           } else {

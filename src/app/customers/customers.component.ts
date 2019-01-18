@@ -2,9 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { Customers } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-customers',
@@ -32,7 +33,13 @@ export class CustomersComponent implements OnInit {
   chkInactive = false;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService) {
+  constructor(
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) {
     this.types = [
       { label: 'Active', value: 'Active' },
       { label: 'Inactive', value: 'Inactive' },
@@ -40,8 +47,10 @@ export class CustomersComponent implements OnInit {
     ];
     this.selectedType = 'Active';
   }
+  _HasEdit = false;
 
   ngOnInit() {
+    this.CheckSecurity();
     this.cols = [
       { field: 'CustomerName', header: 'Customer Name' },
       { field: 'CustomerNumber', header: 'Customer Number' },
@@ -49,6 +58,22 @@ export class CustomersComponent implements OnInit {
     this.selectedType = 'Active';
     this.getCustomers();
     this.addControls();
+  }
+
+  CheckSecurity() {
+    this._HasEdit = false;
+    this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+          .subscribe((data) => {
+            if (data != null && data.length > 0) {
+              if (data[0].HasEdit) {
+                this._HasEdit = true;
+              }
+            }
+          });
+      }
+    });
   }
 
   getCustomers() {

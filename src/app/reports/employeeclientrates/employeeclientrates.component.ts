@@ -23,6 +23,8 @@ export class EmployeeclientratesComponent implements OnInit {
   _reports: any[] = [];
   _recData = 0;
   cols: any;
+  visibleHelp: boolean;
+  helpText: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -48,11 +50,11 @@ export class EmployeeclientratesComponent implements OnInit {
 
       if (this._startDate !== null && this._startDate !== '') {
         _start = this.datePipe.transform(this._startDate, 'yyyy/MM/dd');
-        this._startDate = _start;
+        this._startDate = this.datePipe.transform(this._startDate, 'MM/dd/yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy/MM/dd');
-        this._endDate = _end;
+        this._endDate = this.datePipe.transform(this._endDate, 'MM/dd/yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
@@ -89,5 +91,17 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'Rate', header: 'Rate' },
       { field: 'EffectiveDate', header: 'Effective Date' },
     ];
+  }
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
   }
 }

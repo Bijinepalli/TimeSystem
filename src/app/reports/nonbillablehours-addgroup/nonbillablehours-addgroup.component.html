@@ -1,5 +1,5 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;color:red">
     {{_header}}
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -68,7 +68,7 @@
 </div>
 <div class="ui-g" *ngIf="edit">
   <div class="ui-g-12 ui-md-12 ui-g-nopad">
-    <div class="ui-g-12 ui-md-2" style="text-align: right">
+    <div class="ui-g-12 ui-md-1" style="text-align: right;padding-top:12px">
       Group Name :
     </div>
     <div class="ui-g-12 ui-md-3">
@@ -80,7 +80,7 @@
       <p-checkbox binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
     </div>
   </div>
-  <div class="ui-g" *ngIf="secondarygroup" style="display:none">
+  <div class="ui-g" *ngIf="secondarygroup" style="display: none">
     <p-panel class="panelSecondaryGroup">
       <p-header>
         <h3 class="first">{{_selectString}}</h3>
@@ -99,7 +99,7 @@
     </p-panel>
   </div>
   <div class="ui-g" *ngIf="secondarygroup" style="">
-    <p-pickList [target]="list2" [source]="list1" filterBy="ProjectName" sourceHeader="Unassigned {{_popUpHeader}}s"
+    <p-pickList [target]="list2" [source]="list1" filterBy="label" sourceHeader="Unassigned {{_popUpHeader}}s"
       targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true" [showSourceControls]="false" [showTargetControls]="false"
       sourceFilterPlaceholder="Search by {{_popUpHeader}}Name" targetFilterPlaceholder="Search by {{_popUpHeader}}Name"
       [sourceStyle]="{'height':'300px', 'width' : '400px'}" [targetStyle]="{'height':'300px', 'width' : '400px'}"
@@ -115,8 +115,7 @@
     <div class="ui-g-2 ui-md-2">
       <button pButton pTooltip="Cancel and return to the previous page" tooltipPosition="bottom" class="ui-button-info"
         label="Cancel" (click)=cancelClick()></button>
-    </div>
-    <div class="ui-g-2 ui-md-2">
+      &nbsp;
       <button pButton pTooltip="Save this data" tooltipPosition="bottom" class="ui-button-info" label="Save" (click)=saveGroup()></button>
     </div>
   </div>

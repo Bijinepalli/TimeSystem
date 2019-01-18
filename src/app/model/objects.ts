@@ -149,10 +149,14 @@ export class MasterPages {
 }
 
 export class LeftNavMenu {
-    label: string;
-    icon: string;
-    routeLink: string;
-    items: LeftNavMenu[];
+    label?: string;
+    icon?: string;
+    routerLink?: string;
+    queryParams?: {
+        [k: string]: string;
+    };
+    items?: LeftNavMenu[];
+    // skipLocationChange?: boolean;
 }
 
 
@@ -234,9 +238,11 @@ export class TimeSheet {
     PeriodEndDate?: string;
     LastName?: string;
     FirstName?: string;
-    EmployeeID?: number;
     ClientID?: number;
     EffectiveDate?: string;
+    Status?: string;
+    EmailAddress?: string;
+    TimesheetID?: string;
 }
 export class TimeLine {
     Id?: number;
@@ -339,5 +345,39 @@ export class Invoice {
     Inactive: boolean;
 }
 
-
+export class MonthlyHours {
+    EmployeeNumber: string;
+    EmployeeName: string;
+    Day1: string;
+    Day2: string;
+    Day3: string;
+    Day4: string;
+    Day5: string;
+    Day6: string;
+    Day7: string;
+    Day8: string;
+    Day9: string;
+    Day10: string;
+    Day11: string;
+    Day12: string;
+    Day13: string;
+    Day14: string;
+    Day15: string;
+    Day16: string;
+    Day17: string;
+    Day18: string;
+    Day19: string;
+    Day20: string;
+    Day21: string;
+    Day22: string;
+    Day23: string;
+    Day24: string;
+    Day25: string;
+    Day26: string;
+    Day27: string;
+    Day28: string;
+    Day29: string;
+    Day30: string;
+    Day31: string;
+}
 

@@ -6,7 +6,7 @@
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('InvoiceDataByCustomer.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
@@ -17,17 +17,17 @@
   <div class="ui-g-12 ui-md-3">
     Invoice Date :
     <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"></p-calendar>
+      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
   </div>
 </div>
 <div class="ui-g" *ngIf="!showInvoiceList">
   <div class="ui-g-6 ui-g-md-5 label">
     Date From :
     <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"></p-calendar>
+      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
     to
     <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"></p-calendar>
+      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
   </div>
   <div class="ui-g-2">
     <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
@@ -36,7 +36,7 @@
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
-  label="Start Over" (click)="startOver()"></button>
+    label="Start Over" (click)="startOver()"></button>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
@@ -69,3 +69,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
+  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+    </p-scrollPanel>
+  </p-sidebar>

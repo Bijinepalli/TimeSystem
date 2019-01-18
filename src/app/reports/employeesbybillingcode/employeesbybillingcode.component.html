@@ -6,25 +6,26 @@
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp()" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <a (click)="showHelp('EmployeesByBillingCode.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
     </div>
   </div>
 </div>
+<br>
 <div class="ui-g" *ngIf="!showBillingCodeList && !changeCodeList">
   <div class="ui-g-12 ui-md-3">
-    Select: <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
+    Select: <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-2">
-    <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+    <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom" [(ngModel)]="selectedType"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-7">
-    <button pButton pTooltip="Show Billing Codes that match your choice" tooltipPosition="bottom" class="ui-button-info"
+    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
       label="Show Billing Codes" (click)=showBillingCodes()></button>
   </div>
 </div>
 <div *ngIf="changeCodeList">
   <div class="ui-g-12 ui-md-4">
-    <button pButton pTooltip="Change your Billing Codes selection" tooltipPosition="bottom" class="ui-button-info"
+    <button pButton pTooltip="Change your billing code selections" tooltipPosition="bottom" class="ui-button-info"
       label="Change Codes" (click)="changeCodes()"></button>
   </div>
   <div class="ui-g-12 ui-md-4">
@@ -46,7 +47,7 @@
     <p-scrollPanel [style]="{height: '400px'}">
       <div class="ui-g" style="margin-bottom:10px">
         <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
-          <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
+          <p-checkbox name="showBillingDetails" [value]="_dcb.value" pTooltip="Select the billing codes to appear in the report" tooltipPosition="bottom" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
             (click)="selectcheck()"></p-checkbox>
         </div>
       </div>
@@ -59,14 +60,14 @@
 
 <div class="ui-g" style="padding-top: 5px" *ngIf="showBillingCodeList">
   <div class="ui-g-12 ui-md-5">
-    Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus" [(ngModel)]="selectedassignStatus"></p-selectButton>
+    Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus" pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both." tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+    <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
       [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
   </div>
   <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
   </div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
@@ -105,6 +106,11 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
+  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+      <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+      <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+      </p-scrollPanel>
+    </p-sidebar>
 <!-- <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
   <div class="ui-g-12 ui-md-12 ui-lg-12">
     <div class="ui-g-12 ui-md-12 ui-lg-12">
