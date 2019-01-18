@@ -45,7 +45,7 @@ export class HolidaysComponent implements OnInit {
   _selectedHoliday: Holidays;
   _IsEdit = false;
 
-  _HasEdit = false;
+  _HasEdit = true;
 
   ngOnInit() {
 
@@ -80,14 +80,14 @@ export class HolidaysComponent implements OnInit {
   }
 
   CheckSecurity() {
-    this._HasEdit = false;
+    this._HasEdit = true;
     this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
           .subscribe((data) => {
             if (data != null && data.length > 0) {
               if (data[0].HasEdit) {
-                this._HasEdit = true;
+                this._HasEdit = false;
               }
             }
           });
