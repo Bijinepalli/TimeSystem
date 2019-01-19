@@ -28,6 +28,8 @@ export class NonbillablehoursComponent implements OnInit {
   rowdata: any;
   helpText: any;
   visibleHelp = false;
+  selectedCode: any ;
+  showSpinner = true;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
