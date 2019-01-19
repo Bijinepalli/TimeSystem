@@ -46,7 +46,7 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Click to update this email" style="cursor:pointer;color:cyan"
+          <i class="fa fa-edit fa-150x" pTooltip="Click to update this email" style="cursor:pointer;color:green"
             tooltipPosition="bottom" (click)="editEmail(rowData)"></i>
         </td>
         <td *ngFor="let col of columns" style="word-break: break-word;word-wrap: break-word;">

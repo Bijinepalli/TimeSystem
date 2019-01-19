@@ -83,12 +83,12 @@
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-user-secret fa-150x" pTooltip="Manage the clients assigned to this employee" style="cursor:pointer;color:yellow"
+            class="fa fa-user-secret fa-150x" pTooltip="Manage the clients assigned to this employee" style="cursor:pointer;color:goldenrod"
             tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-sticky-note-o fa-150x" pTooltip="Manage the billable projects assigned to this employee" style="cursor:pointer;color:chartreuse"
+            class="fa fa-sticky-note-o fa-150x" pTooltip="Manage the billable projects assigned to this employee" style="cursor:pointer;color:green"
             tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
         </td>
         <td style="text-align: center">
@@ -98,7 +98,7 @@
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-credit-card fa-150x" pTooltip="Manage the rate information assigned to this employee" style="cursor:pointer;color:cornsilk"
+            class="fa fa-credit-card fa-150x" pTooltip="Manage the rate information assigned to this employee" style="cursor:pointer;color:navy"
             tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
         </td>
       </tr>
@@ -407,7 +407,7 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-edit fa-150x" pTooltip="Change this rate" style="cursor:pointer;color:cyan"
+              <i class="fa fa-edit fa-150x" pTooltip="Change this rate" style="cursor:pointer;color:green"
                 tooltipPosition="bottom" (click)="editRate(rowData)"></i>
             </td>
             <td *ngFor="let col of columns">
