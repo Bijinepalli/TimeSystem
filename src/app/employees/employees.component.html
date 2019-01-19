@@ -71,7 +71,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
-            style="cursor:pointer;color:aquamarine" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
+            style="cursor:pointer;color:blue" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
