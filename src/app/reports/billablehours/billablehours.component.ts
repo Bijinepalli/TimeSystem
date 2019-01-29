@@ -38,6 +38,8 @@ export class BillablehoursComponent implements OnInit {
   admin = false;
   _codeType: string;
   _totalhours: number;
+  helpText: any;
+  visibleHelp = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -157,5 +159,16 @@ export class BillablehoursComponent implements OnInit {
     this.showReport = false;
     this.showBillingCodeList = true;
   }
-
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
 }

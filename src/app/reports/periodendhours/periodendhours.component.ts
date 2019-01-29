@@ -19,6 +19,9 @@ export class PeriodendhoursComponent implements OnInit {
   selectedDate: string;
   timesheet: TimeSheet[] = [];
   showSpinner = false;
+  helpText: any;
+  visibleHelp = false;
+  showReport = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -41,7 +44,18 @@ export class PeriodendhoursComponent implements OnInit {
         }
       );
   }
-
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
   onDateChange(e) {
     // this.showSpinner = true;
     // const semiMonthlyStart = '2011-12-16';

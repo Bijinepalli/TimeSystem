@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
@@ -21,6 +21,9 @@ import { DatePipe } from '@angular/common';
 export class EmployeesComponent implements OnInit {
 
   /* #region Global Variables */
+
+
+  ParamSubscribe: any;
 
   _billingCodes: BillingCode;
 
@@ -94,36 +97,123 @@ export class EmployeesComponent implements OnInit {
   _Supervisors: SelectItem[];
   _SecurityLevels: SelectItem[];
 
-  _HasEdit = false;
+  _HasEdit = true;
+  _employeesPageNo: number;
 
   /* #endregion */
 
+  /* #region Constructor */
   // tslint:disable-next-line:max-line-length
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
     public datepipe: DatePipe
-  ) {
-    this.types = [
-      { label: 'Active', value: 0 },
-      { label: 'Inactive', value: 1 },
-      { label: 'Both', value: 2 }
-    ];
-    this.salaryTypes = [
-      { label: 'Salaried', value: 0 },
-      { label: 'Hourly', value: 1 },
-      { label: 'Both', value: 2 }
-    ];
-    this.selectedType = 0;
-    this.selectedSalaryType = 0;
+  ) { }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
   }
 
   ngOnInit() {
-    this.CheckSecurity();
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.ClearAllProperties();
+      this.Initialisations();
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.CheckSecurity(params['Id'].toString());
+        this.AddFormControls();
+        this.GetMethods();
+      }
+    });
+  }
+  /* #endregion */
+
+  /* #region Basic Methods */
+  ClearAllProperties() {
     this._billingCodes = new BillingCode();
+    this.selectedType = 0;
+    this.selectedSalaryType = 0;
+
+    this.types = [];
+    this.salaryTypes = [];
+
+    this.activeColumn = true;
+
+    this.cols = {};
+    this._recData = '';
+
+    this._employeesPageNo = 0;
+    this._employees = [];
+
+
+    this._nonBillablesAssignToEmp = [];
+    this._nonBillablesNotAssignToEmp = [];
+    this._nonBillablesAssignToEmpSaved = [];
+
+    this._projectsAssignToEmp = [];
+    this._projectsNotAssignToEmp = [];
+    this._projectsAssignToEmpSaved = [];
+
+    this._clientsAssignToEmp = [];
+    this._clientsNotAssignToEmp = [];
+    this._clientsAssignToEmpSaved = [];
+
+    this._popUpHeader = '';
+    this._employeeNameHdr = '';
+    this.employeeHdr = '';
+
+    this.employeeDialog = false;
+    this.nonBillableDialog = false;
+    this.projectDialog = false;
+    this.clientDialog = false;
+    this.rateDialog = false;
+
+    this._selectedEmployee = {};
+    this._selectedEmployeeForAction = {};
+
+    this._frmEmployee = new FormGroup({});
+    this._IsEditEmployee = false;
+
+    this._frmRate = new FormGroup({});
+    this._IsEditRate = false;
+    this._IsAddRate = false;
+    this._ratecols = '';
+    this._rates = [];
+    this._recRateData = '';
+    this.chkrateInactive = false;
+    this._employeeId = '';
+    this._rateId = '';
+    this._clients = [];
+    this._customerId = '';
+    this._selectedRate = {};
+    this._ratePlaceholder = '';
+
+    this.visibleHelp = false;
+    this.helpText = '';
+
+    this.chkSalaried = false;
+    this.chkSubmitsTime = false;
+    this.chkIPayEligible = false;
+    this.chkCompanyHolidays = false;
+    this.chkPayAvailableAlert = false;
+    this.chkOfficer = false;
+    this.chkSupervisor = false;
+    this.chkTimesheetVerification = false;
+    this.chkInactive = false;
+    this.chkIsLocked = false;
+    this._Supervisors = [];
+    this._SecurityLevels = [];
+
+    this._HasEdit = true;
+  }
+
+  Initialisations() {
     this.cols = [
       { field: 'LastName', header: 'Last Name' },
       { field: 'FirstName', header: 'First Name' },
@@ -136,26 +226,55 @@ export class EmployeesComponent implements OnInit {
       { label: 'Payroll', value: 'Y' },
       { label: 'Billing', value: 'B' },
     ];
+    this.types = [
+      { label: 'Active', value: 0 },
+      { label: 'Inactive', value: 1 },
+      { label: 'Both', value: 2 }
+    ];
+    this.salaryTypes = [
+      { label: 'Salaried', value: 0 },
+      { label: 'Hourly', value: 1 },
+      { label: 'Both', value: 2 }
+    ];
+  }
+
+  AddFormControls() {
     this.addControlsEmployee();
-    this.getEmployees();
-    this.getSupervisors();
     this.addControlsRate();
   }
-  CheckSecurity() {
-    this._HasEdit = false;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = true;
-              }
-            }
-          });
-      }
-    });
+
+  GetMethods() {
+    this.getEmployees();
+    this.getSupervisors();
   }
+
+  CheckSecurity(PageId: string) {
+    this._HasEdit = true;
+
+    this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), PageId)
+      .subscribe((data) => {
+        if (data != null && data.length > 0) {
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+        }
+      });
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
+  /* #endregion */
+
   /* #region Get Calls */
   getEmployees() {
 
@@ -203,13 +322,19 @@ export class EmployeesComponent implements OnInit {
       _Salaried = '0';
     }
 
+    this._employeesPageNo = 0;
+    this._employees = [];
+    this._recData = 'No employees found';
+
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
+            this._employeesPageNo = 0;
             this._employees = data;
             this._recData = this._employees.length + ' employees found';
           } else {
+            this._employeesPageNo = 0;
             this._employees = [];
             this._recData = 'No employees found';
           }
@@ -303,19 +428,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   /* #endregion */
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
 
   /* #region Sort Calls */
   sortTarget() {
@@ -1128,7 +1240,7 @@ export class EmployeesComponent implements OnInit {
   }
   /* #endregion */
 
-
+  /* #region Rates Modal Popup Related Functionality */
   addNewRate() {
     this._IsEditRate = true;
     this._IsAddRate = true;
@@ -1204,43 +1316,6 @@ export class EmployeesComponent implements OnInit {
   hasFormErrorsRate() {
     return !this._frmRate.valid;
   }
-
-  deleteRate(dataRow: any) {
-    this.confSvc.confirm({
-      message: 'Are you sure you want to delete this rate?',
-      header: 'Confirmation',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        /* do nothing */
-        // this.timesysSvc.Employee_Terminate(dataRow)
-        //   .subscribe(
-        //     (outputData) => {
-        //       if (outputData !== null && outputData.ErrorMessage !== '') {
-        //         this.msgSvc.add({
-        //           key: 'alert',
-        //           sticky: true,
-        //           severity: 'error',
-        //           summary: 'Error!',
-        //           detail: outputData.ErrorMessage
-        //         });
-        //       } else {
-        //         this.msgSvc.add({
-        //           key: 'saveSuccess',
-        //           severity: 'success',
-        //           summary: 'Info Message',
-        //           detail: 'Employee terminated successfully'
-        //         });
-        //         this.getEmployees();
-        //       }
-        //     },
-        //     (error) => {
-        //       console.log(error);
-        //     });
-      },
-      reject: () => {
-      }
-    });
-  }
   populateTable(empId: number) {
     this._IsEditRate = false;
     this._IsAddRate = false;
@@ -1284,6 +1359,7 @@ export class EmployeesComponent implements OnInit {
 
   saveRateModal() {
     this._selectedRate = {};
+    console.log(this._frmRate);
     this._selectedRate.ClientName = this._frmRate.controls['frmClientName'].value.toString().trim();
     this._selectedRate.CustomerName = this._frmRate.controls['frmCustomerName'].value.toString().toUpperCase().trim();
     this._selectedRate.CustomerId = +this._customerId.toString();
@@ -1330,5 +1406,5 @@ export class EmployeesComponent implements OnInit {
     return true;
 
   }
-
+  /* #endregion */
 }

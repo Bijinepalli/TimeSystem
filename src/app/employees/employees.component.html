@@ -11,14 +11,14 @@
     </div>
   </div>
 </div>
-<div class="ui-g">
+<div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Employee" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Employee" *ngIf="!_HasEdit" (click)=addEmployee()></button>
   </div>
 </div>
-<div class="ui-g">
+<div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-6 ui-lg-3">
     Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
   </div>
@@ -28,7 +28,7 @@
 </div>
 
 <div class="ui-g">
-  <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+  <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo" [responsive]="false" dataKey="Id">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
@@ -62,7 +62,7 @@
             style="cursor:pointer;color:orange" tooltipPosition="bottom" (click)="unlockEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Please click here to edit the employee" style="cursor:pointer;color:cyan"
+          <i class="fa fa-edit fa-150x" pTooltip="Please click here to edit the employee" style="cursor:pointer;color:green"
             tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
@@ -71,7 +71,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
-            style="cursor:pointer;color:aquamarine" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
+            style="cursor:pointer;color:blue" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
@@ -83,12 +83,12 @@
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-user-secret fa-150x" pTooltip="Manage the clients assigned to this employee" style="cursor:pointer;color:yellow"
+            class="fa fa-user-secret fa-150x" pTooltip="Manage the clients assigned to this employee" style="cursor:pointer;color:goldenrod"
             tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-sticky-note-o fa-150x" pTooltip="Manage the billable projects assigned to this employee" style="cursor:pointer;color:chartreuse"
+            class="fa fa-sticky-note-o fa-150x" pTooltip="Manage the billable projects assigned to this employee" style="cursor:pointer;color:green"
             tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
         </td>
         <td style="text-align: center">
@@ -98,7 +98,7 @@
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-credit-card fa-150x" pTooltip="Manage the rate information assigned to this employee" style="cursor:pointer;color:cornsilk"
+            class="fa fa-credit-card fa-150x" pTooltip="Manage the rate information assigned to this employee" style="cursor:pointer;color:navy"
             tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
         </td>
       </tr>
@@ -379,7 +379,7 @@
 
   <div *ngIf="!_IsEditRate">
     <div class="ui-g-12" style="text-align:right">
-      <button pButton label="Add New Rate" (click)="addNewRate()"></button>
+      <button pButton label="Add New Rate" *ngIf="!_HasEdit" (click)="addNewRate()"></button>
     </div>
     <p-scrollPanel [style]="{width: '100%', height: '550px'}">
       <p-table #dt [columns]="_ratecols" [value]="_rates" [responsive]="false" dataKey="EmployeeID" [paginator]="true"
@@ -407,7 +407,7 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-edit fa-150x" pTooltip="Change this rate" style="cursor:pointer;color:cyan"
+              <i class="fa fa-edit fa-150x" pTooltip="Change this rate" style="cursor:pointer;color:green"
                 tooltipPosition="bottom" (click)="editRate(rowData)"></i>
             </td>
             <td *ngFor="let col of columns">

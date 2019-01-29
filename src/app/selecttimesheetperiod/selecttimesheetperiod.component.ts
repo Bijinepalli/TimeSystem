@@ -27,6 +27,8 @@ export class SelecttimesheetperiodComponent implements OnInit {
   selectTimePeriodDate: string;
   selectNewTimePeriod: number;
   _selectedTimesheet: TimeSheet;
+  selectedValues: any;
+
   constructor(private timesysSvc: TimesystemService, private router: Router
     , private msgSvc: MessageService, private confSvc: ConfirmationService, private datePipe: DatePipe) { }
 

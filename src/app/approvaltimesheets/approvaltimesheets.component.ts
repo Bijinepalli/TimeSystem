@@ -38,12 +38,12 @@ export class ApprovaltimesheetsComponent implements OnInit {
       });
   }
   approveTimeSheet(timeSheet: TimeSheetForApproval) {
-    // this.confSvc.confirm({
-    //   message: 'Do you want to approve the timesheet?',
-    //   accept: () => {
+    this.confSvc.confirm({
+      message: 'Do you want to approve the timesheet?',
+      accept: () => {
     this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.TimesheetId]);
-    //   }
-    // });
+      }
+    });
   }
 
 }

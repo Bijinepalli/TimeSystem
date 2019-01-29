@@ -9,6 +9,10 @@ export class DashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    const dateg = new Date();
+    console.log(dateg);
+    const newdate = new Date(dateg.setHours(dateg.getHours() + 7));
+    console.log(newdate);
   }
 
 }

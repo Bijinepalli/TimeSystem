@@ -117,7 +117,6 @@ export class InvoicedataComponent implements OnInit {
     this.showReport = false;
     this.showSpinner = false;
   }
-
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(
@@ -130,5 +129,4 @@ export class InvoicedataComponent implements OnInit {
         }
       );
   }
-
 }

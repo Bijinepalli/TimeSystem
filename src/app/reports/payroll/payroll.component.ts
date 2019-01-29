@@ -24,6 +24,9 @@ export class PayrollComponent implements OnInit {
   _recData = 0;
   cols: any;
   _timesheet: TimeSheet;
+  helpText: any;
+  visibleHelp = false;
+  selectedPeriod: any;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) { }
@@ -88,5 +91,17 @@ export class PayrollComponent implements OnInit {
       { field: 'TotalHours', header: 'Total Hours' },
       { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets' }
     ];
+  }
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
   }
 }

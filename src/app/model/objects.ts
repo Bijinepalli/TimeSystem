@@ -157,6 +157,7 @@ export class LeftNavMenu {
     };
     items?: LeftNavMenu[];
     // skipLocationChange?: boolean;
+    command?: (event?: any) => void;
 }
 
 

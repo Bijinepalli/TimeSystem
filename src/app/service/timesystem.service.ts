@@ -23,10 +23,11 @@ const httpOptions = {
 })
 export class TimesystemService {
 
+  // 172.16.16.217
   private accessSystemURL = 'http://localhost/AccessSystem/';
-  private ipaddress = 'http://172.16.32.67/';
+  private ipaddress = 'http://localhost/';
   private ipaddressLocal = 'http://localhost/';
-  private helpipaddress = 'http://172.16.32.67/ECTS/TimeSystem/help/';
+  private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
   private url = this.ipaddress + 'TimeSystemService/';
   private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
@@ -582,6 +583,10 @@ export class TimesystemService {
       .set('usagetype', usagetype)
       .set('datesince', datesince);
     return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
+  }
+  GetEmployeeHours(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'GetEmployeeHours', body, httpOptions);
   }
   getOutStandingTimesheets(empId: string, numbers: string) {
     const params = new HttpParams()
