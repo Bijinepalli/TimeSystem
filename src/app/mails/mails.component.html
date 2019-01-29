@@ -1,13 +1,14 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Emails
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Emails <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('EmailSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('EmailSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('EmailSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -46,7 +47,7 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Click to update this email" style="cursor:pointer;color:green"
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this email"
             tooltipPosition="bottom" (click)="editEmail(rowData)"></i>
         </td>
         <td *ngFor="let col of columns" style="word-break: break-word;word-wrap: break-word;">
@@ -65,7 +66,7 @@
           </div>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-times fa-150x" pTooltip="Delete Email" style="cursor:pointer;color:red" tooltipPosition="bottom"
+          <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete Email" tooltipPosition="bottom"
             (click)="deleteEmail(rowData)"></i>
         </td>
       </tr>
@@ -74,7 +75,7 @@
 </div>
 
 
-<p-dialog [(visible)]="emailDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="600">
+<p-dialog [(visible)]="emailDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" [width]="600">
   <p-header>
     {{emailHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"

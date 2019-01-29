@@ -1,13 +1,14 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;">
-    Employee Hours
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Employee Hours <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('EmployeeHours.htm')"></i>
   </div>
   <br>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('EmployeeHours.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('EmployeeHours.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -64,11 +65,11 @@
 <div class="ui-g" *ngIf="showBillingCodeList">
   <div class="ui-g-12 ui-md-5">
     Date Range From:
-    <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
+    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
       tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_startDate"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
-    <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
+    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
       tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_endDate"></p-calendar>
   </div>

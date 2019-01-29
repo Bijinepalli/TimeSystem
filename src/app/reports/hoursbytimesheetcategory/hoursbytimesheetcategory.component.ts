@@ -33,7 +33,7 @@ _startDate = '';
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM/dd/yyyy');
+    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDate = '';
   }
 generateReport() {
@@ -46,12 +46,12 @@ generateReport() {
       let _end = '';
 
       if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(this._startDate, 'yyyy/MM/dd');
-        this._startDate = this.datePipe.transform(this._startDate, 'MM/dd/yyyy');
+        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+        this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
-        _end = this.datePipe.transform(this._endDate, 'yyyy/MM/dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM/dd/yyyy');
+        _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
+        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;

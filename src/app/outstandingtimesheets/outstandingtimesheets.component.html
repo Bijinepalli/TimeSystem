@@ -12,7 +12,7 @@
   <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
     <tr [pSelectableRow]="rowData">
       <td style="text-align: center">
-        <i class="fa fa-edit fa-150x" pTooltip="Edit this TimeSheet" style="cursor:pointer;color:lightblue"
+        <i class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet"
           tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i>
       </td>
       <td *ngFor="let col of columns">
