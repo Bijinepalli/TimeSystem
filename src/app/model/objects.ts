@@ -343,7 +343,8 @@ export class Invoice {
     EndDate?: string;
     ClientName?: string;
     PONumber?: string;
-    Inactive: boolean;
+    Inactive?: boolean;
+    EffectiveDate?: string;
 }
 
 export class MonthlyHours {

@@ -28,8 +28,8 @@ export class NonbillablehoursComponent implements OnInit {
   rowdata: any;
   helpText: any;
   visibleHelp = false;
-  selectedCode: any ;
-  showSpinner = true;
+  selectedCode: any;
+  showSpinner = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -58,7 +58,6 @@ export class NonbillablehoursComponent implements OnInit {
     }
     this.endDate = (end.getMonth() + 1).toString() + '-' + end.getDate().toString() + '-' + end.getFullYear().toString();
     this.totalChecked = true;
-    console.log(this.startDate);
   }
 
   ngOnInit() {
@@ -74,6 +73,7 @@ export class NonbillablehoursComponent implements OnInit {
   }
 
   generateReport() {
+    this.showSpinner = true;
     this.setHeader();
     this.rowdata = {};
     const dateFormat = 'yyyy-MM-dd';
@@ -86,6 +86,7 @@ export class NonbillablehoursComponent implements OnInit {
           this._reports = data;
           this.showReport = true;
         }
+        this.showSpinner = false;
       }
     );
   }
