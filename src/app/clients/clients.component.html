@@ -1,13 +1,14 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Clients
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Clients <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('ClientsSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('ClientsSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('ClientsSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -53,7 +54,7 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Click to update the data for this client" style="cursor:pointer;color:green"
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this client"
             tooltipPosition="bottom" (click)="editClient(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
@@ -66,7 +67,7 @@
           </div>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x" pTooltip="Delete this unused client" style="cursor:pointer;color:red"
+          <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused client"
             tooltipPosition="bottom" (click)="deleteClient(rowData)"></i>
         </td>
       </tr>
@@ -75,7 +76,7 @@
 </div>
 
 
-<p-dialog [(visible)]="clientDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+<p-dialog [(visible)]="clientDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" [width]="500">
   <p-header>
     {{clientHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"

@@ -43,7 +43,7 @@
             <a [routerLink]="" (click)="editGroup(rowData.Group1,rowData.ID1,'main')">{{rowData['Group1']}}</a>
           </td>
           <td>
-            <i class="fa fa-times fa-150x" pTooltip="Delete this report group and all of its subgroups" style="cursor:pointer;color:red"
+            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this report group and all of its subgroups"
               tooltipPosition="bottom" (click)="deleteGroup(rowData.ID1,'main')"></i>
           </td>
           <td>
@@ -54,7 +54,7 @@
             <a [routerLink]="" (click)="editGroup(rowData.Group2,rowData.ID2,'sub')">{{rowData['Group2']}}</a>
           </td>
           <td>
-            <i class="fa fa-times fa-150x" pTooltip="Delete this report group and all of its subgroups" style="cursor:pointer;color:red"
+            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this report group and all of its subgroups"
               tooltipPosition="bottom" (click)="deleteGroup(rowData.ID2,'sub')"></i>
           </td>
         </tr>

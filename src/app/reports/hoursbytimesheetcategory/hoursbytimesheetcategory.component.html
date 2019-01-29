@@ -1,12 +1,13 @@
 <div class="ui-g ui-g-nopad mainHeader">
-    <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-        Employee Hours by Timesheet Category
-    </div>
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+   Employee Hours by Timesheet Category <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('HoursByCategory.htm')"></i>
+  </div>
     <div class="ui-g-3 ui-md-2 ui-g-nopad">
       <div class="ui-g-3 ui-md-6"></div>
       <div class="ui-g-3 ui-md-4"></div>
-      <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-        <a (click)="showHelp('HoursByCategory.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <div class="ui-g-6 ui-md-2 ui-g-nopad">
+        <!-- <a (click)="showHelp('HoursByCategory.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
       </div>
     </div>
   </div>
@@ -14,12 +15,12 @@
       <div class="ui-g-12 ui-md-4">
         Date From:
         <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true"
-          [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"></p-calendar>
+          [yearNavigator]="true" yearRange="1900:2100" dateFormat="mm-dd-yy" [(ngModel)]="_startDate"></p-calendar>
         <label class="label" style="padding:0px 10px">to</label>
-        <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true"
+        <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-3">
+      <div class="ui-g-12 ui-md-2">
         <p-checkbox binary="true" label="Total by Employee" [(ngModel)]="showAll" binary="true"></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-2">

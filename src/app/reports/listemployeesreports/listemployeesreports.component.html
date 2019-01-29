@@ -1,12 +1,13 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Employee Listing
-  </div>
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Employee Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+       (click)="showHelp('EmployeeListing.htm')"></i>
+   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('EmployeeListing.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('EmployeeListing.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -54,11 +55,11 @@
       Hire Date From:
     </div>
     <div class="ui-g-5">
-      <p-calendar [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+      <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
         [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
         tooltipPosition="bottom"></p-calendar>
       <label class="label" style="padding:0px 10px">to</label>
-      <p-calendar [readonlyInput]="true" [(ngModel)]="_endDate" [monthNavigator]="true" showButtonBar="true"
+      <p-calendar [readonlyInput]="true" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true"
         [yearNavigator]="true" yearRange="1900:2100" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
         tooltipPosition="bottom"></p-calendar>
     </div>

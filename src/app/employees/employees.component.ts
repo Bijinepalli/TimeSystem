@@ -138,7 +138,7 @@ export class EmployeesComponent implements OnInit {
   ClearAllProperties() {
     this._billingCodes = new BillingCode();
     this.selectedType = 0;
-    this.selectedSalaryType = 0;
+    this.selectedSalaryType = 2;
 
     this.types = [];
     this.salaryTypes = [];

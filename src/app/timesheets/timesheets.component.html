@@ -1,23 +1,22 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Your Time Sheets
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Your Time Sheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
 <div class="ui-g">
   <div class="ui-g-12 ui-md-8"></div>
-  <div class="ui-g-12 ui-md-2" style="text-align: right">
+  <div class="ui-g-12 ui-md-4" style="text-align: right;">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Craete a New Timesheet" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Timesheet" (click)=addTimesheet()></button>
-  </div>
-  <div class="ui-g-12 ui-md-2">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom" class="ui-button-info"
+      label="Add New Timesheet" (click)=addTimesheet()></button> &nbsp;
+      <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom" class="ui-button-info"
       label="Hours Charged" (click)=OpenHoursCharged()></button>
   </div>
 </div>
@@ -53,9 +52,9 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center">
-          <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x" pTooltip="Edit this TimeSheet" style="cursor:pointer;color:lightblue"
+          <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet"
             tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i>
-          <i *ngIf="rowData['Submitted'] === 'Yes'" class="fa fa-eye fa-150x" pTooltip="View this TimeSheet" style="cursor:pointer;color:greenyellow"
+          <i *ngIf="rowData['Submitted'] === 'Yes'" class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet"
             tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
@@ -67,7 +66,7 @@
           </div>
         </td>
         <td style="text-align: center">
-          <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-times fa-150x" pTooltip="Delete this TimeSheet" style="cursor:pointer;color:red"
+          <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this TimeSheet"
             tooltipPosition="bottom" (click)="deleteTimeSheet(rowData)"></i>
         </td>
       </tr>

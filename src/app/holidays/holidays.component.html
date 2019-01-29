@@ -1,14 +1,15 @@
 <p-confirmDialog></p-confirmDialog>
 
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Holidays
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Holidays <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('HolidaySelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('HolidaySelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('HolidaySelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -56,7 +57,7 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x" pTooltip="Click to update this holiday" style="cursor:pointer;color:green"
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this holiday"
             tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
         </td>
         <td *ngFor="let col of columns">
@@ -68,7 +69,7 @@
           </div>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['InUse'] === 0" class="fa fa-times fa-150x" pTooltip="Delete this unused holiday" style="cursor:pointer;color:red"
+          <i *ngIf="rowData['InUse'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused holiday"
             tooltipPosition="bottom" (click)="deleteHoliday(rowData)"></i>
         </td>
       </tr>
@@ -77,7 +78,7 @@
 </div>
 
 
-<p-dialog [(visible)]="holidayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+<p-dialog [(visible)]="holidayDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true">
   <p-header>
     {{holidayHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"

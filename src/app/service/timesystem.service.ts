@@ -25,7 +25,7 @@ export class TimesystemService {
 
   // 172.16.16.217
   private accessSystemURL = 'http://localhost/AccessSystem/';
-  private ipaddress = 'http://localhost/';
+  private ipaddress = 'http://172.16.32.57/';
   private ipaddressLocal = 'http://localhost/';
   private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
   private url = this.ipaddress + 'TimeSystemService/';

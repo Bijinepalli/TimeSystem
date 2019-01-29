@@ -96,13 +96,13 @@ export class Master2Component implements OnInit {
     if (localStorage.getItem('currentUser') !== undefined &&
       localStorage.getItem('currentUser') !== null &&
       localStorage.getItem('currentUser').toString() !== '') {
-      this.fullName = 'Hello , ' + localStorage.getItem('currentUser').toString();
+      this.fullName = 'Hello ' + localStorage.getItem('currentUser').toString();
       if (localStorage.getItem('PayRollName') !== undefined &&
         localStorage.getItem('PayRollName') !== null &&
         localStorage.getItem('PayRollName').toString() !== '') {
         this.fullName += ' (' + localStorage.getItem('PayRollName').toString() + ') ';
       }
-      this.loginTime = this.datePipe.transform(Date(), 'dd MMMM yyyy');
+      this.loginTime = this.datePipe.transform(Date(), 'EEEE, dd MMM yyyy');
     }
   }
 
