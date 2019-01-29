@@ -2,3 +2,10 @@
     background: #323232 !important;
     color: #dedede !important;
 }
+:host ::ng-deep.ui-dropdown {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    vertical-align: middle;
+    bottom: 3% !important;
+}

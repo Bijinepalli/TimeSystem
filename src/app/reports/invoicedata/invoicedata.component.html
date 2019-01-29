@@ -12,22 +12,22 @@
 </div>
 <div class="ui-g" *ngIf="!showInvoiceList">
   <div class="ui-g-12 ui-md-5">
-    Client BIlling Cycle: <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle"></p-selectButton>
+    Client BIlling Cycle: <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle" pTooltip="Show clients with this billing cycle on the report" tooltipPosition="bottom"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-3">
     Invoice Date :
     <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"></p-calendar>
+      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="bottom"></p-calendar>
   </div>
 </div>
 <div class="ui-g" *ngIf="!showInvoiceList">
   <div class="ui-g-6 ui-g-md-5 label">
     Date From :
     <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"></p-calendar>
+      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter a starting date. Defaults to first day of the current month" tooltipPosition="bottom"></p-calendar>
     to
     <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"></p-calendar>
+      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter the end date. Defaults to the last day of the current month." tooltipPosition="bottom"></p-calendar>
   </div>
   <div class="ui-g-2">
     <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
@@ -35,7 +35,7 @@
   </div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
-  <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
+  <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info"
     label="Start Over" (click)="startOver()"></button>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
