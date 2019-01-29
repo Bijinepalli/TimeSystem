@@ -102,7 +102,7 @@ export class Master2Component implements OnInit {
         localStorage.getItem('PayRollName').toString() !== '') {
         this.fullName += ' (' + localStorage.getItem('PayRollName').toString() + ') ';
       }
-      this.loginTime = this.datePipe.transform(Date(), 'EEEE, dd MMM yyyy');
+      this.loginTime = this.datePipe.transform(Date(), 'EEEE, MMMM dd, yyyy');
     }
   }
 

@@ -54,7 +54,7 @@
 .TotalsDisabled {
   font-weight: bold;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 .TotalsDisabled:hover {

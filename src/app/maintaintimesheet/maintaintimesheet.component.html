@@ -2,34 +2,31 @@
 <form [formGroup]="timeSheetForm" class="">
   <div class="ui-g ui-g-nopad mainHeader">
     <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-      Maintain Time Sheet
+      Maintain Time Sheet <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+        (click)="showHelp('TimesheetMaintain.htm')"></i>
     </div>
     <div class="ui-g-3 ui-md-2 ui-g-nopad">
       <div class="ui-g-3 ui-md-6"></div>
       <div class="ui-g-3 ui-md-4"></div>
-      <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-        <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <div class="ui-g-6 ui-md-2 ui-g-nopad">
       </div>
     </div>
   </div>
   <br>
   <div class="ui-g">
-    <div class="ui-g-12 ui-md-3" style="text-align: left;" *ngIf="_employee !== undefined && _employee !== null && _employee.length > 0">
-      <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_employee[0].FirstName}}&nbsp;{{_employee[0].LastName}}
+    <div class="ui-g-12 ui-md-3" style="text-align: left;" *ngIf="_EmployeeName !== ''">
+      <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_EmployeeName}}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
       <b>Period Ending:</b>&nbsp;&nbsp;&nbsp;{{_periodEndDateString }}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
       <b>Submitted On:</b>&nbsp;&nbsp;&nbsp;
-      {{(_timeSheetEntries !== undefined && _timeSheetEntries !== null && _timeSheetEntries.length > 0 &&
-      _timeSheetEntries[0].SubmitDate !== '') ?
-      _timeSheetEntries[0].SubmitDate : 'N/A'}}
+      {{_SubmittedOn}}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
       <b>Resubmittal:</b>&nbsp;&nbsp;&nbsp;
-      {{(_timeSheetEntries !== undefined && _timeSheetEntries !== null && _timeSheetEntries.length > 0 &&
-      _timeSheetEntries[0].Resubmitted===true)?'Yes':'No'}}
+      {{_Resubmittal}}
     </div>
   </div>
 

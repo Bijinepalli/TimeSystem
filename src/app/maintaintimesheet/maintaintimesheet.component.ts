@@ -64,6 +64,14 @@ export class MaintaintimesheetComponent implements OnInit {
   _actualTimeSheetId = 0;
   _timeSheetApproval: TimeSheetForApproval[];
   _isTimesheetToAprrove = false;
+
+
+  _EmployeeName = '';
+  _PeriodEnding = '';
+  _SubmittedOn = 'N/A';
+  _Resubmittal = 'No';
+
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
@@ -87,6 +95,7 @@ export class MaintaintimesheetComponent implements OnInit {
       (dataEmp) => {
         if (dataEmp !== undefined && dataEmp !== null && dataEmp.length > 0) {
           this._employee = dataEmp;
+          this._EmployeeName = this._employee[0].FirstName + ' ' + this._employee[0].LastName;
         }
         this.checkPendingTimesheets();
       });
@@ -119,10 +128,6 @@ export class MaintaintimesheetComponent implements OnInit {
 
           this.timesysSvc.getTimeSheetPeridos().subscribe(
             (data1) => {
-
-              console.log(data);
-              console.log(data1);
-
               if (data !== undefined && data !== null && data.length > 0) {
                 this._timeSheetEntries = data[0];
                 this._timeLineEntries = data[1];
@@ -136,6 +141,13 @@ export class MaintaintimesheetComponent implements OnInit {
               if (data1 !== undefined && data1 !== null && data1.length > 0) {
 
                 if (this._timeSheetEntries !== undefined && this._timeSheetEntries !== null && this._timeSheetEntries.length > 0) {
+
+                  this._SubmittedOn = this._timeSheetEntries[0].SubmitDate !== '' ?
+                    // this.datePipe.transform((this._timeSheetEntries[0].SubmitDate), 'dd-MM-yyyy')
+                    (this._timeSheetEntries[0].SubmitDate)
+                    : 'N/A';
+                  this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
+
                   this._timePeriods = data1.filter(P => P.FuturePeriodEnd === this._timeSheetEntries[0].PeriodEnd);
                   if (this._timeSheetEntries[0].Submitted) {
                     this._IsTimeSheetSubmitted = true;
