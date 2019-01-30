@@ -11,23 +11,28 @@
       </div>
     </div>
   </div>
+  <br>
+  <p-panel [toggleable]="true" header="Filter results by:">
   <div class="ui-g">
       <div class="ui-g-12 ui-md-4">
-        Date From:
+        <label class="label" style="padding:0px 10px;">Date From:</label>
         <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" dateFormat="mm-dd-yy" [(ngModel)]="_startDate"></p-calendar>
         <label class="label" style="padding:0px 10px">to</label>
         <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-2">
-        <p-checkbox binary="true" label="Total by Employee" [(ngModel)]="showAll" binary="true"></p-checkbox>
-      </div>
-      <div class="ui-g-12 ui-md-2">
-        <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-         (click)=generateReport()></button>
+      <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
+        <p-checkbox binary="true" label="" [(ngModel)]="showAll" binary="true"></p-checkbox><label class="label" style="padding:0px 10px;">Total by Employee</label>
       </div>
   </div>
+  <p-footer>
+    <div style="text-align: right">
+      <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+         (click)=generateReport()></button>
+    </div>
+  </p-footer>
+</p-panel>
   <div class="ui-g-12" *ngIf="showReport">
       <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
         <ng-template pTemplate="caption">

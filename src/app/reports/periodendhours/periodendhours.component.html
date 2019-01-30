@@ -11,12 +11,23 @@
     </div>
   </div>
 </div>
-<div class="ui-g-12">
-  <p-accordion>
-    <p-accordionTab header="Assumptions">
-    </p-accordionTab>
-  </p-accordion>
-</div>
+<br>
+<div class="ui-g">
+    <!-- <div class="ui-g-12 ui-md-8"></div> -->
+    <div class="ui-g-12 ui-md-12">
+        <p-fieldset legend="Assumptions" [toggleable]="true" collapsed="true">
+          <div>
+            <b>Report Assumptions for the Pay Period:</b>
+            <ul>
+              <li>An employee's <i>active</i> status did not change. </li>
+              <li>An employee's <i>salaried/hourly</i> status did not change. </li>
+              <li>An employee's <i>IPay eligibility</i> status did not change. </li>
+              <li>An employee's <i>hours per day</i> did not change. </li>
+            </ul>
+          </div>
+      </p-fieldset>
+      </div>
+  </div>
 <div class="ui-g-12">
   Select a Pay Period :<p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate" pTooltip="Select the pay period end date to create the report"
     (onChange)="onDateChange($event)"></p-dropdown>
