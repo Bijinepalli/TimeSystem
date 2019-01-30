@@ -21,12 +21,9 @@
   </div>
 </div>
 <div class="ui-g">
-  <div class="ui-g-3 ui-md-1" style="text-align: left">
-    Select Year:
-  </div>
-  <div class="ui-g-9 ui-md-2">
-    <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="getHolidays()" pTooltip="Pick the year to see holidays for. All holidays for this year will be shown"
-      tooltipPosition="bottom"></p-dropdown>
+  <div class="ui-g-3 ui-md-3" style="text-align: left">
+    Select Year: <p-dropdown [options]="_years" [(ngModel)]="selectedYear" (onChange)="getHolidays()" pTooltip="Pick the year to see holidays for. All holidays for this year will be shown"
+    tooltipPosition="bottom"></p-dropdown>
   </div>
 </div>
 

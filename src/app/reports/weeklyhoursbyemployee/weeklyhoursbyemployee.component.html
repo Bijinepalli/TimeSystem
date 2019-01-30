@@ -12,19 +12,23 @@
   </div>
 </div>
 <br>
-<div class="ui-g" *ngIf="!showBillingCodeList && !changeCodeList">
+<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
+<div class="ui-g">
   <div class="ui-g-12 ui-md-3">
-    Select: <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
+    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
       [(ngModel)]="selectedType"></p-selectButton>
   </div>
   <!-- <div class="ui-g-12 ui-md-2">
         <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
     </div> -->
-  <div class="ui-g-12 ui-md-7">
+</div>
+<p-footer>
+  <div style="text-align: right">
     <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
       label="Show Billing Codes" (click)=showBillingCodes()></button>
   </div>
-</div>
+</p-footer>
+</p-panel>
 <div *ngIf="changeCodeList">
   <div class="ui-g-12">
     Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}

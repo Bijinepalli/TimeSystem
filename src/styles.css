@@ -177,3 +177,10 @@ body .ui-panel .ui-panel-content {
   left: 50%;
   transform: translate(-50%, -50%);
   }
+  .label
+{
+    /* font-weight: bold; */
+    padding-top: 13px;
+    text-align: right;
+    color: #329AFF;
+}
