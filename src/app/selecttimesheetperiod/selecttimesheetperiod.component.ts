@@ -91,7 +91,7 @@ export class SelecttimesheetperiodComponent implements OnInit {
       );
     } else {
       // tslint:disable-next-line:max-line-length
-      this.router.navigate(['/menu/maintaintimesheet/' + this.selectTimePeriod + '/' + this.selectTimePeriodDate]);
+      this.router.navigate(['/menu/maintaintimesheet/' + this.selectTimePeriod + '/' + this.selectTimePeriodDate], { skipLocationChange: true });
     }
   }
   resubmittal() {
@@ -105,7 +105,7 @@ export class SelecttimesheetperiodComponent implements OnInit {
             (data1) => {
               if (data1 !== undefined && data1 !== null && data1.length > 0) {
                 this.selectNewTimePeriod = data1[0].Id;
-                this.router.navigate(['/menu/maintaintimesheet/' + this.selectNewTimePeriod]);
+                this.router.navigate(['/menu/maintaintimesheet/' + this.selectNewTimePeriod], { skipLocationChange: true });
               } else {
                 this._selectedTimesheet = new TimeSheet();
                 this._selectedTimesheet.Id = this.selectTimePeriod;
@@ -114,7 +114,7 @@ export class SelecttimesheetperiodComponent implements OnInit {
                   (data2) => {
                     if (data2 !== undefined && data2 !== null) {
                       this.selectNewTimePeriod = data2;
-                      this.router.navigate(['/menu/maintaintimesheet/' + this.selectNewTimePeriod]);
+                      this.router.navigate(['/menu/maintaintimesheet/' + this.selectNewTimePeriod], { skipLocationChange: true });
                     }
                   });
               }

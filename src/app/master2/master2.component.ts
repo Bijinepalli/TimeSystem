@@ -257,11 +257,11 @@ export class Master2Component implements OnInit {
   }
 
   logout() {
-    this.router.navigate(['']);
+    this.router.navigate([''], { skipLocationChange: true });
   }
 
   navigateTo() {
-    this.router.navigate(['/menu/dashboard']);
+    this.router.navigate(['/menu/dashboard'], { skipLocationChange: true });
   }
 
   changePasswordClick() {

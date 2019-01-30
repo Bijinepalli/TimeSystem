@@ -69,7 +69,7 @@ export class NonbillablehoursComponent implements OnInit {
   }
 
   navigateTo(url: any) {
-    this.router.navigate([url]);
+    this.router.navigate([url], { skipLocationChange: true });
   }
 
   generateReport() {

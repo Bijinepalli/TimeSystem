@@ -50,13 +50,13 @@ export class TimesheetsComponent implements OnInit {
     this.getTimeSheets();
   }
   addTimesheet() {
-    this.router.navigate(['/menu/selecttimesheetperiod']);
+    this.router.navigate(['/menu/selecttimesheetperiod'], { skipLocationChange: true });
   }
   OpenHoursCharged() {
 
   }
   viewTimeSheet(rowData: TimeSheetForEmplyoee) {
-    this.router.navigate(['/menu/maintaintimesheet/' + rowData.Id]);
+    this.router.navigate(['/menu/maintaintimesheet/' + rowData.Id], { skipLocationChange: true });
   }
   editTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.confSvc.confirm({

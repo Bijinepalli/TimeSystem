@@ -828,7 +828,7 @@ export class MaintaintimesheetComponent implements OnInit {
               });
           if (this._actualTimeSheetId.toString() === '-1') {
             localStorage.removeItem('PeriodEndDate');
-            this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId]);
+            this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId], { skipLocationChange: true });
           }
         }
       });
@@ -946,9 +946,9 @@ export class MaintaintimesheetComponent implements OnInit {
   }
   Accept(txtSuper: any) {
     // console.log(txtSuper.value);
-    this.router.navigate(['/menu/dashboard/']);
+    this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
   }
   Reject() {
-    this.router.navigate(['/menu/dashboard/']);
+    this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
   }
 }

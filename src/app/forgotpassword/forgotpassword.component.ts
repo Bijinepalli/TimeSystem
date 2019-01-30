@@ -63,7 +63,7 @@ export class ForgotpasswordComponent implements OnInit {
   // Common Methods
 
   navigateTo(url: any) {
-    this.router.navigate([url]);
+    this.router.navigate([url], { skipLocationChange: true });
   }
 
   onReject() {
