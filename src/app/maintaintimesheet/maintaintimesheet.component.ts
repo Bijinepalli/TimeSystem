@@ -64,6 +64,14 @@ export class MaintaintimesheetComponent implements OnInit {
   _actualTimeSheetId = 0;
   _timeSheetApproval: TimeSheetForApproval[];
   _isTimesheetToAprrove = false;
+
+
+  _EmployeeName = '';
+  _PeriodEnding = '';
+  _SubmittedOn = 'N/A';
+  _Resubmittal = 'No';
+
+
   ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
@@ -72,131 +80,164 @@ export class MaintaintimesheetComponent implements OnInit {
       if (this._timesheetId.toString() === '-1') {
         this._periodEndDateString = localStorage.getItem('PeriodEndDate');
       }
+      if (this._periodEndDateString === '') {
+        this._periodEndDateString = this._timesheetPeriodEnd;
+      }
     });
 
     this.defaultControlsToForm();
     this.getTimesheetTimeLineTimeCellDetails();
   }
-  private calculateDate(date1, date2) {
-    // our custom function with two parameters, each for a selected date
-    const diffc = date1.getTime() - date2.getTime();
-    // getTime() function used to convert a date into milliseconds. This is needed in order to perform calculations.
-    const days = Math.round(Math.abs(diffc / (1000 * 60 * 60 * 24)));
-    // this is the actual equation that calculates the number of days.
-    return days + 1;
-  }
-  getClientProjectCategoryDropDown(timeSheetUserId: string) {
-    console.log(timeSheetUserId);
-    this.timesysSvc.getEmployeeClientProjectNonBillableDetails(timeSheetUserId).subscribe(
-      (data) => {
-        this.tandm = [];
-        this.projectBillable = [];
-        this.nonBillable = [];
-        this.tandmSelect = '-1';
-        this.projectBillableSelect = '-1';
-        this.nonBillableSelect = '-1';
 
-        this.tandm = [{ label: '', value: -1, code: '' }];
-        let _array: TimeSheetBinding[];
-        _array = data.filter(P => P.code === 'TANDM');
-        for (let i = 0; i < _array.length; i++) {
-          this.tandm.push(_array[i]);
-        }
 
-        this.projectBillable = [{ label: '', value: -1, code: '' }];
-        _array = data.filter(P => P.code === 'PROJBILL');
-        for (let i = 0; i < _array.length; i++) {
-          this.projectBillable.push(_array[i]);
+  getEmployeeDetails(EmployeeId: string) {
+    this.timesysSvc.getEmployee(EmployeeId, '', '').subscribe(
+      (dataEmp) => {
+        if (dataEmp !== undefined && dataEmp !== null && dataEmp.length > 0) {
+          this._employee = dataEmp;
+          this._EmployeeName = this._employee[0].FirstName + ' ' + this._employee[0].LastName;
         }
-
-        this.nonBillable = [{ label: '', value: -1, code: '' }];
-        _array = data.filter(P => P.code === 'NONBILL');
-        for (let i = 0; i < _array.length; i++) {
-          this.nonBillable.push(_array[i]);
-        }
+        this.checkPendingTimesheets();
       });
   }
+
   getTimesheetTimeLineTimeCellDetails() {
+    this._employee = [];
+
+    this._timeSheetEntries = [];
+    this._timeLineEntries = [];
+    this._timeCellEntries = [];
+
+    this._timeNONbill = [];
+    this._timeProjBill = [];
+    this._timeTandM = [];
+
+    this._DateArray = [];
+    this._weekArray = [];
+    this._timePeriods = [];
+
+    this._peroidStartDate = null;
+    this._periodEnddate = null;
+    this._IsTimeSheetSubmitted = false;
+
+
     if (this._timesheetId > 0) {
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
+          this.getEmployeeDetails(data[0][0].EmployeeId.toString());
+
           this.timesysSvc.getTimeSheetPeridos().subscribe(
             (data1) => {
               if (data !== undefined && data !== null && data.length > 0) {
-                this.timesysSvc.getEmployee(data[0][0].EmployeeId.toString(), '', '').subscribe(
-                  (dataEmp) => {
-                    this._employee = [];
+                this._timeSheetEntries = data[0];
+                this._timeLineEntries = data[1];
+                this._timeCellEntries = data[2];
 
-                    this._timeSheetEntries = [];
-                    this._timeLineEntries = [];
-                    this._timeCellEntries = [];
-
-                    this._timeNONbill = [];
-                    this._timeProjBill = [];
-                    this._timeTandM = [];
-
-                    this._DateArray = [];
-                    this._weekArray = [];
-                    this._timePeriods = [];
-
-                    this._employee = dataEmp;
-                    this.checkPendingTimesheets();
-
-                    this._timeSheetEntries = data[0];
-                    this._timeLineEntries = data[1];
-                    this._timeCellEntries = data[2];
-
-                    this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
-                    this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
-                    this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
-
-                    this._timePeriods = data1.filter(P => P.FuturePeriodEnd === this._timeSheetEntries[0].PeriodEnd);
-                    if (this._timeSheetEntries[0].Submitted) {
-                      this._IsTimeSheetSubmitted = true;
-                    }
-                    const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
-                    this._periodEnddate = new Date(this._timeSheetEntries[0].PeriodEnd);
-                    this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
-
-                    this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-                    this._tmpDt = this._peroidStartDate;
-
-                    for (let i = 0; i < this._days - 1; i++) {
-                      this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
-                      this._DateArray.push(new Date(this._dt));
-                      this._weekArray.push(new Date(this._dt).getDay());
-                    }
-
-                    this.addFormControls();
-                  });
+                this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
+                this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
+                this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
               }
+
+              if (data1 !== undefined && data1 !== null && data1.length > 0) {
+
+                if (this._timeSheetEntries !== undefined && this._timeSheetEntries !== null && this._timeSheetEntries.length > 0) {
+
+                  this._SubmittedOn = this._timeSheetEntries[0].SubmitDate !== '' ?
+                    // this.datePipe.transform((this._timeSheetEntries[0].SubmitDate), 'dd-MM-yyyy')
+                    (this._timeSheetEntries[0].SubmitDate)
+                    : 'N/A';
+                  this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
+
+                  this._timePeriods = data1.filter(P => P.FuturePeriodEnd === this._timeSheetEntries[0].PeriodEnd);
+                  if (this._timeSheetEntries[0].Submitted) {
+                    this._IsTimeSheetSubmitted = true;
+                  }
+                  this._periodEnddate = new Date(this._timeSheetEntries[0].PeriodEnd);
+                  this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
+                }
+                const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
+
+                if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
+                  this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
+                }
+
+                this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
+                this._tmpDt = this._peroidStartDate;
+                if (this._days > 0) {
+                  for (let i = 0; i < this._days - 1; i++) {
+                    this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
+                    this._DateArray.push(new Date(this._dt));
+                    this._weekArray.push(new Date(this._dt).getDay());
+                  }
+                }
+              }
+
+              this.addFormControls();
+
             });
         });
     } else {
-      this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+      this.getEmployeeDetails(localStorage.getItem('UserId').toString());
+
       this.timesysSvc.getPeriodEndDate().subscribe(
         (data1) => {
-          this._DateArray = [];
-          this._weekArray = [];
-          this._timePeriods = [];
-          const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
-          this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
-          const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
-          this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
-          this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
-          this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-          this._tmpDt = this._peroidStartDate;
 
-          for (let i = 0; i < this._days - 1; i++) {
-            this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
-            this._DateArray.push(new Date(this._dt));
-            this._weekArray.push(new Date(this._dt).getDay());
+
+          const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
+
+          if (data1 !== undefined && data1 !== null && data1.length > 0) {
+
+            this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
+
+
+            if (this._timePeriods !== undefined && this._timePeriods !== null && this._timePeriods.length > 0) {
+              const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
+              this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
+
+              if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
+                this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
+              }
+
+              this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
+              this._tmpDt = this._peroidStartDate;
+              if (this._days > 0) {
+                for (let i = 0; i < this._days - 1; i++) {
+                  this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
+                  this._DateArray.push(new Date(this._dt));
+                  this._weekArray.push(new Date(this._dt).getDay());
+                }
+              }
+            }
           }
           this.defaultControlsToForm();
           this.addFormControls();
         });
     }
   }
+
+  defaultControlsToForm() {
+    /* Total Weeks */
+    this.timeSheetForm = new FormGroup({});
+    this.timeSheetForm.addControl('txtTANDMTotalWeeks', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+    this.timeSheetForm.addControl('txtProjBillTotalWeeks', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+    this.timeSheetForm.addControl('txtNonBillTotalWeeks', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+
+    /* Weekly Grand Total */
+    this.timeSheetForm.addControl('txtWeeklyGrandTotal', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+
+    /* */
+    this.timeSheetForm.addControl('drpTandMDefault', new FormControl(-1, null));
+    this.timeSheetForm.addControl('txtTANDMWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+
+    this.timeSheetForm.addControl('drpProjBillDefault', new FormControl(-1, null));
+    this.timeSheetForm.addControl('txtProjBillWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+
+    this.timeSheetForm.addControl('drpNonBillDefault', new FormControl(-1, null));
+    this.timeSheetForm.addControl('txtNonBillWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
+    this.timeSheetForm.addControl('txtComments', new FormControl(null, null));
+  }
+
+
   addFormControls() {
     let i = 0;
     try {
@@ -269,17 +310,25 @@ export class MaintaintimesheetComponent implements OnInit {
       for (let j = 0; j < this._DateArray.length; j++) {
         /* Daily Totals Building */
         const txtProjBillDailyTotalHours = 'txtProjBillDailyTotals_' + j;
-        this.timeSheetForm.addControl(txtProjBillDailyTotalHours, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtProjBillDailyTotalHours,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
+        this.timeSheetForm.controls[txtProjBillDailyTotalHours].disable();
 
         const txtNonBillDailyTotals = 'txtNonBillDailyTotals_' + j;
-        this.timeSheetForm.addControl(txtNonBillDailyTotals, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtNonBillDailyTotals,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
+        this.timeSheetForm.controls[txtNonBillDailyTotals].disable();
 
         const txtTANDMDailyTotals = 'txtTANDMDailyTotals_' + j;
-        this.timeSheetForm.addControl(txtTANDMDailyTotals, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtTANDMDailyTotals,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
+        this.timeSheetForm.controls[txtTANDMDailyTotals].disable();
 
         /* Daily Grand Totals Building */
         const txtDailyGrandTotal = 'txtDailyGrandTotal_' + j;
-        this.timeSheetForm.addControl(txtDailyGrandTotal, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtDailyGrandTotal,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
+        this.timeSheetForm.controls[txtDailyGrandTotal].disable();
 
         /* Daily Default Hours Building */
         const txttimeTandMHoursDefault = 'txttimeTandMHoursDefault_' + j;
@@ -295,20 +344,72 @@ export class MaintaintimesheetComponent implements OnInit {
       /* Weekly Totals Building */
       for (let j = 0; j < this._timeProjBill.length; j++) {
         const txtProjBillWeeklyTotalHours = 'txtProjBillWeeklyTotals_' + j;
-        this.timeSheetForm.addControl(txtProjBillWeeklyTotalHours, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtProjBillWeeklyTotalHours,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
       }
       for (let j = 0; j < this._timeNONbill.length; j++) {
         const txtNonBillWeeklyTotals = 'txtNonBillWeeklyTotals_' + j;
-        this.timeSheetForm.addControl(txtNonBillWeeklyTotals, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtNonBillWeeklyTotals,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
       }
       for (let j = 0; j < this._timeTandM.length; j++) {
         const txtTANDMWeeklyTotals = 'txtTANDMWeeklyTotals_' + j;
-        this.timeSheetForm.addControl(txtTANDMWeeklyTotals, new FormControl(this.decimal.transform(0, '1.2-2', null)));
+        this.timeSheetForm.addControl(txtTANDMWeeklyTotals,
+          new FormControl({ value: this.decimal.transform(0, '1.2-2', null), disabled: true }));
       }
     } catch (e) {
       alert(e.error);
     }
     this.setValues();
+  }
+
+  resetForm() {
+    this.timeSheetForm.markAsPristine();
+    this.timeSheetForm.markAsUntouched();
+    this.timeSheetForm.updateValueAndValidity();
+    this.timeSheetForm.reset();
+  }
+  private calculateDate(date1, date2) {
+    // our custom function with two parameters, each for a selected date
+    const diffc = date1.getTime() - date2.getTime();
+    // getTime() function used to convert a date into milliseconds. This is needed in order to perform calculations.
+    const days = Math.round(Math.abs(diffc / (1000 * 60 * 60 * 24)));
+    // this is the actual equation that calculates the number of days.
+    return days + 1;
+  }
+  getClientProjectCategoryDropDown(timeSheetUserId: string) {
+    // console.log(timeSheetUserId);
+    this.timesysSvc.getEmployeeClientProjectNonBillableDetails(timeSheetUserId).subscribe(
+      (data) => {
+        this.tandm = [{ label: '', value: -1, code: '' }];
+        this.projectBillable = [{ label: '', value: -1, code: '' }];
+        this.nonBillable = [{ label: '', value: -1, code: '' }];
+        this.tandmSelect = '-1';
+        this.projectBillableSelect = '-1';
+        this.nonBillableSelect = '-1';
+
+        if (data !== undefined && data !== null && data.length > 0) {
+          let _array: TimeSheetBinding[];
+          _array = data.filter(P => P.code === 'TANDM');
+          if (_array !== undefined && _array !== null && _array.length > 0) {
+            for (let i = 0; i < _array.length; i++) {
+              this.tandm.push(_array[i]);
+            }
+          }
+          _array = data.filter(P => P.code === 'PROJBILL');
+          if (_array !== undefined && _array !== null && _array.length > 0) {
+            for (let i = 0; i < _array.length; i++) {
+              this.projectBillable.push(_array[i]);
+            }
+          }
+          _array = data.filter(P => P.code === 'NONBILL');
+          if (_array !== undefined && _array !== null && _array.length > 0) {
+            for (let i = 0; i < _array.length; i++) {
+              this.nonBillable.push(_array[i]);
+            }
+          }
+        }
+      });
   }
   TANDMTotalCalculation() {
     /* TANDM Daily Total Calculation */
@@ -466,6 +567,11 @@ export class MaintaintimesheetComponent implements OnInit {
     AllWeeksNonBillHoursTotal += +this.timeSheetForm.get('txtNonBillWeeklyTotalDefault').value;
     this.timeSheetForm.controls['txtNonBillTotalWeeks'].setValue(this.decimal.transform(AllWeeksNonBillHoursTotal, '1.2-2'));
   }
+
+
+  hoursOnChange() {
+    this.setValues();
+  }
   setValues() {
     if (this.timeSheetForm.get('txtComments') !== undefined &&
       this.timeSheetForm.get('txtComments') !== null &&
@@ -504,7 +610,7 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       this.timeSheetForm.enable();
     }
-    console.log(this._isTimesheetToAprrove + 'Super');
+    // console.log(this._isTimesheetToAprrove + 'Super');
     if (this._isTimesheetToAprrove) {
       const superComments = this.timeSheetForm.get('txtSuperComments');
       superComments.enable();
@@ -512,30 +618,6 @@ export class MaintaintimesheetComponent implements OnInit {
   }
   get f() {
     return this.timeSheetForm.controls;
-  }
-  defaultControlsToForm() {
-    /* Total Weeks */
-    this.timeSheetForm = new FormGroup({});
-    this.timeSheetForm.addControl('txtTANDMTotalWeeks', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-    this.timeSheetForm.addControl('txtProjBillTotalWeeks', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-    this.timeSheetForm.addControl('txtNonBillTotalWeeks', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-
-    /* Weekly Grand Total */
-    this.timeSheetForm.addControl('txtWeeklyGrandTotal', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-
-    /* */
-    this.timeSheetForm.addControl('drpTandMDefault', new FormControl(-1, null));
-    this.timeSheetForm.addControl('txtTANDMWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-
-    this.timeSheetForm.addControl('drpProjBillDefault', new FormControl(-1, null));
-    this.timeSheetForm.addControl('txtProjBillWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-
-    this.timeSheetForm.addControl('drpNonBillDefault', new FormControl(-1, null));
-    this.timeSheetForm.addControl('txtNonBillWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-    this.timeSheetForm.addControl('txtComments', new FormControl(null, null));
-  }
-  hoursOnChange() {
-    this.setValues();
   }
   hourRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (control.value !== undefined && (isNaN(control.value) || control.value < 18 || control.value > 45)) {
@@ -662,7 +744,7 @@ export class MaintaintimesheetComponent implements OnInit {
       'drpProjBillDefault', 'txtProjBillWeeklyTotalDefault', 'Project', this._timeProjBill, 1);
     this.DataMissingValidations('drpNONBill_', 'txtNonBillWeeklyTotals_',
       'drpNonBillDefault', 'txtNonBillWeeklyTotalDefault', 'Category', this._timeNONbill, 1);
-    console.log(this._TotalValidationErrors);
+    // console.log(this._TotalValidationErrors);
   }
 
   Save() {
@@ -746,7 +828,7 @@ export class MaintaintimesheetComponent implements OnInit {
               });
           if (this._actualTimeSheetId.toString() === '-1') {
             localStorage.removeItem('PeriodEndDate');
-            this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId]);
+            this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId], { skipLocationChange: true });
           }
         }
       });
@@ -834,13 +916,6 @@ export class MaintaintimesheetComponent implements OnInit {
 
 
 
-  resetForm() {
-    this.timeSheetForm.markAsPristine();
-    this.timeSheetForm.markAsUntouched();
-    this.timeSheetForm.updateValueAndValidity();
-    this.timeSheetForm.reset();
-  }
-
   editHoliday(rowData: any) {
 
   }
@@ -856,7 +931,7 @@ export class MaintaintimesheetComponent implements OnInit {
                 break;
               }
             }
-            console.log(this._isTimesheetToAprrove);
+            // console.log(this._isTimesheetToAprrove);
             if (this._isTimesheetToAprrove) {
               this.getClientProjectCategoryDropDown(this._employee[0].ID.toString());
             } else {
@@ -870,10 +945,10 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
   Accept(txtSuper: any) {
-    console.log(txtSuper.value);
-    this.router.navigate(['/menu/dashboard/']);
+    // console.log(txtSuper.value);
+    this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
   }
   Reject() {
-    this.router.navigate(['/menu/dashboard/']);
+    this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
   }
 }

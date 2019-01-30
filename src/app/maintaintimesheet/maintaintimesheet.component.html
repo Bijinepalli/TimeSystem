@@ -2,34 +2,35 @@
 <form [formGroup]="timeSheetForm" class="">
   <div class="ui-g ui-g-nopad mainHeader">
     <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-      Maintain Time Sheet
+      Maintain Time Sheet <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+        ></i>
     </div>
     <div class="ui-g-3 ui-md-2 ui-g-nopad">
       <div class="ui-g-3 ui-md-6"></div>
       <div class="ui-g-3 ui-md-4"></div>
-      <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-        <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <div class="ui-g-6 ui-md-2 ui-g-nopad">
       </div>
     </div>
   </div>
   <br>
-  <div class="ui-g" *ngIf="this._employee !== undefined && this._employee !==null && this._employee.length>0 && 
-    this._timeSheetEntries !== undefined  && this._timeSheetEntries !==null && this._timeSheetEntries.length>0">
-    <div class="ui-g-12 ui-md-3" style="text-align: left;">
-      <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{this._employee[0].FirstName}}&nbsp;{{this._employee[0].LastName}}
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-3" style="text-align: left;" *ngIf="_EmployeeName !== ''">
+      <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_EmployeeName}}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
-      <b>Period Ending:</b>&nbsp;&nbsp;&nbsp;{{this._timeSheetEntries[0].PeriodEnd}}
+      <b>Period Ending:</b>&nbsp;&nbsp;&nbsp;{{_periodEndDateString }}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
-      <b>Submitted On:</b>&nbsp;&nbsp;&nbsp;{{this._timeSheetEntries[0].SubmitDate==''?'N/A':this._timeSheetEntries[0].SubmitDate}}
+      <b>Submitted On:</b>&nbsp;&nbsp;&nbsp;
+      {{_SubmittedOn}}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
-      <b>Resubmittal:</b>&nbsp;&nbsp;&nbsp;{{this._timeSheetEntries[0].Resubmitted===true?'Yes':'No'}}
+      <b>Resubmittal:</b>&nbsp;&nbsp;&nbsp;
+      {{_Resubmittal}}
     </div>
   </div>
 
-  <div class="ui-g" *ngIf="this._DateArray !== undefined && this._DateArray !==null && this._DateArray.length>0">
+  <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-12">
       <p-panel class="panelEmpBilling">
         <p-header>
@@ -61,7 +62,7 @@
             </div>
             <div class="ui-g-12 ui-md-1" style="padding:1px">
               <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtTANDMWeeklyTotals_{{i}}"
-                class="weekTotals" />
+                class="weekTotals TotalsDisabled" />
               <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red" tooltipPosition="bottom"
@@ -82,7 +83,7 @@
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtTANDMWeeklyTotalDefault"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
               tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
           </div>
@@ -95,18 +96,18 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtTANDMDailyTotals_{{c}}" readonly="readonly"
               [style.background-color]="_errorDailyTANDMArray.indexOf(c) >= 0 ? '#ffccd4': ''" type="text" pInputText
-              pKeyFilter="num" class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
+              pKeyFilter="num" class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay') + ' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtTANDMTotalWeeks"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
           </div>
         </div>
       </p-panel>
     </div>
   </div>
 
-  <div class="ui-g" *ngIf="this._DateArray !== undefined && this._DateArray !==null && this._DateArray.length>0">
+  <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-12">
       <p-panel class="panelEmpBilling">
         <p-header>
@@ -138,7 +139,7 @@
             </div>
             <div class="ui-g-12 ui-md-1" style="padding:1px">
               <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtProjBillWeeklyTotals_{{i}}"
-                class="weekTotals" />
+                class="weekTotals TotalsDisabled" />
               <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red" tooltipPosition="bottom"
@@ -159,7 +160,7 @@
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtProjBillWeeklyTotalDefault"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
               tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
           </div>
@@ -172,18 +173,18 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtProjBillDailyTotals_{{c}}" readonly="readonly"
               [style.background-color]="_errorDailyProjBillArray.indexOf(c) >= 0 ? '#ffccd4': ''" type="text"
-              pInputText pKeyFilter="num" class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
+              pInputText pKeyFilter="num" class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtProjBillTotalWeeks"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
           </div>
         </div>
       </p-panel>
     </div>
   </div>
 
-  <div class="ui-g" *ngIf="this._DateArray !== undefined && this._DateArray !==null && this._DateArray.length>0">
+  <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-12">
       <p-panel class="panelEmpBilling">
         <p-header>
@@ -215,7 +216,7 @@
             </div>
             <div class="ui-g-12 ui-md-1" style="padding:1px">
               <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtNonBillWeeklyTotals_{{i}}"
-                class="weekTotals" />
+                class="weekTotals TotalsDisabled" />
               <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red" tooltipPosition="bottom"
@@ -236,7 +237,7 @@
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtNonBillWeeklyTotalDefault"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
               tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
           </div>
@@ -249,18 +250,18 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtNonBillDailyTotals_{{c}}" readonly="readonly"
               [style.background-color]="_errorDailyNonBillArray.indexOf(c) >= 0 ? '#ffccd4': ''" type="text" pInputText
-              pKeyFilter="num" class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
+              pKeyFilter="num" class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num" formControlName="txtNonBillTotalWeeks"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
           </div>
         </div>
       </p-panel>
     </div>
   </div>
 
-  <div class="ui-g" *ngIf="this._DateArray !== undefined && this._DateArray !==null && this._DateArray.length>0">
+  <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-12">
       <p-panel class="panelEmpBilling">
         <p-header>
@@ -287,14 +288,14 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" readonly="readonly" formControlName="txtDailyGrandTotal_{{i}}"
               [style.background-color]="_errorDailyGrandArray.indexOf(i) >= 0 ? '#ffccd4': ''" type="text" pInputText
-              pKeyFilter="num" class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
+              pKeyFilter="num" class="{{ ((_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
             <!-- <div>
               <span [style.color]="_errorArray.indexOf(0) === 0 ? 'green': 'red'">100</span>
             </div> -->
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" pInputText pKeyFilter="num" readonly="readonly" formControlName="txtWeeklyGrandTotal"
-              class="weekTotals" />
+              class="weekTotals TotalsDisabled" />
           </div>
         </div>
         <!-- End -->

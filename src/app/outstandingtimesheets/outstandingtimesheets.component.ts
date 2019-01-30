@@ -42,7 +42,7 @@ export class OutstandingtimesheetsComponent implements OnInit {
         if (timeSheet.Id === -1) {
           localStorage.setItem('PeriodEndDate', timeSheet.PeriodEnd);
         }
-        this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id]);
+        this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
       }
     });
   }

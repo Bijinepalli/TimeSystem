@@ -1,53 +1,62 @@
-.weekDay
-{
-    background-color:white;
-    color:black;
-    text-align:right;
-    width:55px;
-    margin-right:5px;
-}
-.weekEnd
-{
-    background-color:gold;
-    color:red;
-    text-align:right;
-    width:55px;
-    margin-right:5px;
+.weekDay {
+  background-color: white;
+  color: black;
+  text-align: right;
+  width: 55px;
+  margin-right: 5px;
 }
 
-.weekEndLabel
-{
-    border:0px;
-    background-color: transparent; 
-    text-align:right;
-    width:55px;
-    margin-right:5px;
-    color:red;
-}
-.weekDayLabel
-{
-    border:0px;
-    background-color: transparent; 
-    text-align:right;
-    width:55px;
-    margin-right:5px;
-    color:black;
-}
-.weekTotals{
-    background-color: lightgreen; 
-    width:65px;
-    margin-right:5px;
-    color: black;
-    text-align:right;
+.weekEnd {
+  background-color: gold;
+  color: red;
+  text-align: right;
+  width: 55px;
+  margin-right: 5px;
 }
 
-.comments
-{
-    background-color:white;
-    color:black;
-width: 100%;
-height: 100px;
+.weekEndLabel {
+  border: 0px;
+  background-color: transparent;
+  text-align: right;
+  width: 55px;
+  margin-right: 5px;
+  color: red;
 }
-.errorBox{
-    border: 1px solid red;
+
+.weekDayLabel {
+  border: 0px;
+  background-color: transparent;
+  text-align: right;
+  width: 55px;
+  margin-right: 5px;
+  color: black;
+}
+
+.weekTotals {
+  background-color: lightgreen;
+  width: 65px;
+  margin-right: 5px;
+  color: black;
+  text-align: right;
+}
+
+.comments {
+  background-color: white;
+  color: black;
+  width: 100%;
+  height: 100px;
+}
+
+.errorBox {
+  border: 1px solid red;
+}
+
+.TotalsDisabled {
+  font-weight: bold;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.TotalsDisabled:hover {
+  border: 1px solid #a6a6a6;
 }

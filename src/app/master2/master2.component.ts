@@ -102,7 +102,7 @@ export class Master2Component implements OnInit {
         localStorage.getItem('PayRollName').toString() !== '') {
         this.fullName += ' (' + localStorage.getItem('PayRollName').toString() + ') ';
       }
-      this.loginTime = this.datePipe.transform(Date(), 'EEEE, dd MMM yyyy');
+      this.loginTime = this.datePipe.transform(Date(), 'EEEE, MMMM dd, yyyy');
     }
   }
 
@@ -257,11 +257,11 @@ export class Master2Component implements OnInit {
   }
 
   logout() {
-    this.router.navigate(['']);
+    this.router.navigate([''], { skipLocationChange: true });
   }
 
   navigateTo() {
-    this.router.navigate(['/menu/dashboard']);
+    this.router.navigate(['/menu/dashboard'], { skipLocationChange: true });
   }
 
   changePasswordClick() {

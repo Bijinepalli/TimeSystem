@@ -12,7 +12,7 @@
   </div>
 </div>
 <br>
-<p-panel [toggleable]="true" header="Filter Results by:">
+<p-panel [toggleable]="true" header="Filter results by:">
   <div class="ui-g">
     <div class="ui-g-1 label">
       Status:
@@ -82,13 +82,11 @@
           [style]="{minWidth: '200px'}" defaultLabel="Choose Columns"></p-multiSelect>
       </div>
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-5 ui-md-5 ui-g-nopad recordsFound">{{_recData}}</div>
-        <div class="ui-g-4 ui-md-4 ui-g-nopad" style="text-align: right">
-          <!-- <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i> -->
-          <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:100%">
-        </div>
-        <div class="ui-g-3 ui-md-3 ui-g-nopad" style="text-align: right">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>

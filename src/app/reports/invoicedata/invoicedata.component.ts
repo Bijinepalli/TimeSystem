@@ -94,11 +94,13 @@ export class InvoicedataComponent implements OnInit {
         (data) => {
           const reportData = data;
           for (let i = 0; i < reportData.length; i++) {
-            if (reportData[i].InvoiceDate) {
+            if (reportData[i].InvoiceDate !== '') {
               reportData[i].InvoiceDate = this.datePipe.transform(reportData[i].InvoiceDate.toString(), 'MM-dd-yyyy');
-            } else if (reportData[i].StartDate) {
+            }
+            if (reportData[i].StartDate !== '') {
               reportData[i].StartDate = this.datePipe.transform(reportData[i].StartDate.toString(), 'MM-dd-yyyy');
-            } else if (reportData[i].EndDate) {
+            }
+            if (reportData[i].EndDate !== '') {
               reportData[i].EndDate = this.datePipe.transform(reportData[i].EndDate.toString(), 'MM-dd-yyyy');
             }
           }
