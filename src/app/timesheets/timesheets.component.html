@@ -1,7 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Your Time Sheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      ></i>
+    Your Time Sheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
@@ -16,7 +15,7 @@
   <div class="ui-g-12 ui-md-4" style="text-align: right;">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Craete a New Timesheet" tooltipPosition="bottom" class="ui-button-info"
       label="Add New Timesheet" (click)=addTimesheet()></button> &nbsp;
-      <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom" class="ui-button-info"
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom" class="ui-button-info"
       label="Hours Charged" [disabled]="true" (click)=OpenHoursCharged()></button>
   </div>
 </div>
@@ -72,3 +71,33 @@
   </p-table>
 </div>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425"></p-confirmDialog>
+<p-dialog [(visible)]="timesheetDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" width="300">
+  <p-header>Select Timesheet Period
+  </p-header>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
+      Select Date
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
+      <p-dropdown [options]="_timePeriods" [appendTo]="'body'" [(ngModel)]="selectTimePeriod"></p-dropdown>
+    </div>
+  </div>
+
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
+      <p-checkbox name="chkEmptyTimesheet" binary="true" label="Create an Empty Timesheet " value="false" [(ngModel)]="selectedValues"></p-checkbox>
+    </div>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Create" (click)="createTimesheetDialog()" pTooltip="Create New Timesheet"
+            tooltipPosition="bottom"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelTimesheetDialog()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
