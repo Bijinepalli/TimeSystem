@@ -37,7 +37,7 @@ export class BillablehoursComponent implements OnInit {
   endDate: Date;
   admin = false;
   _codeType: string;
-  _totalhours: number;
+  _totalhours: any;
   helpText: any;
   visibleHelp = false;
 
@@ -58,14 +58,14 @@ export class BillablehoursComponent implements OnInit {
       { label: 'Project', value: 1 },
     ];
     this.cols = [
-      { field: 'Name', header: 'Name' },
-      { field: 'Key', header: 'Code' },
-      { field: 'Inactive', header: 'Inactive' },
-      { field: 'InactiveRel', header: 'Currently Associated' },
-      { field: 'CalendarDate', header: 'Date' },
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'Hours', header: 'Hours' },
+      { field: 'Name', header: 'Name', align: 'left' },
+      { field: 'Key', header: 'Code', align: 'left' },
+      { field: 'Inactive', header: 'Inactive', align: 'left' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'left' },
+      { field: 'CalendarDate', header: 'Date', align: 'left' },
+      { field: 'LastName', header: 'Last Name', align: 'left' },
+      { field: 'FirstName', header: 'First Name', align: 'left' },
+      { field: 'Hours', header: 'Hours', align: 'right' },
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;
@@ -120,7 +120,7 @@ export class BillablehoursComponent implements OnInit {
   generateReport() {
     let start = '';
     let end = '';
-    this._totalhours = 0;
+    this._totalhours = 0.00;
     if (this.startDate !== undefined && this.startDate !== null && this.startDate.toString() !== '') {
       start = this.datePipe.transform(this.startDate.toString(), 'MM-dd-yyyy');
     }
