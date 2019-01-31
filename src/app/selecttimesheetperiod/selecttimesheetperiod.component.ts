@@ -34,7 +34,7 @@ export class SelecttimesheetperiodComponent implements OnInit {
     this.getTimeSheetPeriods();
   }
   getTimeSheetPeriods() {
-    console.log(localStorage.getItem('HireDate'));
+    // console.log(localStorage.getItem('HireDate'));
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data1) => {
         console.log(JSON.stringify(data1));
