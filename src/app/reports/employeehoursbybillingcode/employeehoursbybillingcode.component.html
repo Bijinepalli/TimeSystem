@@ -100,6 +100,9 @@
     <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
   </div>
 </div>
+<div class="ui-g-12 ui-md-12" *ngIf="showReport">
+    <font color=red>NOTE: This report includes both the saved and submitted hours. </font>
+</div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
