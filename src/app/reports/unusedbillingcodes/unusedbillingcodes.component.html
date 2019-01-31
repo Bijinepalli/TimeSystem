@@ -1,29 +1,37 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    {{_codeHeader}}
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    {{_codeHeader}} <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('UnusedBillingCodes.htm')"></i>
   </div>
   <div class="ui-g-12 ui-md-2 ui-g-nopad">
     <div class="ui-g-12 ui-md-6"></div>
     <div class="ui-g-12 ui-md-4"></div>
-    <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('UnusedBillingCodes.htm')" style="cursor: pointer;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-12 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('UnusedBillingCodes.htm')" style="cursor: pointer;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
 <br>
+<p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g">
   <div class="ui-g-12 ui-md-3">
-    Select: <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom" [(ngModel)]="selectedCodeType"></p-selectButton>
+    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report"
+      tooltipPosition="bottom" [(ngModel)]="selectedCodeType"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-5">
-    <p-selectButton [options]="usageTypes" pTooltip="Show items that are never used on any timesheets or that are inactive for all employees" tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton>
+    <p-selectButton [options]="usageTypes" pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
+      tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
     <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom" [(ngModel)]="selectedDate"></p-dropdown>
   </div>
-  <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=getReports()></button>
-  </div>
 </div>
+<p-footer>
+  <div style="text-align: right">
+    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
+      label="Generate Report" (click)=getReports()></button>
+  </div>
+</p-footer>
+</p-panel>
 <div class="ui-g">
   <p-scrollPanel [style]="{width: '100%', height: '700px'}">
     <p-table #dt [columns]="cols" [value]="_codeList" [(selection)]="_selectedCode" [responsive]="false" dataKey="Key">
@@ -72,7 +80,7 @@
   </div>
 </div>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-    </p-scrollPanel>
-  </p-sidebar>
+  </p-scrollPanel>
+</p-sidebar>

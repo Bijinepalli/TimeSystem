@@ -27,7 +27,7 @@
               "./node_modules/primeicons/primeicons.css",
               "./node_modules/primeng/resources/primeng.css",
               "./node_modules/primeng/resources/primeng.min.css",
-              "./node_modules/primeng/resources/themes/luna-amber/theme.css",
+              "./node_modules/primeng/resources/themes/nova-dark/theme.css",
               "src/styles.css"
             ],
             "scripts": []

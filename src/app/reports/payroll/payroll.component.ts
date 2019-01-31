@@ -26,6 +26,7 @@ export class PayrollComponent implements OnInit {
   _timesheet: TimeSheet;
   helpText: any;
   visibleHelp = false;
+  selectedPeriod: any;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) { }

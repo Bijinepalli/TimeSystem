@@ -286,9 +286,9 @@ export class TimePeriods {
     RowNumber: number;
 }
 export class TimeSheetBinding {
-    value: number;
-    label: string;
-    code: string;
+    value?: number;
+    label?: string;
+    code?: string;
 }
 export class TimeSheetForApproval {
     Id: number;
@@ -343,7 +343,8 @@ export class Invoice {
     EndDate?: string;
     ClientName?: string;
     PONumber?: string;
-    Inactive: boolean;
+    Inactive?: boolean;
+    EffectiveDate?: string;
 }
 
 export class MonthlyHours {

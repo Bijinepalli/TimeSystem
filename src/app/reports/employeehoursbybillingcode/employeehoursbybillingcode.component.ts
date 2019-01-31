@@ -49,7 +49,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM/dd/yyyy');
+    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     console.log(this._startDate);
   }
 
@@ -119,11 +119,11 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         let _end = '';
 
         if (this._startDate !== null && this._startDate !== '') {
-          _start = this.datePipe.transform(this._startDate, 'yyyy/MM/dd');
+          _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
           this._startDate = _start;
         }
         if (this._endDate !== null && this._endDate !== '') {
-          _end = this.datePipe.transform(this._endDate, 'yyyy/MM/dd');
+          _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
           this._endDate = _end;
         }
         this._billingCodesSpecial.startDate = _start;
@@ -143,12 +143,12 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       let _end = '';
 
       if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(this._startDate, 'yyyy/MM/dd');
-        this._startDate = this.datePipe.transform(this._startDate, 'MM/dd/yyyy');
+        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+        this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
-        _end = this.datePipe.transform(this._endDate, 'yyyy/MM/dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM/dd/yyyy');
+        _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
+        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
@@ -208,13 +208,13 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.showReport = false;
     this._selectcheckbox = [];
     this.allcheckbox = false;
-    this.selectedbillingCycle = 0;
+    this.selectedbillingCycle = 3;
     this.showSpinner = false;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM/dd/yyyy');
+    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDate = '';
   }
 }

@@ -1,28 +1,33 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Billing Code Hours By Employee
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Billing Code Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('HoursByEmployees.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('HoursByEmployees.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('HoursByEmployees.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
 <br>
-<div class="ui-g" *ngIf="!showBillingCodeList && !changeCodeList">
+<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
+<div class="ui-g">
   <div class="ui-g-12 ui-md-3">
-    Select: <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
+    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-2">
     <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom" [(ngModel)]="selectedType"></p-selectButton>
   </div>
-  <div class="ui-g-12 ui-md-7">
+</div>
+<p-footer>
+  <div style="text-align: right">
     <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
       label="Show Billing Codes" (click)=showBillingCodes()></button>
   </div>
-</div>
+</p-footer>
+</p-panel>
 <div *ngIf="changeCodeList">
   <div class="ui-g-12">
     Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}
@@ -71,10 +76,10 @@
 <div class="ui-g" *ngIf="showBillingCodeList">
   <div class="ui-g-12 ui-md-5">
     Date Range From:
-    <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
+    <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
       [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
-    <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
+    <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
       [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"></p-calendar>
   </div>
   <div class="ui-g-12 ui-md-2">

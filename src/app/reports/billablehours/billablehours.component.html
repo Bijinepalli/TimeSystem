@@ -1,28 +1,36 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Billable Hours by Client or Project
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Billable Hours by Client or Project <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('BillingHoursByClient.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('BillingHoursByClient.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('BillingHoursByClient.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
 <br>
-<div class="ui-g" *ngIf="!showBillingCodeList && !changeCodeList">
-  <div class="ui-g-12 ui-md-2">
-    Select: <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
+<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-2">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom"
+        [(ngModel)]="selectedBillingType"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-2">
+      <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
+        [(ngModel)]="selectedType"></p-selectButton>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-2">
-    <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom" [(ngModel)]="selectedType"></p-selectButton>
-  </div>
-  <div class="ui-g-12 ui-md-7">
-    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
-      label="Show Billing Codes" (click)=showBillingCodes()></button>
-  </div>
-</div>
+  <p-footer>
+    <div style="text-align: right">
+      <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
+        label="Show Billing Codes" (click)=showBillingCodes()></button>
+    </div>
+  </p-footer>
+</p-panel>
 <div *ngIf="changeCodeList">
   <div class="ui-g-12 ui-md-4">
     <button pButton pTooltip="Change your billing code selections" tooltipPosition="bottom" class="ui-button-info"
@@ -37,31 +45,35 @@
   <div class="ui-g-12" style="padding-top: 5px" *ngIf="showBillingCodeList">
     <p-panel [toggleable]="false" header="{{_codeCount}}">
       <div class="ui-g">
-        <div class="ui-g-12 label">
-          {{_codeType}} : <p-dropdown [options]="codes" placeholder="Please select" pTooltip="Select the billing code to appear in the report" tooltipPosition="bottom" [(ngModel)]="selectedCode"></p-dropdown>
+        <div class="ui-g-12">
+          <label class="label" style="padding:0px 10px;">{{_codeType}} :</label> <p-dropdown [options]="codes" placeholder="Please select" pTooltip="Select the billing code to appear in the report"
+            tooltipPosition="bottom" [(ngModel)]="selectedCode"></p-dropdown>
         </div>
       </div>
       <div class="ui-g">
-        <div class="ui-g-4 label">
-          Date From :
-          <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true"
+        <div class="ui-g-4">
+          <label class="label" style="padding:0px 10px;">Date From :</label>
+          <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
+            tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+            dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
+            <label class="label" style="padding:0px 10px;">to</label>
+          <p-calendar [(ngModel)]="endDate" [minDate]="startDate" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
+            tooltipPosition="bottom" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
             [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
-          to
-          <p-calendar [(ngModel)]="endDate" [minDate]="startDate" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" [readonlyInput]="true" showButtonBar="true"
-            [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
         </div>
         <!-- </div>
       <div class="ui-g label"> -->
-        <div class="ui-g-12 ui-md-4 label">
-          Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus" pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both." tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
+        <div class="ui-g-12 ui-md-5">
+          <label class="label" style="padding:0px 10px;">Billing Code/Employee Assignment Status:</label> <p-selectButton [options]="assignStatus" pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
+            tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
         </div>
         <div class="ui-g-12 ui-md-2">
-          <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-            [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>
+          <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
+            label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>
         </div>
         <div class="ui-g-12 ui-md-1">
-          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info" label="Start Over"
-            (click)=startOver()></button>
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
+            label="Start Over" (click)=startOver()></button>
         </div>
       </div>
     </p-panel>
@@ -71,8 +83,8 @@
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
-        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
@@ -101,16 +113,16 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <tr>
-          <td colspan="7">*** Total Hours ***</td>
-          <td>{{_totalhours}}</td>
+        <td colspan="7">*** Total Hours ***</td>
+        <td>{{_totalhours}}</td>
       </tr>
-  </ng-template>
+    </ng-template>
   </p-table>
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-    </p-scrollPanel>
-  </p-sidebar>
+  </p-scrollPanel>
+</p-sidebar>

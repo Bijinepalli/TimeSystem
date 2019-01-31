@@ -41,7 +41,7 @@ export class ApprovaltimesheetsComponent implements OnInit {
     this.confSvc.confirm({
       message: 'Do you want to approve the timesheet?',
       accept: () => {
-    this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.TimesheetId]);
+        this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.TimesheetId], { skipLocationChange: true });
       }
     });
   }

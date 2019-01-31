@@ -138,7 +138,7 @@ export class EmployeesComponent implements OnInit {
   ClearAllProperties() {
     this._billingCodes = new BillingCode();
     this.selectedType = 0;
-    this.selectedSalaryType = 0;
+    this.selectedSalaryType = 2;
 
     this.types = [];
     this.salaryTypes = [];
@@ -1332,6 +1332,9 @@ export class EmployeesComponent implements OnInit {
         (data: Invoice[] = []) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._rates = data;
+            for (let i = 0; i < this._rates.length; i++) {
+              this._rates[i].EffectiveDate = this.datepipe.transform(this._rates[i].EffectiveDate, 'MM-dd-yyyy');
+            }
             this._recRateData = this._rates.length;
           }
         }

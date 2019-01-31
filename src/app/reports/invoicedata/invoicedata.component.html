@@ -1,42 +1,50 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Invoice Data by Customer Report
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Invoice Data by Customer Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('InvoiceDataByCustomer.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('InvoiceDataByCustomer.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('InvoiceDataByCustomer.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
-<div class="ui-g" *ngIf="!showInvoiceList">
-  <div class="ui-g-12 ui-md-5">
-    Client BIlling Cycle: <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle"></p-selectButton>
+<br>
+<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showInvoiceList">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-4">
+      <label class="label" style="padding:0px 10px;">Client BIlling Cycle:</label>
+      <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle" pTooltip="Show clients with this billing cycle on the report"
+        tooltipPosition="bottom"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-3">
+      <label class="label" style="padding:0px 10px;">Invoice Date :</label>
+      <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
+        [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter an invoice date. Defaults to current date."
+        tooltipPosition="bottom"></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-5">
+      <label class="label" style="padding:0px 10px;">Date From :</label>
+      <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
+        [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter a starting date. Defaults to first day of the current month"
+        tooltipPosition="bottom"></p-calendar>
+      <label class="label" style="padding:0px 10px;">to</label>
+      <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
+        [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter the end date. Defaults to the last day of the current month."
+        tooltipPosition="bottom"></p-calendar>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-3">
-    Invoice Date :
-    <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
-  </div>
-</div>
-<div class="ui-g" *ngIf="!showInvoiceList">
-  <div class="ui-g-6 ui-g-md-5 label">
-    Date From :
-    <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
-    to
-    <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-      [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
-  </div>
-  <div class="ui-g-2">
-    <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-      (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
-  </div>
-</div>
+  <p-footer>
+    <div style="text-align: right">
+      <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+        (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
+    </div>
+  </p-footer>
+</p-panel>
 <div class="ui-g-12" *ngIf="showReport">
-  <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
-    label="Start Over" (click)="startOver()"></button>
+  <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)="startOver()"></button>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
@@ -69,8 +77,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-    </p-scrollPanel>
-  </p-sidebar>
+  </p-scrollPanel>
+</p-sidebar>

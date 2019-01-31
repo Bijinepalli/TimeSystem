@@ -21,6 +21,7 @@ export class PeriodendhoursComponent implements OnInit {
   showSpinner = false;
   helpText: any;
   visibleHelp = false;
+  showReport = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {

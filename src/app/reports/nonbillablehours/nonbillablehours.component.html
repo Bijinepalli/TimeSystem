@@ -1,12 +1,13 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px; color:red">
-    {{_headerType}} Non-Billable Hours Across Months
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;color: red">
+    {{_headerType}} Non-Billable Hours Across Months <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('ViewNonBillableHours.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a (click)="showHelp('ViewNonBillableHours.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('ViewNonBillableHours.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -16,28 +17,37 @@
     <button pButton pTooltip="Add or change the groups used by this report" tooltipPosition="bottom" class="ui-button-info"
       label="Change Report Groups" (click)=changeReportgroup()></button>
   </div>
-  <div class="ui-g-12 ui-md-12">
-    Report Type: <p-selectButton [options]="reportType" pTooltip="Show the hours for this type of non-billable work" tooltipPosition="bottom" [(ngModel)]="selectedReportType"></p-selectButton>
+</div>
+<p-panel [toggleable]="true" header="Filter results by:">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-5">
+      <label class="label" style="padding:0px 10px;">Report Type:</label>
+      <p-selectButton [options]="reportType" pTooltip="Show the hours for this type of non-billable work"
+        tooltipPosition="bottom" [(ngModel)]="selectedReportType"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-4">
+      <label class="label" style="padding:0px 10px;">Date From :</label>
+      <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date" tooltipPosition="bottom"
+        showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy"
+        appendTo="body"></p-calendar>
+      <label class="label" style="padding:0px 10px;">to</label>
+      <p-calendar [(ngModel)]="endDate" [readonlyInput]="true" pTooltip="Enter the end date in the same year as the start date"
+        tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+        dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
+      <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom"
+        binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show Totals</label>
+    </div>
   </div>
-  <div class="ui-g-12">
-    <div class="ui-g-4 label">
-      Date From :
-      <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date" tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true"
-        [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
-      to
-      <p-calendar [(ngModel)]="endDate" [readonlyInput]="true" pTooltip="Enter the end date in the same year as the start date" tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true"
-        [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
-    </div>
-    <div class="ui-g-2">
-      <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom" binary="true"></p-checkbox> Show Totals
-    </div>
-    <div class="ui-g-4">
+  <p-footer>
+    <div style="text-align: right">
       <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
         label="Generate Report" (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
     </div>
-  </div>
-</div>
-<div class="ui-g-12" *ngIf="showReport">
+  </p-footer>
+</p-panel>
+<div class="ui-g" *ngIf="showReport">
   The data shown below is dummy data
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
@@ -74,8 +84,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-      <p-scrollPanel [style]="{width: '100%', height: '100%'}">
-      <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-      </p-scrollPanel>
-    </p-sidebar>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-scrollPanel>
+</p-sidebar>

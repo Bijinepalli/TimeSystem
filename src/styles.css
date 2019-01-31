@@ -33,21 +33,45 @@ body .ui-slidemenu {
 	border: 1px solid white;
 }
 
-.mainHeader{
+/* .mainHeader{
   font-size:24px;
   color:dodgerblue;
   background-color: aliceblue;
   height: 45px;
   border:solid 1px dodgerblue;
   border-radius: .3em;
-}
+} */
 
+.mainHeader{
+  font-size: 24px;
+  color: dodgerblue;
+  background-color: aliceblue;
+  /* border: solid 1px #b3b3b3; */
+  border-right: 0px;
+  border-left: 0px;
+  /* padding: 15px 5px 5px 5px; */
+  box-shadow: 0 0px 5px 1px rgba(0,0,0,.3);
+  margin-top: 10px;
+}
+.editIcon{
+  cursor:pointer;
+  color:green
+}
+.deleteIcon{
+  cursor:pointer;
+  color:red
+}
+.viewIcon{
+  cursor:pointer;
+  color:#007ad9;
+}
 .helpClass{
-  background-color: gold;
+  /* background-color: gold; */  
+  /* border-top-right-radius: .3em;
+  border-bottom-right-radius: .3em; */
   height: 43px;
-  border-top-right-radius: .3em;
-  border-bottom-right-radius: .3em;
   text-align: center;
+  color:dodgerblue!important;
 }
 
 .recordsFound
@@ -75,7 +99,7 @@ body .ui-slidemenu {
 
 
 .dialogHeader .ui-dialog-titlebar.ui-widget-header {
-  background-color: lightcyan !important;
+  background-color: lightgreen !important;
   color: #0078d7 !important;
 }
 
@@ -86,8 +110,8 @@ body .ui-slidemenu {
 } */
 
 .ui-dialog-titlebar.ui-widget-header {
-  background-color: lightyellow !important;
-  color: black !important;
+  background-color: black !important;
+  color: white !important;
 }
 
 
@@ -108,8 +132,8 @@ body .ui-slidemenu {
   
   
   .ui-dialog-titlebar.ui-widget-header {
-  background-color: lightyellow !important;
-  color: black !important;
+  background-color: black !important;
+  color: white !important;
   }
   
   
@@ -153,3 +177,10 @@ body .ui-panel .ui-panel-content {
   left: 50%;
   transform: translate(-50%, -50%);
   }
+  .label
+{
+    /* font-weight: bold; */
+    padding-top: 13px;
+    text-align: right;
+    color: #329AFF;
+}
