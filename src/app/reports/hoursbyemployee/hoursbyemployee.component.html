@@ -118,7 +118,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.text-align]="col.align">
           <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>

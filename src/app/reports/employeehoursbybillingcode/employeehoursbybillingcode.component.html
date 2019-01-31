@@ -100,8 +100,11 @@
     <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
   </div>
 </div>
+<div class="ui-g-12 ui-md-12" *ngIf="showReport">
+    <font color=red>NOTE: This report includes both the saved and submitted hours. </font>
+</div>
 <div class="ui-g-12" *ngIf="showReport">
-  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" >
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
@@ -115,14 +118,14 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns"  [style.width]='auto'>
           {{col.header}}
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.white-space]="nowrap" [style.width]='auto' > 
           <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>
