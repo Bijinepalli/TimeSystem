@@ -32,6 +32,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   _billingCodesSpecial: BillingCodesSpecial;
   helpText: any;
   visibleHelp = false;
+  showTotals = false;
+  nowrap = 'nowrap';
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -128,6 +130,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         }
         this._billingCodesSpecial.startDate = _start;
         this._billingCodesSpecial.endDate = _end;
+        this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
         console.log(this._billingCodesSpecial);
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
@@ -152,11 +155,12 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
+      this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
       console.log(this._billingCodesSpecial);
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
-          console.log(data);
+          console.log(JSON.stringify(data));
         }
       );
     }
@@ -183,11 +187,11 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'BillingName', header: 'Billing Code' },
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'TANDM', header: 'T & M' },
-      { field: 'Project', header: 'Project' },
-      { field: 'NonBill', header: 'NonBillable' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left' },
+      { field: 'LastName', header: 'Last Name', align: 'left' },
+      { field: 'TANDM', header: 'T & M', align: 'right' },
+      { field: 'Project', header: 'Project', align: 'right' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right' },
     ];
   }
   showHelp(file: string) {
