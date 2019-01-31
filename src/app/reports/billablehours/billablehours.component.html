@@ -46,7 +46,8 @@
     <p-panel [toggleable]="false" header="Filter {{_codeType}} data">
       <div class="ui-g">
         <div class="ui-g-12">
-          <label class="label" style="padding:0px 10px;">{{_codeCount}} :</label> <p-dropdown [options]="codes" placeholder="Please select" pTooltip="Select the billing code to appear in the report"
+          <label class="label" style="padding:0px 10px;">{{_codeCount}} :</label>
+          <p-dropdown [options]="codes" placeholder="Please select" pTooltip="Select the billing code to appear in the report"
             tooltipPosition="bottom" [(ngModel)]="selectedCode"></p-dropdown>
         </div>
       </div>
@@ -56,7 +57,7 @@
           <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
             tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
             dateFormat="mm-dd-yy" appendTo="body" [inputStyle]="{'width':'100px'}"></p-calendar>
-            <label class="label" style="padding:0px 10px;">to</label>
+          <label class="label" style="padding:0px 10px;">to</label>
           <p-calendar [(ngModel)]="endDate" [minDate]="startDate" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
             tooltipPosition="bottom" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
             [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body" [inputStyle]="{'width':'100px'}"></p-calendar>
@@ -68,28 +69,28 @@
           <p-selectButton [options]="assignStatus" pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
             tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
         </div>
-        <div class="ui-g-12 ui-md-2">
+        <!-- <div class="ui-g-12 ui-md-2">
           <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
             label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>
-        </div>
+        </div> -->
         <div class="ui-g-12 ui-md-1">
           <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
             label="Start Over" (click)=startOver()></button>
         </div>
       </div>
       <p-footer>
-          <div style="text-align: right">
-                  <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
-                    label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>&nbsp;
-                  <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
-                    label="Start Over" (click)=startOver()></button>
-          </div>
-        </p-footer>
+        <div style="text-align: right">
+          <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
+            label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>&nbsp;
+          <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
+            label="Start Over" (click)=startOver()></button> -->
+        </div>
+      </p-footer>
     </p-panel>
   </div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
-  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" >
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
