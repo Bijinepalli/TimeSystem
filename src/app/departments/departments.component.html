@@ -1,0 +1,143 @@
+<p-confirmDialog></p-confirmDialog>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Departments <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('CompanySelect.htm')"></i>
+  </div>
+</div>
+<div class="ui-g" style="height:50px;">
+  <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Department" tooltipPosition="bottom" class="ui-button-info"
+      label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
+  </div>
+</div>
+<div class="ui-g">
+  <p-table #dt [columns]="cols" [value]="_departmentList" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
+    [first]="_departmentsPageNo">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+      <tr>
+        <th style="width: 5em">Edit</th>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+        <th style="width: 5em">Delete</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td style="text-align: center">
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
+            (click)="editDepartment(rowData)"></i>
+        </td>
+        <td *ngFor="let col of columns">
+          <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
+            <label style="cursor: pointer;" (click)="showEmployees(rowData)" >{{rowData[col.field]}}</label>
+          </div>
+          <ng-template #defaultColumn>
+            {{rowData[col.field]}}
+          </ng-template>
+        </td>
+        <td style="text-align: center">
+          <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this Department. It has no employees assigned"
+            tooltipPosition="bottom" (click)="deleteDepartment(rowData)"></i>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
+<p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
+  [closeOnEscape]="false" [closable]="false" blockScroll="true">
+  <p-header>
+    {{departmentHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('')"></i>
+  </p-header>
+  <div *ngIf="_IsEditDepartment">
+    <form [formGroup]="_frmDepartment">
+      <div class="ui-g">
+        <div class="ui-g-4" style="text-align:right">
+          Department Name:
+        </div>
+        <div class="ui-g-6">
+          <input type="text" pInputText formControlName="frmName" pToolTip="Unique department name" tooltipPosition="bottom">
+        </div>
+        <div class="ui-g-4" style="text-align:right">
+          Description:
+        </div>
+        <div class="ui-g-6">
+          <input type="text" pInputText formControlName="frmDescription" tooltipPosition="bottom">
+        </div>
+      </div>
+      <p-footer style="text-align: right">
+        <div class="ui-g">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <div class="ui-g-12 ui-md-12 ui-lg-12">
+              <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()"></button>
+              &nbsp;
+              <button pButton label="Cancel" (click)="cancelDepartment()"></button>
+            </div>
+          </div>
+        </div>
+      </p-footer>
+    </form>
+  </div>
+</p-dialog>
+<p-dialog [(visible)]="deptEmployeesDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
+  [closeOnEscape]="false" [closable]="false" blockScroll="true">
+  <p-header>
+    {{deptEmployeeHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('')"></i>
+  </p-header>
+  <div class="ui-g">
+    <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name" [paginator]="true" [rows]="10"
+      [first]="_deptEmployeePageNo">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recDataEmp}}</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:50%"> &nbsp;
+            <!-- <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button> -->
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+  <p-footer style="text-align: right">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <button pButton label="Cancel" (click)="cancelDepartment()"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>

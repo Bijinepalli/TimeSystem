@@ -6,7 +6,7 @@ import {
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
   TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email,
-  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours
+  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -619,5 +619,23 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('EmployeeId', employeeId);
     return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsGet', { params });
+  }
+  getDepartments(Id: string) {
+    const params = new HttpParams()
+      .set('Id', Id.toString());
+    return this.http.get<Departments[]>(this.localurl + 'GetDepartments', { params });
+  }
+  Department_InsertOrUpdate(_inputData: Departments) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Department_InsertOrUpdate', body, httpOptions);
+  }
+  Department_Delete(_inputData: Departments) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Department_Delete', body, httpOptions);
+  }
+  departmentEmployee_Get(DepartmentID: string) {
+    const params = new HttpParams()
+      .set('DepartmentID', DepartmentID);
+    return this.http.get<Employee[]>(this.localurl + 'DepartmentEmployees_Get', { params });
   }
 }

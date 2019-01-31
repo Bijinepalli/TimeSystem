@@ -104,6 +104,7 @@ export class Employee {
     NonBillableID?: string;
     BenchID?: string;
     HolidayID?: string;
+    Name?: string;
 }
 
 export class LoginErrorMessage {
@@ -384,3 +385,10 @@ export class MonthlyHours {
     Day31: string;
 }
 
+export class Departments {
+    Id?: number;
+    Name?: string;
+    Description?: string;
+    Status?: number;
+    EmployeesCount?: number;
+}
