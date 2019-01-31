@@ -95,6 +95,7 @@ import { OutstandingtimesheetsComponent } from './outstandingtimesheets/outstand
 import { ApprovaltimesheetsComponent } from './approvaltimesheets/approvaltimesheets.component';
 import { AccesssystemComponent } from './accesssystem/accesssystem.component';
 import { TimeFormatPipe } from './sharedpipes/timeformat';
+import { DepartmentsComponent } from './departments/departments.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -157,6 +158,7 @@ const appRoutes: Routes = [
       // { path: 'issuetracker/:mode/:ts', component: IssuetrackerComponent },
       { path: 'mails', component: MailsComponent },
       { path: 'access', component: AccesssystemComponent },
+      { path: 'departments', component: DepartmentsComponent },
     ],
     runGuardsAndResolvers: 'always',
   },
@@ -230,6 +232,7 @@ const appRoutes: Routes = [
     ApprovaltimesheetsComponent,
     AccesssystemComponent,
     TimeFormatPipe,
+    DepartmentsComponent,
   ],
   imports: [
     BrowserAnimationsModule,
