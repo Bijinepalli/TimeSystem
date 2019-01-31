@@ -71,7 +71,7 @@
   </p-table>
 </div>
 <p-confirmDialog header="Confirmation" icon="pi pi-exclamation-triangle" width="425"></p-confirmDialog>
-<p-dialog [(visible)]="timesheetDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" width="300">
+<p-dialog [(visible)]="timesheetDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" width="500">
   <p-header>Select Timesheet Period
   </p-header>
   <div class="ui-g">
@@ -79,13 +79,14 @@
       Select Date
     </div>
     <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
-      <p-dropdown [options]="_timePeriods" [appendTo]="'body'" [(ngModel)]="selectTimePeriod" optionLabel="label"  ></p-dropdown>
+      <p-dropdown [options]="_timePeriods" [appendTo]="'body'" [(ngModel)]="selectTimePeriod" optionLabel="label"
+        [style]="{'width':'300px'}"></p-dropdown>
     </div>
   </div>
 
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
-      <p-checkbox name="chkEmptyTimesheet" binary="true" label="Create an Empty Timesheet " value="false" [(ngModel)]="selectedValues"></p-checkbox>
+      <p-checkbox name="chkEmptyTimesheet" binary="true" label="Create an Empty Timesheet " value="false" [(ngModel)]="emptyTimeSheet"></p-checkbox>
     </div>
   </div>
   <p-footer>

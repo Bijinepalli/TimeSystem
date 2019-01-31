@@ -29,6 +29,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _peroidStartDate: Date = new Date('2018-11-01');
   _periodEnddate: Date = new Date('2018-11-15');
   _periodEndDateString = '';
+  _periodEndDateDisplay = '';
   _days = 0;
   _DateArray: Date[] = [];
   _weekArray: number[] = [];
@@ -77,11 +78,9 @@ export class MaintaintimesheetComponent implements OnInit {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
       this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
       this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
-      if (this._timesheetId.toString() === '-1') {
-        this._periodEndDateString = localStorage.getItem('PeriodEndDate');
-      }
-      if (this._periodEndDateString === '') {
+      if (+this._timesheetId.toString() < 0) {
         this._periodEndDateString = this._timesheetPeriodEnd;
+        this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
       }
     });
 
@@ -120,7 +119,6 @@ export class MaintaintimesheetComponent implements OnInit {
     this._periodEnddate = null;
     this._IsTimeSheetSubmitted = false;
 
-
     if (this._timesheetId > 0) {
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
@@ -154,6 +152,8 @@ export class MaintaintimesheetComponent implements OnInit {
                   }
                   this._periodEnddate = new Date(this._timeSheetEntries[0].PeriodEnd);
                   this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
+                  this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
+
                 }
                 const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
 
@@ -177,11 +177,12 @@ export class MaintaintimesheetComponent implements OnInit {
             });
         });
     } else {
+
       this.getEmployeeDetails(localStorage.getItem('UserId').toString());
 
-      this.timesysSvc.getPeriodEndDate().subscribe(
+      this.timesysSvc.getTimeSheetPeridos().subscribe(
         (data1) => {
-
+          console.log(JSON.stringify(data1));
 
           const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
 
@@ -780,7 +781,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
     timeSheetSubmit.timeSheet.EmployeeId = +localStorage.getItem('UserId');
     timeSheetSubmit.timeSheet.Submitted = submitted;
-    if (this._timesheetId.toString() === '-1') {
+    if (+this._timesheetId.toString() < 0) {
       this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
         this._timesheetId = +dataNew;
         timeSheetSubmit.timeSheet.Id = this._timesheetId;
