@@ -25,8 +25,8 @@ export class TimesystemService {
 
   // 172.16.16.217
   private accessSystemURL = 'http://localhost/AccessSystem/';
-  private ipaddress = 'http://172.16.16.217/';
-  private ipaddressLocal = 'http://172.16.16.217/';
+  private ipaddress = 'http://localhost/';
+  private ipaddressLocal = 'http://localhost/';
   // private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
   private helpipaddress = 'http://localhost/ECTS/TimeSystem/Help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -605,6 +605,13 @@ export class TimesystemService {
       .set('year', year)
       .set('employeeno', employeeNumber);
     return this.http.get<MonthlyHours[]>(this.accessSystemURL + 'GetAccessSystemData', { params });
+  }
+  getPeriodEndDatesforDropdown(pastPeriods: string, futurePeriods: string, dateFormat: string) {
+    const params = new HttpParams()
+    .set('pastPeriods', pastPeriods)
+    .set('futurePeriods', futurePeriods)
+    .set('dateFormat', dateFormat);
+  return this.http.get<TimePeriods[]>(this.url + 'GetPeriodEndforDropdown', { params });
   }
   getOutstandingTimesheetReport(Dates: string) {
     const params = new HttpParams()
