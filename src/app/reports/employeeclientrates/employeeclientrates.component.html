@@ -15,15 +15,15 @@
 <br>
 <p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g">
-  <div class="ui-g-12 ui-md-4">
+  <div class="ui-g-12 ui-md-3">
     <label class="label" style="padding:0px 10px;"> Date From:</label>
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
       yearRange="1900:2100" [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
-      tooltipPosition="bottom"></p-calendar>
+      tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
       yearRange="1900:2100" [(ngModel)]="_endDate" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
-      tooltipPosition="bottom">></p-calendar>
+      tooltipPosition="bottom" [inputStyle]="{'width':'100px'}">></p-calendar>
   </div>
   <div class="ui-g-12 ui-md-3" style="padding-top: 13px">
     <p-checkbox binary="true" label="" [(ngModel)]="showAll" binary="true"></p-checkbox>
@@ -37,7 +37,7 @@
     </div>
   </p-footer>
 </p-panel>
-<div class="ui-g-12" *ngIf="showReport">
+<div class="ui-g" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">

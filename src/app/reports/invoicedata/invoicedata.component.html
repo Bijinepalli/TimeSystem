@@ -19,21 +19,21 @@
       <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle" pTooltip="Show clients with this billing cycle on the report"
         tooltipPosition="bottom"></p-selectButton>
     </div>
-    <div class="ui-g-12 ui-md-3">
+    <div class="ui-g-12 ui-md-2">
       <label class="label" style="padding:0px 10px;">Invoice Date :</label>
       <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
         [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter an invoice date. Defaults to current date."
-        tooltipPosition="bottom"></p-calendar>
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
     </div>
     <div class="ui-g-12 ui-md-5">
       <label class="label" style="padding:0px 10px;">Date From :</label>
       <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
         [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter a starting date. Defaults to first day of the current month"
-        tooltipPosition="bottom"></p-calendar>
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
       <label class="label" style="padding:0px 10px;">to</label>
       <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
         [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter the end date. Defaults to the last day of the current month."
-        tooltipPosition="bottom"></p-calendar>
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
     </div>
   </div>
   <p-footer>

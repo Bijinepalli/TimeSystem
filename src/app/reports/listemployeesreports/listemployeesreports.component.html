@@ -57,11 +57,11 @@
     <div class="ui-g-5">
       <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
         [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
-        tooltipPosition="bottom"></p-calendar>
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
       <label class="label" style="padding:0px 10px">to</label>
       <p-calendar [readonlyInput]="true" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true"
         [yearNavigator]="true" yearRange="1900:2100" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
-        tooltipPosition="bottom"></p-calendar>
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
     </div>
   </div>
   <p-footer>

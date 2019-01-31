@@ -24,14 +24,13 @@
       </div>
       <div class="ui-g-4">
         <label class="label" style="padding:0px 10px;">Date From:</label>
-
         <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
-          tooltipPosition="bottom" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-          [(ngModel)]="_startDate"></p-calendar>
+          tooltipPosition="bottom" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true"
+          yearRange="1900:2100" [(ngModel)]="_startDate"></p-calendar>
         <label class="label" style="padding:0px 10px;">to</label>
         <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
-          tooltipPosition="bottom" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
-          yearRange="1900:2100"></p-calendar>
+          tooltipPosition="bottom" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true"
+          [yearNavigator]="true" yearRange="1900:2100"></p-calendar>
       </div>
       <div class="ui-g-2 label" style="text-align: left">
         <p-checkbox binary="true" label="Total by Billing Code" pTooltip="Check this option to include a total of hours for each billing code"
@@ -64,10 +63,10 @@
   <div class="ui-g-12">
     Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}
   </div>
-  <div class="ui-g-12 ui-md-4">
+  <!-- <div class="ui-g-12 ui-md-4">
     <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
       label="Start Over" (click)="startOver()"></button>
-  </div>
+  </div> -->
 </div>
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
@@ -110,6 +109,8 @@
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
+            label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>

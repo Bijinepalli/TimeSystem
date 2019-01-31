@@ -19,7 +19,7 @@
       label="Add New Employee" *ngIf="!_HasEdit" (click)=addEmployee()></button>
   </div>
 </div>
-<!-- <p-panel [toggleable]="true" header="Filter results by:"> -->
+<p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-6 ui-lg-3">
       <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
@@ -28,7 +28,7 @@
     <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="getEmployees()"></p-selectButton>
   </div>
 </div>
-<!-- </p-panel> -->
+</p-panel>
 <div class="ui-g">
   <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo"
     [responsive]="false" dataKey="Id">

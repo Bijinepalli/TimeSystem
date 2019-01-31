@@ -19,13 +19,14 @@
       tooltipPosition="bottom" class="ui-button-info" label="Add New Client" *ngIf="!_HasEdit" (click)=addClient()></button>
   </div>
 </div>
+<p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g">
   <div class="ui-g-12 ui-md-12 ui-lg-12">
-    Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)" pTooltip="Show clients that have this status"
+    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)" pTooltip="Show clients that have this status"
       tooltipPosition="bottom"></p-selectButton>
   </div>
 </div>
-
+</p-panel>
 
 <div class="ui-g">
   <p-table #dt [columns]="cols" [value]="_clients" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">

@@ -67,16 +67,16 @@
     </p-footer>
   </p-panel>
 </div>
-<div class="ui-g" *ngIf="showBillingCodeList">
-  <div class="ui-g-12 ui-md-5">
+<div class="ui-g" style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showBillingCodeList">
+  <div class="ui-g-12 ui-md-4">
     Date Range From:
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
       tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-      [(ngModel)]="_startDate"></p-calendar>
+      [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
       tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-      [(ngModel)]="_endDate"></p-calendar>
+      [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
   </div>
   <div class="ui-g-12 ui-md-2">
     <p-checkbox binary="true" label="Show Totals In Report" pTooltip="Check to include totals in the report"
