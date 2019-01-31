@@ -186,7 +186,7 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
   }
 
   navigateTo(url: any) {
-    this.router.navigate([url]);
+    this.router.navigate([url], { skipLocationChange: true });
   }
 
   //#region Sort Listboxes

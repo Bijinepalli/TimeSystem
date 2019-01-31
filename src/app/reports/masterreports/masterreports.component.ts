@@ -155,7 +155,7 @@ export class MasterreportsComponent implements OnInit {
 
 
   logout() {
-    this.router.navigate(['']);
+    this.router.navigate([''], { skipLocationChange: true });
   }
 
   selectInitialMenuItemBasedOnUrl() {
@@ -171,6 +171,6 @@ export class MasterreportsComponent implements OnInit {
     this.visibleSidebar = true;
   }
   navigateTo() {
-    this.router.navigate(['/menu/dashboard']);
+    this.router.navigate(['/menu/dashboard'], { skipLocationChange: true });
   }
 }

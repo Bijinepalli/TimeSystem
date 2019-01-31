@@ -19,15 +19,16 @@
       label="Add New Employee" *ngIf="!_HasEdit" (click)=addEmployee()></button>
   </div>
 </div>
+<!-- <p-panel [toggleable]="true" header="Filter results by:"> -->
 <div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-6 ui-lg-3">
-    Select: <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
+      <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-3">
     <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="getEmployees()"></p-selectButton>
   </div>
 </div>
-
+<!-- </p-panel> -->
 <div class="ui-g">
   <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo"
     [responsive]="false" dataKey="Id">
@@ -64,12 +65,12 @@
             style="cursor:pointer;color:orange" tooltipPosition="bottom" (click)="unlockEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x editIcon" pTooltip="Please click here to edit the employee"
-            tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Please click here to edit the employee" tooltipPosition="bottom"
+            (click)="editEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x deleteIcon" pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
-             tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
+            tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
@@ -115,7 +116,7 @@
   </p-scrollPanel>
 </p-sidebar>
 
-<p-dialog [(visible)]="employeeDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" [width]="700">
+<p-dialog [(visible)]="employeeDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" [width]="800">
   <p-header>
     {{employeeHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -136,19 +137,19 @@
         <input type="text" pInputText style="width:100%" placeholder="First Name" formControlName="frmFirstName"
           appendTo="body" pToolTip="Employee's first name">
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Nick Name<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Nick Name" formControlName="frmNickName" appendTo="body"
           pToolTip="The name the employee prefers to go by">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Login ID<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Login ID" formControlName="frmLoginID" appendTo="body"
           pToolTip="The ID the employee logs in to the Extranet with">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-2 ui-lg-2">
         Payroll ID *<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Payroll ID" formControlName="frmPayrollID"
@@ -166,34 +167,29 @@
         <input type="text" pInputText style="width:100%" placeholder="Secondary Email Address" formControlName="frmSecondaryEmailAddress"
           appendTo="body" pToolTip="Employee's secondary email address.">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-3 ui-lg-3">
         Security Level<br>
         <div style="height:5px"></div>
         <p-dropdown appendTo="body" [options]="_SecurityLevels" placeholder="Select Security Level" formControlName="frmSecurityLevel"
           pToolTip="Employee's security level" [style]="{'width':'99%'}"></p-dropdown>
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-2 ui-lg-2">
         Hours Per Day<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Hours Per Day" formControlName="frmHoursPerDay"
           appendTo="body" pToolTip="The number of hours the employee is expected to work per day">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-3 ui-lg-3">
         Hire Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
         <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
           [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmHireDate"></p-calendar>
-      </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      </div>&nbsp;&nbsp;&nbsp;&nbsp;
+      <div class="ui-g-12 ui-md-3 ui-lg-3">
         Start Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
         <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
           [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmStartDate"></p-calendar>
-      </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried" [ngModelOptions]="{standalone: true}"
-          pToolTip="Check if this employee is paid by salary and is not paid on an hourly basis"></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
@@ -215,11 +211,6 @@
         <p-checkbox appendTo="body" binary="true" label="Send Email Alert When Pay Stub is Available" [(ngModel)]="chkPayAvailableAlert"
           [ngModelOptions]="{standalone: true}" pToolTip="Checking this box means the employee will be send an email notice each time their pay stub is available online"></p-checkbox>
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEditEmployee">
-        <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
-          pTooltip="Change the status of this employee."></p-checkbox>
-      </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
         <p-checkbox appendTo="body" binary="true" label="Company Officer" [(ngModel)]="chkOfficer" [ngModelOptions]="{standalone: true}"
@@ -232,14 +223,29 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
+        <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried" [ngModelOptions]="{standalone: true}"
+          pToolTip="Check if this employee is paid by salary and is not paid on an hourly basis"></p-checkbox>
+      </div>
+      <div class="ui-g-12 ui-md-6 ui-lg-6">
+        <!-- Select Department :
+        <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Department" formControlName="frmDepartment"
+          pToolTip="Employee's Department"></p-dropdown> -->
+      </div>
+      <div class="ui-g-12 ui-md-6 ui-lg-6">
+        <div style="height:5px"></div>
         <p-checkbox appendTo="body" binary="true" label="Timesheet Verification Needed" [(ngModel)]="chkTimesheetVerification"
           [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee needs a supervisor to verify Timesheet."></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6" *ngIf="chkTimesheetVerification">
-        <!-- Supervisor <br> -->
         <div style="height:5px"></div>
+        Select Supervisor :
         <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Supervisor" formControlName="frmSupervisor"
-          pToolTip="Employee's Supervisor" [style]="{'width':'99%'}"></p-dropdown>
+          pToolTip="Employee's Supervisor"></p-dropdown>
+      </div>
+      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEditEmployee">
+        <div style="height:5px"></div>
+        <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
+          pTooltip="Change the status of this employee."></p-checkbox>
       </div>
     </div>
     <p-footer>
@@ -409,8 +415,7 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate"
-                tooltipPosition="bottom" (click)="editRate(rowData)"></i>
+              <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate" tooltipPosition="bottom" (click)="editRate(rowData)"></i>
             </td>
             <td *ngFor="let col of columns">
               <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
@@ -421,8 +426,7 @@
               </ng-template>
             </td>
             <td style="text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this rate"
-                tooltipPosition="bottom" (click)="deleteRate(rowData)"></i>
+              <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this rate" tooltipPosition="bottom" (click)="deleteRate(rowData)"></i>
             </td>
           </tr>
         </ng-template>

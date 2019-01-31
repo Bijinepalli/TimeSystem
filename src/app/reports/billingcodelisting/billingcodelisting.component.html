@@ -11,18 +11,27 @@
     </div>
   </div>
 </div>
+<br>
+<p-panel [toggleable]="true" header="Filter results by:">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-3">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType" tooltipPosition="bottom" pTooltip="Show this type of billing code on the report"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-2">
+      <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
+        [(ngModel)]="selectedType"></p-selectButton>
+    </div>
+  </div>
+  <p-footer>
+    <div style="text-align: right">
+      <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
+        label="Generate Report" (click)=searchReports()></button>
+    </div>
+  </p-footer>
+</p-panel>
+<div class="ui-g">&nbsp;</div>
 <div class="ui-g">
-  <div class="ui-g-12 ui-md-3">
-    Select: <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType" tooltipPosition="bottom" pTooltip="Show this type of billing code on the report"></p-selectButton>
-  </div>
-  <div class="ui-g-12 ui-md-2">
-    <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom" [(ngModel)]="selectedType"></p-selectButton>
-  </div>
-  <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=searchReports()></button>
-  </div>
-</div>
-<div class="ui-g-12">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
@@ -57,8 +66,8 @@
   </p-table>
 </div>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-  </p-sidebar>
+  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+</p-sidebar>
 <!-- <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
   <div class="ui-g-12 ui-md-12 ui-lg-12">
     <div class="ui-g-12 ui-md-12 ui-lg-12">

@@ -45,12 +45,12 @@ export class MasterComponent implements OnInit {
   }
 
   navigateTo(url: any) {
-    this.router.navigate([url]);
+    this.router.navigate([url], { skipLocationChange: true });
   }
 
   logout() {
     localStorage.clear();
-    this.router.navigate(['']);
+    this.router.navigate([''], { skipLocationChange: true });
   }
 
   onReject() {

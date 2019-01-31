@@ -17,32 +17,37 @@
     <button pButton pTooltip="Add or change the groups used by this report" tooltipPosition="bottom" class="ui-button-info"
       label="Change Report Groups" (click)=changeReportgroup()></button>
   </div>
-  <div class="ui-g-12 ui-md-12">
-    Report Type: <p-selectButton [options]="reportType" pTooltip="Show the hours for this type of non-billable work"
-      tooltipPosition="bottom" [(ngModel)]="selectedReportType"></p-selectButton>
-  </div>
-  <div class="ui-g-12">
-    <div class="ui-g-4 label">
-      Date From :
+</div>
+<p-panel [toggleable]="true" header="Filter results by:">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-5">
+      <label class="label" style="padding:0px 10px;">Report Type:</label>
+      <p-selectButton [options]="reportType" pTooltip="Show the hours for this type of non-billable work"
+        tooltipPosition="bottom" [(ngModel)]="selectedReportType"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-4">
+      <label class="label" style="padding:0px 10px;">Date From :</label>
       <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date" tooltipPosition="bottom"
         showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy"
         appendTo="body"></p-calendar>
-      to
+      <label class="label" style="padding:0px 10px;">to</label>
       <p-calendar [(ngModel)]="endDate" [readonlyInput]="true" pTooltip="Enter the end date in the same year as the start date"
         tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
         dateFormat="mm-dd-yy" appendTo="body"></p-calendar>
     </div>
-    <div class="ui-g-2">
+    <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
       <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom"
-        binary="true"></p-checkbox> Show Totals
+        binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show Totals</label>
     </div>
-    <div class="ui-g-4">
+  </div>
+  <p-footer>
+    <div style="text-align: right">
       <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
         label="Generate Report" (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
     </div>
-  </div>
-</div>
-<div class="ui-g-12" *ngIf="showReport">
+  </p-footer>
+</p-panel>
+<div class="ui-g" *ngIf="showReport">
   The data shown below is dummy data
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
