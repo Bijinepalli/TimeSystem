@@ -151,7 +151,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveClient()" [disabled]="hasFormErrors()"></button>
+            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveClient()" [disabled]="hasFormErrors()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelClient()"></button>
           </div>
