@@ -32,14 +32,14 @@
   <div class="ui-g-12">
     Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}
   </div>
-  <div class="ui-g-12 ui-md-4">
+  <!-- <div class="ui-g-12 ui-md-4">
     <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-info"
       label="Change Report" (click)="changeCodes()"></button>
   </div>
   <div class="ui-g-12 ui-md-4">
     <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
       label="Start Over" (click)="startOver()"></button>
-  </div>
+  </div> -->
 </div>
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
@@ -65,7 +65,8 @@
     </p-footer>
   </p-panel>
 </div>
-<div class="ui-g" style="padding-top: 5px" *ngIf="showBillingCodeList">
+<div style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showBillingCodeList">
+<div class="ui-g">
   <div class="ui-g-12 ui-md-5">
     Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus" pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both." tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
   </div>
@@ -73,19 +74,19 @@
     Break Out By: <p-selectButton [options]="breakOut" pTooltip="You can have the report break by billing code then employee or by employee then billing code." tooltipPosition="bottom" [(ngModel)]="selectedbreakOut"></p-selectButton>
   </div>
 </div>
-<div class="ui-g" *ngIf="showBillingCodeList">
-  <div class="ui-g-12 ui-md-5">
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-4">
     Date Range From:
     <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
-      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"></p-calendar>
+      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
     <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
-      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"></p-calendar>
+      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
   </div>
-  <div class="ui-g-12 ui-md-2">
+  <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
     <p-checkbox binary="true" label="Show Period End Detail" pTooltip="When checked, hours are broken out by period end date" tooltipPosition="bottom" [(ngModel)]="showPeriodEndDetail" binary="true"></p-checkbox>
   </div>
-  <div class="ui-g-12 ui-md-1">
+  <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
     <p-checkbox binary="true" label="Show Totals" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom" [(ngModel)]="showTotals" binary="true"></p-checkbox>
   </div>
   <div class="ui-g-12 ui-md-2">
@@ -93,8 +94,9 @@
       [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
   </div>
   <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)=startOver()></button>
   </div>
+</div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
@@ -105,6 +107,10 @@
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
+            <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-info"
+      label="Change Report" (click)="changeCodes()"></button>&nbsp;
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+      label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>

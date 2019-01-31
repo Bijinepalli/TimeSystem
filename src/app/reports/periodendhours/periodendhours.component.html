@@ -1,8 +1,8 @@
 <div class="ui-g ui-g-nopad mainHeader">
-    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;color:red">
-        Period End Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-           (click)="showHelp('PeriodEndHours.htm')"></i>
-       </div>
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;color:red">
+    Period End Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('PeriodEndHours.htm')"></i>
+  </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
@@ -13,26 +13,32 @@
 </div>
 <br>
 <div class="ui-g">
-    <!-- <div class="ui-g-12 ui-md-8"></div> -->
-    <div class="ui-g-12 ui-md-12">
-        <p-fieldset legend="Assumptions" [toggleable]="true" collapsed="true">
-          <div>
-            <b>Report Assumptions for the Pay Period:</b>
-            <ul>
-              <li>An employee's <i>active</i> status did not change. </li>
-              <li>An employee's <i>salaried/hourly</i> status did not change. </li>
-              <li>An employee's <i>IPay eligibility</i> status did not change. </li>
-              <li>An employee's <i>hours per day</i> did not change. </li>
-            </ul>
-          </div>
-      </p-fieldset>
+  <!-- <div class="ui-g-12 ui-md-8"></div> -->
+  <div class="ui-g-12 ui-md-12">
+    <p-fieldset legend="Assumptions" [toggleable]="true" collapsed="true">
+      <div>
+        <b>Report Assumptions for the Pay Period:</b>
+        <ul>
+          <li>An employee's <i>active</i> status did not change. </li>
+          <li>An employee's <i>salaried/hourly</i> status did not change. </li>
+          <li>An employee's <i>IPay eligibility</i> status did not change. </li>
+          <li>An employee's <i>hours per day</i> did not change. </li>
+        </ul>
       </div>
+    </p-fieldset>
   </div>
-<div class="ui-g-12">
-  Select a Pay Period :<p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate" pTooltip="Select the pay period end date to create the report"
-    (onChange)="onDateChange($event)"></p-dropdown>
 </div>
-<div class="ui-g-12" *ngIf="showReport">
+<p-panel [toggleable]="true" header="Filter results by:">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-4">
+      <label class="label" style="padding:0px 10px;">Select a Pay Period :</label>
+      <p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate" pTooltip="Select the pay period end date to create the report"
+        (onChange)="onDateChange($event)"></p-dropdown>
+    </div>
+  </div>
+</p-panel>
+<div class="ui-g">&nbsp;</div>
+<div class="ui-g" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
@@ -68,8 +74,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-    </p-scrollPanel>
-  </p-sidebar>
+  </p-scrollPanel>
+</p-sidebar>

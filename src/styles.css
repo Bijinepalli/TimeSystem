@@ -76,7 +76,7 @@ body .ui-slidemenu {
 
 .recordsFound
 {
-  color:black;
+  color:white;
   text-align: left;
   vertical-align: middle;
   font-weight: normal;
@@ -86,7 +86,7 @@ body .ui-slidemenu {
 
 .recordsBar
 {
-  background-color: blanchedalmond;
+  background-color:#333333;
   padding:2px;
 }
 
@@ -184,3 +184,7 @@ body .ui-panel .ui-panel-content {
     text-align: right;
     color: #329AFF;
 }
+/* body .ui-table .ui-table-caption, body .ui-table .ui-table-summary {
+  background-color: black;
+  border: 1px solid black;
+} */

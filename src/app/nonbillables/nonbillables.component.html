@@ -19,14 +19,16 @@
       tooltipPosition="bottom" class="ui-button-info" label="Add New Non-Billable Item" *ngIf="!_HasEdit" (click)=addNonBillable()></button>
   </div>
 </div>
+<p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g">
   <div class="ui-g-12 ui-md-12" style="text-align: left">
-    Select:
+    <label class="label" style="padding:0px 10px;">Select:</label>
     <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show non-billable items that have this status"
       tooltipPosition="bottom"></p-selectButton>
   </div>
 </div>
-
+</p-panel>
+<div class="ui-g">&nbsp;</div>
 <div class="ui-g">
   <p-table #dt [columns]="cols" [value]="_nonBillable" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
     <ng-template pTemplate="caption">
@@ -118,7 +120,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveNonBillable()" [disabled]="hasFormErrors()"
+            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveNonBillable()" [disabled]="hasFormErrors()"
               pTooltip="Save the data for the non-billable item" tooltipPosition="bottom"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelNonBillable()"></button>

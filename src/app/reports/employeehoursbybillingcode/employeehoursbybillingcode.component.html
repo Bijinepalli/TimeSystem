@@ -22,7 +22,7 @@
         <p-selectButton [options]="billingCycle" pTooltip="Show clients with this billing cycle on the report"
           tooltipPosition="bottom" [(ngModel)]="selectedbillingCycle"></p-selectButton>
       </div>
-      <div class="ui-g-4">
+      <div class="ui-g-3">
         <label class="label" style="padding:0px 10px;">Date From:</label>
         <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
           tooltipPosition="bottom" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true"
@@ -63,10 +63,10 @@
   <div class="ui-g-12">
     Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}
   </div>
-  <div class="ui-g-12 ui-md-4">
+  <!-- <div class="ui-g-12 ui-md-4">
     <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
       label="Start Over" (click)="startOver()"></button>
-  </div>
+  </div> -->
 </div>
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
@@ -97,7 +97,7 @@
       [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
   </div>
   <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
+    <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)=startOver()></button>
   </div>
 </div>
 <div class="ui-g-12 ui-md-12" *ngIf="showReport">
@@ -112,6 +112,8 @@
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+            label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
