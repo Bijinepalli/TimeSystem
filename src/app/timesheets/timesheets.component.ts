@@ -25,8 +25,8 @@ export class TimesheetsComponent implements OnInit {
 
   timesheetDialog = false;
 
-  selectTimePeriod: number;
-  selectTimePeriodDate: string;
+  selectTimePeriod: TimeSheetBinding = null;
+  // selectTimePeriodDate: string;
   _timesheetsTimePeriod: TimeSheet[] = [];
   _timesheetApproval: TimeSheetForApproval[] = [];
 
@@ -68,14 +68,17 @@ export class TimesheetsComponent implements OnInit {
 
   getTimeSheetPeriods() {
     this._timePeriods = [];
-    this.selectTimePeriod = 0;
-    this.selectTimePeriodDate = '';
+    this.selectTimePeriod = null;
+    // this.selectTimePeriodDate = '';
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data) => {
         if (data !== undefined && data !== null && data.length > 0) {
           this._timePeriods = data;
-          this.selectTimePeriod = this._timePeriods[0].value;
-          this.selectTimePeriodDate = this._timePeriods[0].code;
+          // Need to be changed according to Time System Original i.e. select the present period
+          this.selectTimePeriod = new TimeSheetBinding();
+          this.selectTimePeriod.label = this._timePeriods[0].label;
+          this.selectTimePeriod.value = this._timePeriods[0].value;
+          this.selectTimePeriod.code = this._timePeriods[0].code;
         }
         this.timesheetDialog = true;
       }
@@ -117,47 +120,52 @@ export class TimesheetsComponent implements OnInit {
   cancelTimesheetDialog() {
     this.timesheetDialog = false;
     this._timePeriods = [];
-    this.selectTimePeriod = 0;
-    this.selectTimePeriodDate = '';
+    this.selectTimePeriod = null;
+    // this.selectTimePeriodDate = '';
   }
 
   createTimesheetDialog() {
-    if (this.selectTimePeriod > 0) {
-      this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.toString()).subscribe(
-        (data) => {
-          this._timesheetsTimePeriod = [];
-          this._timesheetApproval = [];
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._timesheetsTimePeriod = data;
-            this.timesysSvc.getTimeSheetForApprovalCheck(localStorage.getItem('UserId')).subscribe(
-              (data1) => {
-                if (data1 !== undefined && data1 !== null && data1.length > 0) {
-                  this._timesheetApproval = data1.filter(P => P.PeriodEnd === this._timesheetsTimePeriod[0].PeriodEnd && P.Status === 'P');
-                  if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
-                    this.msgSvc.add({
-                      key: 'alert',
-                      sticky: true,
-                      severity: 'error',
-                      summary: '',
-                      detail: 'A timesheet already has been submitted for this period and waiting for approval.',
-                    });
-                  } else {
-                    this.confSvc.confirm({
-                      message: 'A timesheet already has been submitted for this period.' +
-                        'This will be a resubmittal. Do you want to continue?',
-                      accept: () => {
-                        this.resubmittal();
-                      }
-                    });
+    if (this.selectTimePeriod !== undefined && this.selectTimePeriod !== null) {
+      if (+this.selectTimePeriod.value > 0) {
+        this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.value.toString()).subscribe(
+          (data) => {
+            this._timesheetsTimePeriod = [];
+            this._timesheetApproval = [];
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._timesheetsTimePeriod = data;
+              this.timesysSvc.getTimeSheetForApprovalCheck(localStorage.getItem('UserId')).subscribe(
+                (data1) => {
+                  if (data1 !== undefined && data1 !== null && data1.length > 0) {
+                    this._timesheetApproval = data1.filter(P =>
+                      P.PeriodEnd === this._timesheetsTimePeriod[0].PeriodEnd
+                      && P.Status === 'P');
+                    if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'error',
+                        summary: '',
+                        detail: 'A timesheet already has been submitted for this period and waiting for approval.',
+                      });
+                    } else {
+                      this.confSvc.confirm({
+                        message: 'A timesheet already has been submitted for this period.' +
+                          'This will be a resubmittal. Do you want to continue?',
+                        accept: () => {
+                          this.resubmittal();
+                        }
+                      });
+                    }
                   }
                 }
-              }
-            );
+              );
+            }
           }
-        }
-      );
-    } else {
-      this.navigateToTimesheet(this.selectTimePeriod, this.selectTimePeriodDate);
+        );
+
+      } else {
+        this.navigateToTimesheet(this.selectTimePeriod.value, this.selectTimePeriod.code);
+      }
     }
   }
   resubmittal() {
@@ -169,7 +177,7 @@ export class TimesheetsComponent implements OnInit {
           } else {
             let _selectedTimesheet: TimeSheet = {};
             _selectedTimesheet = new TimeSheet();
-            _selectedTimesheet.Id = this.selectTimePeriod;
+            _selectedTimesheet.Id = this.selectTimePeriod.value;
             _selectedTimesheet.TimeStamp = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
             this.timesysSvc.timesheetCopyInsert(_selectedTimesheet).subscribe(
               (data2) => {
