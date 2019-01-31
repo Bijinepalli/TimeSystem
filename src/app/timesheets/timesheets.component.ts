@@ -73,6 +73,7 @@ export class TimesheetsComponent implements OnInit {
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data) => {
         if (data !== undefined && data !== null && data.length > 0) {
+          console.log(JSON.stringify(data));
           this._timePeriods = data;
           // Need to be changed according to Time System Original i.e. select the present period
           this.selectTimePeriod = new TimeSheetBinding();
