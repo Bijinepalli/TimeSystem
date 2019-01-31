@@ -94,7 +94,7 @@
       [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
   </div>
   <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)=startOver()></button>
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)=startOver()></button>
   </div>
 </div>
 </div>
@@ -109,7 +109,7 @@
             style="width:auto"> &nbsp;
             <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-info"
       label="Change Report" (click)="changeCodes()"></button>&nbsp;
-      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
       label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>

@@ -21,8 +21,9 @@
     </div>
   </div>
 </p-panel>
-<div class="ui-g-12" *ngIf="showReport">
-  <p-scrollPanel [style]="{width: '100%', height: '550px'}">
+<div class="ui-g">&nbsp;</div>
+<div class="ui-g" *ngIf="showReport">
+  <p-scrollPanel [style]="{width: '100%', height: '570px'}">
     <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees" dataKey="ID">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
@@ -62,20 +63,18 @@
       </ng-template>
     </p-table>
   </p-scrollPanel>
-  <p-footer>
-    <div class="ui-g-12">
-      <div class="ui-g-12 ui-md-2">
-        <button pButton label="Email Employees" (click)="emailEmployee()"></button>
-      </div>
-      <div class="ui-g-12 ui-md-2">
-        <p-checkbox [(ngModel)]="byCob" binary="true"></p-checkbox> By COB
-      </div>
-      <div class="ui-g-12 ui-md-3">
-        <p-checkbox [(ngModel)]="ccFinance" binary="true"></p-checkbox> CC Finance on the Email
-      </div>
-    </div>
-  </p-footer>
 </div>
+<div class="ui-g-12" style="border:solid 1px #d3d3d3">
+    <div class="ui-g-12 ui-md-2">
+      <button pButton label="Email Employees" (click)="emailEmployee()"></button>
+    </div>
+    <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
+      <p-checkbox [(ngModel)]="byCob" binary="true"></p-checkbox> By COB
+    </div>
+    <div class="ui-g-12 ui-md-3" style="padding-top: 13px">
+      <p-checkbox [(ngModel)]="ccFinance" binary="true"></p-checkbox> CC Finance on the Email
+    </div>
+  </div>
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>

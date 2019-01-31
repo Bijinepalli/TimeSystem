@@ -44,7 +44,7 @@
   </p-footer>
 </p-panel>
 <div class="ui-g-12" *ngIf="showReport">
-  <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Start Over" (click)="startOver()"></button>
+  <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
