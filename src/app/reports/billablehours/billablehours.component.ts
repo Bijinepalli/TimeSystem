@@ -134,9 +134,9 @@ export class BillablehoursComponent implements OnInit {
         (data) => {
           const reportData = data;
           for (let i = 0; i < reportData.length; i++) {
-            if (reportData[i].CalendarDate) {
-              reportData[i].CalendarDate = this.datePipe.transform(reportData[i].CalendarDate.toString(), 'MM-dd-yyyy');
-            }
+            // if (reportData[i].CalendarDate) {
+            //   reportData[i].CalendarDate = this.datePipe.transform(reportData[i].CalendarDate.toString(), 'MM-dd-yyyy');
+            // }
             this._totalhours += +reportData[i].Hours;
           }
           this._reports = reportData;

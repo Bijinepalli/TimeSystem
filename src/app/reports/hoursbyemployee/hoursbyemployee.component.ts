@@ -36,6 +36,7 @@ export class HoursbyemployeeComponent implements OnInit {
   changeCodeList = false;
   showReport = false;
   _startDate = '';
+  _startDateSelect = '';
   _endDate = '';
   _billingCodesSpecial: BillingCodesSpecial;
   _reports: any[] = [];
@@ -83,7 +84,9 @@ export class HoursbyemployeeComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    console.log(this._startDate);
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    console.log(this._startDate);
 
   }
   showBillingCodes() {
@@ -161,6 +164,15 @@ export class HoursbyemployeeComponent implements OnInit {
   //   this.generateReport();
   // }
   generateReport() {
+    let dateValid: any;
+    console.log(this._startDate + '-tehius');
+    const dateCheck = new Date(this._startDateSelect);
+    console.log(dateCheck);
+    if (dateCheck.toString() === 'Invalid Date') {
+      dateValid = this._startDate;
+    } else {
+      dateValid = dateCheck;
+    }
     this.showSpinner = true;
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
@@ -173,8 +185,8 @@ export class HoursbyemployeeComponent implements OnInit {
       let _end = '';
 
       if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+        _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
+        this._startDate = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
