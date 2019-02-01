@@ -181,6 +181,8 @@ export class BillingCodes {
     Project?: string;
     NonBill?: string;
     CalendarDate?: string;
+    color?: string;
+    weight?: string;
 }
 export class BillingCodesSpecial {
     value?: string;
