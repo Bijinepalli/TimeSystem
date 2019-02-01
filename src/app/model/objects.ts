@@ -393,4 +393,5 @@ export class Departments {
     Description?: string;
     Status?: number;
     EmployeesCount?: number;
+    EmployeeId?: number;
 }

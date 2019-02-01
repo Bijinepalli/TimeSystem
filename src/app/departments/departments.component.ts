@@ -249,7 +249,7 @@ export class DepartmentsComponent implements OnInit {
               key: 'alert',
               sticky: true,
               severity: 'error',
-              summary: 'Error!',
+              summary: 'Department already Exists.',
               detail: outputData.ErrorMessage
             });
           } else {
