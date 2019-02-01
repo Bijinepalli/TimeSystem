@@ -1332,9 +1332,9 @@ export class EmployeesComponent implements OnInit {
         (data: Invoice[] = []) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._rates = data;
-            for (let i = 0; i < this._rates.length; i++) {
-              this._rates[i].EffectiveDate = this.datepipe.transform(this._rates[i].EffectiveDate, 'MM-dd-yyyy');
-            }
+            // for (let i = 0; i < this._rates.length; i++) {
+            //   this._rates[i].EffectiveDate = this._rates[i].EffectiveDate;
+            // }
             this._recRateData = this._rates.length;
           }
         }
