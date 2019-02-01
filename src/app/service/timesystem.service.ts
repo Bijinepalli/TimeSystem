@@ -605,6 +605,13 @@ export class TimesystemService {
       .set('employeeno', employeeNumber);
     return this.http.get<MonthlyHours[]>(this.accessSystemURL + 'GetAccessSystemData', { params });
   }
+  getPeriodEndDatesforDropdown(pastPeriods: string, futurePeriods: string, dateFormat: string) {
+    const params = new HttpParams()
+    .set('pastPeriods', pastPeriods)
+    .set('futurePeriods', futurePeriods)
+    .set('dateFormat', dateFormat);
+  return this.http.get<TimePeriods[]>(this.url + 'GetPeriodEndforDropdown', { params });
+  }
   getOutstandingTimesheetReport(Dates: string) {
     const params = new HttpParams()
       .set('strDates', Dates);
@@ -637,5 +644,14 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('DepartmentID', DepartmentID);
     return this.http.get<Employee[]>(this.localurl + 'DepartmentEmployees_Get', { params });
+  }
+  departmentEmployee_GetByEmployeeId(EmployeeID: string) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID);
+    return this.http.get<Departments[]>(this.localurl + 'DepartmentEmployees_GetByEmployeeId', { params });
+  }
+  employeeDepartment_Insert(_inputData: Departments) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'EmployeeDepartment_Insert', body, httpOptions);
   }
 }

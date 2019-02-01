@@ -71,11 +71,11 @@ export class HoursbyemployeeComponent implements OnInit {
     ];
     this.selectedbreakOut = 0;
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left' },
-      { field: 'LastName', header: 'Last Name', align: 'left' },
-      { field: 'FirstName', header: 'First Name', align: 'left' },
-      { field: 'Hours', header: 'Hours', align: 'right' },
-      { field: 'PeriodEnd', header: 'Period Ending', align: 'left' },
+      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '100px' },
     ];
   }
 
@@ -267,21 +267,21 @@ export class HoursbyemployeeComponent implements OnInit {
   buildCols() {
     if (this.selectedbreakOut.toString() === '0') {
       this.cols = [
-        { field: 'Name', header: 'Name', align: 'left' },
-        { field: 'LastName', header: 'Last Name', align: 'left' },
-        { field: 'FirstName', header: 'First Name', align: 'left' },
-        { field: 'Hours', header: 'Hours', align: 'right' },
+        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
       ];
     } else {
       this.cols = [
-        { field: 'LastName', header: 'Last Name', align: 'left' },
-        { field: 'FirstName', header: 'First Name', align: 'left' },
-        { field: 'Name', header: 'Name', align: 'left' },
-        { field: 'Hours', header: 'Hours', align: 'right' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
       ];
     }
     if (this.showPeriodEndDetail) {
-      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'left' });
+      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '100px' });
     }
   }
 

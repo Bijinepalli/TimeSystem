@@ -52,8 +52,8 @@ export class CustomersComponent implements OnInit {
   ngOnInit() {
     this.CheckSecurity();
     this.cols = [
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'CustomerNumber', header: 'Customer Number' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
+      { field: 'CustomerNumber', header: 'Customer Number', align: 'left', width: '150px' },
     ];
     this.selectedType = 'Active';
     this.getCustomers();

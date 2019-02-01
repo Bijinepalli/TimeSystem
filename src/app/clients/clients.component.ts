@@ -82,10 +82,10 @@ export class ClientsComponent implements OnInit {
     // Drop down loading Section - END
 
     this.cols = [
-      { field: 'ClientName', header: 'Client Name' },
-      { field: 'Key', header: 'Code' },
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'PONumber', header: 'PO#' },
+      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '350px' },
+      { field: 'PONumber', header: 'PO#', align: 'left', width: '150px' },
     ];
   }
 

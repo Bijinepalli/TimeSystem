@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { NonBillables, BillingCodesSpecial, TimeSheet, Employee } from 'src/app/model/objects';
+import { NonBillables, BillingCodesSpecial, TimeSheet, Employee, TimePeriods } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from '../../service/common.service';
 import { TimesheetsComponent } from 'src/app/timesheets/timesheets.component';
 import { parse } from 'querystring';
+import { DateFormats } from 'src/app/model/constants';
 
 @Component({
   selector: 'app-pendingtimesheets',
@@ -37,8 +38,6 @@ export class PendingtimesheetsComponent implements OnInit {
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private commonSvc: CommonService, private datepipe: DatePipe) {
-    this.populateDateDrop();
-    this.getDatefortheperiod();
   }
 
   ngOnInit() {
@@ -48,6 +47,7 @@ export class PendingtimesheetsComponent implements OnInit {
       { field: 'PeriodEnd', header: 'Period Ending' },
       { field: 'Status', header: 'Status' },
     ];
+    this.populateDateDrop();
   }
 
   //#region 'Populate Dropdown'
@@ -55,54 +55,50 @@ export class PendingtimesheetsComponent implements OnInit {
     this.dates = [];
     const _pastPeriods = this.commonSvc.getAppSettingsValue('OutstandingTimePeriods');
     const _futurePeriods = this.commonSvc.getAppSettingsValue('FutureTimePeriods');
-    const currentDate = new Date();
-    const _assignperiodend = this.getNextPeriodDate(currentDate);
-    this.selectedDate = this.sortDate(_assignperiodend);
-    let _periodend = _assignperiodend;
-    this.getPriorPeriodDates(_periodend, currentDate, _pastPeriods);
-    _periodend = _assignperiodend;
-    for (let i = 0; i < _futurePeriods; i++) {
-      _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), (_periodend.getDate() + 1));
-      _periodend = this.getNextPeriodDate(_periodend);
-      const dateForDrop = this.sortDate(_periodend);
-      this.dates.push({ label: dateForDrop, value: dateForDrop });
-    }
-    this.dates.sort((val1, val2) => <any>new Date(val1.label) - <any>new Date(val2.label));
+    const _dateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.timesysSvc.getPeriodEndDatesforDropdown(_pastPeriods, _futurePeriods, _dateFormat)
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+              this.dates.push({ label: data[i].FuturePeriodEnd, value: data[i].FuturePeriodEnd });
+            }
+          }
+          this.selectedDate = data[0].PresentPeriodEnd.toString();
+          this.getDatefortheperiod();
+        });
   }
 
-  getNextPeriodDate(_periodend: Date) {
-    const _semiMonthlyStart = new Date(this.commonSvc.getAppSettingsValue('SemiMonthlyStartDate'));
-    if (this.commonSvc.getAppSettingsValue('SemiMonthly')) {
-      if (_periodend >= _semiMonthlyStart) {
-        // tslint:disable-next-line:max-line-length
-        _periodend = _periodend.getDate() > 15 ? new Date(_periodend.getFullYear(), (_periodend.getMonth() + 1), 0) : new Date(_periodend.getFullYear(), _periodend.getMonth(), 15);
-      } else {
-        _periodend = this.getDaysTillFriday(_periodend);
-        if (_periodend >= _semiMonthlyStart) {
-          _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), (_periodend.getDate() - 1));
+  //#endregion
+
+  onDateChange(e) {
+    this.previousDates = '';
+    this.getDatefortheperiod();
+    // this.getPendngTimesheets();
+  }
+
+  getDatefortheperiod() {
+    this._reports = null;
+    console.log(this.selectedDate);
+    const _periodEndDate = new Date(this.selectedDate);
+    this.getPendingTimesheets(_periodEndDate);
+    this.timesysSvc.getOutstandingTimesheetReport(this.previousDates.toString().slice(1))
+      .subscribe(
+        (data) => {
+          if (data !== null) {
+            this.showReport = true;
+            this._reports = data;
+            this._recData = this._reports.length;
+          }
         }
-      }
-    } else {
-      _periodend = this.getDaysTillFriday(_periodend);
-    }
-    return _periodend;
+      );
   }
 
-  getPriorPeriodEndDate(_periodend: Date, sevenDay: boolean) {
-    const _semiMonthlyStart = new Date(this.commonSvc.getAppSettingsValue('SemiMonthlyStartDate'));
-    if (sevenDay) {
-      if (_periodend === new Date(_semiMonthlyStart.getFullYear(), _semiMonthlyStart.getMonth(), (_semiMonthlyStart.getDate() - 1))) {
-        _periodend = this.getPriorFridayDate(_periodend);
-      } else {
-        _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), (_periodend.getDate() - 7));
-      }
-    }
-    if (_periodend.getDate() <= 15) {
-      _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), _periodend.getDate() - 15);
-    } else {
-      _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), 15);
-    }
-    return _periodend;
+  getPendingTimesheets(_periodEndDate: Date) {
+    let pastPeriods = this.commonSvc.getAppSettingsValue('UnsubmittedTimePeriods');
+    const currentDate = new Date();
+    this.getPriorPeriodDates(_periodEndDate, currentDate, ++pastPeriods, 'dates');
   }
 
   getDaysTillFriday(date: Date) {
@@ -215,35 +211,22 @@ export class PendingtimesheetsComponent implements OnInit {
       }
     }
   }
-  //#endregion
 
-  onDateChange(e) {
-    this.previousDates = '';
-    this.getDatefortheperiod();
-    // this.getPendngTimesheets();
-  }
-
-  getDatefortheperiod() {
-    this._reports = null;
-    const _periodEndDate = new Date(this.selectedDate);
-    this.getPendingTimesheets(_periodEndDate);
-    this.timesysSvc.getOutstandingTimesheetReport(this.previousDates.toString().slice(1))
-      .subscribe(
-        (data) => {
-          if (data !== null) {
-            this.showReport = true;
-            this._reports = data;
-            this._recData = this._reports.length;
-            console.log(this._reports);
-          }
-        }
-      );
-  }
-
-  getPendingTimesheets(_periodEndDate: Date) {
-    let pastPeriods = this.commonSvc.getAppSettingsValue('UnsubmittedTimePeriods');
-    const currentDate = new Date();
-    this.getPriorPeriodDates(_periodEndDate, currentDate, ++pastPeriods, 'dates');
+  getPriorPeriodEndDate(_periodend: Date, sevenDay: boolean) {
+    const _semiMonthlyStart = new Date(this.commonSvc.getAppSettingsValue('SemiMonthlyStartDate'));
+    if (sevenDay) {
+      if (_periodend === new Date(_semiMonthlyStart.getFullYear(), _semiMonthlyStart.getMonth(), (_semiMonthlyStart.getDate() - 1))) {
+        _periodend = this.getPriorFridayDate(_periodend);
+      } else {
+        _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), (_periodend.getDate() - 7));
+      }
+    }
+    if (_periodend.getDate() <= 15) {
+      _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), _periodend.getDate() - 15);
+    } else {
+      _periodend = new Date(_periodend.getFullYear(), _periodend.getMonth(), 15);
+    }
+    return _periodend;
   }
 
   emailEmployee() {

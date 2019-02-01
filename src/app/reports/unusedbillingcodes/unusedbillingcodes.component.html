@@ -52,7 +52,7 @@
           <th style="width: 3em">
             <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
           </th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
           </th>
         </tr>
@@ -62,7 +62,7 @@
           <td>
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
           </td>
-          <td *ngFor="let col of columns">
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
             {{rowData[col.field]}}
           </td>
         </tr>
