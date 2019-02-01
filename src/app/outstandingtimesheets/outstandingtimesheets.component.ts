@@ -28,6 +28,7 @@ export class OutstandingtimesheetsComponent implements OnInit {
     this.timesysSvc.getOutStandingTimesheets(localStorage.getItem('UserId'), numbers).subscribe(
       (data) => {
         this._outStandings = data;
+        console.log(JSON.stringify(data));
         this.cols = [
           { field: 'PeriodEnd', header: 'Period Ending' },
           { field: 'ApprovalStatus', header: 'Status' },

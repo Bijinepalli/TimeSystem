@@ -19,14 +19,16 @@
       tooltipPosition="bottom" class="ui-button-info" label="Add New Project" *ngIf="!_HasEdit" (click)=addProject()></button>
   </div>
 </div>
+<p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g">
   <div class="ui-g-12 ui-md-12" style="text-align: left">
-    Select:
+    <label class="label" style="padding:0px 10px;">Select:</label>
     <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show projects that have this status"
       tooltipPosition="bottom"></p-selectButton>
   </div>
 </div>
-
+</p-panel>
+<div class="ui-g">&nbsp;</div>
 <div class="ui-g">
   <p-table #dt [columns]="cols" [value]="_projects" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
     <ng-template pTemplate="caption">
@@ -125,7 +127,7 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveProject()" [disabled]="hasFormErrors()"
+            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveProject()" [disabled]="hasFormErrors()"
               pTooltip="Save the data for this project" tooltipPosition="bottom"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelProject()"></button>

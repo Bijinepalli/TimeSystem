@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval } from '../model/objects';
+import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -22,6 +22,7 @@ export class TimesheetsComponent implements OnInit {
   _timePeriods: TimeSheetBinding[];
 
   selectedValues: Boolean;
+  emptyTimeSheet: Boolean;
 
   timesheetDialog = false;
 
@@ -72,15 +73,25 @@ export class TimesheetsComponent implements OnInit {
     // this.selectTimePeriodDate = '';
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data) => {
-        if (data !== undefined && data !== null && data.length > 0) {
-          this._timePeriods = data;
-          // Need to be changed according to Time System Original i.e. select the present period
-          this.selectTimePeriod = new TimeSheetBinding();
-          this.selectTimePeriod.label = this._timePeriods[0].label;
-          this.selectTimePeriod.value = this._timePeriods[0].value;
-          this.selectTimePeriod.code = this._timePeriods[0].code;
-        }
-        this.timesheetDialog = true;
+        console.log(data);
+        this.timesysSvc.getDatebyPeriod().subscribe(
+          (data1) => {
+            console.log(data1);
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._timePeriods = data;
+              if (data1 !== undefined && data1 !== null && data1.length > 0) {
+                const selectedDateVal = data.find(m => this.datePipe.transform(m.code, 'MM-dd-yyyy') === data1[0].PeriodEndDate);
+                if (selectedDateVal !== undefined && selectedDateVal !== null) {
+                  this.selectTimePeriod = selectedDateVal;
+                } else {
+                  this.selectTimePeriod = data[0];
+                }
+              } else {
+                this.selectTimePeriod = data[0];
+              }
+            }
+            this.timesheetDialog = true;
+          });
       }
     );
   }
@@ -125,6 +136,7 @@ export class TimesheetsComponent implements OnInit {
   }
 
   createTimesheetDialog() {
+    console.log(this.selectTimePeriod);
     if (this.selectTimePeriod !== undefined && this.selectTimePeriod !== null) {
       if (+this.selectTimePeriod.value > 0) {
         this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.value.toString()).subscribe(
@@ -164,6 +176,8 @@ export class TimesheetsComponent implements OnInit {
         );
 
       } else {
+        console.log(JSON.stringify(this.selectTimePeriod.value));
+        console.log(JSON.stringify(this.selectTimePeriod.code));
         this.navigateToTimesheet(this.selectTimePeriod.value, this.selectTimePeriod.code);
       }
     }
@@ -189,7 +203,6 @@ export class TimesheetsComponent implements OnInit {
         });
     }
   }
-
   navigateToTimesheet(TimesheetId, TimesheetDate) {
     this.timesheetDialog = false;
     let routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;

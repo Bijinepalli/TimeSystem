@@ -25,10 +25,16 @@ export class TimesystemService {
 
   // 172.16.16.217
   private accessSystemURL = 'http://localhost/AccessSystem/';
+<<<<<<< HEAD
   private ipaddress = 'http://localhost/';
   private ipaddressLocal = 'http://localhost/';
   // private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
   private helpipaddress = 'http://localhost/ECTS/TimeSystem/Help/';
+=======
+  private ipaddress = 'http://172.16.33.1/';
+  private ipaddressLocal = 'http://172.16.33.1/';
+  private helpipaddress = 'http://172.16.32.67/TimeSystemHelpFiles/Help/';
+>>>>>>> 1e4b3664ffe0d0a938a6cfb0fb168a1a948c149c
   private url = this.ipaddress + 'TimeSystemService/';
   private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }

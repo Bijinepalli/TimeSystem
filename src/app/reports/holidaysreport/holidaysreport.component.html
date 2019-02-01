@@ -12,48 +12,49 @@
   </div>
 </div>
 <br>
+<p-panel [toggleable]="true" header="Filter results by:">
 <div class="ui-g">
-  <div class="ui-g-12">
-    <div class="ui-g-12 ui-md-1">Calendar Year :</div>
-    <div class="ui-g-12 ui-md-2">
-      <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="bottom" [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
-    </div>
-  </div>
-  <div class="ui-g-12">
-    <p-scrollPanel [style]="{width: '100%', height: '700px'}">
-      <p-table #dt [columns]="cols" [value]="_holidayList" [(selection)]="_selectedHolidays" [responsive]="false"
-        dataKey="ID">
-        <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
-            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                style="width:auto"> &nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-              {{col.header}}
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns">
-              {{rowData[col.field]}}
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-scrollPanel>
+  <div class="ui-g-12 ui-md-1 label">Calendar Year :</div>
+  <div class="ui-g-12 ui-md-2">
+    <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="bottom"
+      [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
   </div>
 </div>
+</p-panel>
+<div class="ui-g">&nbsp;</div>
+<div class="ui-g">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <p-table #dt [columns]="cols" [value]="_holidayList" [(selection)]="_selectedHolidays" [responsive]="false" dataKey="ID">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto"> &nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns">
+            {{rowData[col.field]}}
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </p-scrollPanel>
+</div>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-    </p-scrollPanel>
-  </p-sidebar>
+  </p-scrollPanel>
+</p-sidebar>

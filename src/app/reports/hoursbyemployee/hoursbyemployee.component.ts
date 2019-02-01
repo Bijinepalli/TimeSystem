@@ -70,11 +70,11 @@ export class HoursbyemployeeComponent implements OnInit {
     ];
     this.selectedbreakOut = 0;
     this.cols = [
-      { field: 'Name', header: 'Name' },
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'Hours', header: 'Hours' },
-      { field: 'PeriodEnd', header: 'Period Ending' },
+      { field: 'Name', header: 'Name', align: 'left' },
+      { field: 'LastName', header: 'Last Name', align: 'left' },
+      { field: 'FirstName', header: 'First Name', align: 'left' },
+      { field: 'Hours', header: 'Hours', align: 'right' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'left' },
     ];
   }
 
@@ -255,21 +255,21 @@ export class HoursbyemployeeComponent implements OnInit {
   buildCols() {
     if (this.selectedbreakOut.toString() === '0') {
       this.cols = [
-        { field: 'Name', header: 'Name' },
-        { field: 'LastName', header: 'Last Name' },
-        { field: 'FirstName', header: 'First Name' },
-        { field: 'Hours', header: 'Hours' },
+        { field: 'Name', header: 'Name', align: 'left' },
+        { field: 'LastName', header: 'Last Name', align: 'left' },
+        { field: 'FirstName', header: 'First Name', align: 'left' },
+        { field: 'Hours', header: 'Hours', align: 'right' },
       ];
     } else {
       this.cols = [
-        { field: 'LastName', header: 'Last Name' },
-        { field: 'FirstName', header: 'First Name' },
-        { field: 'Name', header: 'Name' },
-        { field: 'Hours', header: 'Hours' },
+        { field: 'LastName', header: 'Last Name', align: 'left' },
+        { field: 'FirstName', header: 'First Name', align: 'left' },
+        { field: 'Name', header: 'Name', align: 'left' },
+        { field: 'Hours', header: 'Hours', align: 'right' },
       ];
     }
     if (this.showPeriodEndDetail) {
-      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending' });
+      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'left' });
     }
   }
 

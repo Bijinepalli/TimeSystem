@@ -32,6 +32,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   _billingCodesSpecial: BillingCodesSpecial;
   helpText: any;
   visibleHelp = false;
+  showTotals = false;
+  nowrap = 'nowrap';
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -117,17 +119,18 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
         let _start = '';
         let _end = '';
-
         if (this._startDate !== null && this._startDate !== '') {
           _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
           this._startDate = _start;
         }
+        console.log('Pola');
         if (this._endDate !== null && this._endDate !== '') {
           _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
           this._endDate = _end;
         }
         this._billingCodesSpecial.startDate = _start;
         this._billingCodesSpecial.endDate = _end;
+        this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
         console.log(this._billingCodesSpecial);
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
@@ -152,11 +155,12 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
+      this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
       console.log(this._billingCodesSpecial);
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
-          console.log(data);
+          console.log(JSON.stringify(data));
         }
       );
     }
@@ -183,11 +187,11 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'BillingName', header: 'Billing Code' },
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'TANDM', header: 'T & M' },
-      { field: 'Project', header: 'Project' },
-      { field: 'NonBill', header: 'NonBillable' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left' },
+      { field: 'LastName', header: 'Last Name', align: 'left' },
+      { field: 'TANDM', header: 'T & M', align: 'right' },
+      { field: 'Project', header: 'Project', align: 'right' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right' },
     ];
   }
   showHelp(file: string) {
@@ -208,13 +212,14 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.showReport = false;
     this._selectcheckbox = [];
     this.allcheckbox = false;
-    this.selectedbillingCycle = 3;
+    // this.selectedbillingCycle = 3;
     this.showSpinner = false;
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
+    // const today = new Date();
+    // const month = today.getMonth();
+    // const year = today.getFullYear();
+    // this._startDate = new Date(year, month - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    this._endDate = '';
+    // this._endDate = '';
+    this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
   }
 }

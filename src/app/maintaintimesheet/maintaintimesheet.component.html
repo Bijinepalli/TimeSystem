@@ -18,7 +18,7 @@
       <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_EmployeeName}}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
-      <b>Period Ending:</b>&nbsp;&nbsp;&nbsp;{{_periodEndDateString }}
+      <b>Period Ending:</b>&nbsp;&nbsp;&nbsp;{{_periodEndDateDisplay }}
     </div>
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
       <b>Submitted On:</b>&nbsp;&nbsp;&nbsp;
@@ -315,8 +315,8 @@
         <p-footer *ngIf="!_IsTimeSheetSubmitted">
           <div class="ui-g">
             <div class="ui-g-12 ui-md-12" style="text-align: right">
-              <button type="button" pButton label="Save" (click)="Save()"></button>&nbsp;
-              <button type="button" pButton label="Submit" (click)="Submit()"></button>
+              <button type="button" pButton label="Save" class="ui-button-success" (click)="Save()"></button>&nbsp;
+              <button type="button" pButton label="Submit"  class="ui-button-success" (click)="Submit()"></button>
             </div>
           </div>
         </p-footer>
