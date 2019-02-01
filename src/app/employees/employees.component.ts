@@ -438,6 +438,7 @@ export class EmployeesComponent implements OnInit {
     this.timesysSvc.getDepartments('')
       .subscribe(
         (data) => {
+          this._departmentsList = [];
           if (data !== undefined && data !== null && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
               this._departmentsList.push({ label: data[i].Name, value: data[i].Id });
