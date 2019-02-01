@@ -187,11 +187,11 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'BillingName', header: 'Billing Code', align: 'left' },
-      { field: 'LastName', header: 'Last Name', align: 'left' },
-      { field: 'TANDM', header: 'T & M', align: 'right' },
-      { field: 'Project', header: 'Project', align: 'right' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '75px' },
+      { field: 'Project', header: 'Project', align: 'right', width: '100px' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '100px' },
     ];
   }
   showHelp(file: string) {

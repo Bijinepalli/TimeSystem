@@ -120,14 +120,15 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns"  [style.width]='auto'>
+        <th *ngFor="let col of columns" [style.width]="col.width" >
           {{col.header}}
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.white-space]="nowrap" [style.width]='auto' > 
+        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.white-space]="nowrap" [style.width]="col.width" 
+        [style.font-weight]="rowData['weight']" [style.color]="rowData['color']"> 
           <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>

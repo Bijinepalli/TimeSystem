@@ -27,8 +27,7 @@ export class TimesystemService {
   private accessSystemURL = 'http://localhost/AccessSystem/';
   private ipaddress = 'http://localhost/';
   private ipaddressLocal = 'http://localhost/';
-  // private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
-  private helpipaddress = 'http://localhost/ECTS/TimeSystem/Help/';
+  private helpipaddress = 'http://172.16.32.67/TimeSystemHelpFiles/Help/';
   private url = this.ipaddress + 'TimeSystemService/';
   private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
@@ -645,5 +644,14 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('DepartmentID', DepartmentID);
     return this.http.get<Employee[]>(this.localurl + 'DepartmentEmployees_Get', { params });
+  }
+  departmentEmployee_GetByEmployeeId(EmployeeID: string) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID);
+    return this.http.get<Departments[]>(this.localurl + 'DepartmentEmployees_GetByEmployeeId', { params });
+  }
+  employeeDepartment_Insert(_inputData: Departments) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'EmployeeDepartment_Insert', body, httpOptions);
   }
 }
