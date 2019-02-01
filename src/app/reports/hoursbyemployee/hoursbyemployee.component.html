@@ -117,14 +117,14 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" [style.text-align]="col.align">
+        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>

@@ -20,14 +20,15 @@
   </div>
 </div>
 <p-panel [toggleable]="true" header="Filter results by:">
-<div class="ui-g" style="height:50px;">
-  <div class="ui-g-12 ui-md-6 ui-lg-3">
-      <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
+  <div class="ui-g" style="height:50px;">
+    <div class="ui-g-12 ui-md-6 ui-lg-3">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-6 ui-lg-3">
+      <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="getEmployees()"></p-selectButton>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-3">
-    <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="getEmployees()"></p-selectButton>
-  </div>
-</div>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g">
@@ -50,7 +51,7 @@
         <th style="width: 3em" *ngIf="!_HasEdit">Edit</th>
         <th style="width: 7em" *ngIf="!_HasEdit">Terminate</th>
         <th style="width: 7em" *ngIf="!_HasEdit">Reset Password</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em">Clients</th>
@@ -77,7 +78,7 @@
           <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x" pTooltip="Reset employee's password."
             style="cursor:pointer;color:blue" tooltipPosition="bottom" (click)="resetEmployeePassword(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
           <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
             {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
           </div>
@@ -117,7 +118,8 @@
   </p-scrollPanel>
 </p-sidebar>
 
-<p-dialog [(visible)]="employeeDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" [width]="800">
+<p-dialog [(visible)]="employeeDialog" [responsive]="true" blockScroll="true" showEffect="fade" [closable]="false"
+  [modal]="true" class="dialogWidth" [width]="800">
   <p-header>
     {{employeeHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -249,16 +251,19 @@
           pTooltip="Change the status of this employee."></p-checkbox>
       </div>
     </div>
-    <p-footer>
-      <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+
+  </form>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12" align="right">
           <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveEmployee()" [disabled]="hasFormErrorsEmployee()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelEmployee()" class="ui-button-danger"></button>
         </div>
       </div>
-    </p-footer>
-  </form>
+    </div>
+  </p-footer>
 </p-dialog>
 
 <p-dialog [(visible)]="nonBillableDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
@@ -378,8 +383,8 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1000" [closeOnEscape]="false"
-  [closable]="false" blockScroll="true">
+<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100" [closeOnEscape]="false"
+  [closable]="false" blockScroll="true" class="dialogWidth">
   <p-header>
     Change {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -390,12 +395,12 @@
     <div class="ui-g-12" style="text-align:right">
       <button pButton label="Add New Rate" *ngIf="!_HasEdit" (click)="addNewRate()"></button>
     </div>
-    <p-scrollPanel [style]="{width: '100%', height: '550px'}">
+    <p-scrollPanel [style]="{width: '100%', height: '530px'}">
       <p-table #dt [columns]="_ratecols" [value]="_rates" [responsive]="false" dataKey="EmployeeID" [paginator]="true"
-        [rows]="8">
+        [rows]="10">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recRateData}} matching rows</div>
             <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
               <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
@@ -407,7 +412,7 @@
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
               {{col.header}}
             </th>
             <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
@@ -418,7 +423,7 @@
             <td style="text-align: center" *ngIf="!_HasEdit">
               <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate" tooltipPosition="bottom" (click)="editRate(rowData)"></i>
             </td>
-            <td *ngFor="let col of columns">
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
               <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
                 <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
               </div>
@@ -474,23 +479,19 @@
         </div>
       </div>
     </div>
-    <p-footer style="text-align: right">
-      <div class="ui-g" *ngIf="_IsEditRate; else cancelbutton">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
-            &nbsp;
-            <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
-          </div>
-        </div>
+  </form>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12" *ngIf="_IsEditRate; else cancelbutton">
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
       </div>
       <ng-template #cancelbutton>
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12">
             <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
-          </div>
         </div>
       </ng-template>
-    </p-footer>
-  </form>
+    </div>
+  </p-footer>
 </p-dialog>

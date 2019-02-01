@@ -54,13 +54,13 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       { label: 'Non-Billable', value: 2 }
     ];
     this.cols = [
-      { field: 'Name', header: 'Name' },
-      { field: 'Key', header: 'Code' },
-      { field: 'Inactive', header: 'Inactive' },
-      { field: 'InactiveRel', header: 'Currently Associated' },
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'Salaried', header: 'Salaried' },
+      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
+      { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '175px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;

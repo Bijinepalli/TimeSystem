@@ -43,7 +43,7 @@
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
-            <label style="cursor: pointer;" (click)="showEmployees(rowData)" >{{rowData[col.field]}}</label>
+            <label style="cursor: pointer;" (click)="showEmployees(rowData)">{{rowData[col.field]}}</label>
           </div>
           <ng-template #defaultColumn>
             {{rowData[col.field]}}
@@ -80,19 +80,18 @@
           <input type="text" pInputText formControlName="frmDescription" tooltipPosition="bottom">
         </div>
       </div>
-      <p-footer style="text-align: right">
-        <div class="ui-g">
-          <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()" class="ui-button-success"></button>
-              &nbsp;
-              <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
-            </div>
-          </div>
-        </div>
-      </p-footer>
     </form>
   </div>
+  <p-footer>
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()"
+            class="ui-button-success"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
+        </div>
+      </div>
+    </p-footer>
 </p-dialog>
 <p-dialog [(visible)]="deptEmployeesDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
   [closeOnEscape]="false" [closable]="false" blockScroll="true">
@@ -102,8 +101,8 @@
       (click)="showHelp('')"></i>
   </p-header>
   <div class="ui-g">
-    <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name" [paginator]="true" [rows]="10"
-      [first]="_deptEmployeePageNo">
+    <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name" [paginator]="true"
+      [rows]="10" [first]="_deptEmployeePageNo">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recDataEmp}}</div>
@@ -125,13 +124,13 @@
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
           <td *ngFor="let col of columns">
-              {{rowData[col.field]}}
+            {{rowData[col.field]}}
           </td>
         </tr>
       </ng-template>
     </p-table>
   </div>
-  <p-footer style="text-align: right">
+  <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">

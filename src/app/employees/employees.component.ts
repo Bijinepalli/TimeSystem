@@ -215,9 +215,9 @@ export class EmployeesComponent implements OnInit {
 
   Initialisations() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'Salaried', header: 'Salaried' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
     ];
     this._SecurityLevels = [
       { label: 'Admin', value: 'A' },
@@ -280,28 +280,28 @@ export class EmployeesComponent implements OnInit {
 
     if (this.selectedType === 2 && this.selectedSalaryType === 2) {
       this.cols = [
-        { field: 'LastName', header: 'Last Name' },
-        { field: 'FirstName', header: 'First Name' },
-        { field: 'Salaried', header: 'Salaried' },
-        { field: 'Inactive', header: 'Inactive' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto'  },
+        { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px'  },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px'  },
       ];
     } else {
       if (this.selectedType !== 2 && this.selectedSalaryType === 2) {
         this.cols = [
-          { field: 'LastName', header: 'Last Name' },
-          { field: 'FirstName', header: 'First Name' },
-          { field: 'Salaried', header: 'Salaried' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto'  },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto'  },
+          { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px'  },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
         this.cols = [
-          { field: 'LastName', header: 'Last Name' },
-          { field: 'FirstName', header: 'First Name' },
-          { field: 'Inactive', header: 'Inactive' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto'  },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto'  },
+          { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px'  },
         ];
       } else {
         this.cols = [
-          { field: 'LastName', header: 'Last Name' },
-          { field: 'FirstName', header: 'First Name' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto'  },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto'  },
         ];
       }
     }
@@ -1321,11 +1321,11 @@ export class EmployeesComponent implements OnInit {
     this._IsAddRate = false;
     this._employeeId = empId.toString();
     this._ratecols = [
-      { field: 'ClientName', header: 'Client Name' },
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'EffectiveDate', header: 'Effective Date' },
-      { field: 'Rate', header: 'Rate' },
-      { field: 'Inactive', header: 'Inactive' },
+      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'left', width: '100px' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
     ];
     this.timesysSvc.getEmployeeRates(empId)
       .subscribe(

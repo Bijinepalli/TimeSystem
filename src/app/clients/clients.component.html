@@ -20,12 +20,13 @@
   </div>
 </div>
 <p-panel [toggleable]="true" header="Filter results by:">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-12 ui-lg-12">
-    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)" pTooltip="Show clients that have this status"
-      tooltipPosition="bottom"></p-selectButton>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12 ui-lg-12">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)" pTooltip="Show clients that have this status"
+        tooltipPosition="bottom"></p-selectButton>
+    </div>
   </div>
-</div>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g">
@@ -44,7 +45,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
@@ -53,10 +54,10 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this client"
-            tooltipPosition="bottom" (click)="editClient(rowData)"></i>
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this client" tooltipPosition="bottom"
+            (click)="editClient(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
             {{rowData[col.field] === true ? 'Yes' : 'No'}}
           </div>
@@ -147,18 +148,16 @@
         </div>
       </div>
     </div>
-    <p-footer>
-      <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveClient()" [disabled]="hasFormErrors()"></button>
-            &nbsp;
-            <button pButton label="Cancel" (click)="cancelClient()" class="ui-button-danger"></button>
-          </div>
-        </div>
-      </div>
-    </p-footer>
   </form>
+  <p-footer>
+    <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveClient()" [disabled]="hasFormErrors()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelClient()" class="ui-button-danger"></button>
+        </div>
+    </div>
+  </p-footer>
 </p-dialog>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <p-scrollPanel [style]="{width: '100%', height: '800px'}">

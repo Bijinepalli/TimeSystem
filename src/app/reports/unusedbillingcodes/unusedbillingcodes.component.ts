@@ -50,10 +50,10 @@ export class UnusedbillingcodesComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'Key', header: 'Code' },
-      { field: 'CompanyName', header: 'Name' },
-      { field: 'Inactive', header: 'Inactive' },
-      { field: 'CreatedOn', header: 'Created On' },
+      { field: 'Key', header: 'Code', align: 'left', width: 'auto' },
+      { field: 'CompanyName', header: 'Name', align: 'left', width: 'auto' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
     ];
     this.populateDateDrop();
     this.getReports();

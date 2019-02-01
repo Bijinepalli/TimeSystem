@@ -23,10 +23,10 @@ export class HolidaysreportComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'CalendarYear', header: 'Year' },
-      { field: 'CompanyName', header: 'Company Name' },
-      { field: 'HolidayName', header: 'Holiday Name' },
-      { field: 'HolidayDate', header: 'Holiday Date' },
+      { field: 'CalendarYear', header: 'Year', align: 'center', width: '75px' },
+      { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
+      { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
+      { field: 'HolidayDate', header: 'Holiday Date', align: 'center', width: '100px' },
     ];
     this.getHolidayYears();
   }

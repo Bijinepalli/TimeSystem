@@ -20,13 +20,13 @@
   </div>
 </div>
 <p-panel [toggleable]="true" header="Filter results by:">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-12" style="text-align: left">
-    <label class="label" style="padding:0px 10px;">Select:</label>
-    <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show non-billable items that have this status"
-      tooltipPosition="bottom"></p-selectButton>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12" style="text-align: left">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show non-billable items that have this status"
+        tooltipPosition="bottom"></p-selectButton>
+    </div>
   </div>
-</div>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g">
@@ -67,14 +67,15 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused non-billable item"
-             tooltipPosition="bottom" (click)="deleteNonBillable(rowData)"></i>
+            tooltipPosition="bottom" (click)="deleteNonBillable(rowData)"></i>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
-<p-dialog [(visible)]="nonBillableDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
+<p-dialog [(visible)]="nonBillableDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true"
+  [width]="500">
   <p-header>
     {{nonBillableHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -116,19 +117,17 @@
         </div>
       </div>
     </div>
-    <p-footer>
-      <div class="ui-g">
-        <div class="ui-g-12 ui-md-12">
-          <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveNonBillable()" [disabled]="hasFormErrors()"
-              pTooltip="Save the data for the non-billable item" tooltipPosition="bottom"></button>
-            &nbsp;
-            <button pButton label="Cancel" (click)="cancelNonBillable()" class="ui-button-danger"></button>
-          </div>
-        </div>
-      </div>
-    </p-footer>
   </form>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveNonBillable()" [disabled]="hasFormErrors()"
+          pTooltip="Save the data for the non-billable item" tooltipPosition="bottom"></button>
+        &nbsp;
+        <button pButton label="Cancel" (click)="cancelNonBillable()" class="ui-button-danger"></button>
+      </div>
+    </div>
+  </p-footer>
 </p-dialog>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <div [innerHtml]="helpText" class="helpDisplayClass"></div>
