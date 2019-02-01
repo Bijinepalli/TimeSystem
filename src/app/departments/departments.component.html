@@ -84,9 +84,9 @@
         <div class="ui-g">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             <div class="ui-g-12 ui-md-12 ui-lg-12">
-              <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()"></button>
+              <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()" class="ui-button-success"></button>
               &nbsp;
-              <button pButton label="Cancel" (click)="cancelDepartment()"></button>
+              <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
             </div>
           </div>
         </div>
@@ -135,7 +135,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <button pButton label="Cancel" (click)="cancelDepartment()"></button>
+          <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
         </div>
       </div>
     </div>

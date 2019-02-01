@@ -44,7 +44,7 @@ export class BillingcodelistingComponent implements OnInit {
       .subscribe(
         (data) => {
           this._reports = data;
-          this._recData = data.length + ' rows matching';
+          this._recData = data.length + ' matching rows';
         }
       );
   }
@@ -63,7 +63,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.timesysSvc.listAllClientItems(mode).subscribe(
           (data) => {
             this._reports = data;
-            this._recData = data.length + ' rows matching';
+            this._recData = data.length + ' matching rows';
           });
         break;
       case '1':
@@ -71,7 +71,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.timesysSvc.listAllProjectData(mode).subscribe(
           (data) => {
             this._reports = data;
-            this._recData = data.length + ' rows matching';
+            this._recData = data.length + ' matching rows';
           });
         break;
       case '2':
@@ -79,7 +79,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.timesysSvc.listAllBillingItems(mode).subscribe(
           (data) => {
             this._reports = data;
-            this._recData = data.length + ' rows matching';
+            this._recData = data.length + ' matching rows';
           });
         break;
     }

@@ -135,7 +135,7 @@ export class UnusedbillingcodesComponent implements OnInit {
       .subscribe(
         (data) => {
           this._codeList = data;
-          this._recData = data.length + ' pages found';
+          this._recData = data.length + ' matching rows';
           this.setHeader();
         }
       );

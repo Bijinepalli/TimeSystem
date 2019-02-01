@@ -73,13 +73,15 @@
           <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
             label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>
         </div> -->
-        <div class="ui-g-12 ui-md-1">
+        <!-- <div class="ui-g-12 ui-md-1">
           <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
             label="Start Over" (click)=startOver()></button>
-        </div>
+        </div> -->
       </div>
       <p-footer>
         <div style="text-align: right">
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+            label="Start Over" (click)=startOver()></button> &nbsp;
           <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
             label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>&nbsp;
           <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-info"

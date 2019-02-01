@@ -254,7 +254,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveEmployee()" [disabled]="hasFormErrorsEmployee()"></button>
           &nbsp;
-          <button pButton label="Cancel" (click)="cancelEmployee()"></button>
+          <button pButton label="Cancel" (click)="cancelEmployee()" class="ui-button-danger"></button>
         </div>
       </div>
     </p-footer>
@@ -293,7 +293,7 @@
         <div class="ui-g-12 ui-md-12">
           <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
-          <button pButton label="Cancel" (click)="cancelModal()"></button>
+          <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
         </div>
       </div>
     </div>
@@ -332,7 +332,7 @@
         <div class="ui-g-12 ui-md-12">
           <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
-          <button pButton label="Cancel" (click)="cancelModal()"></button>
+          <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
         </div>
       </div>
     </div>
@@ -371,7 +371,7 @@
         <div class="ui-g-12 ui-md-12">
           <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
-          <button pButton label="Cancel" (click)="cancelModal()"></button>
+          <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
         </div>
       </div>
     </div>
@@ -480,14 +480,14 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
             &nbsp;
-            <button pButton label="Cancel" (click)="cancelRateModal()"></button>
+            <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
           </div>
         </div>
       </div>
       <ng-template #cancelbutton>
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Cancel" (click)="cancelRateModal()"></button>
+            <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
           </div>
         </div>
       </ng-template>
