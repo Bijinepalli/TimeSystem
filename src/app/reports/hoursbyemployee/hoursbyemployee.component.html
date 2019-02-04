@@ -30,7 +30,7 @@
 </p-panel>
 <div *ngIf="changeCodeList">
   <div class="ui-g-12">
-    Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}
+    Date From: {{_startDateSelect}} to {{(_endDate!== null && _endDate!=='') ? _endDate:'Latest'}}
   </div>
   <!-- <div class="ui-g-12 ui-md-4">
     <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-info"
@@ -78,7 +78,7 @@
   <div class="ui-g-12 ui-md-4">
     Date Range From:
     <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
-      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
+      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
     <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
       [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
@@ -102,12 +102,12 @@
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
+        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
         <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
-            <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-info"
+            <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-warning"
       label="Change Report" (click)="changeCodes()"></button>&nbsp;
       <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
       label="Start Over" (click)="startOver()"></button>&nbsp;
@@ -117,14 +117,14 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" [style.text-align]="col.align">
+        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>

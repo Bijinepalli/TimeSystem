@@ -28,7 +28,6 @@ export class OutstandingtimesheetsComponent implements OnInit {
     this.timesysSvc.getOutStandingTimesheets(localStorage.getItem('UserId'), numbers).subscribe(
       (data) => {
         this._outStandings = data;
-        console.log(JSON.stringify(data));
         this.cols = [
           { field: 'PeriodEnd', header: 'Period Ending' },
           { field: 'ApprovalStatus', header: 'Status' },
@@ -37,13 +36,16 @@ export class OutstandingtimesheetsComponent implements OnInit {
       });
   }
   editTimeSheet(timeSheet: TimeSheet) {
+    console.log(JSON.stringify(timeSheet));
     this.confSvc.confirm({
       message: 'Do you want to edit the timesheet?',
       accept: () => {
         if (timeSheet.Id === -1) {
-          localStorage.setItem('PeriodEndDate', timeSheet.PeriodEnd);
+          // localStorage.setItem('PeriodEndDate', timeSheet.PeriodEnd);
+          this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
+        } else {
+          this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
         }
-        this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
       }
     });
   }
