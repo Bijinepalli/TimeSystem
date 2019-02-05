@@ -394,3 +394,23 @@ export class Departments {
     Status?: number;
     EmployeesCount?: number;
 }
+
+export class EmployeeUtilityDetails {
+    WeekNum?: number;
+    Year?: number;
+    Startdate?: string;
+    Enddate?: string;
+    Name?: string;
+    Weekday?: string;
+    Holiday?: string;
+    PTO?: string;
+    Billable?: string;
+    Utilization?: string;
+}
+
+export class EmployeeUtilityReport {
+    WeekNumDetails?: EmployeeUtilityDetails[];
+    EmployeeLevelDetails?: EmployeeUtilityDetails[];
+    TeamLevelDetails?: EmployeeUtilityDetails[];
+}
+

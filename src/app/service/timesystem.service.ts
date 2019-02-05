@@ -6,7 +6,7 @@ import {
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
   TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email,
-  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments
+  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -638,4 +638,16 @@ export class TimesystemService {
       .set('DepartmentID', DepartmentID);
     return this.http.get<Employee[]>(this.localurl + 'DepartmentEmployees_Get', { params });
   }
+
+  GetEmployeeUtilitizationReport(EmployeeID: string, DepartmentID: string, FromDate: string, ToDate: string, WorkingHours: string) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID)
+      .set('DepartmentID', DepartmentID)
+      .set('FromDate', FromDate)
+      .set('ToDate', ToDate)
+      .set('WorkingHours', WorkingHours);
+    return this.http.get<EmployeeUtilityReport>(this.localurl + 'GetEmployeeUtilitizationReport', { params });
+  }
+
+
 }

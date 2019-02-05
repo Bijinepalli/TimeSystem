@@ -36,11 +36,12 @@ export class PayrollComponent implements OnInit {
   }
   populateDateDrop() {
     this.dates = [];
+    const PeriodEndReportPeriods = 48;
     this.timesysSvc.getDatebyPeriod()
       .subscribe(
         (data) => {
           this.timesheet = data;
-          for (let i = 0; i < this.timesheet.length; i++) {
+          for (let i = 0; i < PeriodEndReportPeriods; i++) {
             this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEndDate });
           }
         }
