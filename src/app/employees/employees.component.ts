@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
-  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice
+  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments
 } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -96,9 +96,12 @@ export class EmployeesComponent implements OnInit {
   chkIsLocked = false;
   _Supervisors: SelectItem[];
   _SecurityLevels: SelectItem[];
+  _departmentsList: SelectItem[];
+  _selectedDepartment: Departments;
 
   _HasEdit = true;
   _employeesPageNo: number;
+
 
   /* #endregion */
 
@@ -209,15 +212,17 @@ export class EmployeesComponent implements OnInit {
     this.chkIsLocked = false;
     this._Supervisors = [];
     this._SecurityLevels = [];
+    this._departmentsList = [];
+    this._selectedDepartment = {};
 
     this._HasEdit = true;
   }
 
   Initialisations() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'Salaried', header: 'Salaried' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
     ];
     this._SecurityLevels = [
       { label: 'Admin', value: 'A' },
@@ -246,6 +251,7 @@ export class EmployeesComponent implements OnInit {
   GetMethods() {
     this.getEmployees();
     this.getSupervisors();
+    this.getDepartments();
   }
 
   CheckSecurity(PageId: string) {
@@ -280,28 +286,28 @@ export class EmployeesComponent implements OnInit {
 
     if (this.selectedType === 2 && this.selectedSalaryType === 2) {
       this.cols = [
-        { field: 'LastName', header: 'Last Name' },
-        { field: 'FirstName', header: 'First Name' },
-        { field: 'Salaried', header: 'Salaried' },
-        { field: 'Inactive', header: 'Inactive' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+        { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
       ];
     } else {
       if (this.selectedType !== 2 && this.selectedSalaryType === 2) {
         this.cols = [
-          { field: 'LastName', header: 'Last Name' },
-          { field: 'FirstName', header: 'First Name' },
-          { field: 'Salaried', header: 'Salaried' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
         this.cols = [
-          { field: 'LastName', header: 'Last Name' },
-          { field: 'FirstName', header: 'First Name' },
-          { field: 'Inactive', header: 'Inactive' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
         ];
       } else {
         this.cols = [
-          { field: 'LastName', header: 'Last Name' },
-          { field: 'FirstName', header: 'First Name' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
         ];
       }
     }
@@ -427,6 +433,20 @@ export class EmployeesComponent implements OnInit {
       );
   }
 
+  getDepartments() {
+    this._departmentsList = [];
+    this.timesysSvc.getDepartments('')
+      .subscribe(
+        (data) => {
+          this._departmentsList = [];
+          if (data !== undefined && data !== null && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              this._departmentsList.push({ label: data[i].Name, value: data[i].Id });
+            }
+          }
+        });
+  }
+
   /* #endregion */
 
   /* #region Sort Calls */
@@ -536,6 +556,7 @@ export class EmployeesComponent implements OnInit {
     this._frmEmployee.addControl('frmStartDate', new FormControl(null));
     this._frmEmployee.addControl('frmHoursPerDay', new FormControl(null));
     this._frmEmployee.addControl('frmSupervisor', new FormControl(null));
+    this._frmEmployee.addControl('frmDepartment', new FormControl(null));
     this.chkSalaried = false;
     this.chkSubmitsTime = false;
     this.chkIPayEligible = false;
@@ -548,6 +569,25 @@ export class EmployeesComponent implements OnInit {
     this.chkIsLocked = false;
   }
   setDataToControlsEmployee(data: Employee) {
+    console.log(data.ID);
+    if (data !== undefined && data !== null && data.ID !== undefined && data.ID !== null && data.ID.toString() !== '') {
+      this.timesysSvc.departmentEmployee_GetByEmployeeId(data.ID.toString())
+        .subscribe(
+          (outputdata) => {
+            this.setControlsData(data);
+            if (outputdata !== undefined && outputdata !== null && outputdata.length > 0) {
+              if (outputdata[0].Id !== undefined && outputdata[0].Id !== null && outputdata[0].Id.toString() !== '') {
+                this._frmEmployee.controls['frmDepartment'].setValue(outputdata[0].Id);
+              }
+            }
+          });
+    } else {
+      this.setControlsData(data);
+    }
+  }
+
+
+  setControlsData(data: Employee) {
     this._frmEmployee.controls['frmLastName'].setValue(data.LastName);
     this._frmEmployee.controls['frmFirstName'].setValue(data.FirstName);
     if (data.NickName !== undefined && data.NickName !== null && data.NickName.toString() !== '') {
@@ -556,6 +596,7 @@ export class EmployeesComponent implements OnInit {
     this._frmEmployee.controls['frmLoginID'].setValue(data.LoginID);
     this._frmEmployee.controls['frmPayrollID'].setValue(data.PayRoleID);
     this._frmEmployee.controls['frmEmailAddress'].setValue(data.EmailAddress);
+    // tslint:disable-next-line:max-line-length
     if (data.SecondaryEmailAddress !== undefined && data.SecondaryEmailAddress !== null && data.SecondaryEmailAddress.toString() !== '') {
       this._frmEmployee.controls['frmSecondaryEmailAddress'].setValue(data.SecondaryEmailAddress);
     }
@@ -572,6 +613,9 @@ export class EmployeesComponent implements OnInit {
     if (data.SupervisorId !== undefined && data.SupervisorId !== null && data.SupervisorId.toString() !== '') {
       this._frmEmployee.controls['frmSupervisor'].setValue(data.SupervisorId);
     }
+    // if (data.Dep !== undefined && data.SupervisorId !== null && data.SupervisorId.toString() !== '') {
+    // this._frmEmployee.controls['frmSupervisor'].setValue(data.SupervisorId);
+    // }
 
     if (data.Salaried !== undefined && data.Salaried !== null) {
       this.chkSalaried = data.Salaried.toString().toLowerCase() === 'true' ? true : false;
@@ -639,6 +683,7 @@ export class EmployeesComponent implements OnInit {
   clearControlsEmployee() {
     this._IsEditEmployee = false;
     this._selectedEmployee = null;
+    this._selectedDepartment = null;
     this.resetFormEmployee();
     this.employeeHdr = 'Add New Employee';
     this.employeeDialog = false;
@@ -648,6 +693,7 @@ export class EmployeesComponent implements OnInit {
     // this.router.navigate(['/menu/addemployee']);
     this._IsEditEmployee = false;
     this._selectedEmployee = {};
+    this._selectedDepartment = {};
     this.resetFormEmployee();
     this.setDataToControlsEmployee({});
     this.employeeHdr = 'Add New Employee';
@@ -657,6 +703,7 @@ export class EmployeesComponent implements OnInit {
   editEmployee(data: Employee) {
     // this.router.navigate(['/menu/addemployee/' + data.ID]);
     this._IsEditEmployee = true;
+    this._selectedDepartment = {};
     this._selectedEmployee = data;
     this.resetFormEmployee();
     this.setDataToControlsEmployee(data);
@@ -737,6 +784,18 @@ export class EmployeesComponent implements OnInit {
     this._selectedEmployee.Inactive = this.chkInactive;
     this._selectedEmployee.IsLocked = this.chkIsLocked;
     this.SaveEmployeeSPCall();
+    if (this._IsEditEmployee === false) {
+      this._selectedDepartment.EmployeeId = -1;
+    } else {
+      this._selectedDepartment.EmployeeId = this._selectedEmployee.ID;
+    }
+    if (this.IsControlUndefined('frmDepartment')) {
+      this._selectedDepartment.Id = null;
+    } else {
+      this._selectedDepartment.Id = this._frmEmployee.controls['frmDepartment'].value;
+    }
+    console.log(this._selectedDepartment);
+    this.SaveDepartmentSPCall();
   }
 
   IsControlUndefined(ctrlName: string): boolean {
@@ -784,6 +843,7 @@ export class EmployeesComponent implements OnInit {
                 this.clearControlsEmployee();
                 this.getEmployees();
                 this.getSupervisors();
+                this.getDepartments();
               });
             }
           },
@@ -810,12 +870,34 @@ export class EmployeesComponent implements OnInit {
               this.clearControlsEmployee();
               this.getEmployees();
               this.getSupervisors();
+              this.getDepartments();
             }
           },
           (error) => {
             console.log(error);
           });
     }
+  }
+
+  SaveDepartmentSPCall() {
+    this.timesysSvc.employeeDepartment_Insert(this._selectedDepartment)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== null && outputData.ErrorMessage !== '') {
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'error',
+              summary: '',
+              detail: outputData.ErrorMessage
+            });
+          } else {
+            this.clearControlsEmployee();
+            this.getEmployees();
+            this.getSupervisors();
+            this.getDepartments();
+          }
+        });
   }
 
   unlockEmployee(dataRow: Employee) {
@@ -1321,20 +1403,20 @@ export class EmployeesComponent implements OnInit {
     this._IsAddRate = false;
     this._employeeId = empId.toString();
     this._ratecols = [
-      { field: 'ClientName', header: 'Client Name' },
-      { field: 'CustomerName', header: 'Customer Name' },
-      { field: 'EffectiveDate', header: 'Effective Date' },
-      { field: 'Rate', header: 'Rate' },
-      { field: 'Inactive', header: 'Inactive' },
+      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'left', width: '100px' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
     ];
     this.timesysSvc.getEmployeeRates(empId)
       .subscribe(
         (data: Invoice[] = []) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._rates = data;
-            for (let i = 0; i < this._rates.length; i++) {
-              this._rates[i].EffectiveDate = this.datepipe.transform(this._rates[i].EffectiveDate, 'MM-dd-yyyy');
-            }
+            // for (let i = 0; i < this._rates.length; i++) {
+            //   this._rates[i].EffectiveDate = this._rates[i].EffectiveDate;
+            // }
             this._recRateData = this._rates.length;
           }
         }

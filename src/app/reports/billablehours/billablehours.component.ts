@@ -58,14 +58,14 @@ export class BillablehoursComponent implements OnInit {
       { label: 'Project', value: 1 },
     ];
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left' },
-      { field: 'Key', header: 'Code', align: 'left' },
-      { field: 'Inactive', header: 'Inactive', align: 'left' },
-      { field: 'InactiveRel', header: 'Currently Associated', align: 'left' },
-      { field: 'CalendarDate', header: 'Date', align: 'left' },
-      { field: 'LastName', header: 'Last Name', align: 'left' },
-      { field: 'FirstName', header: 'First Name', align: 'left' },
-      { field: 'Hours', header: 'Hours', align: 'right' },
+      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
+      { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '175px' },
+      { field: 'CalendarDate', header: 'Date', align: 'center', width: '100px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;
@@ -134,9 +134,9 @@ export class BillablehoursComponent implements OnInit {
         (data) => {
           const reportData = data;
           for (let i = 0; i < reportData.length; i++) {
-            if (reportData[i].CalendarDate) {
-              reportData[i].CalendarDate = this.datePipe.transform(reportData[i].CalendarDate.toString(), 'MM-dd-yyyy');
-            }
+            // if (reportData[i].CalendarDate) {
+            //   reportData[i].CalendarDate = this.datePipe.transform(reportData[i].CalendarDate.toString(), 'MM-dd-yyyy');
+            // }
             this._totalhours += +reportData[i].Hours;
           }
           this._reports = reportData;

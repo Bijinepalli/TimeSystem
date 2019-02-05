@@ -24,10 +24,10 @@ const httpOptions = {
 export class TimesystemService {
 
   // 172.16.16.217
-  private accessSystemURL = 'http://localhost/AccessSystem/';
-  private ipaddress = 'http://localhost/';
-  private ipaddressLocal = 'http://localhost/';
-  private helpipaddress = 'http://172.16.32.67/TimeSystemHelpFiles/Help/';
+  private accessSystemURL = 'http://172.16.16.217/AccessSystem/';
+  private ipaddress = 'http://172.16.16.217/';
+  private ipaddressLocal = 'http://172.16.16.217/';
+  private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
   private url = this.ipaddress + 'TimeSystemService/';
   private localurl = this.ipaddressLocal + 'TimeSystemService/';
   constructor(private http: HttpClient) { }
@@ -297,7 +297,7 @@ export class TimesystemService {
   getTimeSheetForApprovalCheck(employeeId: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsCheck', { params });
+    return this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
   }
   getEmails(_email: Email) {
     const params = new HttpParams()
@@ -592,11 +592,11 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('employeeId', empId)
       .set('Numbers', numbers);
-    return this.http.get<TimeSheet[]>(this.localurl + 'GetOutStandingTimesheet', { params });
+    return this.http.get<TimeSheet[]>(this.url + 'GetOutStandingTimesheet', { params });
 
   }
   getPeriodEndDate() {
-    return this.http.get<TimePeriods[]>(this.localurl + 'GeneratePeriodEndDatesNew');
+    return this.http.get<TimePeriods[]>(this.url + 'GeneratePeriodEndDatesNew');
   }
   getAccessData(month: string, year: string, employeeNumber: string) {
     const params = new HttpParams()
@@ -604,6 +604,13 @@ export class TimesystemService {
       .set('year', year)
       .set('employeeno', employeeNumber);
     return this.http.get<MonthlyHours[]>(this.accessSystemURL + 'GetAccessSystemData', { params });
+  }
+  getPeriodEndDatesforDropdown(pastPeriods: string, futurePeriods: string, dateFormat: string) {
+    const params = new HttpParams()
+      .set('pastPeriods', pastPeriods)
+      .set('futurePeriods', futurePeriods)
+      .set('dateFormat', dateFormat);
+    return this.http.get<TimePeriods[]>(this.url + 'GetPeriodEndforDropdown', { params });
   }
   getOutstandingTimesheetReport(Dates: string) {
     const params = new HttpParams()
@@ -613,17 +620,17 @@ export class TimesystemService {
   timeSheetInsert(timesheet: TimeSheet) {
     const body = JSON.stringify(timesheet);
     console.log(timesheet);
-    return this.http.post<string>(this.localurl + 'TimeSheetInsert', body, httpOptions);
+    return this.http.post<string>(this.url + 'TimeSheetInsert', body, httpOptions);
   }
   getTimeSheetForApprovalGet(employeeId: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetForApproval[]>(this.localurl + 'GetTimeSheetApprovalsGet', { params });
+    return this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsGet', { params });
   }
   getDepartments(Id: string) {
     const params = new HttpParams()
       .set('Id', Id.toString());
-    return this.http.get<Departments[]>(this.localurl + 'GetDepartments', { params });
+    return this.http.get<Departments[]>(this.url + 'GetDepartments', { params });
   }
   Department_InsertOrUpdate(_inputData: Departments) {
     const body = JSON.stringify(_inputData);
@@ -636,7 +643,16 @@ export class TimesystemService {
   departmentEmployee_Get(DepartmentID: string) {
     const params = new HttpParams()
       .set('DepartmentID', DepartmentID);
-    return this.http.get<Employee[]>(this.localurl + 'DepartmentEmployees_Get', { params });
+    return this.http.get<Employee[]>(this.url + 'DepartmentEmployees_Get', { params });
+  }
+  departmentEmployee_GetByEmployeeId(EmployeeID: string) {
+    const params = new HttpParams()
+      .set('EmployeeID', EmployeeID);
+    return this.http.get<Departments[]>(this.url + 'DepartmentEmployees_GetByEmployeeId', { params });
+  }
+  employeeDepartment_Insert(_inputData: Departments) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'EmployeeDepartment_Insert', body, httpOptions);
   }
 
   GetEmployeeUtilitizationReport(EmployeeID: string, DepartmentID: string, FromDate: string, ToDate: string, WorkingHours: string) {

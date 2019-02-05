@@ -16,6 +16,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   billingCycle: SelectItem[];
   selectedbillingCycle: number;
   _startDate = '';
+  _startDateSelect = '';
   _endDate = '';
   showSpinner = false;
   _selectcheckbox: SelectItem[] = [];
@@ -51,7 +52,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     console.log(this._startDate);
   }
 
@@ -116,11 +118,20 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         } else if (this.selectedbillingCycle === 3) {
           _selectedBillingCycle = 'A';
         }
+        let dateValid: any;
+        console.log(this._startDate + '-tehius');
+        const dateCheck = new Date(this._startDateSelect);
+        console.log(dateCheck);
+        if (dateCheck.toString() === 'Invalid Date') {
+          dateValid = this._startDate;
+        } else {
+          dateValid = dateCheck;
+        }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
         let _start = '';
         let _end = '';
         if (this._startDate !== null && this._startDate !== '') {
-          _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+          _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
           this._startDate = _start;
         }
         console.log('Pola');
@@ -144,10 +155,18 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       this._billingCodesSpecial = new BillingCodesSpecial();
       let _start = '';
       let _end = '';
-
+      let dateValid: any;
+      console.log(this._startDate + '-tehius');
+      const dateCheck = new Date(this._startDateSelect);
+      console.log(dateCheck);
+      if (dateCheck.toString() === 'Invalid Date') {
+        dateValid = this._startDate;
+      } else {
+        dateValid = dateCheck;
+      }
       if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+        _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
+        this._startDate = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
@@ -218,7 +237,17 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     // const month = today.getMonth();
     // const year = today.getFullYear();
     // this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    let dateValid: any;
+    console.log(this._startDate + '-tehius');
+    const dateCheck = new Date(this._startDateSelect);
+    console.log(dateCheck);
+    if (dateCheck.toString() === 'Invalid Date') {
+      dateValid = this._startDate;
+    } else {
+      dateValid = dateCheck;
+    }
+    this._startDate = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
+    this._startDateSelect = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
     // this._endDate = '';
     this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
   }

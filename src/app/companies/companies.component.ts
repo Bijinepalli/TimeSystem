@@ -53,8 +53,8 @@ export class CompaniesComponent implements OnInit {
   ngOnInit() {
     this.CheckSecurity();
     this.cols = [
-      { field: 'CompanyName', header: 'Company Name' },
-      { field: 'DefaultCompany', header: 'Default' },
+      { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
+      { field: 'DefaultCompany', header: 'Default', align: 'center', width: '70px' },
     ];
 
     this._years = [

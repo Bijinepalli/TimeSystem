@@ -44,7 +44,7 @@ export class BillingcodelistingComponent implements OnInit {
       .subscribe(
         (data) => {
           this._reports = data;
-          this._recData = data.length + ' rows matching';
+          this._recData = data.length + ' matching rows';
         }
       );
   }
@@ -63,7 +63,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.timesysSvc.listAllClientItems(mode).subscribe(
           (data) => {
             this._reports = data;
-            this._recData = data.length + ' rows matching';
+            this._recData = data.length + ' matching rows';
           });
         break;
       case '1':
@@ -71,7 +71,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.timesysSvc.listAllProjectData(mode).subscribe(
           (data) => {
             this._reports = data;
-            this._recData = data.length + ' rows matching';
+            this._recData = data.length + ' matching rows';
           });
         break;
       case '2':
@@ -79,7 +79,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.timesysSvc.listAllBillingItems(mode).subscribe(
           (data) => {
             this._reports = data;
-            this._recData = data.length + ' rows matching';
+            this._recData = data.length + ' matching rows';
           });
         break;
     }
@@ -89,27 +89,27 @@ export class BillingcodelistingComponent implements OnInit {
     this.cols = [];
     if (type === '0') {
       this.cols = [
-        { field: 'Key', header: 'Code' },
-        { field: 'ClientName', header: 'Name' },
-        { field: 'Inactive', header: 'Inactive' },
-        { field: 'CreatedOn', header: 'Created On' },
-        { field: 'BillingCycle', header: 'Billing Cycle' },
-        { field: 'CompanyName', header: 'Company Name' },
+        { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+        { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+        { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '110px' },
+        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
     } else if (type === '1') {
       this.cols = [
-        { field: 'Key', header: 'Code' },
-        { field: 'ProjectName', header: 'Name' },
-        { field: 'Inactive', header: 'Inactive' },
-        { field: 'CreatedOn', header: 'Created On' },
-        { field: 'CompanyName', header: 'Company Name' },
+        { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+        { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
     } else if (type === '2') {
       this.cols = [
-        { field: 'Key', header: 'Code' },
-        { field: 'ProjectName', header: 'Name' },
-        { field: 'Inactive', header: 'Inactive' },
-        { field: 'CreatedOn', header: 'Created On' },
+        { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+        { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     }
   }

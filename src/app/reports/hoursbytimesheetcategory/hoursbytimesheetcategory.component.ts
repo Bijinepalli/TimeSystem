@@ -81,11 +81,11 @@ generateReport() {
   }
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'BillingName', header: 'Billing Code' },
-      { field: 'TANDM', header: 'T & M' },
-      { field: 'Project', header: 'Project' },
-      { field: 'NonBill', header: 'NonBillable' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '100px' },
+      { field: 'Project', header: 'Project', align: 'right', width: '100px' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '100px' },
     ];
   }
   showHelp(file: string) {

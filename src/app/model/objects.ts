@@ -393,6 +393,7 @@ export class Departments {
     Description?: string;
     Status?: number;
     EmployeesCount?: number;
+    EmployeeId?: number;
 }
 
 export class EmployeeUtilityDetails {

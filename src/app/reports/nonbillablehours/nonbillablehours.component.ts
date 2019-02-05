@@ -40,13 +40,13 @@ export class NonbillablehoursComponent implements OnInit {
       { label: 'Custom', value: 3 },
     ];
     this.cols = [
-      { field: 'Group1', header: 'Group1' },
-      { field: 'Group2', header: 'Group2' },
-      { field: 'ID', header: 'ID' },
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'CalendarDate', header: 'Calendar Date' },
-      { field: 'Hours', header: 'Hours' },
+      { field: 'Group1', header: 'Group1', align: 'left', width: 'auto' },
+      { field: 'Group2', header: 'Group2', align: 'left', width: 'auto' },
+      { field: 'ID', header: 'ID', align: 'left', width: 'auto' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'CalendarDate', header: 'Calendar Date', align: 'center', width: '100px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
     ];
     this.selectedReportType = 0;
     const dateNow = new Date();
