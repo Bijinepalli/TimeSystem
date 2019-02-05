@@ -662,7 +662,7 @@ export class TimesystemService {
       .set('FromDate', FromDate)
       .set('ToDate', ToDate)
       .set('WorkingHours', WorkingHours);
-    return this.http.get<EmployeeUtilityReport>(this.localurl + 'GetEmployeeUtilitizationReport', { params });
+    return this.http.get<EmployeeUtilityReport>(this.url + 'GetEmployeeUtilitizationReport', { params });
   }
 
 
