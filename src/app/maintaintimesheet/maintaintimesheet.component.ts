@@ -26,15 +26,10 @@ export class MaintaintimesheetComponent implements OnInit {
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
     private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe) { }
 
-  _peroidStartDate: Date = new Date('2018-11-01');
-  _periodEnddate: Date = new Date('2018-11-15');
-  _periodEndDateString = '';
-  _periodEndDateDisplay = '';
+
   _days = 0;
-  _DateArray: Date[] = [];
+  _DateArray: string[] = [];
   _weekArray: number[] = [];
-  _tmpDt: any;
-  _dt: number;
   tandm: TimeSheetBinding[] = [];
   tandmSelect: string;
   projectBillable: TimeSheetBinding[] = [];
@@ -68,9 +63,13 @@ export class MaintaintimesheetComponent implements OnInit {
 
 
   _EmployeeName = '';
-  _PeriodEnding = '';
+  _periodEndDateDisplay = '';
   _SubmittedOn = 'N/A';
   _Resubmittal = 'No';
+
+  _peroidStartDate: Date = new Date('2018-11-01');
+  _periodEnddate: Date = new Date('2018-11-15');
+  _periodEndDateString = '';
 
 
   ngOnInit() {
@@ -78,6 +77,7 @@ export class MaintaintimesheetComponent implements OnInit {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
       this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
       this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
+      console.log('Period End - ' + this._timesheetPeriodEnd);
       if (+this._timesheetId.toString() < 0) {
         this._periodEndDateString = this._timesheetPeriodEnd;
         this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
@@ -122,98 +122,92 @@ export class MaintaintimesheetComponent implements OnInit {
     if (this._timesheetId > 0) {
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
-          this.getEmployeeDetails(data[0][0].EmployeeId.toString());
+          if (data !== undefined && data !== null && data.length > 0) {
+            this.getEmployeeDetails(data[0][0].EmployeeId.toString());
+            this._timeSheetEntries = data[0];
+            this._timeLineEntries = data[1];
+            this._timeCellEntries = data[2];
 
-          this.timesysSvc.getTimeSheetPeridos().subscribe(
-            (data1) => {
-              if (data !== undefined && data !== null && data.length > 0) {
-                this._timeSheetEntries = data[0];
-                this._timeLineEntries = data[1];
-                this._timeCellEntries = data[2];
-
-                this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
-                this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
-                this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
+            this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
+            this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
+            this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
+            if (this._timeSheetEntries !== undefined && this._timeSheetEntries !== null && this._timeSheetEntries.length > 0) {
+              this._SubmittedOn = this._timeSheetEntries[0].SubmitDate !== '' ? (this._timeSheetEntries[0].SubmitDate) : 'N/A';
+              this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
+              if (this._timeSheetEntries[0].Submitted) {
+                this._IsTimeSheetSubmitted = true;
               }
-
-              if (data1 !== undefined && data1 !== null && data1.length > 0) {
-
-                if (this._timeSheetEntries !== undefined && this._timeSheetEntries !== null && this._timeSheetEntries.length > 0) {
-
-                  this._SubmittedOn = this._timeSheetEntries[0].SubmitDate !== '' ?
-                    // this.datePipe.transform((this._timeSheetEntries[0].SubmitDate), 'dd-MM-yyyy')
-                    (this._timeSheetEntries[0].SubmitDate)
-                    : 'N/A';
-                  this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
-
-                  this._timePeriods = data1.filter(P => P.FuturePeriodEnd === this._timeSheetEntries[0].PeriodEnd);
-                  if (this._timeSheetEntries[0].Submitted) {
-                    this._IsTimeSheetSubmitted = true;
-                  }
-                  this._periodEnddate = new Date(this._timeSheetEntries[0].PeriodEnd);
-                  this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
-                  this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
-
-                }
-                const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
-
-                if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
-                  this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
-                }
-
-                this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-                this._tmpDt = this._peroidStartDate;
-                if (this._days > 0) {
-                  for (let i = 0; i < this._days - 1; i++) {
-                    this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
-                    this._DateArray.push(new Date(this._dt));
-                    this._weekArray.push(new Date(this._dt).getDay());
-                  }
-                }
-              }
-
-              this.addFormControls();
-
-            });
-        });
-    } else {
-
-      this.getEmployeeDetails(localStorage.getItem('UserId').toString());
-
-      this.timesysSvc.getTimeSheetPeridos().subscribe(
-        (data1) => {
-          console.log(JSON.stringify(data1));
-
-          const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
-
-          if (data1 !== undefined && data1 !== null && data1.length > 0) {
-
-            this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
-
-
-            if (this._timePeriods !== undefined && this._timePeriods !== null && this._timePeriods.length > 0) {
-              const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
-              this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
-
-              if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
-                this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
-              }
-
-              this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-              this._tmpDt = this._peroidStartDate;
-              if (this._days > 0) {
-                for (let i = 0; i < this._days - 1; i++) {
-                  this._dt = this._tmpDt.setDate(this._tmpDt.getDate() + 1);
-                  this._DateArray.push(new Date(this._dt));
-                  this._weekArray.push(new Date(this._dt).getDay());
-                }
-              }
+              this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
+              this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
+              this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
             }
           }
-          this.defaultControlsToForm();
-          this.addFormControls();
         });
+    } else {
+      this.getEmployeeDetails(localStorage.getItem('UserId').toString());
+      const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
+      this.getPeriodDates(selectPeriodEndDate);
     }
+  }
+
+
+  getNewDateVal(dtNew: string): Date {
+    const dtDBFormat = this.datePipe.transform(dtNew, 'yyyy-MM-dd');
+    const dtVals = dtDBFormat.split('-');
+    return new Date(+dtVals[0], +dtVals[1] - 1, +dtVals[2]);
+  }
+
+
+  getPeriodDates(selectPeriodEndDate: string) {
+    this.timesysSvc.getTimeSheetPeridos().subscribe(
+      (data1) => {
+        if (data1 !== undefined && data1 !== null && data1.length > 0) {
+          this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
+          if (this._timePeriods !== undefined && this._timePeriods !== null && this._timePeriods.length > 0) {
+            const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
+            // this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
+            console.log('End Date from DB - ');
+            console.log(this._timePeriods[0].FuturePeriodEnd);
+            this._periodEnddate = this.getNewDateVal(this._timePeriods[0].FuturePeriodEnd);
+
+            if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
+              // this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
+              console.log('Start Date from DB - ');
+              console.log(startPeriod[0].FuturePeriodEnd);
+              this._peroidStartDate = this.getNewDateVal(startPeriod[0].FuturePeriodEnd);
+            }
+            this.getDateAndWeekArrays();
+          }
+        }
+        this.defaultControlsToForm();
+        this.addFormControls();
+      });
+  }
+
+
+  getDateAndWeekArrays() {
+    console.log('Start Date after conversion - ');
+    console.log(this._peroidStartDate);
+    console.log('End Date after conversion - ');
+    console.log(this._periodEnddate);
+
+    this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
+    console.log('Days Length - ');
+    console.log(this._days);
+    if (this._days > 0) {
+      for (let i = 0; i < this._days - 1; i++) {
+        const dtNew = new Date(this._peroidStartDate.getFullYear(),
+          this._peroidStartDate.getMonth(),
+          this._peroidStartDate.getDate() + (i + 1));
+        console.log(dtNew);
+        this._DateArray.push(this.datePipe.transform(dtNew, 'yyyy-MM-dd'));
+        this._weekArray.push(dtNew.getDay());
+      }
+    }
+    console.log('DateArray - ');
+    console.log(this._DateArray);
+    console.log('WeekArray - ');
+    console.log(this._weekArray);
   }
 
   defaultControlsToForm() {
@@ -942,7 +936,6 @@ export class MaintaintimesheetComponent implements OnInit {
         );
     } else {
       this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
-
     }
   }
   Accept(txtSuper: any) {

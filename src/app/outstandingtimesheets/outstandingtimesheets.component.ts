@@ -40,7 +40,7 @@ export class OutstandingtimesheetsComponent implements OnInit {
     this.confSvc.confirm({
       message: 'Do you want to edit the timesheet?',
       accept: () => {
-        if (timeSheet.Id === -1) {
+        if (timeSheet.Id < 0) {
           // localStorage.setItem('PeriodEndDate', timeSheet.PeriodEnd);
           this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
         } else {
