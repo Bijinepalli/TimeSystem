@@ -1,0 +1,23 @@
+
+.tdName{
+    min-width:250px!important;
+    font-weight: bold;
+    text-align: left;
+}
+
+.tdValues{
+    text-align: right;
+}
+
+.trHeader th{
+    background-color: black!important;
+    color:white!important;
+    border:0px;
+}
+
+.trSummary td{
+    font-weight: bold;
+    background-color: black!important;
+    color:white!important;
+    border:0px;
+}
