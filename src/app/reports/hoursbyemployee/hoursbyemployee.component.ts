@@ -194,6 +194,7 @@ export class HoursbyemployeeComponent implements OnInit {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
+      this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
       console.log(_start, _end, this._endDate);
       if (this.selectedbreakOut.toString() === '0') {
         switch (this.selectedBillingType) {
