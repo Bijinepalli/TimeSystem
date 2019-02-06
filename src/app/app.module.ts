@@ -96,6 +96,7 @@ import { ApprovaltimesheetsComponent } from './approvaltimesheets/approvaltimesh
 import { AccesssystemComponent } from './accesssystem/accesssystem.component';
 import { TimeFormatPipe } from './sharedpipes/timeformat';
 import { DepartmentsComponent } from './departments/departments.component';
+import { RevenuereportComponent } from './reports/revenuereport/revenuereport.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -159,6 +160,7 @@ const appRoutes: Routes = [
       { path: 'mails', component: MailsComponent },
       { path: 'access', component: AccesssystemComponent },
       { path: 'departments', component: DepartmentsComponent },
+      { path: 'revenuereport', component: RevenuereportComponent },
     ],
     runGuardsAndResolvers: 'always',
   },
@@ -233,6 +235,7 @@ const appRoutes: Routes = [
     AccesssystemComponent,
     TimeFormatPipe,
     DepartmentsComponent,
+    RevenuereportComponent,
   ],
   imports: [
     BrowserAnimationsModule,

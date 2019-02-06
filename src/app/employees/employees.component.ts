@@ -52,6 +52,7 @@ export class EmployeesComponent implements OnInit {
   _recData: any;
 
   _popUpHeader = '';
+  _terminateHeader = '';
   _employeeNameHdr = '';
   employeeHdr = '';
 
@@ -60,12 +61,17 @@ export class EmployeesComponent implements OnInit {
   projectDialog = false;
   clientDialog = false;
   rateDialog = false;
+  terminateDialog = false;
+
+  _frmEmployee = new FormGroup({});
 
   _selectedEmployee: Employee;
   _selectedEmployeeForAction: Employee;
 
-  _frmEmployee = new FormGroup({});
+  _frmTerminateEmployee = new FormGroup({});
   _IsEditEmployee = false;
+  lblTerminationDate = '';
+  today = new Date();
 
   _frmRate = new FormGroup({});
   _IsEditRate = false;
@@ -170,18 +176,23 @@ export class EmployeesComponent implements OnInit {
     this._popUpHeader = '';
     this._employeeNameHdr = '';
     this.employeeHdr = '';
+    this._terminateHeader = '';
 
     this.employeeDialog = false;
     this.nonBillableDialog = false;
     this.projectDialog = false;
     this.clientDialog = false;
     this.rateDialog = false;
+    this.terminateDialog = false;
 
     this._selectedEmployee = {};
     this._selectedEmployeeForAction = {};
 
     this._frmEmployee = new FormGroup({});
     this._IsEditEmployee = false;
+
+    this._frmTerminateEmployee = new FormGroup({});
+    this.lblTerminationDate = '';
 
     this._frmRate = new FormGroup({});
     this._IsEditRate = false;
@@ -246,6 +257,7 @@ export class EmployeesComponent implements OnInit {
   AddFormControls() {
     this.addControlsEmployee();
     this.addControlsRate();
+    this.addControlsTerminate();
   }
 
   GetMethods() {
@@ -557,6 +569,7 @@ export class EmployeesComponent implements OnInit {
     this._frmEmployee.addControl('frmHoursPerDay', new FormControl(null));
     this._frmEmployee.addControl('frmSupervisor', new FormControl(null));
     this._frmEmployee.addControl('frmDepartment', new FormControl(null));
+    this.lblTerminationDate = '';
     this.chkSalaried = false;
     this.chkSubmitsTime = false;
     this.chkIPayEligible = false;
@@ -569,7 +582,6 @@ export class EmployeesComponent implements OnInit {
     this.chkIsLocked = false;
   }
   setDataToControlsEmployee(data: Employee) {
-    console.log(data.ID);
     if (data !== undefined && data !== null && data.ID !== undefined && data.ID !== null && data.ID.toString() !== '') {
       this.timesysSvc.departmentEmployee_GetByEmployeeId(data.ID.toString())
         .subscribe(
@@ -612,6 +624,11 @@ export class EmployeesComponent implements OnInit {
 
     if (data.SupervisorId !== undefined && data.SupervisorId !== null && data.SupervisorId.toString() !== '') {
       this._frmEmployee.controls['frmSupervisor'].setValue(data.SupervisorId);
+    }
+    if (data.TerminationDate !== undefined && data.TerminationDate !== null && data.TerminationDate.toString() !== '') {
+      this.lblTerminationDate = data.TerminationDate;
+    } else {
+      this.lblTerminationDate = '';
     }
     // if (data.Dep !== undefined && data.SupervisorId !== null && data.SupervisorId.toString() !== '') {
     //   this._frmEmployee.controls['frmSupervisor'].setValue(data.SupervisorId);
@@ -796,7 +813,6 @@ export class EmployeesComponent implements OnInit {
     } else {
       this._selectedDepartment.Id = this._frmEmployee.controls['frmDepartment'].value;
     }
-    console.log(this._selectedDepartment);
     this.SaveDepartmentSPCall();
   }
 
@@ -882,24 +898,26 @@ export class EmployeesComponent implements OnInit {
   }
 
   SaveDepartmentSPCall() {
-    this.timesysSvc.employeeDepartment_Insert(this._selectedDepartment)
-      .subscribe(
-        (outputData) => {
-          if (outputData !== null && outputData.ErrorMessage !== '') {
-            this.msgSvc.add({
-              key: 'alert',
-              sticky: true,
-              severity: 'error',
-              summary: '',
-              detail: outputData.ErrorMessage
-            });
-          } else {
-            this.clearControlsEmployee();
-            this.getEmployees();
-            this.getSupervisors();
-            this.getDepartments();
-          }
-        });
+    if (this._selectedDepartment.Id !== undefined && this._selectedDepartment.Id !== null && this._selectedDepartment.Id > 0) {
+      this.timesysSvc.employeeDepartment_Insert(this._selectedDepartment)
+        .subscribe(
+          (outputData) => {
+            if (outputData !== null && outputData.ErrorMessage !== '') {
+              this.msgSvc.add({
+                key: 'alert',
+                sticky: true,
+                severity: 'error',
+                summary: '',
+                detail: outputData.ErrorMessage
+              });
+            } else {
+              this.clearControlsEmployee();
+              this.getEmployees();
+              this.getSupervisors();
+              this.getDepartments();
+            }
+          });
+    }
   }
 
   unlockEmployee(dataRow: Employee) {
@@ -941,13 +959,22 @@ export class EmployeesComponent implements OnInit {
   }
 
   terminateEmployee(dataRow: Employee) {
+    this._selectedEmployeeForAction = dataRow;
+    this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
+    this._terminateHeader = 'Terminate ' + this._employeeNameHdr;
+    this.terminateDialog = true;
+  }
+
+  saveTerminate() {
     this.confSvc.confirm({
-      message: 'Are you sure you want to Terminate ' + dataRow.LastName + ' ' + dataRow.FirstName + '?',
+      message: 'Are you sure you want to Terminate ' + this._employeeNameHdr + '?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
+        // tslint:disable-next-line:max-line-length
+        this._selectedEmployeeForAction.TerminationDate = this.datepipe.transform(this._frmTerminateEmployee.controls['frmTerminateEmployeeDate'].value, 'MM-dd-yyyy').toString().trim();
         /* do nothing */
-        this.timesysSvc.Employee_Terminate(dataRow)
+        this.timesysSvc.Employee_Terminate(this._selectedEmployeeForAction)
           .subscribe(
             (outputData) => {
               if (outputData !== null && outputData.ErrorMessage !== '') {
@@ -966,6 +993,7 @@ export class EmployeesComponent implements OnInit {
                   detail: 'Employee terminated successfully'
                 });
                 this.getEmployees();
+                this.clearControlsTerminate();
               }
             },
             (error) => {
@@ -1446,7 +1474,6 @@ export class EmployeesComponent implements OnInit {
 
   saveRateModal() {
     this._selectedRate = {};
-    console.log(this._frmRate);
     this._selectedRate.ClientName = this._frmRate.controls['frmClientName'].value.toString().trim();
     this._selectedRate.CustomerName = this._frmRate.controls['frmCustomerName'].value.toString().toUpperCase().trim();
     this._selectedRate.CustomerId = +this._customerId.toString();
@@ -1461,7 +1488,6 @@ export class EmployeesComponent implements OnInit {
     } else {
       this._selectedRate.RateMode = 'E';
     }
-    console.log(this._selectedRate);
     this.timesysSvc.updateRate(this._selectedRate)
       .subscribe(
         (outputData) => {
@@ -1494,4 +1520,31 @@ export class EmployeesComponent implements OnInit {
 
   }
   /* #endregion */
+
+  addControlsTerminate() {
+    this._frmTerminateEmployee.addControl('frmTerminateEmployeeDate', new FormControl(null, Validators.required));
+  }
+
+
+  hasFormErrorsTerminate() {
+    return !this._frmTerminateEmployee.valid;
+  }
+
+  resetFormTerminate() {
+    this._frmTerminateEmployee.markAsPristine();
+    this._frmTerminateEmployee.markAsUntouched();
+    this._frmTerminateEmployee.updateValueAndValidity();
+    this._frmTerminateEmployee.reset();
+  }
+
+  clearControlsTerminate() {
+    this.resetFormTerminate();
+    this.employeeHdr = '';
+    this.terminateDialog = false;
+    this.lblTerminationDate = '';
+  }
+
+  cancelTerminate() {
+    this.clearControlsTerminate();
+  }
 }

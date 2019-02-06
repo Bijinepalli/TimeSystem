@@ -234,7 +234,7 @@
         <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department" formControlName="frmDepartment"
           pToolTip="Employee's Department"></p-dropdown>
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-6 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
         <p-checkbox appendTo="body" binary="true" label="Timesheet Verification Needed" [(ngModel)]="chkTimesheetVerification"
           [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee needs a supervisor to verify Timesheet."></p-checkbox>
@@ -250,6 +250,11 @@
         <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
           pTooltip="Change the status of this employee."></p-checkbox>
       </div>
+      <div class="ui-g-6 ui-md-6 ui-lg-6" *ngIf="lblTerminationDate">
+        <div style="height:5px"></div>
+        Termination Date :
+        <label appendTo="body" pToolTip="" tooltipPosition="bottom">{{lblTerminationDate}}</label>
+      </div>
     </div>
 
   </form>
@@ -260,6 +265,36 @@
           <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveEmployee()" [disabled]="hasFormErrorsEmployee()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelEmployee()" class="ui-button-danger"></button>
+        </div>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
+
+<p-dialog [(visible)]="terminateDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
+  [width]="300" [closeOnEscape]="false" [closable]="false">
+  <p-header>
+    Terminate Employee
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+      (click)="showHelp('')"></i>
+  </p-header>
+  <form [formGroup]="_frmTerminateEmployee">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        Termination Date (mm-dd-yyyy) <br>
+        <div style="height:5px"></div>
+        <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true" [maxDate]="today"
+          [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmTerminateEmployeeDate"></p-calendar>
+      </div>
+    </div>
+  </form>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveTerminate()" [disabled]="hasFormErrorsTerminate()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelTerminate()" class="ui-button-danger"></button>
         </div>
       </div>
     </div>
@@ -483,13 +518,13 @@
   <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEditRate; else cancelbutton">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
-          &nbsp;
-          <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
+        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
+        &nbsp;
+        <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
       </div>
       <ng-template #cancelbutton>
         <div class="ui-g-12 ui-md-12">
-            <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
+          <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
         </div>
       </ng-template>
     </div>

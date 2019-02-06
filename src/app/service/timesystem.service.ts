@@ -654,4 +654,10 @@ export class TimesystemService {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'EmployeeDepartment_Insert', body, httpOptions);
   }
+  getRevenueReports(startdate: string, enddate: string) {
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate);
+    return this.http.get<BillingCodes[]>(this.url + 'GetRevenueReports', { params });
+  }
 }
