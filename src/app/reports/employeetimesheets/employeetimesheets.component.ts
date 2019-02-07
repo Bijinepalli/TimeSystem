@@ -113,4 +113,15 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.showReport = false;
     this.showSpinner = false;
   }
+  viewTimeSheet(rowData: TimeSheetForEmplyoee) {
+    this.navigateToTimesheet(rowData.Id, '');
+  }
+  navigateToTimesheet(TimesheetId, TimesheetDate) {
+    // this.timesheetDialog = false;
+    let routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;
+    if (TimesheetDate !== '') {
+      routerLinkTimesheet += '/' + TimesheetDate;
+    }
+    this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
+  }
 }
