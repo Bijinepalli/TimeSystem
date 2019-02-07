@@ -6,6 +6,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
+import { OverlayPanel } from 'primeng/primeng';
 
 @Component({
   selector: 'app-departments',
@@ -188,7 +189,7 @@ export class DepartmentsComponent implements OnInit {
     this.departmentDialog = true;
   }
 
-  showEmployees(dataRow: Departments) {
+  showEmployees(event, dataRow: Departments, overlaypanel: OverlayPanel) {
     this.deptEmployeeHdr = 'Employees associated with department';
     this._deptEmployeePageNo = 0;
     this.timesysSvc.departmentEmployee_Get(dataRow.Id.toString())
@@ -199,6 +200,7 @@ export class DepartmentsComponent implements OnInit {
             console.log(outputData);
             this._deptEmployeesList = outputData;
             this._recDataEmp = outputData.length + ' employees found';
+            overlaypanel.toggle(event);
           }
         });
   }

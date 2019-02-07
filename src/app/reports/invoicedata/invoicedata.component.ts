@@ -30,40 +30,39 @@ export class InvoicedataComponent implements OnInit {
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
-    this._billingCycle = [
-      { label: 'Weekly', value: 'W' },
-      { label: 'Bi-Weekly', value: 'B' },
-      { label: 'Monthly', value: 'M' },
-      { label: 'All', value: 'A' }
-    ];
-    this.cols = [
-      { field: 'InvoiceDate', header: 'Invoice Date' },
-      { field: 'DivisionNumber', header: 'Division #' },
-      { field: 'CustomerNumber', header: 'Customer #' },
-      { field: 'ProductCode', header: 'Product Code' },
-      { field: 'Hours', header: 'Hours' },
-      { field: 'Rate', header: 'Rate' },
-      { field: 'Amount', header: 'Amount' },
-      { field: 'StartDate', header: 'Start Date' },
-      { field: 'EndDate', header: 'End Date' },
-      { field: 'ClientName', header: 'Description' },
-    ];
-    this._selectedBillingCycle = 'W';
-    const dateNow = new Date();
-    const end = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0);
-
-    // To convert single digit to double digit
-    this._invoiceDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString()
-      + '-' + ('0' + (dateNow.getDate() + 1)).slice(-2).toString() + '-' + dateNow.getFullYear().toString();
-    console.log(this._invoiceDate);
-    this._startDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString() + '-01-'
-      + (dateNow.getFullYear() + 1).toString();
-    this._endDate = ('0' + (end.getMonth() + 1)).slice(-2).toString() + '-'
-      + ('0' + end.getDate()).slice(-2).toString() + '-' + end.getFullYear().toString();
   }
 
   ngOnInit() {
+    this._billingCycle = [
+    { label: 'Weekly', value: 'W' },
+    { label: 'Bi-Weekly', value: 'B' },
+    { label: 'Monthly', value: 'M' },
+    { label: 'All', value: 'A' }
+  ];
+  this.cols = [
+    { field: 'InvoiceDate', header: 'Invoice Date' },
+    { field: 'DivisionNumber', header: 'Division #' },
+    { field: 'CustomerNumber', header: 'Customer #' },
+    { field: 'ProductCode', header: 'Product Code' },
+    { field: 'Hours', header: 'Hours' },
+    { field: 'Rate', header: 'Rate' },
+    { field: 'Amount', header: 'Amount' },
+    { field: 'StartDate', header: 'Start Date' },
+    { field: 'EndDate', header: 'End Date' },
+    { field: 'ClientName', header: 'Description' },
+  ];
+  this._selectedBillingCycle = 'A';
+  const dateNow = new Date();
+  const end = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0);
 
+  // To convert single digit to double digit
+  this._invoiceDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString()
+    + '-' + ('0' + (dateNow.getDate() + 1)).slice(-2).toString() + '-' + dateNow.getFullYear().toString();
+  console.log(this._invoiceDate);
+  this._startDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString() + '-01-'
+    + (dateNow.getFullYear()).toString();
+  this._endDate = ('0' + (end.getMonth() + 1)).slice(-2).toString() + '-'
+    + ('0' + end.getDate()).slice(-2).toString() + '-' + end.getFullYear().toString();
   }
 
   generateReport() {
@@ -78,7 +77,6 @@ export class InvoicedataComponent implements OnInit {
     const divisionId = '81';  // GET VALUE FROM APPSETTINGS
     const productCode = 'VER-PROFSVC';  // GET VALUE FROM APPSETTINGS
     const dateFormat = 'yyyy-MM-dd'; // GET VALUE FROM APPSETTINGS
-    console.log(this._invoiceDate.toString());
     if (this._invoiceDate !== undefined && this._invoiceDate !== null && this._invoiceDate.toString() !== '') {
       // invoicedate = this.datePipe.transform(this._invoiceDate.toString(), 'MM-dd-yyyy');
       invoicedate = this._invoiceDate.toString();

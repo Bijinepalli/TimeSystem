@@ -43,7 +43,26 @@
         </td>
         <td *ngFor="let col of columns">
           <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
-            <label style="cursor: pointer;" (click)="showEmployees(rowData)">{{rowData[col.field]}}</label>
+            <label (mouseenter)="showEmployees($event,rowData,op2)" style="font-size:14px; color: blue; cursor: pointer;"><b>{{rowData[col.field]}}</b></label>
+            <p-overlayPanel #op2 [showCloseIcon]="true" appendTo="body">
+              <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
+                [first]="_deptEmployeePageNo" [style]="{width: '500px'}">
+                <ng-template pTemplate="header" let-columns>
+                  <tr>
+                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+                      {{col.header}}
+                    </th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                  <tr [pSelectableRow]="rowData">
+                    <td *ngFor="let col of columns">
+                        {{rowData[col.field]}}
+                    </td>
+                  </tr>
+                </ng-template>
+               </p-table>
+            </p-overlayPanel>
           </div>
           <ng-template #defaultColumn>
             {{rowData[col.field]}}
@@ -51,7 +70,7 @@
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this Department. It has no employees assigned"
-            tooltipPosition="bottom" (click)="deleteDepartment(rowData)"></i>
+              tooltipPosition="bottom" (click)="deleteDepartment(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -83,59 +102,12 @@
     </form>
   </div>
   <p-footer>
-      <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()"
-            class="ui-button-success"></button>
-          &nbsp;
-          <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
-        </div>
-      </div>
-    </p-footer>
-</p-dialog>
-<p-dialog [(visible)]="deptEmployeesDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
-  [closeOnEscape]="false" [closable]="false" blockScroll="true">
-  <p-header>
-    {{deptEmployeeHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-      (click)="showHelp('')"></i>
-  </p-header>
-  <div class="ui-g">
-    <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name" [paginator]="true"
-      [rows]="10" [first]="_deptEmployeePageNo">
-      <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recDataEmp}}</div>
-          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-              style="width:50%"> &nbsp;
-            <!-- <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button> -->
-          </div>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns">
-            {{rowData[col.field]}}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </div>
-  <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
-        </div>
+        <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()"
+          class="ui-button-success"></button>
+        &nbsp;
+        <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
       </div>
     </div>
   </p-footer>

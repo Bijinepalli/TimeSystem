@@ -654,6 +654,12 @@ export class TimesystemService {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'EmployeeDepartment_Insert', body, httpOptions);
   }
+  getRevenueReports(startdate: string, enddate: string) {
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate);
+    return this.http.get<BillingCodes[]>(this.url + 'GetRevenueReports', { params });
+  }
 
   GetEmployeeUtilitizationReport(EmployeeID: string, DepartmentID: string, FromDate: string, ToDate: string, WorkingHours: string) {
     const params = new HttpParams()
@@ -664,6 +670,10 @@ export class TimesystemService {
       .set('WorkingHours', WorkingHours);
     return this.http.get<EmployeeUtilityReport>(this.url + 'GetEmployeeUtilitizationReport', { params });
   }
-
+  getEmployeesBySupervisor(employeeId: string) {
+    const params = new HttpParams()
+    .set('employeeId', employeeId.toString());
+  return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
+  }
 
 }
