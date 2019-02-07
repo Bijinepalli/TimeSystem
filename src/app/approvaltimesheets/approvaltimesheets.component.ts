@@ -25,11 +25,11 @@ export class ApprovaltimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(localStorage.getItem('UserId'));
+    // console.log(localStorage.getItem('UserId'));
     this.timesysSvc.getTimeSheetForApprovalGet(localStorage.getItem('UserId')).subscribe(
       (data) => {
         this._approvals = data;
-        console.log(this._approvals);
+        // console.log(this._approvals);
         this.cols = [
           { field: 'PeriodEnd', header: 'Period Ending' },
           { field: 'EmployeeName', header: 'Employee Name' },

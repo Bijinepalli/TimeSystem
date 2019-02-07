@@ -184,22 +184,6 @@ export class EmployeeutilizationreportComponent implements OnInit {
     }
   }
 
-  calendarShowCallback(date) {
-    // populate Calendar#DAY_OF_WEEK values from bean
-    const supportedDays = []; // new Array(#{ fn: join(bean.getSupportedDays(), ',') });
-    // primefaces js widget day is from [0 - 6] - [Sunday - Monday]
-    const day = date.getDay() + 1;
-
-    for (let i = 0; i < supportedDays.length; i++) {
-      if (day === supportedDays[i]) {
-        return [true, ''];
-      }
-    }
-
-    return [false, ''];
-  }
-
-
   generateReport() {
     this.showSpinner = true;
     this._startDateVal = '';

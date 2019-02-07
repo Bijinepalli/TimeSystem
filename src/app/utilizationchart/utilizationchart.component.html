@@ -1,0 +1,33 @@
+<!-- <div class="ui-g" *ngFor="let col of DEFAULT_COLORS">
+  <div class="ui-lg-1" ngStyle="'background-color':{{col}};">
+
+  </div>
+</div> -->
+<div class="ui-g">
+  <!-- <div class="ui-g-12 ui-md-4 ui-lg-5">
+        <p-multiSelect [style]="{'width':'95%'}" id="employees" [options]="employees" optionLabel="Name" [(ngModel)]="selectedEmp"></p-multiSelect>
+      </div> -->
+  <div class="ui-g-12 ui-md-5 ui-lg-3">
+    <p-dropdown [options]="employees" [style]="{'width':'100%'}" [(ngModel)]="selectedEmp" (ngModelChange)="generateReport()"></p-dropdown>
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2" align="left">
+    <p-dropdown [style]="{'width':'95%'}" [options]="months" [(ngModel)]="selectedMonth" (ngModelChange)="generateReport()"></p-dropdown>
+  </div>
+  <div class="ui-g-12 ui-md-2 ui-lg-2" align="left">
+    <p-dropdown [style]="{'width':'95%'}" [options]="years" [(ngModel)]="selectedyear" (ngModelChange)="generateReport()"></p-dropdown>
+  </div>
+  <div class="ui-g-12 ui-md-3 ui-lg-3" align="left">
+    <p-dropdown [style]="{'width':'95%'}" [options]="utilizationtypes" [(ngModel)]="selectedUtilizationType"
+      (ngModelChange)="generateReport()"></p-dropdown>
+  </div>
+  <!-- <div class="ui-g-12 ui-md-2 ui-lg-2" align="left" *ngIf="selectedUtilizationType === 'Percentage' ">
+    <p-dropdown [style]="{'width':'95%'}" [options]="charttypes" [(ngModel)]="selectedChartType" (ngModelChange)="generateReport()"></p-dropdown>
+  </div> -->
+</div>
+<div class="ui-g" *ngIf="(ShowGraph && selectedEmp !== undefined && selectedEmp !== null)">
+  <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="(hoursByTeamChartData !== undefined && hoursByTeamChartData !== null)">
+    <p-chart type="bar" [data]="hoursByTeamChartData" [options]="chartoptions" [plugins]="chartplugins" #barChart></p-chart>
+  </div>
+</div>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

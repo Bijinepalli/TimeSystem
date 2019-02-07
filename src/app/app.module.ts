@@ -97,6 +97,7 @@ import { AccesssystemComponent } from './accesssystem/accesssystem.component';
 import { TimeFormatPipe } from './sharedpipes/timeformat';
 import { DepartmentsComponent } from './departments/departments.component';
 import { EmployeeutilizationreportComponent } from './reports/employeeutilizationreport/employeeutilizationreport.component';
+import { UtilizationchartComponent } from './utilizationchart/utilizationchart.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -236,6 +237,7 @@ const appRoutes: Routes = [
     TimeFormatPipe,
     DepartmentsComponent,
     EmployeeutilizationreportComponent,
+    UtilizationchartComponent,
   ],
   imports: [
     BrowserAnimationsModule,
