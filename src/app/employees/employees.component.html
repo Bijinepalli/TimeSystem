@@ -219,10 +219,34 @@
         <p-checkbox appendTo="body" binary="true" label="Company Officer" [(ngModel)]="chkOfficer" [ngModelOptions]="{standalone: true}"
           pToolTip="Check if this employee is an officer of the company. This is uncommon."></p-checkbox>
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-3 ui-lg-3">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Company Supervisor" [(ngModel)]="chkSupervisor"
+        <p-checkbox appendTo="body" binary="true" label="Company Supervisor" [(ngModel)]="chkSupervisor" [disabled]="SupEmpCnt>0"
           [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee is a supervisor of the company."></p-checkbox>
+      </div>
+      <div class="ui-g-12 ui-md-3 ui-lg-3" *ngIf="SupEmpCnt>0">
+        <div style="height:5px"></div>
+        <label (mouseenter)="op2.show($event)" style="font-size:14px; color: blue"><b>{{SupEmpCnt}}</b> Employees are
+          assigned</label>
+        <p-overlayPanel #op2 [showCloseIcon]="true" appendTo="body">
+          <p-table [columns]="SupEmpcols" [value]="SupEmployeeList" [style]="{width: '500px'}" [responsive]="false"
+            dataKey="ID" [paginator]="true" [rows]="5">
+            <ng-template pTemplate="header" let-columns>
+              <tr>
+                <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                  {{col.header}}
+                </th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+              <tr>
+                <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+                  {{rowData[col.field]}}
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-overlayPanel>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
@@ -283,8 +307,8 @@
       <div class="ui-g-12 ui-md-12">
         Termination Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
-        <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true" [maxDate]="today"
-          [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmTerminateEmployeeDate"></p-calendar>
+        <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
+          [maxDate]="today" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmTerminateEmployeeDate"></p-calendar>
       </div>
     </div>
   </form>

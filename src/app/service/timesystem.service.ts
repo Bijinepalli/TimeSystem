@@ -25,7 +25,7 @@ export class TimesystemService {
 
   // 172.16.16.217
   private accessSystemURL = 'http://172.16.16.217/AccessSystem/';
-  private ipaddress = 'http://172.16.16.217/';
+  private ipaddress = 'http://localhost/';
   private ipaddressLocal = 'http://172.16.16.217/';
   private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
   private url = this.ipaddress + 'TimeSystemService/';
@@ -670,6 +670,10 @@ export class TimesystemService {
       .set('WorkingHours', WorkingHours);
     return this.http.get<EmployeeUtilityReport>(this.url + 'GetEmployeeUtilitizationReport', { params });
   }
-
+  getEmployeesBySupervisor(employeeId: string) {
+    const params = new HttpParams()
+    .set('employeeId', employeeId.toString());
+  return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
+  }
 
 }

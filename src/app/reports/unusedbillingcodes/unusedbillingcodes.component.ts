@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
+import { CommonService } from '../../service/common.service';
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
 import { NonBillables } from '../../model/objects';
@@ -33,7 +34,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   visibleHelp = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+    private confSvc: ConfirmationService, private datePipe: DatePipe, private commonSvc: CommonService) {
     this.codeType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -51,7 +52,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   ngOnInit() {
     this.cols = [
       { field: 'Key', header: 'Code', align: 'left', width: 'auto' },
-      { field: 'CompanyName', header: 'Name', align: 'left', width: 'auto' },
+      { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
     ];
@@ -61,7 +62,7 @@ export class UnusedbillingcodesComponent implements OnInit {
 
   populateDateDrop() {
     this.dates = [];
-    this.dateFormat = 'MM-dd-yyyy';  // Get the date format from appsettings
+    this.dateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();  // Get the date format from appsettings
     this.periodEnd = this.getNextPeriodDate();
     for (let i = 0; i <= 24; i++) {
       this.periodEnd = new Date(this.periodEnd.getFullYear(), this.periodEnd.getMonth(), this.periodEnd.getDate() - 7);
@@ -77,15 +78,14 @@ export class UnusedbillingcodesComponent implements OnInit {
     let returnValue = null;
     const currentDate = new Date();
     let days = 0;
-    const useSemiMonthly = true;  // Get the value 'SemiMonthly' from appsettings
+    const useSemiMonthly = this.commonSvc.getAppSettingsValue('SemiMonthly').toString();  // Get the value 'SemiMonthly' from appsettings
     if (useSemiMonthly) {
-      const startDate = new Date('2011-12-16');  // Get the value 'SemiMonthlyStartDate' from appsettings
+      const startDate = new Date(this.commonSvc.getAppSettingsValue('SemiMonthlyStartDate').toString());
       if (currentDate > startDate) {
         // tslint:disable-next-line:max-line-length
         returnValue = currentDate.getDate() > 15 ? new Date(currentDate.getFullYear(), currentDate.getMonth(), 0) : new Date(currentDate.getFullYear(), currentDate.getMonth(), 15);
       } else {
         days = this.getDaysTillFriday(currentDate);
-        console.log(days);
         // tslint:disable-next-line:max-line-length
         if (new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(days.toString(), 10)) > startDate) {
           returnValue = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
@@ -143,7 +143,6 @@ export class UnusedbillingcodesComponent implements OnInit {
     this.admin = true;
   }
   deleteCodes() {
-    console.log(this._codeList.length);
     this.confSvc.confirm({
       message: 'Are you sure you want to delete the selected item(s) ?',
       header: 'Confirmation',
@@ -191,9 +190,9 @@ export class UnusedbillingcodesComponent implements OnInit {
         case '1':
           this._codeHeader = 'Never Used Project Codes';
           break;
-          case '2':
-            this._codeHeader = 'Unused Project Codes';
-            break;
+        case '2':
+          this._codeHeader = 'Unused Project Codes';
+          break;
       }
     } else {
       switch (this.selectedUsageType.toString()) {
@@ -203,9 +202,9 @@ export class UnusedbillingcodesComponent implements OnInit {
         case '1':
           this._codeHeader = 'Never Used Non-Billable Items';
           break;
-          case '2':
-            this._codeHeader = 'Unused Non-Billable Codes';
-            break;
+        case '2':
+          this._codeHeader = 'Unused Non-Billable Codes';
+          break;
       }
     }
   }

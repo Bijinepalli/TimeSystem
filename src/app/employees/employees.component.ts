@@ -9,7 +9,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
-import { BillingCode } from '../model/constants';
+import { BillingCode, YearEndCodes } from '../model/constants';
 import { DatePipe } from '@angular/common';
 
 @Component({
@@ -26,7 +26,7 @@ export class EmployeesComponent implements OnInit {
   ParamSubscribe: any;
 
   _billingCodes: BillingCode;
-
+  _yec: YearEndCodes = new YearEndCodes();
   types: SelectItem[];
   salaryTypes: SelectItem[];
   selectedType: number;
@@ -64,6 +64,9 @@ export class EmployeesComponent implements OnInit {
   terminateDialog = false;
 
   _frmEmployee = new FormGroup({});
+  SupEmpCnt = 0;
+  SupEmployeeList: Employee[] = [];
+  SupEmpcols: any;
 
   _selectedEmployee: Employee;
   _selectedEmployeeForAction: Employee;
@@ -189,6 +192,8 @@ export class EmployeesComponent implements OnInit {
     this._selectedEmployeeForAction = {};
 
     this._frmEmployee = new FormGroup({});
+    this.SupEmpCnt = 0;
+    this.SupEmployeeList = [];
     this._IsEditEmployee = false;
 
     this._frmTerminateEmployee = new FormGroup({});
@@ -361,27 +366,43 @@ export class EmployeesComponent implements OnInit {
   }
 
   getNonBillables(empId: number) {
-    this.timesysSvc.getNonBillablesAssignToEmployee(empId)
+    this.timesysSvc.getEmployee(empId.toString(), '', '')
       .subscribe(
-        (data: NonBillables[] = []) => {
-          this._nonBillablesAssignToEmp = [];
-          this._nonBillablesAssignToEmpSaved = [];
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._nonBillablesAssignToEmp = this._nonBillablesAssignToEmp.concat(data);
-            this._nonBillablesAssignToEmpSaved = this._nonBillablesAssignToEmpSaved.concat(data);
-          }
-        }
-      );
-    this.timesysSvc.getNonBillablesNotAssignToEmployee(empId)
-      .subscribe(
-        (data) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._nonBillablesNotAssignToEmp = data;
-          } else {
-            this._nonBillablesNotAssignToEmp = [];
-          }
-        }
-      );
+        (empdata) => {
+          this.timesysSvc.getNonBillablesAssignToEmployee(empId)
+            .subscribe(
+              (dataAssign) => {
+                this.timesysSvc.getNonBillablesNotAssignToEmployee(empId)
+                  .subscribe(
+                    (dataUnAssign) => {
+                      this._nonBillablesAssignToEmp = [];
+                      this._nonBillablesAssignToEmpSaved = [];
+                      this._nonBillablesNotAssignToEmp = [];
+                      if (empdata[0].Salaried.toUpperCase() === 'TRUE' || (empdata[0].LastName.indexOf('B -') === 0)) {
+                        if (dataAssign !== undefined && dataAssign !== null && dataAssign.length > 0) {
+                          dataAssign = dataAssign.filter(m => !(m.Key.indexOf(this._yec.HolidayCode) > -1));
+                          this._nonBillablesAssignToEmp = this._nonBillablesAssignToEmp.concat(dataAssign);
+                          this._nonBillablesAssignToEmpSaved = this._nonBillablesAssignToEmpSaved.concat(dataAssign);
+                        }
+                        if (dataUnAssign !== undefined && dataUnAssign !== null && dataUnAssign.length > 0) {
+                          dataUnAssign = dataUnAssign.filter(m => !(m.Key.indexOf(this._yec.HolidayCode) > -1));
+                          this._nonBillablesNotAssignToEmp = dataUnAssign;
+                        }
+                      } else {
+                        if (dataAssign !== undefined && dataAssign !== null && dataAssign.length > 0) {
+                          this._nonBillablesAssignToEmp = this._nonBillablesAssignToEmp.concat(dataAssign);
+                          this._nonBillablesAssignToEmpSaved = this._nonBillablesAssignToEmpSaved.concat(dataAssign);
+                        }
+                        if (dataUnAssign !== undefined && dataUnAssign !== null && dataUnAssign.length > 0) {
+                          dataUnAssign = dataUnAssign.filter(m =>
+                            !(m.Key.indexOf(this._yec.PTOCode) > -1) &&
+                            !(m.Key.indexOf(this._yec.HolidayCode) > -1));
+                          this._nonBillablesNotAssignToEmp = dataUnAssign;
+                        }
+                      }
+                    });
+              });
+        });
   }
 
   getProjects(empId: number) {
@@ -586,20 +607,19 @@ export class EmployeesComponent implements OnInit {
       this.timesysSvc.departmentEmployee_GetByEmployeeId(data.ID.toString())
         .subscribe(
           (outputdata) => {
-            this.setControlsData(data);
-            if (outputdata !== undefined && outputdata !== null && outputdata.length > 0) {
-              if (outputdata[0].Id !== undefined && outputdata[0].Id !== null && outputdata[0].Id.toString() !== '') {
-                this._frmEmployee.controls['frmDepartment'].setValue(outputdata[0].Id);
-              }
-            }
+            this.timesysSvc.getEmployeesBySupervisor(data.ID.toString())
+              .subscribe(
+                (empdata) => {
+                  this.setControlsData(data, outputdata, empdata);
+                });
           });
     } else {
-      this.setControlsData(data);
+      this.setControlsData(data, null, null);
     }
   }
 
 
-  setControlsData(data: Employee) {
+  setControlsData(data: Employee, outputdata: Departments[], empdata: Employee[]) {
     this._frmEmployee.controls['frmLastName'].setValue(data.LastName);
     this._frmEmployee.controls['frmFirstName'].setValue(data.FirstName);
     if (data.NickName !== undefined && data.NickName !== null && data.NickName.toString() !== '') {
@@ -685,6 +705,22 @@ export class EmployeesComponent implements OnInit {
     } else {
       this.chkIsLocked = false;
     }
+
+    if (outputdata !== undefined && outputdata !== null && outputdata.length > 0) {
+      if (outputdata[0].Id !== undefined && outputdata[0].Id !== null && outputdata[0].Id.toString() !== '') {
+        this._frmEmployee.controls['frmDepartment'].setValue(outputdata[0].Id);
+      }
+    }
+
+    if (empdata !== undefined && empdata !== null && empdata.length > 0) {
+      this.SupEmpcols = [
+        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
+        { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
+      ];
+      this.SupEmpCnt = empdata.length;
+      this.SupEmployeeList = empdata;
+    }
+
   }
 
 
@@ -706,6 +742,7 @@ export class EmployeesComponent implements OnInit {
     this.resetFormEmployee();
     this.employeeHdr = 'Add New Employee';
     this.employeeDialog = false;
+    this.SupEmpCnt = 0;
   }
 
   addEmployee() {
