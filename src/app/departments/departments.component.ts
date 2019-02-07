@@ -84,13 +84,13 @@ export class DepartmentsComponent implements OnInit {
 
   Initialisations() {
     this.cols = [
-      { field: 'Name', header: 'Department Name' },
-      { field: 'Description', header: 'Description' },
-      { field: 'EmployeesCount', header: 'Employees Associated' },
+      { field: 'Name', header: 'Department Name', align: 'left', width: '250px' },
+      { field: 'Description', header: 'Description', align: 'left', width: 'auto' },
+      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: '200px' },
     ];
     this.empcols = [
-      { field: 'Name', header: 'Employee Name' },
-      { field: 'EmailAddress', header: 'Email' },
+      { field: 'Name', header: 'Employee Name', align: 'left', width: '150px' },
+      { field: 'EmailAddress', header: 'Email', align: 'left', width: 'auto' },
     ];
   }
 

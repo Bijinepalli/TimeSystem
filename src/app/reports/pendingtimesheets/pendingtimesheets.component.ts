@@ -42,10 +42,10 @@ export class PendingtimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'PeriodEnd', header: 'Period Ending' },
-      { field: 'Status', header: 'Status' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '200px' },
+      { field: 'Status', header: 'Status', align: 'left', width: '200px' },
     ];
     this.populateDateDrop();
   }

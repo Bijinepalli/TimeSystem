@@ -39,13 +39,13 @@ export class EmployeelogindataComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'LoginID', header: 'Login ID' },
-      { field: 'DecryptedPassword', header: 'Password' },
-      { field: 'EmailAddress', header: 'Email Address' },
-      { field: 'Salaried', header: 'Salaried' },
-      { field: 'Inactive', header: 'Inactive' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
+      { field: 'LoginID', header: 'Login ID', align: 'left', width: '200px' },
+      { field: 'DecryptedPassword', header: 'Password', align: 'left', width: 'auto' },
+      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
     ];
     this.getEmployeesForReport();
   }

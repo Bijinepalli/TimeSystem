@@ -9,3 +9,16 @@
     vertical-align: middle;
     bottom: 3% !important;
 }
+.custombar1 .ui-scrollpanel-wrapper {
+    border-right: 9px solid #f4f4f4 !important;
+}
+    
+.custombar1 .ui-scrollpanel-bar {
+    background-color: #1976d2 !important;
+    opacity: 1 !important;
+    transition: background-color .3s !important;
+}
+    
+.custombar1 .ui-scrollpanel-bar:hover {
+    background-color: #135ba1 !important;
+}

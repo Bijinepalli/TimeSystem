@@ -29,7 +29,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em">Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em">Delete</th>
@@ -41,8 +41,8 @@
           <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
             (click)="editDepartment(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns">
-          <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
+        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+          <div *ngIf="col.header === 'Employees Associated'; else defaultColumn">
             <label style="cursor: pointer;" (click)="showEmployees(rowData)">{{rowData[col.field]}}</label>
           </div>
           <ng-template #defaultColumn>
@@ -116,14 +116,14 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
           </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns">
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
             {{rowData[col.field]}}
           </td>
         </tr>

@@ -37,16 +37,17 @@ export class InvoicedataComponent implements OnInit {
       { label: 'All', value: 'A' }
     ];
     this.cols = [
-      { field: 'InvoiceDate', header: 'Invoice Date' },
-      { field: 'DivisionNumber', header: 'Division #' },
-      { field: 'CustomerNumber', header: 'Customer #' },
-      { field: 'ProductCode', header: 'Product Code' },
-      { field: 'Hours', header: 'Hours' },
-      { field: 'Rate', header: 'Rate' },
-      { field: 'Amount', header: 'Amount' },
-      { field: 'StartDate', header: 'Start Date' },
-      { field: 'EndDate', header: 'End Date' },
-      { field: 'ClientName', header: 'Description' },
+      { field: 'InvoiceDate', header: 'Invoice Date', align: 'center', width: '120px' },
+      { field: 'DivisionNumber', header: 'Division #', align: 'right', width: '100px' },
+      { field: 'CustomerNumber', header: 'Customer #', align: 'right', width: '100px' },
+      { field: 'ProductCode', header: 'Product Code', align: 'left', width: '150px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
+      { field: 'Amount', header: 'Amount', align: 'right', width: '80px' },
+      { field: 'StartDate', header: 'Start Date', align: 'center', width: '100px' },
+      { field: 'EndDate', header: 'End Date', align: 'center', width: '100px' },
+      { field: 'ClientName', header: 'Description', align: 'left', width: 'auto' },
+      { field: 'PONumber', header: 'PO #', align: 'right', width: '75px' },
     ];
     this._selectedBillingCycle = 'W';
     const dateNow = new Date();
@@ -54,10 +55,10 @@ export class InvoicedataComponent implements OnInit {
 
     // To convert single digit to double digit
     this._invoiceDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString()
-      + '-' + ('0' + (dateNow.getDate() + 1)).slice(-2).toString() + '-' + dateNow.getFullYear().toString();
+      + '-' + ('0' + (dateNow.getDate())).slice(-2).toString() + '-' + dateNow.getFullYear().toString();
     console.log(this._invoiceDate);
     this._startDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString() + '-01-'
-      + (dateNow.getFullYear() + 1).toString();
+      + (dateNow.getFullYear()).toString();
     this._endDate = ('0' + (end.getMonth() + 1)).slice(-2).toString() + '-'
       + ('0' + end.getDate()).slice(-2).toString() + '-' + end.getFullYear().toString();
   }

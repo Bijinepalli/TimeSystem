@@ -33,8 +33,18 @@
 </p-footer>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
+<div class="ui-g" *ngIf="admin">
+  <div class="ui-g-6 ui-m-6">
+    <button pButton pTooltip="Delete Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right" class="ui-button-info" label="Delete Codes"
+      (click)=deleteCodes()></button>
+  </div>
+  <div class="ui-g-6 ui-m-6" style="display: none">
+    <button pButton pTooltip="Inactivate Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right" class="ui-button-info" label="Inactivate Codes"
+      (click)=deleteCodes()></button>
+  </div>
+</div>
 <div class="ui-g">
-  <p-scrollPanel [style]="{width: '100%', height: '700px'}">
+  <p-scrollPanel [style]="{width: '100%', height: '700px'}" styleClass="custombar1">
     <p-table #dt [columns]="cols" [value]="_codeList" [(selection)]="_selectedCode" [responsive]="false" dataKey="Key">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
@@ -70,7 +80,7 @@
     </p-table>
   </p-scrollPanel>
 </div>
-<div class="ui-g" *ngIf="admin">
+<!-- <div class="ui-g" *ngIf="admin">
   <div class="ui-g-6 ui-m-6" style="text-align:right">
     <button pButton pTooltip="Delete Codes" tooltipPosition="bottom" class="ui-button-info" label="Delete Codes"
       (click)=deleteCodes()></button>
@@ -79,7 +89,7 @@
     <button pButton pTooltip="Inactivate Codes" tooltipPosition="bottom" class="ui-button-info" label="Inactivate Codes"
       (click)=deleteCodes()></button>
   </div>
-</div>
+</div> -->
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>

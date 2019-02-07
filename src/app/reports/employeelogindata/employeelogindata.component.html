@@ -48,7 +48,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
       </tr>
@@ -56,7 +56,7 @@
 
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" style="word-break: break-word">
+        <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width" [style.text-align]="col.align">
 
           <div *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0">
             {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}

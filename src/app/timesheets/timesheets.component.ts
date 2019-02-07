@@ -42,7 +42,7 @@ export class TimesheetsComponent implements OnInit {
   ngOnInit() {
     this.cols = [
       { field: 'PeriodEnd', header: 'PeriodEnd' },
-      { field: 'Submitted', header: 'Holiday Name' },
+      { field: 'Submitted', header: 'Submitted' },
       { field: 'SubmitDate', header: 'Date Submitted' },
       { field: 'Resubmitted', header: 'Resubmitted' },
       { field: 'SemiMonthly', header: 'Semi-Monthly' },
