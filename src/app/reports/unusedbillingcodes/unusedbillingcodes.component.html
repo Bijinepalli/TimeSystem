@@ -14,27 +14,38 @@
 </div>
 <br>
 <p-panel [toggleable]="true" header="Filter results by:">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-3">
-    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report"
-      tooltipPosition="bottom" [(ngModel)]="selectedCodeType"></p-selectButton>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-3">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom"
+        [(ngModel)]="selectedCodeType"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-5">
+      <p-selectButton [options]="usageTypes" pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
+        tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
+      <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom" [(ngModel)]="selectedDate"></p-dropdown>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-5">
-    <p-selectButton [options]="usageTypes" pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
-      tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
-    <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom" [(ngModel)]="selectedDate"></p-dropdown>
-  </div>
-</div>
-<p-footer>
-  <div style="text-align: right">
-    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
-      label="Generate Report" (click)=getReports()></button>
-  </div>
-</p-footer>
+  <p-footer>
+    <div style="text-align: right">
+      <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
+        label="Generate Report" (click)=getReports()></button>
+    </div>
+  </p-footer>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
+<div class="ui-g" *ngIf="admin">
+  <div class="ui-g-6 ui-m-6">
+    <button pButton pTooltip="Delete Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right" class="ui-button-info"
+      label="Delete Codes" (click)=deleteCodes()></button>
+  </div>
+  <div class="ui-g-6 ui-m-6" style="display: none">
+    <button pButton pTooltip="Inactivate Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right"
+      class="ui-button-info" label="Inactivate Codes" (click)=deleteCodes()></button>
+  </div>
+</div>
 <div class="ui-g">
-  <p-scrollPanel [style]="{width: '100%', height: '700px'}">
+  <p-scrollPanel [style]="{width: '100%', height: '700px'}" styleClass="custombar1">
     <p-table #dt [columns]="cols" [value]="_codeList" [(selection)]="_selectedCode" [responsive]="false" dataKey="Key">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
@@ -63,14 +74,19 @@
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
           </td>
           <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            {{rowData[col.field]}}
+            <div *ngIf="(col.header === 'Inactive'); else defaultColumn">
+              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+            </div>
+            <ng-template #defaultColumn>
+              {{rowData[col.field]}}
+            </ng-template>
           </td>
         </tr>
       </ng-template>
     </p-table>
   </p-scrollPanel>
 </div>
-<div class="ui-g" *ngIf="admin">
+<!-- <div class="ui-g" *ngIf="admin">
   <div class="ui-g-6 ui-m-6" style="text-align:right">
     <button pButton pTooltip="Delete Codes" tooltipPosition="bottom" class="ui-button-info" label="Delete Codes"
       (click)=deleteCodes()></button>
@@ -79,7 +95,7 @@
     <button pButton pTooltip="Inactivate Codes" tooltipPosition="bottom" class="ui-button-info" label="Inactivate Codes"
       (click)=deleteCodes()></button>
   </div>
-</div>
+</div> -->
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>

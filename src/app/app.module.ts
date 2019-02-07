@@ -99,6 +99,7 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { RevenuereportComponent } from './reports/revenuereport/revenuereport.component';
 import { EmployeeutilizationreportComponent } from './reports/employeeutilizationreport/employeeutilizationreport.component';
 import { UtilizationchartComponent } from './utilizationchart/utilizationchart.component';
+import { EmployeetimesheetsComponent } from './reports/employeetimesheets/employeetimesheets.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -164,6 +165,7 @@ const appRoutes: Routes = [
       { path: 'departments', component: DepartmentsComponent },
       { path: 'revenuereport', component: RevenuereportComponent },
       { path: 'employeeutilizationreport', component: EmployeeutilizationreportComponent },
+      { path: 'employeetimesheets', component: EmployeetimesheetsComponent },
     ],
     runGuardsAndResolvers: 'always',
   },
@@ -241,6 +243,7 @@ const appRoutes: Routes = [
     RevenuereportComponent,
     EmployeeutilizationreportComponent,
     UtilizationchartComponent,
+    EmployeetimesheetsComponent,
   ],
   imports: [
     BrowserAnimationsModule,

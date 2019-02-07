@@ -83,13 +83,13 @@ export class EmployeeclientratesComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name' },
-      { field: 'FirstName', header: 'First Name' },
-      { field: 'EmployeeID', header: 'Employee ID' },
-      { field: 'ClientName', header: 'Client Name' },
-      { field: 'ClientID', header: 'Client ID' },
-      { field: 'Rate', header: 'Rate' },
-      { field: 'EffectiveDate', header: 'Effective Date' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'EmployeeID', header: 'Employee ID', align: 'right', width: '120px' },
+      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'ClientID', header: 'Client ID', align: 'right', width: '120px' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
     ];
   }
   showHelp(file: string) {

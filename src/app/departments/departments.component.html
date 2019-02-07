@@ -29,7 +29,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em">Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em">Delete</th>
@@ -41,40 +41,40 @@
           <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
             (click)="editDepartment(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
           <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
             <label (mouseenter)="showEmployees($event,rowData,op2)" style="font-size:14px; color: blue; cursor: pointer;"><b>{{rowData[col.field]}}</b></label>
             <p-overlayPanel #op2 [showCloseIcon]="true" appendTo="body">
               <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
                 [first]="_deptEmployeePageNo" [style]="{width: '500px'}">
                 <ng-template pTemplate="header" let-columns>
-                  <tr>
-                    <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-                      {{col.header}}
-                    </th>
-                  </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-                  <tr [pSelectableRow]="rowData">
-                    <td *ngFor="let col of columns">
-                        {{rowData[col.field]}}
-                    </td>
-                  </tr>
-                </ng-template>
-               </p-table>
-            </p-overlayPanel>
-          </div>
-          <ng-template #defaultColumn>
-            {{rowData[col.field]}}
-          </ng-template>
-        </td>
-        <td style="text-align: center">
-          <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this Department. It has no employees assigned"
-              tooltipPosition="bottom" (click)="deleteDepartment(rowData)"></i>
+      <tr>
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+          {{col.header}}
+        </th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+      <tr [pSelectableRow]="rowData">
+        <td *ngFor="let col of columns">
+          {{rowData[col.field]}}
         </td>
       </tr>
     </ng-template>
   </p-table>
+  </p-overlayPanel>
+</div>
+<ng-template #defaultColumn>
+  {{rowData[col.field]}}
+</ng-template>
+</td>
+<td style="text-align: center">
+  <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this Department. It has no employees assigned"
+    tooltipPosition="bottom" (click)="deleteDepartment(rowData)"></i>
+</td>
+</tr>
+</ng-template>
+</p-table>
 </div>
 <p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
   [closeOnEscape]="false" [closable]="false" blockScroll="true">
