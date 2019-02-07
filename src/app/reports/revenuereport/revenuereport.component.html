@@ -1,7 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Revenue Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('')"></i>
+    Revenue Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
@@ -56,7 +55,7 @@
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
-            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
             label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>

@@ -30,6 +30,8 @@ export class EmployeetimesheetsComponent implements OnInit {
   _timePeriods: TimeSheetBinding[];
   selectedValues: Boolean;
   selectedCode: string;
+  visibleHelp: boolean;
+  helpText: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -123,5 +125,18 @@ export class EmployeetimesheetsComponent implements OnInit {
       routerLinkTimesheet += '/' + TimesheetDate;
     }
     this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          // this.helpText = data;
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
   }
 }
