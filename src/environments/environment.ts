@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  accessSystemURL: 'http://172.16.16.217/AccessSystem/',
+  helpipaddress: 'http://172.16.16.217/TimeSystemHelpFiles/Help/',
+  url: 'http://172.16.32.67/TimeSystemService/',
+  buildType: 'Dev',
 };
 
 /*

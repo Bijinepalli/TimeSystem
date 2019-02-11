@@ -6,6 +6,7 @@ import { TimesystemService } from '../service/timesystem.service';
 import { LeftNavMenu, Employee } from '../model/objects';
 import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 declare var jQuery: any;
 
@@ -22,6 +23,8 @@ export class Master2Component implements OnInit {
 
   public visibleHelp = false;
   public show = false;
+  BuildType = '';
+
   fullName = 'Hello';
   title = 'My Master Page...';
   solutionName = '';
@@ -62,7 +65,7 @@ export class Master2Component implements OnInit {
   Initialisations() {
     this.menuItems = [];
     this.fullName = 'Hello';
-
+    this.BuildType = environment.buildType;
     const validateUser: boolean = this.getUserDetails();
     if (validateUser) {
       const isAuthorised: boolean = this.CheckAuthorisation();
