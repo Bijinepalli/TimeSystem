@@ -674,4 +674,11 @@ export class TimesystemService {
     return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
   }
 
+  getEmployeesNoTimesheetforInvoice(EmployeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', EmployeeId.toString());
+    return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
+  }
+
+
 }
