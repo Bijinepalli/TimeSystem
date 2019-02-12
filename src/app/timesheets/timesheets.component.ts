@@ -107,12 +107,12 @@ export class TimesheetsComponent implements OnInit {
     this.navigateToTimesheet(rowData.Id, '');
   }
   editTimeSheet(rowData: TimeSheetForEmplyoee) {
-    this.confSvc.confirm({
-      message: 'Do you want to edit the timesheet?',
-      accept: () => {
-        this.navigateToTimesheet(rowData.Id, '');
-      }
-    });
+    // this.confSvc.confirm({
+    //   message: 'Do you want to edit the timesheet?',
+    //   accept: () => {
+    this.navigateToTimesheet(rowData.Id, '');
+    //   }
+    // });
   }
   deleteTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.confSvc.confirm({

@@ -1,9 +1,9 @@
 <p-confirmDialog></p-confirmDialog>
 <form [formGroup]="timeSheetForm" class="">
+
   <div class="ui-g ui-g-nopad mainHeader">
     <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-      Maintain Time Sheet <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-        ></i>
+      Maintain Time Sheet <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
     </div>
     <div class="ui-g-3 ui-md-2 ui-g-nopad">
       <div class="ui-g-3 ui-md-6"></div>
@@ -12,6 +12,7 @@
       </div>
     </div>
   </div>
+
   <br>
   <div class="ui-g">
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
@@ -303,7 +304,16 @@
       </p-panel>
     </div>
   </div>
-
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g-12 errorBlock" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
+        [innerHTML]="_errorBlock | sanitizeHtmlString">
+      </div>
+      <div class="ui-g-12 warningBlock" *ngIf="_warningBlock !== undefined && _warningBlock !== null && _warningBlock !== ''"
+        [innerHTML]="_warningBlock | sanitizeHtmlString">
+      </div>
+    </div>
+  </div>
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12">
       <p-panel>
@@ -316,7 +326,9 @@
           <div class="ui-g">
             <div class="ui-g-12 ui-md-12" style="text-align: right">
               <button type="button" pButton label="Save" class="ui-button-info" (click)="Save()"></button>&nbsp;
-              <button type="button" pButton label="Submit"  class="ui-button-success" (click)="Submit()"></button>
+              <button type="button" *ngIf='!showConfirmSubmit' pButton label="Submit" class="ui-button-success" (click)="Submit()"></button>
+              <button type="button" *ngIf='showConfirmSubmit' pButton label="Confirm and Submit" class="ui-button-success"
+                (click)="ConfirmSubmit()"></button>
             </div>
           </div>
         </p-footer>

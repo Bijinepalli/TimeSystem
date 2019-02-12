@@ -497,10 +497,15 @@ export class TimesystemService {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'UpdateRate', body, httpOptions);
   }
-  getEmployeeClientProjectNonBillableDetails(employeeId: string) {
+  getEmployeeClientProjectNonBillableDetails(employeeId: string, periodEnd: string, periodStart: string) {
     const params = new HttpParams()
-      .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetBinding[]>(this.url + 'GetEmployeeClientProjectNonBillableDetails', { params });
+      .set('EmployeeId', employeeId)
+      .set('strEndDate', periodEnd)
+      .set('strStartDate', periodStart);
+    const data1 = this.http.get<TimeSheetBinding[]>(this.url + 'GetEmployeeClientProjectNonBillableDetails', { params });
+
+    const data2 = this.http.get<NonBillables[]>(this.url + 'GetEmployeeOnlyNonBillDetails', { params });
+    return forkJoin([data1, data2]);
   }
 
   getTimesheetTimeLineTimeCellDetails(timeSheetId: string) {
@@ -672,8 +677,16 @@ export class TimesystemService {
   }
   getEmployeesBySupervisor(employeeId: string) {
     const params = new HttpParams()
-    .set('employeeId', employeeId.toString());
-  return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
+      .set('employeeId', employeeId.toString());
+    return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
+  }
+  GetClientAndVertexHolidaysForTSPeriod(employeeId: string, periodEnd: string, periodStart: string) {
+    console.log('service');
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('endDate', periodEnd)
+      .set('startDate', periodStart);
+    return this.http.get<Holidays[]>(this.url + 'GetClientAndVertexHolidaysForTSPeriod', { params });
   }
 
 }
