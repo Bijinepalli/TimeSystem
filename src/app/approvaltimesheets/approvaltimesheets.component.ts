@@ -31,9 +31,9 @@ export class ApprovaltimesheetsComponent implements OnInit {
         this._approvals = data;
         // console.log(this._approvals);
         this.cols = [
-          { field: 'PeriodEnd', header: 'Period Ending' },
-          { field: 'EmployeeName', header: 'Employee Name' },
-          { field: 'CreatedOn', header: 'Created On' },
+          { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
+          { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: 'auto' },
+          { field: 'CreatedOn', header: 'Created On', align: 'center', width: 'auto' },
         ];
       });
   }

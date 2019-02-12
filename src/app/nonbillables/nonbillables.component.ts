@@ -49,9 +49,9 @@ export class NonbillablesComponent implements OnInit {
     this._selectedStatus = '1';
 
     this.cols = [
-      { field: 'ProjectName', header: 'Non-Billable Item Name' },
-      { field: 'Key', header: 'Code' },
-      { field: 'CreatedOn', header: 'CreatedOn' },
+      { field: 'ProjectName', header: 'Non-Billable Item Name', align: 'left', width: 'auto' },
+      { field: 'Key', header: 'Code', align: 'left', width: '250px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
     ];
 
     this.addControls();
@@ -76,16 +76,16 @@ export class NonbillablesComponent implements OnInit {
   changeStatus() {
     if (this._selectedStatus === '2') {
       this.cols = [
-        { field: 'ProjectName', header: 'Project Name' },
-        { field: 'Key', header: 'Code' },
-        { field: 'Inactive', header: 'Inactive' },
-        { field: 'CreatedOn', header: 'CreatedOn' },
+        { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
+        { field: 'Key', header: 'Code', align: 'left', width: '250px' },
+        { field: 'Inactive', header: 'Inactive', align: 'left', width: '120px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     } else {
       this.cols = [
-        { field: 'ProjectName', header: 'Project Name' },
-        { field: 'Key', header: 'Code' },
-        { field: 'CreatedOn', header: 'CreatedOn' },
+        { field: 'ProjectName', header: 'Project Name', align: 'left', width: '250px' },
+        { field: 'Key', header: 'Code', align: 'left', width: '250px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     }
     this.getNonBillables();
@@ -140,7 +140,7 @@ export class NonbillablesComponent implements OnInit {
           }
 
           if (this._nonBillable !== null && this._nonBillable.length > 0) {
-            this._recData = this._nonBillable.length + ' non-billable items found';
+            this._recData = this._nonBillable.length + ' matching non-billable items';
           } else {
             this._recData = 'No non-billable items found';
           }

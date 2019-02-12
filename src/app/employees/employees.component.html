@@ -48,15 +48,15 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em" *ngIf="!_HasEdit">Unlock</th>
-        <th style="width: 3em" *ngIf="!_HasEdit">Edit</th>
+        <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
         <th style="width: 7em" *ngIf="!_HasEdit">Terminate</th>
-        <th style="width: 7em" *ngIf="!_HasEdit">Reset Password</th>
+        <th style="width: 10em" *ngIf="!_HasEdit">Reset Password</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em">Clients</th>
-        <th style="width: 5em">Projects</th>
-        <th style="width: 5em">Non-Billable</th>
+        <th style="width: 6em">Projects</th>
+        <th style="width: 8em">Non-Billable</th>
         <th style="width: 5em">Rates</th>
       </tr>
     </ng-template>

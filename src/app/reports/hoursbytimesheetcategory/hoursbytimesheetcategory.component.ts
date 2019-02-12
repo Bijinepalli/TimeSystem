@@ -15,7 +15,6 @@ import { DatePipe } from '@angular/common';
 export class HoursbytimesheetcategoryComponent implements OnInit {
 _startDate = '';
   _endDate = '';
-  showAll = false;
   showReport = false;
   showSpinner = false;
   _reports: any[] = [];
@@ -24,6 +23,7 @@ _startDate = '';
    _billingCodesSpecial: BillingCodesSpecial;
    helpText: any;
    visibleHelp = false;
+   showTotals = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) { }
@@ -39,8 +39,7 @@ _startDate = '';
 generateReport() {
     this.showSpinner = true;
     this.buildCols();
-    console.log(this.showAll);
-    if (this.showAll === false) {
+    // if (this.showAll === false) {
       this._billingCodesSpecial = new BillingCodesSpecial();
       let _start = '';
       let _end = '';
@@ -55,7 +54,8 @@ generateReport() {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
-    }
+      this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+    // }
     // else {
     //   this._billingCodesSpecial.startDate = '';
     //   this._billingCodesSpecial.endDate = '';
@@ -81,7 +81,7 @@ generateReport() {
   }
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '200px' },
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
       { field: 'TANDM', header: 'T & M', align: 'right', width: '100px' },
       { field: 'Project', header: 'Project', align: 'right', width: '100px' },

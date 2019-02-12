@@ -141,7 +141,7 @@ export class ClientsComponent implements OnInit {
             this._clients = [];
           }
           if (this._clients !== undefined && this._clients !== null && this._clients.length > 0) {
-            this._recData = this._clients.length + ' clients found';
+            this._recData = this._clients.length + ' matching clients';
             this.getUsedClients();
           } else {
             this._recData = 'No clients found';

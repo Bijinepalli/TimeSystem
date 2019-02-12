@@ -53,7 +53,7 @@ export class CustomersComponent implements OnInit {
     this.CheckSecurity();
     this.cols = [
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-      { field: 'CustomerNumber', header: 'Customer Number', align: 'left', width: '150px' },
+      { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
     ];
     this.selectedType = 'Active';
     this.getCustomers();
@@ -92,7 +92,7 @@ export class CustomersComponent implements OnInit {
             this._customers = [];
           }
           if (this._customers !== null && this._customers.length > 0) {
-            this._recData = this._customers.length + ' customers found';
+            this._recData = this._customers.length + ' matching customers';
           } else {
             this._recData = 'No customers found';
           }
