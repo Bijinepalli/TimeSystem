@@ -23,7 +23,7 @@
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
       <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
-        <p-checkbox binary="true" label="" [(ngModel)]="showAll" binary="true"></p-checkbox><label class="label" style="padding:0px 10px;">Total by Employee</label>
+        <p-checkbox label="" [(ngModel)]="showTotals" binary="true"></p-checkbox><label class="label" style="padding:0px 10px;">Total by Employee</label>
       </div>
   </div>
   <p-footer>
@@ -56,7 +56,8 @@
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <td *ngFor="let col of columns" [style.text-align]="col.align" [style.white-space]="nowrap" [style.width]="col.width" 
+            [style.font-weight]="rowData['weight']" [style.color]="rowData['color']">
               <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
                 <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
               </div>

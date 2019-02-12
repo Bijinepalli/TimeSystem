@@ -84,10 +84,10 @@
       [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
   </div>
   <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
-    <p-checkbox binary="true" label="Show Period End Detail" pTooltip="When checked, hours are broken out by period end date" tooltipPosition="bottom" [(ngModel)]="showPeriodEndDetail" binary="true"></p-checkbox>
+    <p-checkbox binary="true" label="Show Period End Detail" pTooltip="When checked, hours are broken out by period end date" tooltipPosition="left" [(ngModel)]="showPeriodEndDetail" binary="true"></p-checkbox>
   </div>
   <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
-    <p-checkbox binary="true" label="Show Totals" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom" [(ngModel)]="showTotals" binary="true"></p-checkbox>
+    <p-checkbox binary="true" label="Show Totals" pTooltip="When checked, totals are included in the report" tooltipPosition="left" [(ngModel)]="showTotals" binary="true"></p-checkbox>
   </div>
   <div class="ui-g-12 ui-md-2">
     <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
@@ -99,7 +99,7 @@
 </div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
-  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>

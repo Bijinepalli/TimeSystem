@@ -45,7 +45,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em" *ngIf="!_HasEdit"> Delete</th>
@@ -57,7 +57,7 @@
           <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this billing code"
             tooltipPosition="bottom" (click)="editNonBillable(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
             {{rowData[col.field] === true ? 'Yes' : 'No'}}
           </div>

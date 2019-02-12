@@ -45,7 +45,7 @@ export class NonbillablehoursComponent implements OnInit {
       { field: 'ID', header: 'ID', align: 'left', width: 'auto' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-      { field: 'CalendarDate', header: 'Calendar Date', align: 'center', width: '100px' },
+      { field: 'CalendarDate', header: 'Calendar Date', align: 'center', width: '150px' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
     ];
     this.selectedReportType = 0;

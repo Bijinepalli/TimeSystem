@@ -29,9 +29,9 @@ export class OutstandingtimesheetsComponent implements OnInit {
       (data) => {
         this._outStandings = data;
         this.cols = [
-          { field: 'PeriodEnd', header: 'Period Ending' },
-          { field: 'ApprovalStatus', header: 'Status' },
-          { field: 'TimeStamp', header: 'Created On' },
+          { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
+          { field: 'ApprovalStatus', header: 'Status', align: 'left', width: 'auto' },
+          { field: 'TimeStamp', header: 'Created On', align: 'center', width: 'auto' },
         ];
       });
   }

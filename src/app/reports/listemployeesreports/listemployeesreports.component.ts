@@ -73,25 +73,25 @@ export class ListemployeesreportsComponent implements OnInit {
     this._holidaysselected = '';
 
     this._headerLabels = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-      { field: 'NickName', header: 'Nick Name', align: 'left', width: '100px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '147px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '134px' },
+      { field: 'NickName', header: 'Nick Name', align: 'left', width: '120px' },
       { field: 'PayRoleID', header: 'Payroll ID', align: 'left', width: '100px' },
       { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
-      { field: 'LoginID', header: 'Login ID', align: 'left', width: '175px' },
+      { field: 'LoginID', header: 'Login ID', align: 'left', width: '189px' },
       { field: 'HireDate', header: 'Hire Date', align: 'center', width: '100px' },
       { field: 'UserLevel', header: 'Security', align: 'center', width: '75px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
-      { field: 'IPayEligible', header: 'IPay', align: 'center', width: '75px' },
+      { field: 'IPayEligible', header: 'IPay', align: 'center', width: '50px' },
       { field: 'SubmitsTime', header: 'Submits Time', align: 'center', width: '100px' },
-      { field: 'CompanyHolidays', header: 'Vertex Holidays', align: 'center', width: '150px' }
+      { field: 'CompanyHolidays', header: 'Vertex Holidays', align: 'center', width: '135px' }
     ];
     this._defaultselected = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '147px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '134px' },
       { field: 'PayRoleID', header: 'Payroll ID', align: 'left', width: '100px' },
-      { field: 'LoginID', header: 'Login ID', align: 'left', width: '120px' },
+      { field: 'LoginID', header: 'Login ID', align: 'left', width: '189px' },
       { field: 'HireDate', header: 'Hire Date', align: 'center', width: '100px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },

@@ -55,7 +55,7 @@ export class AccessrightsComponent implements OnInit {
       .subscribe(
         (data) => {
           this._pages = data;
-          this._recData = data.length + ' pages found';
+          this._recData = data.length + ' matching pages';
           for (let i = 0; i < this._pages.length; i++) {
             this.pageFormgroup.addControl('chkPage_' + this._pages[i].ID, new FormControl({ value: null, disabled: true }, null));
             this.pageFormgroup.addControl('editSwitch_' + this._pages[i].ID, new FormControl({ value: null, disabled: true }, null));

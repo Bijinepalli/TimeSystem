@@ -60,7 +60,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'WeekEnding', header: 'Week Ending', align: 'center', width: '100px' },
+      { field: 'WeekEnding', header: 'Week Ending', align: 'center', width: '150px' },
     ];
   }
 

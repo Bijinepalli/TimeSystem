@@ -53,9 +53,9 @@ export class ProjectsComponent implements OnInit {
     this._selectedStatus = '1';
 
     this.cols = [
-      { field: 'ProjectName', header: 'Project Name' },
-      { field: 'Key', header: 'Code' },
-      { field: 'CreatedOn', header: 'CreatedOn' },
+      { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
+      { field: 'Key', header: 'Code', align: 'left', width: '250px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
     ];
     this.addControls();
     this.getProjects();
@@ -81,16 +81,16 @@ export class ProjectsComponent implements OnInit {
   changeStatus() {
     if (this._selectedStatus === '2') {
       this.cols = [
-        { field: 'ProjectName', header: 'Project Name' },
-        { field: 'Key', header: 'Code' },
-        { field: 'Inactive', header: 'Inactive' },
-        { field: 'CreatedOn', header: 'CreatedOn' },
+        { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
+        { field: 'Key', header: 'Code', align: 'left', width: '250px' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '120px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     } else {
       this.cols = [
-        { field: 'ProjectName', header: 'Project Name' },
-        { field: 'Key', header: 'Code' },
-        { field: 'CreatedOn', header: 'CreatedOn' },
+        { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
+        { field: 'Key', header: 'Code', align: 'left', width: '250px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     }
     this.getProjects();
@@ -144,7 +144,7 @@ export class ProjectsComponent implements OnInit {
           }
 
           if (this._projects !== null && this._projects.length > 0) {
-            this._recData = this._projects.length + ' projects found';
+            this._recData = this._projects.length + ' matching projects';
           } else {
             this._recData = 'No projects found';
           }

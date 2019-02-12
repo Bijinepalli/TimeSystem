@@ -55,11 +55,11 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     ];
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+      { field: 'Key', header: 'Code', align: 'left', width: '250px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '175px' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
     this.selectedType = 0;
