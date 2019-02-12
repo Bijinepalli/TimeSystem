@@ -147,13 +147,25 @@ export class Master2Component implements OnInit {
           (data) => {
             // this.menuItems=data;
             this.buildMenuItems(data);
-            this.dashboard = [{
-              label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
-            },
-            { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
-            { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
-            ];
-            // this.selectInitialMenuItemBasedOnUrl();
+            if (localStorage.getItem('SubmitsTime') !== undefined &&
+              localStorage.getItem('SubmitsTime') !== null &&
+              localStorage.getItem('SubmitsTime').toString() !== '' &&
+              localStorage.getItem('SubmitsTime').toString() === 'false'
+            ) {
+              this.dashboard = [{
+                label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+              },
+              { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              ];
+            } else {
+              this.dashboard = [{
+                label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+              },
+              { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
+              { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              ];
+              // this.selectInitialMenuItemBasedOnUrl();
+            }
           });
     }
   }
