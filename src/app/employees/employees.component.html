@@ -125,20 +125,28 @@
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('EmployeeUpdate.htm')"></i>
   </p-header>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div [innerHTML]="errMsg | sanitizeHtmlString" *ngIf="errMsg!==undefined && errMsg!==null && errMsg!==''" class="errorBlock">
+      </div>
+    </div>
+  </div>
   <!-- <app-add-employee></app-add-employee> -->
   <form [formGroup]="_frmEmployee">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Last Name *<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Last Name" formControlName="frmLastName" appendTo="body"
           pToolTip="Employee's last name">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         First Name *<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="First Name" formControlName="frmFirstName"
           appendTo="body" pToolTip="Employee's first name">
+      </div>
+      <div class="ui-g-12 ui-md-2 ui-lg-2">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
         Nick Name<br>
@@ -156,43 +164,62 @@
         Payroll ID *<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Payroll ID" formControlName="frmPayrollID"
-          appendTo="body" pToolTip="The employee's unique ID in the payroll system">
+          appendTo="body" pToolTip="The employee's unique ID in the payroll system" pKeyFilter="int" minlength="4"
+          maxlength="4" size="4">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Email Address *<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Email Address" formControlName="frmEmailAddress"
           appendTo="body" pToolTip="Employee's email address.">
       </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Secondary Email Address<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Secondary Email Address" formControlName="frmSecondaryEmailAddress"
           appendTo="body" pToolTip="Employee's secondary email address.">
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-3">
+      <div class="ui-g-12 ui-md-2 ui-lg-2"></div>
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Security Level<br>
         <div style="height:5px"></div>
         <p-dropdown appendTo="body" [options]="_SecurityLevels" placeholder="Select Security Level" formControlName="frmSecurityLevel"
           pToolTip="Employee's security level" [style]="{'width':'99%'}"></p-dropdown>
       </div>
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
+        Select Department *
+        <div style="height:5px"></div>
+        <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department" formControlName="frmDepartment"
+          pToolTip="Employee's Department" [style]="{'width':'99%'}"></p-dropdown>
+      </div>
       <div class="ui-g-12 ui-md-2 ui-lg-2">
         Hours Per Day<br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Hours Per Day" formControlName="frmHoursPerDay"
-          appendTo="body" pToolTip="The number of hours the employee is expected to work per day">
+          appendTo="body" pToolTip="The number of hours the employee is expected to work per day" pKeyFilter="int">
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-3">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Hire Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
-        <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
-          [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmHireDate"></p-calendar>
-      </div>&nbsp;&nbsp;&nbsp;&nbsp;
-      <div class="ui-g-12 ui-md-3 ui-lg-3">
+        <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmHireDate"
+          [inputStyle]="{'width':'90%'}"></p-calendar>
+      </div>
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         Start Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
-        <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
-          [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmStartDate"></p-calendar>
+        <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmStartDate"
+          [inputStyle]="{'width':'90%'}"></p-calendar>
+      </div>
+      <div class="ui-g-12 ui-md-2 ui-lg-2" *ngIf="lblTerminationDate">
+        <div style="height:5px"></div>
+        Termination Date
+        <div style="height:5px"></div>
+        <label appendTo="body" pToolTip="" tooltipPosition="bottom">{{lblTerminationDate}}</label>
+      </div>
+      <div class="ui-g-12 ui-md-6 ui-lg-6">
+        <div style="height:5px"></div>
+        <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried" [ngModelOptions]="{standalone: true}"
+          pToolTip="Check if this employee is paid by salary and is not paid on an hourly basis"></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
@@ -219,12 +246,12 @@
         <p-checkbox appendTo="body" binary="true" label="Company Officer" [(ngModel)]="chkOfficer" [ngModelOptions]="{standalone: true}"
           pToolTip="Check if this employee is an officer of the company. This is uncommon."></p-checkbox>
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-3">
+      <div class="ui-g-12 ui-md-7 ui-lg-7">
         <div style="height:5px"></div>
         <p-checkbox appendTo="body" binary="true" label="Company Supervisor" [(ngModel)]="chkSupervisor" [disabled]="SupEmpCnt>0"
           [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee is a supervisor of the company."></p-checkbox>
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-3" *ngIf="SupEmpCnt>0">
+      <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
         <div style="height:5px"></div>
         <label (mouseenter)="op2.show($event)" style="font-size:14px; color: blue"><b>{{SupEmpCnt}}</b> Employees are
           assigned</label>
@@ -250,16 +277,6 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried" [ngModelOptions]="{standalone: true}"
-          pToolTip="Check if this employee is paid by salary and is not paid on an hourly basis"></p-checkbox>
-      </div>
-      <div class="ui-g-12 ui-md-6 ui-lg-6">
-        Select Department :
-        <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department" formControlName="frmDepartment"
-          pToolTip="Employee's Department"></p-dropdown>
-      </div>
-      <div class="ui-g-6 ui-md-6 ui-lg-6">
-        <div style="height:5px"></div>
         <p-checkbox appendTo="body" binary="true" label="Timesheet Verification Needed" [(ngModel)]="chkTimesheetVerification"
           [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee needs a supervisor to verify Timesheet."></p-checkbox>
       </div>
@@ -274,13 +291,7 @@
         <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
           pTooltip="Change the status of this employee."></p-checkbox>
       </div>
-      <div class="ui-g-6 ui-md-6 ui-lg-6" *ngIf="lblTerminationDate">
-        <div style="height:5px"></div>
-        Termination Date :
-        <label appendTo="body" pToolTip="" tooltipPosition="bottom">{{lblTerminationDate}}</label>
-      </div>
     </div>
-
   </form>
   <p-footer>
     <div class="ui-g">
@@ -326,7 +337,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="nonBillableDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
-  [width]="800" [closeOnEscape]="false" [closable]="false">
+  [width]="1000" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -365,7 +376,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" blockScroll="true" [modal]="true" class="dialogWidth"
-  [width]="800" [closeOnEscape]="false" [closable]="false">
+  [width]="1000" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -404,7 +415,7 @@
 </p-dialog>
 
 <p-dialog [(visible)]="clientDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
-  [width]="800" [closeOnEscape]="false" [closable]="false">
+  [width]="1000" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
@@ -459,7 +470,7 @@
         [rows]="10">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recRateData}} matching rows</div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recRateData}} matching rates</div>
             <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
               <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"

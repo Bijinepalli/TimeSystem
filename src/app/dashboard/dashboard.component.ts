@@ -10,6 +10,8 @@ import { TimesystemService } from '../service/timesystem.service';
 export class DashboardComponent implements OnInit {
 
   PendingTimesheetsNotification: string;
+  showOutStandingTimesheets = false;
+  showApprovalTimesheets = false;
   constructor(
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -19,11 +21,33 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.Initialisations();
+    this.CheckSecurity();
     this.GetMethods();
   }
 
   Initialisations() {
 
+  }
+
+  CheckSecurity() {
+    if (localStorage.getItem('SubmitsTime') !== undefined &&
+      localStorage.getItem('SubmitsTime') !== null &&
+      localStorage.getItem('SubmitsTime').toString() !== '' &&
+      localStorage.getItem('SubmitsTime').toString() === 'false'
+    ) {
+      this.showOutStandingTimesheets = false;
+    } else {
+      this.showOutStandingTimesheets = true;
+    }
+    if (localStorage.getItem('IsSupervisor') !== undefined &&
+    localStorage.getItem('IsSupervisor') !== null &&
+    localStorage.getItem('IsSupervisor').toString() !== '' &&
+    localStorage.getItem('IsSupervisor').toString() === 'false'
+  ) {
+    this.showApprovalTimesheets = false;
+  } else {
+    this.showApprovalTimesheets = true;
+  }
   }
 
   GetMethods() {

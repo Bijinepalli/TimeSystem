@@ -111,6 +111,8 @@ export class EmployeesComponent implements OnInit {
   _HasEdit = true;
   _employeesPageNo: number;
 
+  errMsg: string;
+
 
   /* #endregion */
 
@@ -589,7 +591,7 @@ export class EmployeesComponent implements OnInit {
     this._frmEmployee.addControl('frmStartDate', new FormControl(null));
     this._frmEmployee.addControl('frmHoursPerDay', new FormControl(null));
     this._frmEmployee.addControl('frmSupervisor', new FormControl(null));
-    this._frmEmployee.addControl('frmDepartment', new FormControl(null));
+    this._frmEmployee.addControl('frmDepartment', new FormControl(null, Validators.required));
     this.lblTerminationDate = '';
     this.chkSalaried = false;
     this.chkSubmitsTime = false;
@@ -632,15 +634,24 @@ export class EmployeesComponent implements OnInit {
     if (data.SecondaryEmailAddress !== undefined && data.SecondaryEmailAddress !== null && data.SecondaryEmailAddress.toString() !== '') {
       this._frmEmployee.controls['frmSecondaryEmailAddress'].setValue(data.SecondaryEmailAddress);
     }
-    this._frmEmployee.controls['frmSecurityLevel'].setValue(data.UserLevel);
+    if (data.UserLevel !== undefined && data.UserLevel !== null && data.UserLevel.toString() !== '') {
+      this._frmEmployee.controls['frmSecurityLevel'].setValue(data.UserLevel);
+    } else {
+      this._frmEmployee.controls['frmSecurityLevel'].setValue('E');
+    }
     if (data.HireDate !== undefined && data.HireDate !== null && data.HireDate.toString() !== '') {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.replace(new RegExp('-', 'g'), '/')));
+    } else {
+      this._frmEmployee.controls['frmHireDate'].setValue(new Date());
     }
     if (data.StartDate !== undefined && data.StartDate !== null && data.StartDate.toString() !== '') {
       this._frmEmployee.controls['frmStartDate'].setValue(new Date(data.StartDate.replace(new RegExp('-', 'g'), '/')));
     }
-
-    this._frmEmployee.controls['frmHoursPerDay'].setValue(data.HoursPerDay);
+    if (data.HoursPerDay !== undefined && data.HoursPerDay !== null && data.HoursPerDay.toString() !== '') {
+      this._frmEmployee.controls['frmHoursPerDay'].setValue(data.HoursPerDay);
+    } else {
+      this._frmEmployee.controls['frmHoursPerDay'].setValue('8');
+    }
 
     if (data.SupervisorId !== undefined && data.SupervisorId !== null && data.SupervisorId.toString() !== '') {
       this._frmEmployee.controls['frmSupervisor'].setValue(data.SupervisorId);
@@ -658,17 +669,17 @@ export class EmployeesComponent implements OnInit {
     if (data.Salaried !== undefined && data.Salaried !== null) {
       this.chkSalaried = data.Salaried.toString().toLowerCase() === 'true' ? true : false;
     } else {
-      this.chkSalaried = false;
+      this.chkSalaried = true;
     }
     if (data.SubmitsTime !== undefined && data.SubmitsTime !== null) {
       this.chkSubmitsTime = data.SubmitsTime.toString().toLowerCase() === 'true' ? true : false;
     } else {
-      this.chkSubmitsTime = false;
+      this.chkSubmitsTime = true;
     }
     if (data.IPayEligible !== undefined && data.IPayEligible !== null) {
       this.chkIPayEligible = data.IPayEligible.toString().toLowerCase() === 'true' ? true : false;
     } else {
-      this.chkIPayEligible = false;
+      this.chkIPayEligible = true;
     }
     if (data.CompanyHolidays !== undefined && data.CompanyHolidays !== null) {
       this.chkCompanyHolidays = data.CompanyHolidays.toString().toLowerCase() === 'true' ? true : false;
@@ -771,6 +782,7 @@ export class EmployeesComponent implements OnInit {
     this.clearControlsEmployee();
   }
   saveEmployee() {
+    this.errMsg = '';
     if (this._IsEditEmployee === false) {
       if (this._selectedEmployee === undefined || this._selectedEmployee === null) {
         this._selectedEmployee = {};
@@ -782,7 +794,11 @@ export class EmployeesComponent implements OnInit {
     }
     this._selectedEmployee.LastName = this._frmEmployee.controls['frmLastName'].value.toString().trim();
     this._selectedEmployee.FirstName = this._frmEmployee.controls['frmFirstName'].value.toString().trim();
-    this._selectedEmployee.NickName = this._frmEmployee.controls['frmNickName'].value.toString().trim();
+    if (this.IsControlUndefined('frmNickName')) {
+      this._selectedEmployee.NickName = '';
+    } else {
+      this._selectedEmployee.NickName = this._frmEmployee.controls['frmNickName'].value.toString().trim();
+    }
     this._selectedEmployee.EmailAddress = this._frmEmployee.controls['frmEmailAddress'].value.toString().trim();
     if (this.IsControlUndefined('frmSecondaryEmailAddress')) {
       this._selectedEmployee.SecondaryEmailAddress = '';
@@ -807,7 +823,13 @@ export class EmployeesComponent implements OnInit {
     if (this.IsControlUndefined('frmHoursPerDay')) {
       this._selectedEmployee.HoursPerDay = '8.00';
     } else {
-      this._selectedEmployee.HoursPerDay = this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim();
+      // tslint:disable-next-line:max-line-length
+      if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 24 && this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() > 0) {
+        console.log('822');
+        this._selectedEmployee.HoursPerDay = this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim();
+      } else {
+        this.errMsg += 'Hours Per Day should be greater than 0 hours and less than 24 hours<br>';
+      }
     }
 
     if (this.IsControlUndefined('frmHireDate')) {
@@ -824,6 +846,11 @@ export class EmployeesComponent implements OnInit {
         this._frmEmployee.controls['frmStartDate'].value.toString().trim().replace(new RegExp('-', 'g'), '/'),
         'MM/dd/yyyy');
     }
+    if (this._selectedEmployee.HireDate !== '' && this._selectedEmployee.StartDate !== '') {
+      if (new Date(this._selectedEmployee.StartDate) < new Date(this._selectedEmployee.HireDate)) {
+        this.errMsg += 'Start Date can not be before than Hire Date<br>';
+      }
+    }
     if (this.IsControlUndefined('frmSupervisor')) {
       this._selectedEmployee.SupervisorId = null;
     } else {
@@ -839,7 +866,9 @@ export class EmployeesComponent implements OnInit {
     this._selectedEmployee.IsTimesheetVerficationNeeded = this.chkTimesheetVerification;
     this._selectedEmployee.Inactive = this.chkInactive;
     this._selectedEmployee.IsLocked = this.chkIsLocked;
-    this.SaveEmployeeSPCall();
+    if (this.errMsg === '') {
+      this.SaveEmployeeSPCall();
+    }
     if (this._IsEditEmployee === false) {
       this._selectedDepartment.EmployeeId = -1;
     } else {
@@ -850,7 +879,9 @@ export class EmployeesComponent implements OnInit {
     } else {
       this._selectedDepartment.Id = this._frmEmployee.controls['frmDepartment'].value;
     }
-    this.SaveDepartmentSPCall();
+    if (this.errMsg === '') {
+      this.SaveDepartmentSPCall();
+    }
   }
 
   IsControlUndefined(ctrlName: string): boolean {

@@ -178,6 +178,8 @@ export class LoginComponent implements OnInit {
               ));
             localStorage.setItem('UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
             localStorage.setItem('PayRollName', this.EmployeeData[0].PayRoleID.toString());
+            localStorage.setItem('SubmitsTime', this.EmployeeData[0].SubmitsTime.toString().toLowerCase());
+            localStorage.setItem('IsSupervisor', this.EmployeeData[0].IsSupervisor.toString().toLowerCase());
             let PasswordExpired = false;
             const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
             if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
