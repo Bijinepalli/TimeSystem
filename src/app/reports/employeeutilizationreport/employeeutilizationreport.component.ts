@@ -22,6 +22,9 @@ export class EmployeeutilizationreportComponent implements OnInit {
   _Departments: Departments[] = [];
   _selectedDepartment: Departments = null;
 
+  types: SelectItem[];
+  selectedType: string;
+
   _selectString = '';
 
   showFilters = false;
@@ -76,6 +79,14 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
     this._Departments = [];
     this._selectedDepartment = null;
+
+    this.types = [
+      { label: 'Active', value: '0' },
+      { label: 'Inactive', value: '1' },
+      { label: 'Both', value: '' }
+    ];
+    this.selectedType = '0';
+
     this._displayCheckBoxes = [];
     this.allcheckbox = false;
     this._selectcheckbox = [];
@@ -100,6 +111,14 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this.showDepartmentName = false;
     this._Departments = [];
     this._selectedDepartment = {};
+
+    this.types = [
+      { label: 'Active', value: '0' },
+      { label: 'Inactive', value: '1' },
+      { label: 'Both', value: '' }
+    ];
+    this.selectedType = '0';
+
     this._displayCheckBoxes = [];
     this.allcheckbox = false;
     this._selectcheckbox = [];
@@ -154,6 +173,11 @@ export class EmployeeutilizationreportComponent implements OnInit {
       (data) => {
         this.showFilters = false;
         this.showDepartmentName = true;
+        if (data !== undefined && data !== null && data.length > 0) {
+          if (this.selectedType === '0' || this.selectedType === '1') {
+            data = data.filter(P => P.Inactive.toString() === (this.selectedType === '0' ? 'false' : 'true'));
+          }
+        }
         if (data !== undefined && data !== null && data.length > 0) {
           for (let i = 0; i < data.length; i++) {
             this._displayCheckBoxes.push({ label: data[i].Name, value: data[i].ID });
@@ -252,6 +276,10 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this.ClearAllProperties();
     this.Initialisations();
     this.GetMethods();
+  }
+
+  changeEmployees() {
+
   }
 
 }
