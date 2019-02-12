@@ -125,7 +125,7 @@
             label="Change Employees" (click)="changeEmployees()"></button>&nbsp; -->
           <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
             label="Start Over" (click)="startOver()"></button>&nbsp;
-          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()" disabled="disabled"></button>
+          <a pButton icon="fa fa-table" href="{{ExportFilePath}}" label="Export"></a>
         </div>
       </div>
     </ng-template>
