@@ -36,7 +36,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
@@ -48,7 +48,7 @@
           <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this email"
             tooltipPosition="bottom" (click)="editEmail(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns" style="word-break: break-word;word-wrap: break-word;">
+        <td *ngFor="let col of columns" style="word-break: break-word;word-wrap: break-word;" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="(col.header.indexOf('Is High Priority') >= 0 
             || col.header.indexOf('Is Subject Template') >= 0 
             || col.header.indexOf('Is Body Template') >= 0 

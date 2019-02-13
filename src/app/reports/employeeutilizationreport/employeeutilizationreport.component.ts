@@ -46,6 +46,8 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   _todayDate: Date = new Date();
 
+  ExportFilePath = '';
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -214,6 +216,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this._endDateVal = '';
     this._UtilizationReportDetails = null;
     this._DistinctEmployee = null;
+    this.ExportFilePath = '';
     if (this._selectcheckbox.length > 0) {
       let _start = '';
       let _end = '';
@@ -242,6 +245,8 @@ export class EmployeeutilizationreportComponent implements OnInit {
               this._UtilizationReportDetails = data;
               this._DistinctEmployee =
                 data.EmployeeLevelDetails.filter((value, index, self) => self.map(x => x.Name).indexOf(value.Name) === index);
+
+              this.ExportFilePath = 'http://172.16.16.217/TimeSystemHelpFiles/Help/EmployeeSelect.htm';
               this.showSelectList = false;
               this.showDateRangeValues = true;
               this.showSpinner = false;

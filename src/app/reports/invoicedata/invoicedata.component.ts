@@ -61,7 +61,7 @@ export class InvoicedataComponent implements OnInit {
 
     // To convert single digit to double digit
     this._invoiceDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString()
-      + '-' + ('0' + (dateNow.getDate() + 1)).slice(-2).toString() + '-' + dateNow.getFullYear().toString();
+      + '-' + ('0' + (dateNow.getDate())).slice(-2).toString() + '-' + dateNow.getFullYear().toString();
     this._startDate = ('0' + (dateNow.getMonth() + 1)).slice(-2).toString() + '-01-'
       + (dateNow.getFullYear()).toString();
     this._endDate = ('0' + (end.getMonth() + 1)).slice(-2).toString() + '-'

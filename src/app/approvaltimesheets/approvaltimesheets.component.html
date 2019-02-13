@@ -5,7 +5,7 @@
       <th>
         Edit
       </th>
-      <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+      <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
         {{col.header}}
       </th>
     </tr>
@@ -16,7 +16,7 @@
         <i class="fa fa-edit fa-150x editIcon" pTooltip="Approve this TimeSheet"
           tooltipPosition="bottom" (click)="approveTimeSheet(rowData)"></i>
       </td>
-      <td *ngFor="let col of columns">
+      <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
         {{rowData[col.field]}}
       </td>
     </tr>

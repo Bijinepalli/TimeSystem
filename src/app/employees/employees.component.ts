@@ -357,7 +357,7 @@ export class EmployeesComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this._employeesPageNo = 0;
             this._employees = data;
-            this._recData = this._employees.length + ' employees found';
+            this._recData = this._employees.length + ' matching employees';
           } else {
             this._employeesPageNo = 0;
             this._employees = [];
@@ -1503,7 +1503,7 @@ export class EmployeesComponent implements OnInit {
     this._ratecols = [
       { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'left', width: '100px' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
       { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
     ];
