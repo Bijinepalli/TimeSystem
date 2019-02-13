@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
@@ -11,6 +11,8 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./employeeutilizationreport.component.css']
 })
 export class EmployeeutilizationreportComponent implements OnInit {
+
+  @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
 
   ParamSubscribe: any;
   _HasEdit = true;
@@ -287,4 +289,28 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   }
 
+  exportClick() {
+    let csv = this.dtUtilizationReport.nativeElement.innerText.replace('\s\s+', ';');
+    console.log(this.dtUtilizationReport.nativeElement.innerText);
+    console.log(csv);
+    const blob = new Blob([csv], {
+      type: 'text/csv;charset=utf-8;'
+    });
+    if (window.navigator.msSaveOrOpenBlob) {
+      navigator.msSaveOrOpenBlob(blob, 'EmployeeUtilizationReport' + '.csv');
+    } else {
+      const link = document.createElement('a');
+      link.style.display = 'none';
+      document.body.appendChild(link);
+      if (link.download !== undefined) {
+        link.setAttribute('href', URL.createObjectURL(blob));
+        link.setAttribute('download', 'EmployeeUtilizationReport' + '.csv');
+        link.click();
+      } else {
+        csv = 'data:text/csv;charset=utf-8,' + csv;
+        window.open(encodeURI(csv));
+      }
+      document.body.removeChild(link);
+    }
+  }
 }
