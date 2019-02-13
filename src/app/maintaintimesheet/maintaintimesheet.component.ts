@@ -45,6 +45,7 @@ export class MaintaintimesheetComponent implements OnInit {
   nonBillable: TimeSheetBinding[] = [];
   nonBillableSelect: string;
   _timesheetId: number;
+  _timesheetUserId: string;
   _timesheetPeriodEnd: string;
   _timeSheetEntries: TimeSheet[] = [];
   _timeLineEntries: TimeLine[] = [];
@@ -66,9 +67,8 @@ export class MaintaintimesheetComponent implements OnInit {
   _TotalValidationErrors = 0;
   _IsTimeSheetSubmitted = false;
   _actualTimeSheetId = 0;
-  _timeSheetApproval: TimeSheetForApproval[];
   _isTimesheetToAprrove = false;
-
+  _isTimesheetView = false;
 
   _EmployeeName = '';
   _periodEndDateDisplay = '';
@@ -79,7 +79,8 @@ export class MaintaintimesheetComponent implements OnInit {
   _periodEnddate: Date = new Date('2018-11-15');
   _periodEndDateString = '';
   _holidays: Holidays[] = [];
-
+  _timePeriodsOnLoad: TimePeriods[] = [];
+  _timeSheetForApprovalsOnLoad: TimeSheetForApproval[] = [];
   ngOnInit() {
     this._errorMessage = '';
     this._warningMessage = '';
@@ -129,10 +130,11 @@ export class MaintaintimesheetComponent implements OnInit {
     this._IsTimeSheetSubmitted = false;
 
     if (this._timesheetId > 0) {
+      console.log(this._timesheetId.toString());
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
-
+            this._timesheetUserId = data[0][0].EmployeeId.toString();
             this.getEmployeeDetails(data[0][0].EmployeeId.toString());
             this._timeSheetEntries = data[0];
             this._timeLineEntries = data[1];
@@ -149,14 +151,16 @@ export class MaintaintimesheetComponent implements OnInit {
               }
               this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
               this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
-              this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
+              // this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
+              this.getAllWantedDetailsOnLoad(this._timesheetUserId, this._timeSheetEntries[0].PeriodEnd);
             }
           }
         });
     } else {
       this.getEmployeeDetails(localStorage.getItem('UserId').toString());
       const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
-      this.getPeriodDates(selectPeriodEndDate);
+      // this.getPeriodDates(selectPeriodEndDate);
+      this.getAllWantedDetailsOnLoad(localStorage.getItem('UserId').toString(), selectPeriodEndDate);
     }
   }
 
@@ -167,34 +171,43 @@ export class MaintaintimesheetComponent implements OnInit {
     return new Date(+dtVals[0], +dtVals[1] - 1, +dtVals[2]);
   }
   getPeriodDates(selectPeriodEndDate: string) {
-    this.timesysSvc.getTimeSheetPeridos().subscribe(
-      (data1) => {
-        if (data1 !== undefined && data1 !== null && data1.length > 0) {
-          this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
-          if (this._timePeriods !== undefined && this._timePeriods !== null && this._timePeriods.length > 0) {
-            const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
-            // this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
-            console.log('End Date from DB - ');
-            console.log(this._timePeriods[0].FuturePeriodEnd);
-            this._periodEnddate = this.getNewDateVal(this._timePeriods[0].FuturePeriodEnd);
+    // this.timesysSvc.getTimeSheetPeridos().subscribe(
+    //   (data1) => {
+    const data1 = this._timePeriodsOnLoad;
+    if (data1 !== undefined && data1 !== null && data1.length > 0) {
+      this._timePeriods = data1.filter(P => P.FuturePeriodEnd === selectPeriodEndDate);
+      if (this._timePeriods !== undefined && this._timePeriods !== null && this._timePeriods.length > 0) {
+        const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
+        // this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
+        console.log('End Date from DB - ');
+        console.log(this._timePeriods[0].FuturePeriodEnd);
+        this._periodEnddate = this.getNewDateVal(this._timePeriods[0].FuturePeriodEnd);
 
-            if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
-              // this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
-              console.log('Start Date from DB - ');
-              console.log(startPeriod[0].FuturePeriodEnd);
-              this._peroidStartDate = this.getNewDateVal(startPeriod[0].FuturePeriodEnd);
-            }
-            this.getDateAndWeekArrays();
-          }
+        if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
+          // this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
+          console.log('Start Date from DB - ');
+          console.log(startPeriod[0].FuturePeriodEnd);
+          this._peroidStartDate = this.getNewDateVal(startPeriod[0].FuturePeriodEnd);
         }
-        this.defaultControlsToForm();
-        this.checkPendingTimesheets();
-        this.addFormControls();
+        this.getDateAndWeekArrays();
+      }
+    }
+    this.defaultControlsToForm();
+    this.checkPendingTimesheets();
+    this.addFormControls();
 
-        // For Validation Purpose
-        const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
-        const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
-        this.getVertexHolidaysList(localStorage.getItem('UserId'), cEndDate, cStartDate);
+    // For Validation Purpose
+    const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
+    const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
+    this.getVertexHolidaysList(localStorage.getItem('UserId'), cEndDate, cStartDate);
+    // });
+  }
+  getAllWantedDetailsOnLoad(timeSheetUserId: string, selectPeriodEndDate: string) {
+    this.timesysSvc.getAllWantedDetailsOnLoad(timeSheetUserId).subscribe(
+      (wholeData) => {
+        this._timePeriodsOnLoad = wholeData[0];
+        this._timeSheetForApprovalsOnLoad = wholeData[1];
+        this.getPeriodDates(selectPeriodEndDate);
       });
   }
 
@@ -243,7 +256,7 @@ export class MaintaintimesheetComponent implements OnInit {
 
     this.timeSheetForm.addControl('drpNonBillDefault', new FormControl(-1, null));
     this.timeSheetForm.addControl('txtNonBillWeeklyTotalDefault', new FormControl(this.decimal.transform(0, '1.2-2', null)));
-    this.timeSheetForm.addControl('txtComments', new FormControl(null, null));
+    this.timeSheetForm.addControl('txtComments', new FormControl('', null));
   }
 
 
@@ -630,6 +643,11 @@ export class MaintaintimesheetComponent implements OnInit {
       const superComments = this.timeSheetForm.get('txtSuperComments');
       superComments.enable();
     }
+    if (this._isTimesheetView) {
+      this.timeSheetForm.disable();
+      const txtComments = this.timeSheetForm.get('txtComments');
+      txtComments.disable();
+    }
   }
   get f() {
     return this.timeSheetForm.controls;
@@ -738,7 +756,7 @@ export class MaintaintimesheetComponent implements OnInit {
             //     this._TotalValidationErrors--;
             //   }
             // });
-            this._errorMessage += ' selected, You cannot select a billing code without entering hours. (Section ' + ChargeType + ')<br/>';
+            this._errorMessage += ' You cannot select a billing code without entering hours. (Section ' + ChargeType + ')<br/>';
           }
         }
       }
@@ -923,19 +941,13 @@ export class MaintaintimesheetComponent implements OnInit {
     if (weekEndTandMCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Time & Materials)<br/>';
     }
-    if (weekDayTandMCountWarning === 0) {
-      this._warningMessage += 'There are weekdays with no hours entered. Is this correct?<br/>';
-    }
     if (weekEndProjCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Project Billable)<br/>';
-    }
-    if (weekDayProjCountWarning === 0) {
-      this._warningMessage += 'There are weekdays with no hours entered. Is this correct?<br/>';
     }
     if (weekEndNonCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Non-Billable)<br/>';
     }
-    if (weekDayNonCountWarning === 0) {
+    if (weekDayNonCountWarning === 0 || weekDayTandMCountWarning === 0 || weekDayProjCountWarning === 0) {
       this._warningMessage += 'There are weekdays with no hours entered. Is this correct?<br/>';
     }
   }
@@ -975,10 +987,54 @@ export class MaintaintimesheetComponent implements OnInit {
         this._holidays = data;
       });
   }
+  emptyTimesheetValidation(): any {
+    let emptyCount = 0;
+    if (this._timeTandM.length > 0) {
+      for (let i = 0; i < this._timeTandM.length; i++) {
+        if (this.timeSheetForm.get('drpTandM_' + i).value !== '' && +this.timeSheetForm.get('drpTandM_' + i).value >= 0) {
+          emptyCount++;
+        }
+      }
+    } else {
+      if (this.timeSheetForm.get('drpTandMDefault').value !== '' && +this.timeSheetForm.get('drpTandMDefault').value >= 0) {
+        emptyCount++;
+      }
+    }
+    if (this._timeProjBill.length > 0) {
+      for (let i = 0; i < this._timeProjBill.length; i++) {
+        if (this.timeSheetForm.get('drpProjBill_' + i).value !== '' && +this.timeSheetForm.get('drpProjBill_' + i).value >= 0) {
+          emptyCount++;
+        }
+      }
+    } else {
+      if (this.timeSheetForm.get('drpProjBillDefault').value !== '' && +this.timeSheetForm.get('drpProjBillDefault').value >= 0) {
+        emptyCount++;
+      }
+    }
+    if (this._timeNONbill.length > 0) {
+      for (let i = 0; i < this._timeNONbill.length; i++) {
+        if (this.timeSheetForm.get('drpNONBill_' + i).value !== '' && +this.timeSheetForm.get('drpNONBill_' + i).value >= 0) {
+          emptyCount++;
+        }
+      }
+    } else {
+      if (this.timeSheetForm.get('drpNonBillDefault').value !== '' && +this.timeSheetForm.get('drpNonBillDefault').value >= 0) {
+        emptyCount++;
+      }
+    }
+    if (emptyCount === 0) {
+      this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
+      return true;
+    }
+    return false;
+  }
   Save() {
     this._errorMessage = '';
     this._errorBlock = '';
+    this._warningBlock = '';
+    this._warningMessage = '';
     this.showConfirmSubmit = false;
+    let emptyTimesheet = false;
     // this.divError.nativeElement.innerHTML = '';
     this.saveClickValidations();
     if (this._employee[0].CompanyHolidays) {
@@ -989,13 +1045,19 @@ export class MaintaintimesheetComponent implements OnInit {
       this._errorBlock = this._errorMessage;
     } else {
       if (this._TotalValidationErrors === 0) {
-        this.SaveSPCall(false);
-        if (this._errorMessage !== '') {
-          this._errorBlock = this._errorMessage;
+        emptyTimesheet = this.emptyTimesheetValidation();
+        if (emptyTimesheet) {
+          if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
+            this.SaveSPCall(false);
+          }
+        } else {
+          this.SaveSPCall(false);
         }
       }
+      if (this._errorMessage !== '') {
+        this._errorBlock = this._errorMessage;
+      }
     }
-
   }
 
   Submit() {
@@ -1008,6 +1070,7 @@ export class MaintaintimesheetComponent implements OnInit {
     this._errorBlock = '';
     this._warningBlock = '';
     this.showConfirmSubmit = false;
+    let emptyTimesheet = false;
     // this.divError.nativeElement.innerHTML = '';
     this.saveClickValidations();
     if (this._employee[0].CompanyHolidays) {
@@ -1021,7 +1084,14 @@ export class MaintaintimesheetComponent implements OnInit {
       this.showConfirmSubmit = true;
     } else {
       if (this._TotalValidationErrors === 0) {
-        this.SaveSPCall(true);
+        emptyTimesheet = this.emptyTimesheetValidation();
+        if (emptyTimesheet) {
+          if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
+            this.SaveSPCall(true);
+          }
+        } else {
+          this.SaveSPCall(true);
+        }
         if (this._errorMessage !== '') {
           this._errorBlock = this._errorMessage;
         }
@@ -1030,7 +1100,35 @@ export class MaintaintimesheetComponent implements OnInit {
 
   }
   ConfirmSubmit() {
-    this.SaveSPCall(true);
+    this._errorMessage = '';
+    this._errorBlock = '';
+    this._warningBlock = '';
+    this._warningMessage = '';
+    this.showConfirmSubmit = false;
+    let emptyTimesheet = false;
+    // this.divError.nativeElement.innerHTML = '';
+    this.saveClickValidations();
+    if (this._employee[0].CompanyHolidays) {
+      this.nonBillableValidations();
+    }
+    this.getWeekendHours();
+    if (this._errorMessage !== '') {
+      this._errorBlock = this._errorMessage;
+    } else {
+      if (this._TotalValidationErrors === 0) {
+        emptyTimesheet = this.emptyTimesheetValidation();
+        if (emptyTimesheet) {
+          if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
+            this.SaveSPCall(true);
+          }
+        } else {
+          this.SaveSPCall(true);
+        }
+        if (this._errorMessage !== '') {
+          this._errorBlock = this._errorMessage;
+        }
+      }
+    }
   }
   SaveSPCall(submitted: boolean) {
     let timeSheetSubmit: TimeSheetSubmit;
@@ -1138,7 +1236,7 @@ export class MaintaintimesheetComponent implements OnInit {
                 });
                 this.resetForm();
                 this.defaultControlsToForm();
-                this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+                this.getClientProjectCategoryDropDown(this._timesheetUserId);
                 this.getTimesheetTimeLineTimeCellDetails();
               }
             },
@@ -1191,25 +1289,28 @@ export class MaintaintimesheetComponent implements OnInit {
 
   }
   checkPendingTimesheets() {
-    if (this._employee.length > 0 && this._employee[0].ID.toString() !== localStorage.getItem('UserId')) {
-      this.timesysSvc.getTimeSheetForApprovalCheck(this._employee[0].ID.toString())
-        .subscribe(
-          (data) => {
-            this._timeSheetApproval = data;
-            for (let i = 0; i < this._timeSheetApproval.length; i++) {
-              if (this._timesheetId.toString() === this._timeSheetApproval[i].TimesheetId.toString()) {
-                this._isTimesheetToAprrove = true;
-                break;
-              }
-            }
-            // console.log(this._isTimesheetToAprrove);
-            if (this._isTimesheetToAprrove) {
-              this.getClientProjectCategoryDropDown(this._employee[0].ID.toString());
-            } else {
-              this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
-            }
-          }
-        );
+    if (this._timesheetUserId.toString() !== localStorage.getItem('UserId')) {
+      // this.timesysSvc.getTimeSheetForApprovalCheck(this._timesheetUserId.toString())
+      //   .subscribe(
+      //     (data) => {
+      for (let i = 0; i < this._timeSheetForApprovalsOnLoad.length; i++) {
+        if (this._timesheetId.toString() === this._timeSheetForApprovalsOnLoad[i].TimesheetId.toString()) {
+          this._isTimesheetToAprrove = true;
+          break;
+        }
+      }
+      console.log(this._isTimesheetToAprrove + '-----Aprrove');
+      if (!this._isTimesheetToAprrove) {
+        this._isTimesheetView = true;
+      }
+      this.getClientProjectCategoryDropDown(this._timesheetUserId.toString());
+      // console.log(this._isTimesheetToAprrove);
+      // if (this._isTimesheetToAprrove) {
+      //   this.getClientProjectCategoryDropDown(this._employee[0].ID.toString());
+      // } else {
+      //   this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+      // }
+      // });
     } else {
       this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
     }
@@ -1220,5 +1321,8 @@ export class MaintaintimesheetComponent implements OnInit {
   }
   Reject() {
     this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+  }
+  getWantedDetailsOnLoad() {
+
   }
 }

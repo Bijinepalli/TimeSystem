@@ -118,6 +118,11 @@ export class TimesheetsComponent implements OnInit {
     this.confSvc.confirm({
       message: 'Do you want to delete the timesheet?',
       accept: () => {
+        this.timesysSvc.timesheetDelete(rowData)
+          .subscribe(
+            (data) => {
+
+            });
         this.getTimeSheets();
       }
     });
@@ -211,5 +216,4 @@ export class TimesheetsComponent implements OnInit {
     }
     this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
   }
-
 }

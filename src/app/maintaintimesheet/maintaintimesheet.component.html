@@ -1,4 +1,5 @@
 <p-confirmDialog></p-confirmDialog>
+<p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess"></p-toast>
 <form [formGroup]="timeSheetForm" class="">
 
   <div class="ui-g ui-g-nopad mainHeader">
@@ -306,8 +307,14 @@
   </div>
   <div class="ui-g">
     <div class="ui-g-12">
-      <div class="ui-g-12 errorBlock" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
+      <div class="ui-g-12 ui-g-nopad errorBlockHeader" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
+        Errors
+      </div>
+      <div class="ui-g-12 ui-g-nopad errorBlock" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
         [innerHTML]="_errorBlock | sanitizeHtmlString">
+      </div>
+      <div class="ui-g-12 warningBlockHeader" *ngIf="_warningBlock !== undefined && _warningBlock !== null && _warningBlock !== ''">
+        Warnings
       </div>
       <div class="ui-g-12 warningBlock" *ngIf="_warningBlock !== undefined && _warningBlock !== null && _warningBlock !== ''"
         [innerHTML]="_warningBlock | sanitizeHtmlString">
@@ -320,13 +327,13 @@
         <p-header>
           Comments
         </p-header>
-        <textarea class="comments" pInputTextarea formControlName="txtComments"></textarea>
+        <textarea  class="comments" pInputTextarea formControlName="txtComments"></textarea>
 
-        <p-footer *ngIf="!_IsTimeSheetSubmitted">
+        <p-footer *ngIf="!_IsTimeSheetSubmitted && !this._isTimesheetView">
           <div class="ui-g">
             <div class="ui-g-12 ui-md-12" style="text-align: right">
               <button type="button" pButton label="Save" class="ui-button-info" (click)="Save()"></button>&nbsp;
-              <button type="button" *ngIf='!showConfirmSubmit' pButton label="Submit" class="ui-button-success" (click)="Submit()"></button>
+              <button type="button" pButton label="Submit" class="ui-button-success" (click)="Submit()"></button>&nbsp;
               <button type="button" *ngIf='showConfirmSubmit' pButton label="Confirm and Submit" class="ui-button-success"
                 (click)="ConfirmSubmit()"></button>
             </div>
