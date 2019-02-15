@@ -63,6 +63,7 @@ export class PeriodendhoursComponent implements OnInit {
   }
   onDateChange(e) {
     this.showSpinner = true;
+    this.showReport = false;
     this.buildCols();
     this._timesheet = new TimeSheet();
     let _date = '';
