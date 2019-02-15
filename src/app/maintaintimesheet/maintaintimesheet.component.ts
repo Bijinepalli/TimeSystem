@@ -785,27 +785,48 @@ export class MaintaintimesheetComponent implements OnInit {
     // console.log(this._TotalValidationErrors);
   }
   getHolidayErrors(rowId) {
+    console.log('Holidays');
+    console.log(this._holidays);
     let countError = 0;
     for (let i = 0; i < this._DateArray.length; i++) {
-      for (let j = 0; j < this._holidays.length; j++) {
-        if (this._timeNONbill.length > 0) {
-          if (this._DateArray[i] !== this._holidays[j].HolidayDate
-            && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
-            if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
-              countError++;
-              this._errorHourlyNonBillArray.push(i);
-            }
+      const dateHoliday = this._holidays.find(P => P.HolidayDate === this._DateArray[i]);
+      console.log(dateHoliday);
+      if (this._timeNONbill.length > 0) {
+        if (dateHoliday === undefined
+          && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
+          if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
+            countError++;
+            this._errorHourlyNonBillArray.push(i);
           }
-        } else {
-          if (this._DateArray[i] !== this._holidays[j].HolidayDate
-            && this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== '') {
-            if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
-              countError++;
-              this._errorHourlyNonBillArray.push(i);
-            }
+        }
+      } else {
+        if (dateHoliday === undefined
+          && this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== '') {
+          if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
+            countError++;
+            this._errorHourlyNonBillArray.push(i);
           }
         }
       }
+      // for (let j = 0; j < this._holidays.length; j++) {
+      //   if (this._timeNONbill.length > 0) {
+      //     if (this._DateArray[i] !== this._holidays[j].HolidayDate
+      //       && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
+      //       if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
+      //         countError++;
+      //         this._errorHourlyNonBillArray.push(i);
+      //       }
+      //     }
+      //   } else {
+      //     if (this._DateArray[i] !== this._holidays[j].HolidayDate
+      //       && this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== '') {
+      //       if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
+      //         countError++;
+      //         this._errorHourlyNonBillArray.push(i);
+      //       }
+      //     }
+      //   }
+      // }
     }
     if (countError > 0) {
       // tslint:disable-next-line:max-line-length
