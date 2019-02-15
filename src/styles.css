@@ -188,6 +188,26 @@ body .ui-panel .ui-panel-content {
   background-color: black;
   border: 1px solid black;
 } */
+
+
+.custombar1 .ui-scrollpanel-wrapper {
+  border-right: 9px solid #f4f4f4;
+}
+  
+.custombar1 .ui-scrollpanel-bar {
+  background-color: #1976d2;
+  opacity: 1;
+  transition: background-color .3s;
+}
+  
+.custombar1 .ui-scrollpanel-bar:hover {
+  background-color: #135ba1;
+}
+
+.tablePadding .ui-table{
+  padding-right:9px!important;
+}
+
 .errorBlock{
   padding:15px;
   background-color: #ffffff;

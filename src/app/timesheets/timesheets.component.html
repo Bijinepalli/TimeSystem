@@ -40,7 +40,7 @@
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 8em">View/Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
         </th>
         <th style="width: 5em">Delete</th>
@@ -54,7 +54,7 @@
           <i *ngIf="rowData['Submitted'] === 'Yes'" class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet"
             tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
         </td>
-        <td *ngFor="let col of columns">
+        <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="col.header.indexOf('Date') >= 0">
             {{rowData[col.field]}}
           </div>

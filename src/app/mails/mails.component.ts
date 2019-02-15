@@ -45,13 +45,13 @@ export class MailsComponent implements OnInit {
 
     this.CheckSecurity();
     this.cols = [
-      { field: 'EmailType', header: 'Email Type' },
-      { field: 'Subject', header: 'Subject' },
-      { field: 'Body', header: 'Body' },
-      { field: 'HighPriority', header: 'Is High Priority' },
-      { field: 'SubjectIsTemplate', header: 'Is Subject Template' },
-      { field: 'BodyIsTemplate', header: 'Is Body Template' },
-      { field: 'AddSignature', header: 'Is Signature Added' },
+      { field: 'EmailType', header: 'Email Type', align: 'left', width: 'auto' },
+      { field: 'Subject', header: 'Subject', align: 'left', width: 'auto' },
+      { field: 'Body', header: 'Body', align: 'left', width: 'auto' },
+      { field: 'HighPriority', header: 'Is High Priority', align: 'center', width: 'auto' },
+      { field: 'SubjectIsTemplate', header: 'Is Subject Template', align: 'center', width: 'auto' },
+      { field: 'BodyIsTemplate', header: 'Is Body Template', align: 'center', width: 'auto' },
+      { field: 'AddSignature', header: 'Is Signature Added', align: 'center', width: 'auto' },
     ];
 
     this.getEmails();
@@ -80,7 +80,7 @@ export class MailsComponent implements OnInit {
         (data) => {
           if (data !== undefined && data !== null) {
             this._lstEmails = data;
-            this._recData = data.length + ' emails found';
+            this._recData = data.length + ' email types';
           } else {
             this._lstEmails = [];
             this._recData = 'No emails found';

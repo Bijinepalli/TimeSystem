@@ -19,6 +19,11 @@
       <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name" pTooltip="Employee's Department"
         tooltipPosition="bottom" [style]="{'width':'300px;'}"></p-dropdown>
     </div>
+    <div class="ui-g-12 ui-md-3">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="types" pTooltip="Show employees that have this status" tooltipPosition="bottom"
+        [(ngModel)]="selectedType"></p-selectButton>
+    </div>
   </div>
   <p-footer>
     <div style="text-align: right">
@@ -28,7 +33,7 @@
   </p-footer>
 </p-panel>
 
-<div class="ui-g" *ngIf="showDepartmentName">
+<div class="ui-g" *ngIf="showDepartmentName && !(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
   <div class="ui-g-12 ui-md-2" style="text-align: left;">
     <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
       Department : {{_selectedDepartment.Name}}
@@ -97,7 +102,35 @@
 
 
 <div class="ui-g-12" *ngIf="_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null">
-  <p-scrollPanel [style]="{height: '400px'}">
+  <p-table #dt [responsive]="false" class="tablePadding">
+    <ng-template pTemplate="caption">
+      <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g-12 ui-md-5 ui-g-nopad recordsFound">
+          <div class="ui-g-12 ui-md-5" style="text-align: left;">
+            <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
+              Department : {{_selectedDepartment.Name}}
+            </ng-container>
+          </div>
+          <div class="ui-g-12 ui-md-7" style="text-align: left;">
+            <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
+              Date Range From: {{_startDateVal}} to {{_endDateVal}}
+            </ng-container>
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-7 ui-g-nopad" style="text-align: right;">
+          <!-- <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp; -->
+          <!-- <button pButton pTooltip="Change your selected Employees" tooltipPosition="bottom" class="ui-button-warning"
+            label="Change Employees" (click)="changeEmployees()"></button>&nbsp; -->
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+            label="Start Over" (click)="startOver()"></button>&nbsp;
+          <a pButton icon="fa fa-table" href="{{ExportFilePath}}" label="Export"></a>
+        </div>
+      </div>
+    </ng-template>
+  </p-table>
+  <p-scrollPanel [style]="{width: '100%',height:'640px'}" styleClass="custombar1">
     <div style="width:100%;">
       <table cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;" class="ui-table" *ngIf="_UtilizationReportDetails.WeekNumDetails !== undefined && _UtilizationReportDetails.WeekNumDetails !== null && _UtilizationReportDetails.WeekNumDetails.length > 0">
         <thead class="ui-table-thead">
@@ -185,6 +218,7 @@
     </div>
   </p-scrollPanel>
 </div>
+
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">

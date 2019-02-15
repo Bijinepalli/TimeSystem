@@ -12,6 +12,7 @@ import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommaExpr } from '@angular/compiler';
 import { SelectItem } from 'primeng/api';
+import { environment } from '../../environments/environment';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -23,13 +24,10 @@ const httpOptions = {
 })
 export class TimesystemService {
 
-  // 172.16.16.217
-  private accessSystemURL = 'http://172.16.16.217/AccessSystem/';
-  private ipaddress = 'http://172.16.33.1/';
-  private ipaddressLocal = 'http://172.16.16.217/';
-  private helpipaddress = 'http://172.16.16.217/TimeSystemHelpFiles/Help/';
-  private url = this.ipaddress + 'TimeSystemService/';
-  private localurl = this.ipaddressLocal + 'TimeSystemService/';
+  private accessSystemURL = environment.accessSystemURL;
+  private helpipaddress = environment.helpipaddress;
+  private url = environment.url;
+
   constructor(private http: HttpClient) { }
 
   getHolidays(year: string, code: string) {
@@ -701,4 +699,11 @@ export class TimesystemService {
 
     return forkJoin([data1, data2]);
   }
+  getEmployeesNoTimesheetforInvoice(EmployeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', EmployeeId.toString());
+    return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
+  }
+
+
 }

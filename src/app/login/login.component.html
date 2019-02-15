@@ -30,15 +30,16 @@
             <b>TimeSystem</b> Login
           </div>
           <div class="ui-g-12 ui-md-12">
-            <input id="username" type="text" pInputText placeholder="Username" formControlName="username" value="Name"
-              style="color: black; background-color: white;width:100%;">
+            <input id="username" type="text" pInputText placeholder="Username" autocomplete="username" formControlName="username"
+              value="Name" style="color: black; background-color: white;width:100%;">
           </div>
           <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: right;">
             <app-fielderrors style="width:100%" [form]="signInForm" field="username" nicename="Username">
             </app-fielderrors>
           </div>
           <div class="ui-g-12 ui-md-12">
-            <input type="password" pInputText placeholder="Password" formControlName="password" value="password" style="color: black; background-color: white;width:100%;">
+            <input type="password" pInputText placeholder="Password" autocomplete="current-password" formControlName="password"
+              value="password" style="color: black; background-color: white;width:100%;">
           </div>
           <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: right;">
             <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">

@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonService } from '../service/common.service';
+import { MessageService, ConfirmationService } from 'primeng/api';
+import { TimesystemService } from '../service/timesystem.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -6,13 +9,74 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  PendingTimesheetsNotification: string;
+  showOutStandingTimesheets = false;
+  showApprovalTimesheets = false;
+  constructor(
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
 
   ngOnInit() {
-    const dateg = new Date();
-    // console.log(dateg);
-    const newdate = new Date(dateg.setHours(dateg.getHours() + 7));
-    // console.log(newdate);
+    this.Initialisations();
+    this.CheckSecurity();
+    this.GetMethods();
+  }
+
+  Initialisations() {
+
+  }
+
+  CheckSecurity() {
+    if (localStorage.getItem('SubmitsTime') !== undefined &&
+      localStorage.getItem('SubmitsTime') !== null &&
+      localStorage.getItem('SubmitsTime').toString() !== '' &&
+      localStorage.getItem('SubmitsTime').toString() === 'false'
+    ) {
+      this.showOutStandingTimesheets = false;
+    } else {
+      this.showOutStandingTimesheets = true;
+    }
+    if (localStorage.getItem('IsSupervisor') !== undefined &&
+    localStorage.getItem('IsSupervisor') !== null &&
+    localStorage.getItem('IsSupervisor').toString() !== '' &&
+    localStorage.getItem('IsSupervisor').toString() === 'false'
+  ) {
+    this.showApprovalTimesheets = false;
+  } else {
+    this.showApprovalTimesheets = true;
+  }
+  }
+
+  GetMethods() {
+    this.getIncompleteTimeSheets();
+  }
+
+  getIncompleteTimeSheets() {
+    this.PendingTimesheetsNotification = null;
+    const TimeSheetIntimationCountDown = this.commonSvc.getAppSettingsValue('TimeSheetIntimationCountDown');
+    if (TimeSheetIntimationCountDown !== '') {
+      const dtToday = new Date();
+      const daysInMonth = new Date(dtToday.getFullYear(), dtToday.getMonth() + 1, 0).getDate();
+      if ((+daysInMonth) - (+dtToday.getDate()) <= (+TimeSheetIntimationCountDown)) {
+        this.timesysSvc.getEmployeesNoTimesheetforInvoice(localStorage.getItem('UserId').toString())
+          .subscribe(
+            (data) => {
+              if (data !== undefined && data !== null && data.length > 0) {
+                let pends: string[] = [];
+                pends = [];
+                for (let cnt = 0; cnt < data.length; cnt++) {
+                  pends.push(data[cnt].PeriodEnd);
+                }
+                this.PendingTimesheetsNotification =
+                  'Please make sure you save the hours (not necessarily submit) for the following time periods: '
+                  + pends.join() + ' to ensure proper month-end invoicing.';
+              }
+            });
+      }
+    }
   }
 
 }

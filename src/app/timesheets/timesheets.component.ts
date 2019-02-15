@@ -41,13 +41,13 @@ export class TimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'PeriodEnd', header: 'PeriodEnd' },
-      { field: 'Submitted', header: 'Submitted' },
-      { field: 'SubmitDate', header: 'Date Submitted' },
-      { field: 'Resubmitted', header: 'Resubmitted' },
-      { field: 'SemiMonthly', header: 'Semi-Monthly' },
-      { field: 'Hours', header: 'Hours' },
-      { field: 'ApprovalStatus', header: 'Approval Status' },
+      { field: 'PeriodEnd', header: 'PeriodEnd', align: 'center', width: 'auto' },
+      { field: 'Submitted', header: 'Submitted', align: 'center', width: 'auto' },
+      { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: 'auto' },
+      { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: 'auto' },
+      { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: 'auto' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+      { field: 'ApprovalStatus', header: 'Approval Status', align: 'left', width: 'auto' },
     ];
     this.getTimeSheets();
   }

@@ -34,6 +34,7 @@ export class EmployeehoursComponent implements OnInit {
   cols: any;
   helpText: any;
   visibleHelp = false;
+  showTotals = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -143,9 +144,11 @@ export class EmployeehoursComponent implements OnInit {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
+      this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
       console.log(this._billingCodesSpecial);
       this.timesysSvc.GetEmployeeHours(this._billingCodesSpecial).subscribe(
         (data) => {
+          console.log(data);
           this.showTable(data);
         }
       );

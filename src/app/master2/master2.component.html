@@ -31,7 +31,7 @@
   <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad userInfo" id="notifications" style="text-align: right">
     <div class="ui-g-6 ui-md-8 ui-lg-9" style="text-align:right;">
       <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="color:crimson;">
-        {{fullName}}
+        {{fullName}}&nbsp;<b style="color:dodgerblue;">({{BuildType}})</b>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="font-size:14px;color:black;">
         {{loginTime}}
@@ -78,7 +78,8 @@
     </div>
   </div>
 
-  <p-dialog [(visible)]="changePasswordDialog" blockScroll="true" [width]="500" [responsive]="true" showEffect="fade" [modal]="true">
+  <p-dialog [(visible)]="changePasswordDialog" blockScroll="true" [width]="500" [responsive]="true" showEffect="fade"
+    [modal]="true">
     <p-header>
       Change Password
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"

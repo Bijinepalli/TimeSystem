@@ -6,6 +6,7 @@ import { TimesystemService } from '../service/timesystem.service';
 import { LeftNavMenu, Employee } from '../model/objects';
 import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
+import { environment } from '../../environments/environment';
 
 declare var jQuery: any;
 
@@ -22,6 +23,8 @@ export class Master2Component implements OnInit {
 
   public visibleHelp = false;
   public show = false;
+  BuildType = '';
+
   fullName = 'Hello';
   title = 'My Master Page...';
   solutionName = '';
@@ -62,7 +65,7 @@ export class Master2Component implements OnInit {
   Initialisations() {
     this.menuItems = [];
     this.fullName = 'Hello';
-
+    this.BuildType = environment.buildType;
     const validateUser: boolean = this.getUserDetails();
     if (validateUser) {
       const isAuthorised: boolean = this.CheckAuthorisation();
@@ -144,13 +147,25 @@ export class Master2Component implements OnInit {
           (data) => {
             // this.menuItems=data;
             this.buildMenuItems(data);
-            this.dashboard = [{
-              label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
-            },
-            { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
-            { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
-            ];
-            // this.selectInitialMenuItemBasedOnUrl();
+            if (localStorage.getItem('SubmitsTime') !== undefined &&
+              localStorage.getItem('SubmitsTime') !== null &&
+              localStorage.getItem('SubmitsTime').toString() !== '' &&
+              localStorage.getItem('SubmitsTime').toString() === 'false'
+            ) {
+              this.dashboard = [{
+                label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+              },
+              { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              ];
+            } else {
+              this.dashboard = [{
+                label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+              },
+              { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
+              { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              ];
+              // this.selectInitialMenuItemBasedOnUrl();
+            }
           });
     }
   }
