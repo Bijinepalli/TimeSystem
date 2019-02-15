@@ -107,18 +107,24 @@ export class TimesheetsComponent implements OnInit {
     this.navigateToTimesheet(rowData.Id, '');
   }
   editTimeSheet(rowData: TimeSheetForEmplyoee) {
-    this.confSvc.confirm({
-      message: 'Do you want to edit the timesheet?',
-      accept: () => {
-        this.navigateToTimesheet(rowData.Id, '');
-      }
-    });
+    // this.confSvc.confirm({
+    //   message: 'Do you want to edit the timesheet?',
+    //   accept: () => {
+    this.navigateToTimesheet(rowData.Id, '');
+    //   }
+    // });
   }
   deleteTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.confSvc.confirm({
       message: 'Do you want to delete the timesheet?',
       accept: () => {
-        this.getTimeSheets();
+        const timeSheet = new TimeSheet();
+        timeSheet.Id = rowData.Id;
+        this.timesysSvc.timesheetDelete(timeSheet)
+          .subscribe(
+            (data) => {
+              this.getTimeSheets();
+            });
       }
     });
   }
@@ -211,5 +217,4 @@ export class TimesheetsComponent implements OnInit {
     }
     this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
   }
-
 }
