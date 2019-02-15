@@ -5,7 +5,7 @@ import {
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers,
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
-  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email,
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours,
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
@@ -568,12 +568,13 @@ export class TimesystemService {
     return this.http.get<NonBillables[]>(this.url + 'GetNonBillableCodesForReportGroup', { params });
   }
 
-  getNonBillableHours(startdate: string, enddate: string, Id: string) {
+  getNonBillableHours(startdate: string, enddate: string, Id: string, totalchecked: string) {
     const params = new HttpParams()
       .set('startdate', startdate)
       .set('enddate', enddate)
-      .set('id', Id);
-    return this.http.get<any>(this.url + 'GetNonBillableSoftwareHours', { params });
+      .set('id', Id)
+      .set('totalchecked', totalchecked);
+    return this.http.get<NonBillablesTotalHours[]>(this.url + 'GetNonBillableSoftwareHours', { params });
   }
   getUnusedBillingCodes(codetype: string, usagetype: string, datesince: string) {
     const params = new HttpParams()

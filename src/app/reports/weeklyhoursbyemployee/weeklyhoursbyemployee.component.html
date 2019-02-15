@@ -43,6 +43,7 @@
       label="Start Over" (click)="startOver()"></button>
   </div> -->
 </div>
+
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
     <p-checkbox *ngIf="showBillingCodeList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
@@ -132,7 +133,8 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align" [style.font-weight]="rowData['weight']" [style.color]="rowData['color']">
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align" [style.font-weight]="rowData['weight']"
+            [style.color]="rowData['color']">
             <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
               <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
             </div>

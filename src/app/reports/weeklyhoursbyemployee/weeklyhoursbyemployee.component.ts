@@ -36,6 +36,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
 
+  errMsg: string;
+
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
     this.types = [
@@ -130,6 +132,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
   generateReport() {
     this.showSpinner = true;
+    this.errMsg = '';
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
       this._billingCodesSpecial = new BillingCodesSpecial();
