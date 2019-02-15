@@ -22,6 +22,10 @@ export class PeriodendhoursComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
   showReport = false;
+  _reports: any[] = [];
+  _recData = 0;
+  cols: any;
+  _timesheet: TimeSheet;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -33,6 +37,7 @@ export class PeriodendhoursComponent implements OnInit {
 
   populateDateDrop() {
     this.dates = [];
+    this.selectedDate = '';
     const PeriodEndReportPeriods = 48;    // GET VALUE FROM APPSETTINGS
     this.timesysSvc.getDatebyPeriod()
       .subscribe(
@@ -57,19 +62,53 @@ export class PeriodendhoursComponent implements OnInit {
       );
   }
   onDateChange(e) {
-    // this.showSpinner = true;
-    // const semiMonthlyStart = '2011-12-16';
-    // const semiMonthly = true;
-    // const dateFormat = 'yyyy-MM-dd'
-    // const convertedDate = new Date(this.selectedDate);
-    // const periodEnd = this.datePipe.transform(this.selectedDate, dateFormat);
-    // tslint:disable-next-line:max-line-length
-    // if (semiMonthly && semiMonthlyStart === (convertedDate.getFullYear() + '-' + convertedDate.getMonth() + '-' + (convertedDate.getDate() + 1))) {
-    //   this.getPeriodEndHoursSemiMonthly(this.selectedDate);
-    // } else if ()
-  }
-  // getPeriodEndHoursSemiMonthly(selectedDate: string): any {
-  //   throw new Error('Method not implemented.');
-  // }
+    this.showSpinner = true;
+    this.buildCols();
+    this._timesheet = new TimeSheet();
+    let _date = '';
 
+    if (this.selectedDate !== null && this.selectedDate !== '') {
+      _date = this.datePipe.transform(this.selectedDate, 'yyyy/MM/dd');
+      // this.selectedDate = _date;
+    }
+    console.log(_date);
+    this._timesheet.PeriodEndDate = _date;
+    if (_date !== null && _date !== '') {
+      this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
+        (data) => {
+          console.log(data);
+          this.showTable(data);
+        }
+      );
+    } else {
+      this.showTable(null);
+    }
+  }
+  showTable(data: TimeSheet[]) {
+    if (data !== undefined && data !== null) {
+      this._reports = data;
+      this._recData = ((this._reports.length) - 4);
+    } else {
+      this._reports = [];
+      this._recData = 0;
+      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+    }
+    this.showReport = true;
+    this.showSpinner = false;
+  }
+  buildCols() {
+    this.cols = [
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '80px' },
+      { field: 'EmployeeNumber', header: 'Employee Number', align: 'left', width: '155px' },
+      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: 'auto' },
+      { field: 'Worked', header: 'Worked', align: 'right', width: '80px' },
+      { field: 'HolidayHours', header: 'Holiday Hours', align: 'right', width: '124px' },
+      { field: 'PTOHours', header: 'PTO Hours', align: 'right', width: '100px' },
+      { field: 'IPayHours', header: 'IPay Hours', align: 'right', width: '105px' },
+      { field: 'HoursPaid', header: 'Hours Paid', align: 'right', width: '105px' },
+      { field: 'NonBillableHours', header: 'Non-Billable Hours', align: 'right', width: '160px' },
+      { field: 'TotalHours', header: 'Total Hours', align: 'right', width: '110px' },
+      { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '200px' }
+    ];
+  }
 }

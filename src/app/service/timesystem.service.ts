@@ -413,8 +413,10 @@ export class TimesystemService {
   getDatebyPeriod() {
     return this.http.get<TimeSheet[]>(this.url + 'GeneratePeriodEndDates');
   }
-  GetTimeSheetsPerEmployeePeriodEnd(timesheet: TimeSheet) {
-    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodEnd');
+  GetTimeSheetsPerEmployeePeriodStart(PeriodEnd: string) {
+    const params = new HttpParams()
+      .set('PeriodEnd', PeriodEnd.toString());
+    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodStart', { params });
   }
   NonBillable_Delete(_inputData: NonBillables) {
     const body = JSON.stringify(_inputData);
