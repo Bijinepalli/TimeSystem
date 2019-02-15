@@ -686,9 +686,9 @@ export class TimesystemService {
       .set('startDate', periodStart);
     return this.http.get<Holidays[]>(this.url + 'GetClientAndVertexHolidaysForTSPeriod', { params });
   }
-  timesheetDelete(_timesheetId: TimeSheetForEmplyoee) {
+  timesheetDelete(_timesheetId: TimeSheet) {
     const body = JSON.stringify(_timesheetId);
-    return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
+    return this.http.post<TimeSheet>(this.url + 'TimeSheetDelete', body, httpOptions);
   }
   getAllWantedDetailsOnLoad(employeeId: string) {
     const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');

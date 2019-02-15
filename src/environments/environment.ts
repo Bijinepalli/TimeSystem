@@ -6,7 +6,7 @@ export const environment = {
   production: false,
   accessSystemURL: 'http://172.16.16.217/AccessSystem/',
   helpipaddress: 'http://172.16.16.217/TimeSystemHelpFiles/Help/',
-  url: 'http://172.16.32.67/TimeSystemService/',
+  url: 'http://172.16.33.1/TimeSystemService/',
   buildType: 'Dev',
 };
 

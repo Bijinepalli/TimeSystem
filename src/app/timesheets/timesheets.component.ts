@@ -118,12 +118,13 @@ export class TimesheetsComponent implements OnInit {
     this.confSvc.confirm({
       message: 'Do you want to delete the timesheet?',
       accept: () => {
-        // this.timesysSvc.timesheetDelete(rowData)
-        //   .subscribe(
-        //     (data) => {
-
-        //     });
-        this.getTimeSheets();
+        const timeSheet = new TimeSheet();
+        timeSheet.Id = rowData.Id;
+        this.timesysSvc.timesheetDelete(timeSheet)
+          .subscribe(
+            (data) => {
+              this.getTimeSheets();
+            });
       }
     });
   }
