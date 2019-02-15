@@ -105,6 +105,7 @@ export class Employee {
     BenchID?: string;
     HolidayID?: string;
     Name?: string;
+    PasswordExpiresOn?: string;
 }
 
 export class LoginErrorMessage {
@@ -425,5 +426,25 @@ export class EmployeeUtilityReport {
     WeekNumDetails?: EmployeeUtilityDetails[];
     EmployeeLevelDetails?: EmployeeUtilityDetails[];
     TeamLevelDetails?: EmployeeUtilityDetails[];
+}
+
+export class NonBillablesTotalHours {
+    Id?: number;
+    ReportGroup?: string;
+    EmployeeName?: string;
+    Hours?: string;
+    Jan?: string;
+    Feb?: string;
+    Mar?: string;
+    Apr?: string;
+    May?: string;
+    Jun?: string;
+    Jul?: string;
+    Aug?: string;
+    Sep?: string;
+    Oct?: string;
+    Nov?: string;
+    Dec?: string;
+    Total?: string;
 }
 

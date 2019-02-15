@@ -47,7 +47,7 @@
               tooltipPosition="bottom" (click)="deleteGroup(rowData.ID1,'main')"></i>
           </td>
           <td>
-            <i class="fa fa-plus fa-150x" pTooltip="Click to add a new subgroup to this report group" style="cursor:pointer;color:red"
+            <i class="fa fa-plus fa-150x" pTooltip="Click to add a new subgroup to this report group" style="cursor:pointer;color:green"
               tooltipPosition="bottom" (click)="addSubGroup(rowData.ID1)"></i>
           </td>
           <td>
@@ -61,7 +61,7 @@
       </ng-template>
     </p-table>
   </div>
-  <div class="ui-g-12" style="text-align:center">
+  <div class="ui-g-12" style="text-align:right">
     <button pButton pTooltip="Cancel and return to the previous page" tooltipPosition="bottom" class="ui-button-info"
       label="Return to Reports" (click)=returnReports()></button>
   </div>
