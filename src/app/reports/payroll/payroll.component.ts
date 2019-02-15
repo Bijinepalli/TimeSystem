@@ -46,7 +46,7 @@ export class PayrollComponent implements OnInit {
         (data) => {
           this.timesheet = data;
           for (let i = 0; i < PeriodEndReportPeriods; i++) {
-            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEndDate });
+            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEnd });
           }
         }
       );
