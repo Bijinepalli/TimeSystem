@@ -407,7 +407,6 @@ export class TimesystemService {
   }
   ListEmployeeClientRates(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
-    console.log(body);
     return this.http.post<Invoice[]>(this.url + 'ListEmployeeClientRates', body, httpOptions);
   }
   getDatebyPeriod() {

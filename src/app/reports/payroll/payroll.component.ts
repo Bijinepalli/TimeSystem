@@ -66,6 +66,7 @@ export class PayrollComponent implements OnInit {
       this.showSpinner = true;
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
         (data) => {
+          console.log(JSON.stringify(data));
           this.showTable(data);
         }
       );
@@ -111,5 +112,16 @@ export class PayrollComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  viewTimeSheet(rowData: TimeSheet) {
+    this.navigateToTimesheet(rowData.TimesheetID, '');
+  }
+  navigateToTimesheet(TimesheetId, TimesheetDate) {
+    // this.timesheetDialog = false;
+    let routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;
+    if (TimesheetDate !== '') {
+      routerLinkTimesheet += '/' + TimesheetDate;
+    }
+    this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
   }
 }

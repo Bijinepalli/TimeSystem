@@ -111,4 +111,15 @@ export class PeriodendhoursComponent implements OnInit {
       { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '200px' }
     ];
   }
+  viewTimeSheet(rowData: TimeSheet) {
+    this.navigateToTimesheet(rowData.TimesheetID, '');
+  }
+  navigateToTimesheet(TimesheetId, TimesheetDate) {
+    // this.timesheetDialog = false;
+    let routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;
+    if (TimesheetDate !== '') {
+      routerLinkTimesheet += '/' + TimesheetDate;
+    }
+    this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
+  }
 }
