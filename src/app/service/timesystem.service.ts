@@ -713,5 +713,9 @@ export class TimesystemService {
       .set('employeeid', employeeid);
     return this.http.get<HoursByTimesheet[]>(this.url + 'TimeSheetHoursByEmployee', { params });
   }
+  onlyTimeLineAndCellDelete(_timeLine: TimeLine) {
+    const body = JSON.stringify(_timeLine);
+    return this.http.post<TimeSheet>(this.url + 'OnlyTimeLineAndTimeCell_Delete', body, httpOptions);
+  }
 
 }

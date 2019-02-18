@@ -14,8 +14,18 @@
       </div>
     </div>
   </div>
-
-  <br>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g-12 ui-g-nopad errorBox" style="text-align: center"
+        *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
+        See Error Summary Below
+      </div>
+      <div class="ui-g-12 ui-g-nopad warningBox" style="text-align: center"
+        *ngIf="_warningBlock !== undefined && _warningBlock !== null && _warningBlock !== ''">
+        See Warning Summary Below
+      </div>
+    </div>
+  </div>
   <div class="ui-g">
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
       <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_EmployeeName}}
@@ -73,7 +83,7 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -94,7 +104,7 @@
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtTANDMWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              tooltipPosition="bottom" (click)="saveClient(rowData,'client')"></i>
+              tooltipPosition="bottom" (click)="saveByType(rowData,'TandM')"></i>
           </div>
         </div>
         <!-- End -->
@@ -157,7 +167,7 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -178,7 +188,7 @@
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtProjBillWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
+              tooltipPosition="bottom" (click)="saveByType(rowData,'ProjBill')"></i>
           </div>
         </div>
         <!-- End -->
@@ -241,7 +251,7 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -262,7 +272,7 @@
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtNonBillWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              tooltipPosition="bottom" (click)="editHoliday(rowData)"></i>
+              tooltipPosition="bottom" (click)="saveByType(rowData,'NonBill')"></i>
           </div>
         </div>
         <!-- End -->
@@ -370,7 +380,7 @@
         </p-footer>
 
       </p-panel>
-      <p-panel *ngIf="_timeSheetApproval">
+      <p-panel *ngIf="_isTimesheetToAprrove">
         <p-header>
           Supervisor Comments
         </p-header>

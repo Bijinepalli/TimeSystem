@@ -219,22 +219,15 @@ export class MaintaintimesheetComponent implements OnInit {
     console.log(this._periodEnddate);
 
     this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-    console.log('Days Length - ');
-    console.log(this._days);
     if (this._days > 0) {
       for (let i = 0; i < this._days - 1; i++) {
         const dtNew = new Date(this._peroidStartDate.getFullYear(),
           this._peroidStartDate.getMonth(),
           this._peroidStartDate.getDate() + (i + 1));
-        console.log(dtNew);
         this._DateArray.push(this.datePipe.transform(dtNew, 'yyyy-MM-dd'));
         this._weekArray.push(dtNew.getDay());
       }
     }
-    console.log('DateArray - ');
-    console.log(this._DateArray);
-    console.log('WeekArray - ');
-    console.log(this._weekArray);
   }
 
   defaultControlsToForm() {
@@ -1069,10 +1062,10 @@ export class MaintaintimesheetComponent implements OnInit {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
-            this.SaveSPCall(false);
+            this.SaveSPCall(false, '');
           }
         } else {
-          this.SaveSPCall(false);
+          this.SaveSPCall(false, '');
         }
       }
       if (this._errorMessage !== '') {
@@ -1108,10 +1101,10 @@ export class MaintaintimesheetComponent implements OnInit {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
-            this.SaveSPCall(true);
+            this.SaveSPCall(true, '');
           }
         } else {
-          this.SaveSPCall(true);
+          this.SaveSPCall(true, '');
         }
         if (this._errorMessage !== '') {
           this._errorBlock = this._errorMessage;
@@ -1140,10 +1133,10 @@ export class MaintaintimesheetComponent implements OnInit {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
-            this.SaveSPCall(true);
+            this.SaveSPCall(true, '');
           }
         } else {
-          this.SaveSPCall(true);
+          this.SaveSPCall(true, '');
         }
         if (this._errorMessage !== '') {
           this._errorBlock = this._errorMessage;
@@ -1151,13 +1144,12 @@ export class MaintaintimesheetComponent implements OnInit {
       }
     }
   }
-  SaveSPCall(submitted: boolean) {
+  SaveSPCall(submitted: boolean, type: string) {
     let timeSheetSubmit: TimeSheetSubmit;
     timeSheetSubmit = {};
     timeSheetSubmit.timeSheet = {};
     timeSheetSubmit.timeSheet.Id = this._timesheetId;
     timeSheetSubmit.timeSheet.PeriodEnd = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
-
     if (this.timeSheetForm.get('txtComments') !== undefined &&
       this.timeSheetForm.get('txtComments') !== null && this.timeSheetForm.get('txtComments').value !== null &&
       this.timeSheetForm.get('txtComments').value.toString() !== ''
@@ -1175,16 +1167,22 @@ export class MaintaintimesheetComponent implements OnInit {
 
         let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
         timeLineAndTimeCellSaveArr = [];
-        for (let i = 0; i < this._timeTandM.length; i++) {
-          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+        if (type === '' || type === 'TandM') {
+          for (let i = 0; i < this._timeTandM.length; i++) {
+            this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+          }
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
         }
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
-        for (let i = 0; i < this._timeProjBill.length; i++) {
-          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+        if (type === '' || type === 'ProjBill') {
+          for (let i = 0; i < this._timeProjBill.length; i++) {
+            this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+          }
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
         }
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
-        for (let i = 0; i < this._timeNONbill.length; i++) {
-          this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+        if (type === '' || type === 'NonBill') {
+          for (let i = 0; i < this._timeNONbill.length; i++) {
+            this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+          }
         }
         this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
         if (timeLineAndTimeCellSaveArr.length > 0) {
@@ -1224,20 +1222,27 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
       timeLineAndTimeCellSaveArr = [];
-      for (let i = 0; i < this._timeTandM.length; i++) {
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+      if (type === '' || type === 'TandM') {
+        for (let i = 0; i < this._timeTandM.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
       }
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
-      for (let i = 0; i < this._timeProjBill.length; i++) {
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+      if (type === '' || type === 'ProjBill') {
+        for (let i = 0; i < this._timeProjBill.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
       }
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
-      for (let i = 0; i < this._timeNONbill.length; i++) {
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+      if (type === '' || type === 'NonBill') {
+        for (let i = 0; i < this._timeNONbill.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
       }
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
       if (timeLineAndTimeCellSaveArr.length > 0) {
         timeSheetSubmit.timeLineAndTimeCellArr = timeLineAndTimeCellSaveArr;
+        console.log(timeSheetSubmit);
         this.timesysSvc.TimeLineAndTimeCell_DeleteAndInsert(timeSheetSubmit)
           .subscribe(
             (outputData) => {
@@ -1310,7 +1315,7 @@ export class MaintaintimesheetComponent implements OnInit {
 
   }
   checkPendingTimesheets() {
-    if (this._timesheetUserId.toString() !== localStorage.getItem('UserId')) {
+    if (this._timesheetUserId !== undefined && this._timesheetUserId.toString() !== localStorage.getItem('UserId')) {
       // this.timesysSvc.getTimeSheetForApprovalCheck(this._timesheetUserId.toString())
       //   .subscribe(
       //     (data) => {
@@ -1346,7 +1351,56 @@ export class MaintaintimesheetComponent implements OnInit {
   getWantedDetailsOnLoad() {
 
   }
-  saveClient(rowData: any, type: string) {
-    alert(type);
+  saveByType(rowData: any, type: string) {
+    this._errorMessage = '';
+    this._errorBlock = '';
+    this._warningBlock = '';
+    this._warningMessage = '';
+    if (type === 'TandM') {
+      this.DataMissingValidations('drpTandM_', 'txtTANDMWeeklyTotals_',
+        'drpTandMDefault', 'txtTANDMWeeklyTotalDefault', 'Time & Materials Billable', this._timeTandM, 1);
+    } else if (type === 'ProjBill') {
+      this.DataMissingValidations('drpProjBill_', 'txtProjBillWeeklyTotals_',
+        'drpProjBillDefault', 'txtProjBillWeeklyTotalDefault', 'Project Billable', this._timeProjBill, 1);
+    } else if (type === 'NonBill') {
+      this.DataMissingValidations('drpNONBill_', 'txtNonBillWeeklyTotals_',
+        'drpNonBillDefault', 'txtNonBillWeeklyTotalDefault', 'Non Billable ', this._timeNONbill, 1);
+
+      if (this._employee[0].CompanyHolidays) {
+        this.nonBillableValidations();
+      }
+      this.getWeekendHours();
+    }
+    if (this._errorMessage !== '') {
+      this._errorBlock = this._errorMessage;
+    } else {
+      this.SaveSPCall(false, type);
+    }
+  }
+  deleteByType(rowData: any) {
+    this.confSvc.confirm({
+      message: 'Are you sure want to delete this row?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.timesysSvc.onlyTimeLineAndCellDelete(rowData)
+          .subscribe((data) => {
+            if (+this._timesheetId.toString() < 0) {
+              this.resetForm();
+              this.defaultControlsToForm();
+              this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+              this.getTimesheetTimeLineTimeCellDetails();
+            } else {
+              this.resetForm();
+              this.defaultControlsToForm();
+              this.getClientProjectCategoryDropDown(this._timesheetUserId);
+              this.getTimesheetTimeLineTimeCellDetails();
+            }
+          });
+      },
+      reject: () => {
+      }
+    });
+
   }
 }
