@@ -127,8 +127,6 @@ export class BillablehoursComponent implements OnInit {
     if (this.endDate !== undefined && this.endDate !== null && this.endDate.toString() !== '') {
       end = this.datePipe.transform(this.endDate.toString(), 'MM-dd-yyyy');
     }
-    console.log(this.selectedBillingType.toString(), this.selectedCode.toString(),
-    this.selectedType.toString(), this.selectedassignStatus.toString(), start, end);
     this.timesysSvc
       .getBillableHours(this.selectedBillingType.toString(), this.selectedCode.toString(),
         this.selectedType.toString(), this.selectedassignStatus.toString(), start, end)
