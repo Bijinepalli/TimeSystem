@@ -448,4 +448,13 @@ export class NonBillablesTotalHours {
     Dec?: string;
     Total?: string;
 }
+export class HoursByTimesheet {
+    ChangeSort?: number;
+    ChangeType?: string;
+    BillingName?: string;
+    Key?: string;
+    TANDM?: string;
+    Project?: string;
+    NonBillable?: string;
+}
 
