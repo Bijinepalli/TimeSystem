@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  accessSystemURL: 'http://172.16.16.217/AccessSystem/',
-  helpipaddress: 'http://172.16.16.217/TimeSystemHelpFiles/Help/',
+  accessSystemURL: 'http://172.16.36.32/AccessSystem/',
+  helpipaddress: 'http://172.16.32.67/ECTS/TimeSystem/Help/',
   url: 'http://localhost/TimeSystemService/',
   buildType: 'Dev',
 };

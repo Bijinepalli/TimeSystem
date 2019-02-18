@@ -184,6 +184,7 @@ export class BillingCodes {
     CalendarDate?: string;
     color?: string;
     weight?: string;
+    RowCount?: number;
 }
 export class BillingCodesSpecial {
     value?: string;
