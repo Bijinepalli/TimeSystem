@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Billing Code Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Billing Code Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('HoursByEmployees.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -13,20 +14,23 @@
 </div>
 <br>
 <p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-3">
-    <label class="label" style="padding:0px 10px;">Select:</label> <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report" tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-3">
+      <label class="label" style="padding:0px 10px;">Select:</label>
+      <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report"
+        tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-2">
+      <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
+        [(ngModel)]="selectedType"></p-selectButton>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-2">
-    <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom" [(ngModel)]="selectedType"></p-selectButton>
-  </div>
-</div>
-<p-footer>
-  <div style="text-align: right">
-    <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
-      label="Show Billing Codes" (click)=showBillingCodes()></button>
-  </div>
-</p-footer>
+  <p-footer>
+    <div style="text-align: right">
+      <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom"
+        class="ui-button-info" label="Show Billing Codes" (click)=showBillingCodes()></button>
+    </div>
+  </p-footer>
 </p-panel>
 <div *ngIf="changeCodeList">
   <div class="ui-g-12">
@@ -43,7 +47,8 @@
 </div>
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
-    <p-checkbox *ngIf="showBillingCodeList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
+    <p-checkbox *ngIf="showBillingCodeList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox"
+      (onChange)="selectAll()"></p-checkbox>
   </div>
 </div>
 <div *ngIf="showBillingCodeList">
@@ -55,8 +60,9 @@
     <p-scrollPanel [style]="{height: '400px'}">
       <div class="ui-g" style="margin-bottom:10px">
         <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
-          <p-checkbox name="showBillingDetails" [value]="_dcb.value" pTooltip="Select the billing codes to appear in the report" tooltipPosition="bottom" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
-            (click)="selectcheck()"></p-checkbox>
+          <p-checkbox name="showBillingDetails" [value]="_dcb.value"
+            pTooltip="Select the billing codes to appear in the report" tooltipPosition="bottom" [label]="_dcb.label"
+            [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
         </div>
       </div>
     </p-scrollPanel>
@@ -66,37 +72,49 @@
   </p-panel>
 </div>
 <div style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showBillingCodeList">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-5">
-    Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus" pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both." tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-5">
+      Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus"
+        pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
+        tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
+    </div>
+    <div class="ui-g-12 ui-md-7">
+      Break Out By: <p-selectButton [options]="breakOut"
+        pTooltip="You can have the report break by billing code then employee or by employee then billing code."
+        tooltipPosition="bottom" [(ngModel)]="selectedbreakOut"></p-selectButton>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-7">
-    Break Out By: <p-selectButton [options]="breakOut" pTooltip="You can have the report break by billing code then employee or by employee then billing code." tooltipPosition="bottom" [(ngModel)]="selectedbreakOut"></p-selectButton>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-4">
+      Date Range From:
+      <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
+        pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
+        tooltipPosition="bottom" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+        [(ngModel)]="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
+      <label class="label" style="padding:0px 10px">to</label>
+      <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
+        pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
+        tooltipPosition="bottom" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+        [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
+      <p-checkbox binary="true" label="Show Period End Detail"
+        pTooltip="When checked, hours are broken out by period end date" tooltipPosition="left"
+        [(ngModel)]="showPeriodEndDetail" binary="true"></p-checkbox>
+    </div>
+    <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
+      <p-checkbox binary="true" label="Show Totals" pTooltip="When checked, totals are included in the report"
+        tooltipPosition="left" [(ngModel)]="showTotals" binary="true"></p-checkbox>
+    </div>
+    <div class="ui-g-12 ui-md-2">
+      <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
+        label="Generate Report" [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
+    </div>
+    <div class="ui-g-12 ui-md-2">
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+        class="ui-button-warning" label="Start Over" (click)=startOver()></button>
+    </div>
   </div>
-</div>
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-4">
-    Date Range From:
-    <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
-      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
-    <label class="label" style="padding:0px 10px">to</label>
-    <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset." tooltipPosition="bottom" showButtonBar="true"
-      [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
-  </div>
-  <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
-    <p-checkbox binary="true" label="Show Period End Detail" pTooltip="When checked, hours are broken out by period end date" tooltipPosition="left" [(ngModel)]="showPeriodEndDetail" binary="true"></p-checkbox>
-  </div>
-  <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
-    <p-checkbox binary="true" label="Show Totals" pTooltip="When checked, totals are included in the report" tooltipPosition="left" [(ngModel)]="showTotals" binary="true"></p-checkbox>
-  </div>
-  <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-      [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
-  </div>
-  <div class="ui-g-12 ui-md-2">
-    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)=startOver()></button>
-  </div>
-</div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
@@ -105,19 +123,19 @@
         <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
         <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp;
-            <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-warning"
-      label="Change Report" (click)="changeCodes()"></button>&nbsp;
-      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-      label="Start Over" (click)="startOver()"></button>&nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+          <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
+            class="ui-button-warning" label="Change Report" (click)="changeCodes()"></button>&nbsp;
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+            class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+        <th *ngFor="let col of columns" [pSortableColumn]="showTotals == false ? col.field : ''" [style.width]="col.width">
           {{col.header}}
         </th>
       </tr>
@@ -125,8 +143,9 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width"
-        [style.font-weight]="rowData['weight']" [style.color]="rowData['color']">
-          <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+          [style.font-weight]="rowData['weight']" [style.color]="rowData['color']">
+          <div
+            *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>
           <ng-template #defaultColumn>
@@ -139,8 +158,8 @@
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-      <p-scrollPanel [style]="{width: '100%', height: '100%'}">
-      <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-      </p-scrollPanel>
-    </p-sidebar>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '100%'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-scrollPanel>
+</p-sidebar>

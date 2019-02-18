@@ -107,6 +107,8 @@ export class HoursbyemployeeComponent implements OnInit {
           this._selectString = 'Clients (' + this._clients.length + ' matching codes found)';
           this.showBillingCodeList = true;
           this.showSpinner = false;
+          this.showPeriodEndDetail = true;
+          this.showTotals = true;
         }
       );
     } else if (this.selectedBillingType === 1) {

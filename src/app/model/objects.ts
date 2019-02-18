@@ -184,6 +184,7 @@ export class BillingCodes {
     CalendarDate?: string;
     color?: string;
     weight?: string;
+    RowCount?: number;
 }
 export class BillingCodesSpecial {
     value?: string;
@@ -249,6 +250,18 @@ export class TimeSheet {
     Status?: string;
     EmailAddress?: string;
     TimesheetID?: string;
+    Salaried?: string;
+    EmployeeName?: string;
+    Worked?: string;
+    HolidayHours?: string;
+    PTOHours?: string;
+    IPayHours?: string;
+    HoursPaid?: string;
+    NonBillableHours?: string;
+    TotalHours?: string;
+    HasOutstandingTimesheets?: string;
+    Mode?: string;
+    RowNumber?: string;
 }
 export class TimeLine {
     Id?: number;

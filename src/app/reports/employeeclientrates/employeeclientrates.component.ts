@@ -42,9 +42,8 @@ export class EmployeeclientratesComponent implements OnInit {
   generateReport() {
     this.showSpinner = true;
     this.buildCols();
-    console.log(this.showAll);
+    this._billingCodesSpecial = new BillingCodesSpecial();
     if (this.showAll === false) {
-      this._billingCodesSpecial = new BillingCodesSpecial();
       let _start = '';
       let _end = '';
 

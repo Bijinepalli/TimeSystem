@@ -407,14 +407,15 @@ export class TimesystemService {
   }
   ListEmployeeClientRates(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
-    console.log(body);
     return this.http.post<Invoice[]>(this.url + 'ListEmployeeClientRates', body, httpOptions);
   }
   getDatebyPeriod() {
     return this.http.get<TimeSheet[]>(this.url + 'GeneratePeriodEndDates');
   }
-  GetTimeSheetsPerEmployeePeriodEnd(timesheet: TimeSheet) {
-    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodEnd');
+  GetTimeSheetsPerEmployeePeriodStart(PeriodEnd: string) {
+    const params = new HttpParams()
+      .set('PeriodEnd', PeriodEnd.toString());
+    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodStart', { params });
   }
   NonBillable_Delete(_inputData: NonBillables) {
     const body = JSON.stringify(_inputData);

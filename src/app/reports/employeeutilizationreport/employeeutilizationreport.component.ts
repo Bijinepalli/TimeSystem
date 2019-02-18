@@ -68,6 +68,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
         this.GetMethods();
       }
     });
+
   }
 
   ClearAllProperties() {
