@@ -237,17 +237,15 @@ export class TimesheetsComponent implements OnInit {
   showHours() {
     this.HoursTable = true;
     this.hourscols = [
-      { field: 'BillingName', header: 'Billing Code', align: 'center', width: 'auto' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
       { field: 'TANDM', header: 'T & M', align: 'center', width: '75px' },
       { field: 'Project', header: 'Project', align: 'center', width: '75px' },
-      { field: 'NonBill', header: 'NonBillable', align: 'center', width: '75px' },
+      { field: 'NonBillable', header: 'NonBillable', align: 'center', width: '100px' },
     ];
     this._hoursData = '0';
-    const start = new Date(this._startDate);
-    console.log(this.datePipe.transform(start, 'yyyy-MM-dd'));
     this.timesysSvc.getHoursbyTimesheetforEmployee(
-      this.datePipe.transform(this._startDate, 'yyyy-MM-dd'),
-      this.datePipe.transform(this._endDate, 'yyyy-MM-dd'),
+      this._startDate,
+      this._endDate,
       localStorage.getItem('UserId').toString()).subscribe(
         (data) => {
           console.log(data);

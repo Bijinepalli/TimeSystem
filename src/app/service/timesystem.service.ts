@@ -706,11 +706,12 @@ export class TimesystemService {
     return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
   }
   getHoursbyTimesheetforEmployee(startdate: string, enddate: string, employeeid: string) {
+    console.log(startdate, enddate, employeeid);
     const params = new HttpParams()
-    .set('startdate', startdate)
-    .set('enddate', enddate)
-    .set('employeeid', employeeid);
-  return this.http.get<HoursByTimesheet[]>(this.url + 'TimeSheetHoursByEmployee', { params });
+      .set('startdate', startdate)
+      .set('enddate', enddate)
+      .set('employeeid', employeeid);
+    return this.http.get<HoursByTimesheet[]>(this.url + 'TimeSheetHoursByEmployee', { params });
   }
 
 }
