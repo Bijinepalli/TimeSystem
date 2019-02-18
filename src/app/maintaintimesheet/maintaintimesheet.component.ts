@@ -1331,6 +1331,7 @@ export class MaintaintimesheetComponent implements OnInit {
     this._errorBlock = '';
     this._warningBlock = '';
     this._warningMessage = '';
+    this.TotalHoursExceedValidation();
     if (type === 'TandM') {
       this.DataMissingValidations('drpTandM_', 'txtTANDMWeeklyTotals_',
         'drpTandMDefault', 'txtTANDMWeeklyTotalDefault', 'Time & Materials Billable', this._timeTandM, 1);
