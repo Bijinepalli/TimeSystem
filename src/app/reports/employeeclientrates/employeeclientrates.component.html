@@ -55,6 +55,7 @@
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
         </th>
       </tr>
     </ng-template>
@@ -69,6 +70,7 @@
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
         </th>
       </tr>
     </ng-template>
