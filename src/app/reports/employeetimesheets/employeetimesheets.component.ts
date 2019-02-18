@@ -32,6 +32,7 @@ export class EmployeetimesheetsComponent implements OnInit {
   selectedCode: string;
   visibleHelp: boolean;
   helpText: string;
+  selectedEmployeeName: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -65,17 +66,26 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.selectedCode = '';
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
       (data) => {
+        this._employee = [];
+        if (data !== undefined && data !== null && data.length > 0) {
+          data = data.filter(m => m.SubmitsTime.toString().toLowerCase() === 'true');
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._employee = data;
+          }
+        }
+
         // if (this.selectedType === '0' || this.selectedType === '1') {
         //   this._employee = data.filter(P => P.Inactive === (this.selectedType === '0' ? false : true));
         // } else {
-        this._employee = data;
         // }
+
         for (let i = 0; i < this._employee.length; i++) {
           this.codes.push({
             label: this._employee[i].LastName + ', ' + this._employee[i].FirstName,
             value: this._employee[i].ID
           });
         }
+
         this._codeCount = 'Select from ' + this._employee.length + ' matching Employees';
         this.showBillingCodeList = true;
         this.showSpinner = false;
@@ -84,6 +94,8 @@ export class EmployeetimesheetsComponent implements OnInit {
   }
   generateReport() {
     const Mode = '0';
+    console.log(this.codes.find(m => m.value === this.selectedCode));
+    this.selectedEmployeeName = this.codes.find(m => m.value === this.selectedCode).label.toString();
     this.timesysSvc.getEmployeeTimeSheetList(this.selectedCode.toString(), Mode)
       .subscribe(
         (data) => {

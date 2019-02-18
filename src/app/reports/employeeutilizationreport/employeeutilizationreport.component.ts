@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
@@ -50,7 +50,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   ExportFilePath = '';
 
-  @ViewChild('dtUtilizationReport') dtUtilizationReport;
+  @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
 
   constructor(
     private router: Router,
