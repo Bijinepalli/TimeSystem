@@ -1346,4 +1346,7 @@ export class MaintaintimesheetComponent implements OnInit {
   getWantedDetailsOnLoad() {
 
   }
+  saveClient(rowData: any, type: string) {
+    alert(type);
+  }
 }
