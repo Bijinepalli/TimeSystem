@@ -128,8 +128,6 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
     this.timesysSvc.getNonBillables('1')
       .subscribe(
         (data) => {
-          console.log('gfsd');
-          console.log(data);
           if (this.selectedType < 2) {
             this._nonBillables = data[0].filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
           } else {

@@ -63,7 +63,6 @@ generateReport() {
     this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);
-        console.log(data);
       }
     );
   }

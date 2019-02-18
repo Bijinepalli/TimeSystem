@@ -302,8 +302,6 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this.ExportCSV(sheetName, exHeader, this.dtUtilizationReport.nativeElement);
 
     // let csv = this.dtUtilizationReport.nativeElement.innerText;
-    // console.log(this.dtUtilizationReport);
-    // console.log(csv);
     // const blob = new Blob([csv], {
     //   type: 'text/csv;charset=utf-8;'
     // });

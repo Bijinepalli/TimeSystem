@@ -840,9 +840,8 @@ export class EmployeesComponent implements OnInit {
     if (this.IsControlUndefined('frmHoursPerDay')) {
       this._selectedEmployee.HoursPerDay = '8.00';
     } else {
-      // tslint:disable-next-line:max-line-length
-      if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 24 && this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() > 0) {
-        console.log('822');
+      if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 24 &&
+        this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() > 0) {
         this._selectedEmployee.HoursPerDay = this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim();
       } else {
         this.errMsg += 'Hours Per Day should be greater than 0 hours and less than 24 hours<br>';

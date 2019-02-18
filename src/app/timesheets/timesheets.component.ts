@@ -83,10 +83,8 @@ export class TimesheetsComponent implements OnInit {
     // this.selectTimePeriodDate = '';
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data) => {
-        console.log(data);
         this.timesysSvc.getDatebyPeriod().subscribe(
           (data1) => {
-            console.log(data1);
             if (data !== undefined && data !== null && data.length > 0) {
               this._timePeriods = data;
               if (data1 !== undefined && data1 !== null && data1.length > 0) {
@@ -158,7 +156,6 @@ export class TimesheetsComponent implements OnInit {
   }
 
   createTimesheetDialog() {
-    console.log(this.selectTimePeriod);
     if (this.selectTimePeriod !== undefined && this.selectTimePeriod !== null) {
       if (+this.selectTimePeriod.value > 0) {
         this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.value.toString()).subscribe(
@@ -198,8 +195,6 @@ export class TimesheetsComponent implements OnInit {
         );
 
       } else {
-        console.log(JSON.stringify(this.selectTimePeriod.value));
-        console.log(JSON.stringify(this.selectTimePeriod.code));
         this.navigateToTimesheet(this.selectTimePeriod.value, this.selectTimePeriod.code);
       }
     }
@@ -248,7 +243,6 @@ export class TimesheetsComponent implements OnInit {
       this._endDate,
       localStorage.getItem('UserId').toString()).subscribe(
         (data) => {
-          console.log(data);
           if (data !== undefined && data !== null && data.length > 0) {
             this._hoursbytimesheetlist = data;
             this._hoursData = data.length.toString();

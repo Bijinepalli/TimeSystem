@@ -197,7 +197,6 @@ export class DepartmentsComponent implements OnInit {
         (outputData) => {
           this.deptEmployeesDialog = true;
           if (outputData !== undefined && outputData !== null && outputData.length > 0) {
-            console.log(outputData);
             this._deptEmployeesList = outputData;
             this._recDataEmp = outputData.length + ' employees found';
             overlaypanel.toggle(event);

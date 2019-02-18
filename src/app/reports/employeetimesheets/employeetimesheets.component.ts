@@ -65,7 +65,6 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.selectedCode = '';
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
       (data) => {
-        console.log(data);
         // if (this.selectedType === '0' || this.selectedType === '1') {
         //   this._employee = data.filter(P => P.Inactive === (this.selectedType === '0' ? false : true));
         // } else {
@@ -91,7 +90,6 @@ export class EmployeetimesheetsComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this._timeSheets = data;
             let count = 0;
-            console.log(this._timeSheets);
             for (let i = 0; i < this._timeSheets.length; i++) {
               if (this._timeSheets[i]['Submitted'].toUpperCase() === 'NO') {
                 count++;

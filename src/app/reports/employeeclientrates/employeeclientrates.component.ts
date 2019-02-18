@@ -64,7 +64,6 @@ export class EmployeeclientratesComponent implements OnInit {
     this.timesysSvc.ListEmployeeClientRates(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);
-        console.log(data);
       }
     );
   }

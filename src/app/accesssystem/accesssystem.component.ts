@@ -67,14 +67,12 @@ export class AccesssystemComponent implements OnInit {
     return days;
   }
   headerTextColor(day: any, index: any) {
-    console.log(day, index);
     if (index > 1) {
       const getdate = new Date('2019' + '-' + '01' + '-' + day);
       const dayName = this.datePipe.transform(getdate, 'EEE');
       if (dayName === 'Sun' || dayName === 'Sat') {
         return 'weekends';
       }
-      console.log(dayName);
     }
   }
 }

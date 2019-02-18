@@ -66,7 +66,6 @@ export class EmployeehoursComponent implements OnInit {
     // if (this.selectedhoursType === '' && this.selectedType === '') {
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
       (data) => {
-        console.log(data);
         // if (this.selectedType === '0' || this.selectedType === '1') {
         //   this._employee = data.filter(P => P.Inactive === (this.selectedType === '0' ? false : true));
         // } else {
@@ -145,10 +144,8 @@ export class EmployeehoursComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
-      console.log(this._billingCodesSpecial);
       this.timesysSvc.GetEmployeeHours(this._billingCodesSpecial).subscribe(
         (data) => {
-          console.log(data);
           this.showTable(data);
         }
       );

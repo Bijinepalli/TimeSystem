@@ -36,10 +36,8 @@ export class SelecttimesheetperiodComponent implements OnInit {
     this.getTimeSheetPeriods();
   }
   getTimeSheetPeriods() {
-    // console.log(localStorage.getItem('HireDate'));
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data1) => {
-        // console.log(JSON.stringify(data1));
         this._timePeriods = [];
         this.selectTimePeriod = 0;
         this.selectTimePeriodDate = '';
@@ -55,14 +53,12 @@ export class SelecttimesheetperiodComponent implements OnInit {
     if (this.selectTimePeriod > 0) {
       this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.toString()).subscribe(
         (data) => {
-          // console.log(data);
           this._timesheets = [];
           this._timesheetApproval = [];
           if (data !== undefined && data !== null && data.length > 0) {
             this._timesheets = data;
             this.timesysSvc.getTimeSheetForApprovalCheck(localStorage.getItem('UserId')).subscribe(
               (data1) => {
-                // console.log(data1);
                 if (data1 !== undefined && data1 !== null && data1.length > 0) {
                   this._timesheetApproval = data1.filter(P => P.PeriodEnd === this._timesheets[0].PeriodEnd && P.Status === 'P');
                   if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
@@ -78,7 +74,6 @@ export class SelecttimesheetperiodComponent implements OnInit {
                       message: 'A timesheet already has been submitted for this period.' +
                         'This will be a resubmittal. Do you want to continue?',
                       accept: () => {
-                        // console.log(this.selectTimePeriod);
                         this.resubmittal();
                       }
                     });

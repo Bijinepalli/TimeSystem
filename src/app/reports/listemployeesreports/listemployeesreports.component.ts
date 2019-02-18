@@ -110,8 +110,6 @@ export class ListemployeesreportsComponent implements OnInit {
       _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
       this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
     }
-    console.log(this._startDate, this._endDate);
-    console.log(_start, _end);
     this.timesysSvc.getEmployeesForReport(this._statusselected, this._Ipayselected, this._paidselected,
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(

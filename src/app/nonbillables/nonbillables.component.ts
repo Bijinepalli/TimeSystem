@@ -240,7 +240,6 @@ export class NonbillablesComponent implements OnInit {
     this.SaveNonBillableSPCall();
   }
   SaveNonBillableSPCall() {
-    console.log(this._selectedNonBillable);
     this.timesysSvc.NonBillable_InsertOrUpdate(this._selectedNonBillable)
       .subscribe(
         (outputData) => {
