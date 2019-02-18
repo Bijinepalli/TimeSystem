@@ -180,7 +180,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   showTable(data: BillingCodes[]) {
     if (data !== undefined && data !== null) {
       this._reports = data;
-      this._recData = this._reports.length;
+      this._recData = this._reports[0].RowCount;
       if (this._reports.length === 0) {
         this.msgSvc.add({ severity: 'error', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
       }

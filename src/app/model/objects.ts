@@ -196,6 +196,7 @@ export class BillingCodesSpecial {
     sortOrder?: string;
     billingCycle?: string;
     includeTotals?: number;
+    includePeriodEnd?: number;
 }
 // export class Invoice {
 //     LastName?: string;

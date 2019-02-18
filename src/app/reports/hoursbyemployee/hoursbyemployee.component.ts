@@ -191,6 +191,7 @@ export class HoursbyemployeeComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+      this._billingCodesSpecial.includePeriodEnd = this.showPeriodEndDetail === true ? 1 : 0;
       if (this.selectedbreakOut.toString() === '0') {
         switch (this.selectedBillingType) {
           case 0:
@@ -247,9 +248,9 @@ export class HoursbyemployeeComponent implements OnInit {
   }
 
   showTable(data: BillingCodes[]) {
-    if (data !== undefined && data !== null) {
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      this._recData = this._reports.length;
+      this._recData = this._reports[0].RowCount;
     } else {
       this._reports = [];
       this._recData = 0;
