@@ -5,7 +5,7 @@ import {
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers,
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
-  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours,
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours, HoursByTimesheet,
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
@@ -681,7 +681,6 @@ export class TimesystemService {
     return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
   }
   GetClientAndVertexHolidaysForTSPeriod(employeeId: string, periodEnd: string, periodStart: string) {
-    console.log('service');
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
       .set('endDate', periodEnd)
@@ -706,6 +705,13 @@ export class TimesystemService {
       .set('EmployeeId', EmployeeId.toString());
     return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
   }
-
+  getHoursbyTimesheetforEmployee(startdate: string, enddate: string, employeeid: string) {
+    console.log(startdate, enddate, employeeid);
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate)
+      .set('employeeid', employeeid);
+    return this.http.get<HoursByTimesheet[]>(this.url + 'TimeSheetHoursByEmployee', { params });
+  }
 
 }
