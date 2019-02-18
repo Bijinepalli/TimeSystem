@@ -105,6 +105,7 @@ export class Employee {
     BenchID?: string;
     HolidayID?: string;
     Name?: string;
+    PasswordExpiresOn?: string;
 }
 
 export class LoginErrorMessage {
@@ -183,6 +184,7 @@ export class BillingCodes {
     CalendarDate?: string;
     color?: string;
     weight?: string;
+    RowCount?: number;
 }
 export class BillingCodesSpecial {
     value?: string;
@@ -248,6 +250,18 @@ export class TimeSheet {
     Status?: string;
     EmailAddress?: string;
     TimesheetID?: string;
+    Salaried?: string;
+    EmployeeName?: string;
+    Worked?: string;
+    HolidayHours?: string;
+    PTOHours?: string;
+    IPayHours?: string;
+    HoursPaid?: string;
+    NonBillableHours?: string;
+    TotalHours?: string;
+    HasOutstandingTimesheets?: string;
+    Mode?: string;
+    RowNumber?: string;
 }
 export class TimeLine {
     Id?: number;
@@ -413,5 +427,34 @@ export class EmployeeUtilityReport {
     WeekNumDetails?: EmployeeUtilityDetails[];
     EmployeeLevelDetails?: EmployeeUtilityDetails[];
     TeamLevelDetails?: EmployeeUtilityDetails[];
+}
+
+export class NonBillablesTotalHours {
+    Id?: number;
+    ReportGroup?: string;
+    EmployeeName?: string;
+    Hours?: string;
+    Jan?: string;
+    Feb?: string;
+    Mar?: string;
+    Apr?: string;
+    May?: string;
+    Jun?: string;
+    Jul?: string;
+    Aug?: string;
+    Sep?: string;
+    Oct?: string;
+    Nov?: string;
+    Dec?: string;
+    Total?: string;
+}
+export class HoursByTimesheet {
+    ChangeSort?: number;
+    ChangeType?: string;
+    BillingName?: string;
+    Key?: string;
+    TANDM?: string;
+    Project?: string;
+    NonBillable?: string;
 }
 

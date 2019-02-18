@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
@@ -13,8 +13,6 @@ import { TableExport } from 'tableexport';
   styleUrls: ['./employeeutilizationreport.component.css']
 })
 export class EmployeeutilizationreportComponent implements OnInit {
-
-  @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
 
   ParamSubscribe: any;
   _HasEdit = true;
@@ -52,6 +50,8 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   ExportFilePath = '';
 
+  @ViewChild('dtUtilizationReport') dtUtilizationReport;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -72,6 +72,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
         this.GetMethods();
       }
     });
+
   }
 
   ClearAllProperties() {

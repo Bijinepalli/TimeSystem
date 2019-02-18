@@ -120,7 +120,7 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [style.width]="col.width" >
+        <th *ngFor="let col of columns" [pSortableColumn]="showTotals == false ? col.field : ''" [style.width]="col.width" >
           {{col.header}}
         </th>
       </tr>

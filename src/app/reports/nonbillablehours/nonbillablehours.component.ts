@@ -6,6 +6,7 @@ import { SelectItem } from 'primeng/api';
 import { NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { DateFormats } from 'src/app/model/constants';
+import { CommonService } from '../../service/common.service';
 
 @Component({
   selector: 'app-nonbillablehours',
@@ -30,37 +31,44 @@ export class NonbillablehoursComponent implements OnInit {
   visibleHelp = false;
   selectedCode: any;
   showSpinner = false;
+  dateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
+  errMsg: string;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
-    this.reportType = [
-      { label: 'VTX Suite', value: 0 },
-      { label: 'Internal Functions', value: 1 },
-      { label: 'Employee Time Off', value: 2 },
-      { label: 'Custom', value: 3 },
-    ];
-    this.cols = [
-      { field: 'Group1', header: 'Group1', align: 'left', width: 'auto' },
-      { field: 'Group2', header: 'Group2', align: 'left', width: 'auto' },
-      { field: 'ID', header: 'ID', align: 'left', width: 'auto' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-      { field: 'CalendarDate', header: 'Calendar Date', align: 'center', width: '150px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-    ];
-    this.selectedReportType = 0;
-    const dateNow = new Date();
-    const end = new Date(dateNow.getFullYear(), 12, 0);
-    if ((dateNow.getMonth() - 1).toString() === '-1') {
-      this.startDate = '12-01-' + (dateNow.getFullYear() - 1).toString();
-    } else {
-      this.startDate = (dateNow.getMonth() + 1).toString() + '-01-' + (dateNow.getFullYear().toString());
-    }
-    this.endDate = (end.getMonth() + 1).toString() + '-' + end.getDate().toString() + '-' + end.getFullYear().toString();
-    this.totalChecked = true;
+    private confSvc: ConfirmationService, private datePipe: DatePipe, private commonSvc: CommonService) {
   }
 
   ngOnInit() {
+    this.reportType = [
+      { label: 'VTX Suite', value: 1 },
+      { label: 'Internal Functions', value: 2 },
+      { label: 'Employee Time Off', value: 3 },
+      { label: 'Custom', value: 4 },
+    ];
+    this.cols = [
+      { field: 'ReportGroup', header: 'Report Group', align: 'left', width: 'auto' },
+      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: 'auto' },
+      { field: 'Jan', header: 'JAN', align: 'right', width: '75px' },
+      { field: 'Feb', header: 'FEB', align: 'right', width: '75px' },
+      { field: 'Mar', header: 'MAR', align: 'right', width: '75px' },
+      { field: 'Apr', header: 'APR', align: 'right', width: '75px' },
+      { field: 'May', header: 'MAY', align: 'right', width: '75px' },
+      { field: 'Jun', header: 'JUN', align: 'right', width: '75px' },
+      { field: 'Jul', header: 'JUL', align: 'right', width: '75px' },
+      { field: 'Aug', header: 'AUG', align: 'right', width: '75px' },
+      { field: 'Sep', header: 'SEp', align: 'right', width: '75px' },
+      { field: 'Oct', header: 'OCT', align: 'right', width: '75px' },
+      { field: 'Nov', header: 'NOV', align: 'right', width: '75px' },
+      { field: 'Dec', header: 'DEC', align: 'right', width: '75px' },
+      { field: 'Total', header: 'TOTAL', align: 'right', width: '75px' },
+    ];
+    this.selectedReportType = 1;
+    const dateNow = new Date();
+    const end = new Date(dateNow.getFullYear(), 12, 0);
+    const start = new Date(dateNow.getFullYear(), (dateNow.getMonth() - 1), 1);
+    this.startDate = this.datePipe.transform(start, 'MM-dd-yyyy');
+    this.endDate = this.datePipe.transform(end, 'MM-dd-yyyy');
+    this.totalChecked = true;
   }
 
   changeReportgroup() {
@@ -73,22 +81,26 @@ export class NonbillablehoursComponent implements OnInit {
   }
 
   generateReport() {
+    this.errMsg = '';
     this.showSpinner = true;
     this.setHeader();
     this.rowdata = {};
-    const dateFormat = 'yyyy-MM-dd';
-    const start = this.datePipe.transform(this.startDate, dateFormat);
-    const end = this.datePipe.transform(this.endDate, dateFormat);
-    this.timesysSvc.getNonBillableHours(start, end, (this.selectedReportType + 1).toString()).subscribe(
-      (data) => {
-        if (data !== null) {
-          console.log(data);
-          this._reports = data;
-          this.showReport = true;
+    const start = this.datePipe.transform(this.startDate, this.dateFormat);
+    const end = this.datePipe.transform(this.endDate, this.dateFormat);
+    if (new Date(this.startDate).getFullYear().toString() !== new Date(this.endDate).getFullYear().toString()) {
+      this.errMsg += 'Date cannot span over years';
+      this.showSpinner = false;
+    } else {
+      this.timesysSvc.getNonBillableHours(start, end, this.selectedReportType.toString(), this.totalChecked.toString()).subscribe(
+        (data) => {
+          if (data !== null) {
+            this._reports = data;
+            this.showReport = true;
+          }
+          this.showSpinner = false;
         }
-        this.showSpinner = false;
-      }
-    );
+      );
+    }
   }
 
   sortReport() {
@@ -114,16 +126,16 @@ export class NonbillablehoursComponent implements OnInit {
   setHeader() {
     this._headerType = '';
     switch (this.selectedReportType) {
-      case 0:
+      case 1:
         this._headerType = 'VTX Suite';
         break;
-      case 1:
+      case 2:
         this._headerType = 'Interal Functions';
         break;
-      case 2:
+      case 3:
         this._headerType = 'Employee Time Off';
         break;
-      case 3:
+      case 4:
         this._headerType = 'Custom';
         break;
     }

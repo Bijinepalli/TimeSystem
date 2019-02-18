@@ -112,6 +112,7 @@ export class EmployeesComponent implements OnInit {
   _employeesPageNo: number;
 
   errMsg: string;
+  _userAdmin = false;
 
 
   /* #endregion */
@@ -136,6 +137,9 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (localStorage.getItem('UserRole').toString() === 'A') {
+      this._userAdmin = true;
+    }
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.ClearAllProperties();
       this.Initialisations();
@@ -238,6 +242,7 @@ export class EmployeesComponent implements OnInit {
 
   Initialisations() {
     this.cols = [
+      { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
@@ -302,34 +307,7 @@ export class EmployeesComponent implements OnInit {
 
   /* #region Get Calls */
   getEmployees() {
-
-    if (this.selectedType === 2 && this.selectedSalaryType === 2) {
-      this.cols = [
-        { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-        { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-      ];
-    } else {
-      if (this.selectedType !== 2 && this.selectedSalaryType === 2) {
-        this.cols = [
-          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-          { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
-        ];
-      } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
-        this.cols = [
-          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-          { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-        ];
-      } else {
-        this.cols = [
-          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-        ];
-      }
-    }
+    this.setCols();
     if (this.selectedType === 1) {
       this.activeColumn = false;
     } else {
@@ -351,6 +329,7 @@ export class EmployeesComponent implements OnInit {
     this._employees = [];
     this._recData = 'No employees found';
 
+    const expirydays = this.commonSvc.getAppSettingsValue('PasswordExpiryDays');
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
@@ -365,6 +344,44 @@ export class EmployeesComponent implements OnInit {
           }
         }
       );
+  }
+
+  setCols() {
+    if (this.selectedType === 2 && this.selectedSalaryType === 2) {
+      this.cols = [
+        { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+        { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
+      ];
+    } else {
+      if (this.selectedType !== 2 && this.selectedSalaryType === 2) {
+        this.cols = [
+          { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+        ];
+      } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
+        this.cols = [
+          { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+        ];
+      } else {
+        this.cols = [
+          { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+        ];
+      }
+    }
   }
 
   getNonBillables(empId: number) {

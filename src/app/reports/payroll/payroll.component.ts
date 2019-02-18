@@ -29,47 +29,58 @@ export class PayrollComponent implements OnInit {
   selectedPeriod: any;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) { }
+    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+    this.populateDateDrop();
+  }
 
   ngOnInit() {
-    this.populateDateDrop();
+    // this.dates.push({ label: 'Select Period End', value: '' });
+    // this.selectedDate = '0';
   }
   populateDateDrop() {
     this.dates = [];
+    this.selectedDate = '';
     const PeriodEndReportPeriods = 48;
     this.timesysSvc.getDatebyPeriod()
       .subscribe(
         (data) => {
           this.timesheet = data;
           for (let i = 0; i < PeriodEndReportPeriods; i++) {
-            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEndDate });
+            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEnd });
           }
         }
       );
   }
-  getPeriodEndDetails() {
+  getPeriodEndDetails(e) {
+    console.log('data fetched started');
     this.showSpinner = true;
+    this.showReport = false;
     this.buildCols();
     this._timesheet = new TimeSheet();
     let _date = '';
 
     if (this.selectedDate !== null && this.selectedDate !== '') {
       _date = this.datePipe.transform(this.selectedDate, 'yyyy/MM/dd');
-      this.selectedDate = _date;
+      // this.selectedDate = _date;
     }
     this._timesheet.PeriodEndDate = _date;
-    this.showSpinner = false;
-    this.timesysSvc.GetTimeSheetsPerEmployeePeriodEnd(this._timesheet).subscribe(
-      (data) => {
-        // this.showTable(data);
-        console.log(data);
-      }
-    );
+    if (_date !== null && _date !== '') {
+      this.showSpinner = true;
+      console.log(_date + ' as end date');
+      this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
+        (data) => {
+          console.log('data fetched end');
+          this.showTable(data);
+        }
+      );
+    } else {
+      this.showTable(null);
+    }
   }
-  showTable(data: BillingCodes[]) {
+  showTable(data: TimeSheet[]) {
     if (data !== undefined && data !== null) {
       this._reports = data;
-      this._recData = this._reports.length;
+      this._recData = ((this._reports.length) - 4);
     } else {
       this._reports = [];
       this._recData = 0;
@@ -80,17 +91,17 @@ export class PayrollComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'Salaried', header: 'Salaried' },
-      { field: 'EmployeeNumber', header: 'Employee Number' },
-      { field: 'EmployeeName', header: 'Employee Name' },
-      { field: 'Worked', header: 'Worked' },
-      { field: 'HolidayHours', header: 'Holiday Hours' },
-      { field: 'PTOHours', header: 'PTO Hours' },
-      { field: 'IPayHours', header: 'IPay Hours' },
-      { field: 'HoursPaid', header: 'Hours Paid' },
-      { field: 'NonBillableHours', header: 'Non-Billable Hours' },
-      { field: 'TotalHours', header: 'Total Hours' },
-      { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets' }
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '80px' },
+      { field: 'EmployeeNumber', header: 'Employee Number', align: 'left', width: '155px' },
+      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: 'auto' },
+      { field: 'Worked', header: 'Worked', align: 'right', width: '80px' },
+      { field: 'HolidayHours', header: 'Holiday Hours', align: 'right', width: '124px' },
+      { field: 'PTOHours', header: 'PTO Hours', align: 'right', width: '100px' },
+      { field: 'IPayHours', header: 'IPay Hours', align: 'right', width: '105px' },
+      { field: 'HoursPaid', header: 'Hours Paid', align: 'right', width: '105px' },
+      { field: 'NonBillableHours', header: 'Non-Billable Hours', align: 'right', width: '160px' },
+      { field: 'TotalHours', header: 'Total Hours', align: 'right', width: '110px' },
+      { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '200px' }
     ];
   }
   showHelp(file: string) {
@@ -104,5 +115,16 @@ export class PayrollComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  viewTimeSheet(rowData: TimeSheet) {
+    this.navigateToTimesheet(rowData.TimesheetID, '');
+  }
+  navigateToTimesheet(TimesheetId, TimesheetDate) {
+    // this.timesheetDialog = false;
+    let routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;
+    if (TimesheetDate !== '') {
+      routerLinkTimesheet += '/' + TimesheetDate;
+    }
+    this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
   }
 }

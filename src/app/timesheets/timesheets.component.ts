@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods } from '../model/objects';
+import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -16,7 +16,9 @@ import { DatePipe } from '@angular/common';
 export class TimesheetsComponent implements OnInit {
 
   cols: any[];
+  hourscols: any[];
   _recData: string;
+  _hoursData: string;
 
   _timeSheets: TimeSheetForEmplyoee[];
   _timePeriods: TimeSheetBinding[];
@@ -30,6 +32,13 @@ export class TimesheetsComponent implements OnInit {
   // selectTimePeriodDate: string;
   _timesheetsTimePeriod: TimeSheet[] = [];
   _timesheetApproval: TimeSheetForApproval[] = [];
+
+  _startDate: string;
+  _endDate: string;
+  Hourschrg = false;
+  _mainHeader: string;
+  HoursTable = false;
+  _hoursbytimesheetlist: HoursByTimesheet[] = [];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -52,6 +61,7 @@ export class TimesheetsComponent implements OnInit {
     this.getTimeSheets();
   }
   getTimeSheets() {
+    this._mainHeader = 'Your Time Sheets';
     const Mode = this.selectedValues ? '1' : '0';
     this.timesysSvc.getEmployeeTimeSheetList((localStorage.getItem('UserId')), Mode)
       .subscribe(
@@ -101,24 +111,36 @@ export class TimesheetsComponent implements OnInit {
   }
 
   OpenHoursCharged() {
-
+    this._mainHeader = 'Hours by Timesheet Category';
+    this.Hourschrg = true;
+    const datetoday = new Date();
+    datetoday.setMonth(datetoday.getMonth() - 1);
+    datetoday.setDate(1);
+    this._startDate = this.datePipe.transform(datetoday, 'MM-dd-yyyy');
+    this._endDate = '';
   }
   viewTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.navigateToTimesheet(rowData.Id, '');
   }
   editTimeSheet(rowData: TimeSheetForEmplyoee) {
-    this.confSvc.confirm({
-      message: 'Do you want to edit the timesheet?',
-      accept: () => {
-        this.navigateToTimesheet(rowData.Id, '');
-      }
-    });
+    // this.confSvc.confirm({
+    //   message: 'Do you want to edit the timesheet?',
+    //   accept: () => {
+    this.navigateToTimesheet(rowData.Id, '');
+    //   }
+    // });
   }
   deleteTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.confSvc.confirm({
       message: 'Do you want to delete the timesheet?',
       accept: () => {
-        this.getTimeSheets();
+        const timeSheet = new TimeSheet();
+        timeSheet.Id = rowData.Id;
+        this.timesysSvc.timesheetDelete(timeSheet)
+          .subscribe(
+            (data) => {
+              this.getTimeSheets();
+            });
       }
     });
   }
@@ -212,4 +234,31 @@ export class TimesheetsComponent implements OnInit {
     this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
   }
 
+  showHours() {
+    this.HoursTable = true;
+    this.hourscols = [
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
+      { field: 'TANDM', header: 'T & M', align: 'center', width: '75px' },
+      { field: 'Project', header: 'Project', align: 'center', width: '75px' },
+      { field: 'NonBillable', header: 'NonBillable', align: 'center', width: '100px' },
+    ];
+    this._hoursData = '0';
+    this.timesysSvc.getHoursbyTimesheetforEmployee(
+      this._startDate,
+      this._endDate,
+      localStorage.getItem('UserId').toString()).subscribe(
+        (data) => {
+          console.log(data);
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._hoursbytimesheetlist = data;
+            this._hoursData = data.length.toString();
+          }
+        });
+  }
+  returntoTimesheets() {
+    this.HoursTable = false;
+    this.Hourschrg = false;
+    this._startDate = '';
+    this._endDate = '';
+  }
 }

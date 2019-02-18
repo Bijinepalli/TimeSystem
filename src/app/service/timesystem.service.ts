@@ -5,7 +5,7 @@ import {
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers,
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
-  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email,
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours, HoursByTimesheet,
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
@@ -407,14 +407,15 @@ export class TimesystemService {
   }
   ListEmployeeClientRates(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
-    console.log(body);
     return this.http.post<Invoice[]>(this.url + 'ListEmployeeClientRates', body, httpOptions);
   }
   getDatebyPeriod() {
     return this.http.get<TimeSheet[]>(this.url + 'GeneratePeriodEndDates');
   }
-  GetTimeSheetsPerEmployeePeriodEnd(timesheet: TimeSheet) {
-    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodEnd');
+  GetTimeSheetsPerEmployeePeriodStart(PeriodEnd: string) {
+    const params = new HttpParams()
+      .set('PeriodEnd', PeriodEnd.toString());
+    return this.http.get<TimeSheet[]>(this.url + 'GetTimeSheetsPerEmployeePeriodStart', { params });
   }
   NonBillable_Delete(_inputData: NonBillables) {
     const body = JSON.stringify(_inputData);
@@ -495,10 +496,15 @@ export class TimesystemService {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'UpdateRate', body, httpOptions);
   }
-  getEmployeeClientProjectNonBillableDetails(employeeId: string) {
+  getEmployeeClientProjectNonBillableDetails(employeeId: string, periodEnd: string, periodStart: string) {
     const params = new HttpParams()
-      .set('EmployeeId', employeeId);
-    return this.http.get<TimeSheetBinding[]>(this.url + 'GetEmployeeClientProjectNonBillableDetails', { params });
+      .set('EmployeeId', employeeId)
+      .set('strEndDate', periodEnd)
+      .set('strStartDate', periodStart);
+    const data1 = this.http.get<TimeSheetBinding[]>(this.url + 'GetEmployeeClientProjectNonBillableDetails', { params });
+
+    const data2 = this.http.get<NonBillables[]>(this.url + 'GetEmployeeOnlyNonBillDetails', { params });
+    return forkJoin([data1, data2]);
   }
 
   getTimesheetTimeLineTimeCellDetails(timeSheetId: string) {
@@ -568,12 +574,13 @@ export class TimesystemService {
     return this.http.get<NonBillables[]>(this.url + 'GetNonBillableCodesForReportGroup', { params });
   }
 
-  getNonBillableHours(startdate: string, enddate: string, Id: string) {
+  getNonBillableHours(startdate: string, enddate: string, Id: string, totalchecked: string) {
     const params = new HttpParams()
       .set('startdate', startdate)
       .set('enddate', enddate)
-      .set('id', Id);
-    return this.http.get<any>(this.url + 'GetNonBillableSoftwareHours', { params });
+      .set('id', Id)
+      .set('totalchecked', totalchecked);
+    return this.http.get<NonBillablesTotalHours[]>(this.url + 'GetNonBillableSoftwareHours', { params });
   }
   getUnusedBillingCodes(codetype: string, usagetype: string, datesince: string) {
     const params = new HttpParams()
@@ -673,12 +680,38 @@ export class TimesystemService {
       .set('employeeId', employeeId.toString());
     return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
   }
+  GetClientAndVertexHolidaysForTSPeriod(employeeId: string, periodEnd: string, periodStart: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId)
+      .set('endDate', periodEnd)
+      .set('startDate', periodStart);
+    return this.http.get<Holidays[]>(this.url + 'GetClientAndVertexHolidaysForTSPeriod', { params });
+  }
+  timesheetDelete(_timesheetId: TimeSheet) {
+    const body = JSON.stringify(_timesheetId);
+    return this.http.post<TimeSheet>(this.url + 'TimeSheetDelete', body, httpOptions);
+  }
+  getAllWantedDetailsOnLoad(employeeId: string) {
+    const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');
 
+    const params = new HttpParams()
+      .set('EmployeeId', employeeId);
+    const data2 = this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
+
+    return forkJoin([data1, data2]);
+  }
   getEmployeesNoTimesheetforInvoice(EmployeeId: string) {
     const params = new HttpParams()
       .set('EmployeeId', EmployeeId.toString());
     return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
   }
-
+  getHoursbyTimesheetforEmployee(startdate: string, enddate: string, employeeid: string) {
+    console.log(startdate, enddate, employeeid);
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate)
+      .set('employeeid', employeeid);
+    return this.http.get<HoursByTimesheet[]>(this.url + 'TimeSheetHoursByEmployee', { params });
+  }
 
 }
