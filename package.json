@@ -29,6 +29,7 @@
     "primeicons": "^1.0.0",
     "primeng": "^6.1.5",
     "rxjs": "~6.2.0",
+    "tableexport": "^5.2.0",
     "typescript-linq": "^1.0.6",
     "zone.js": "~0.8.26"
   },
