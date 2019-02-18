@@ -51,7 +51,7 @@ export class NonbillablesComponent implements OnInit {
     this.cols = [
       { field: 'ProjectName', header: 'Non-Billable Item Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
     ];
 
     this.addControls();

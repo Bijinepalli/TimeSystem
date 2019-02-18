@@ -352,7 +352,7 @@ export class EmployeesComponent implements OnInit {
         { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
         { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
         { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-        { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+        { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
         { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
       ];
@@ -362,7 +362,7 @@ export class EmployeesComponent implements OnInit {
           { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-          { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+          { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
           { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
