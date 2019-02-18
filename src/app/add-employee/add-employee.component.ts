@@ -57,9 +57,7 @@ export class AddEmployeeComponent implements OnInit {
       .subscribe(
         (data) => {
           this._employees = data;
-          console.log(this._employees);
           const _employee = this._employees.filter(P => P.ID === +this._employeeId);
-          console.log(_employee);
           this.setDataToControls(_employee[0]);
 
         }

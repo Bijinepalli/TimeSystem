@@ -54,7 +54,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._startDate = new Date(year, month - 1, 1).toString();
     // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    console.log(this._startDate);
   }
 
   selectAll() {
@@ -119,9 +118,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
           _selectedBillingCycle = 'A';
         }
         let dateValid: any;
-        console.log(this._startDate + '-tehius');
         const dateCheck = new Date(this._startDateSelect);
-        console.log(dateCheck);
         if (dateCheck.toString() === 'Invalid Date') {
           dateValid = this._startDate;
         } else {
@@ -134,7 +131,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
           _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
           this._startDate = _start;
         }
-        console.log('Pola');
         if (this._endDate !== null && this._endDate !== '') {
           _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
           this._endDate = _end;
@@ -142,11 +138,9 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         this._billingCodesSpecial.startDate = _start;
         this._billingCodesSpecial.endDate = _end;
         this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
-        console.log(this._billingCodesSpecial);
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
             this.showTable(data);
-            console.log(data.length);
           }
         );
       }
@@ -156,9 +150,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       let _start = '';
       let _end = '';
       let dateValid: any;
-      console.log(this._startDate + '-tehius');
       const dateCheck = new Date(this._startDateSelect);
-      console.log(dateCheck);
       if (dateCheck.toString() === 'Invalid Date') {
         dateValid = this._startDate;
       } else {
@@ -175,11 +167,9 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
-      console.log(this._billingCodesSpecial);
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
-          console.log(JSON.stringify(data));
         }
       );
     }
@@ -188,9 +178,9 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     // }
   }
   showTable(data: BillingCodes[]) {
-    if (data !== undefined && data !== null) {
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      this._recData = this._reports.length;
+      this._recData = this._reports[0].RowCount;
       if (this._reports.length === 0) {
         this.msgSvc.add({ severity: 'error', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
       }
@@ -238,9 +228,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     // const year = today.getFullYear();
     // this._startDate = new Date(year, month - 1, 1).toString();
     let dateValid: any;
-    console.log(this._startDate + '-tehius');
     const dateCheck = new Date(this._startDateSelect);
-    console.log(dateCheck);
     if (dateCheck.toString() === 'Invalid Date') {
       dateValid = this._startDate;
     } else {

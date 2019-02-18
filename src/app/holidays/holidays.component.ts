@@ -67,7 +67,7 @@ export class HolidaysComponent implements OnInit {
     ];
 
     this.cols = [
-      { field: 'CalendarYear', header: 'Year', align: 'center', width: '70px' },
+      { field: 'CalendarYear', header: 'Year', align: 'center', width: '100px' },
       { field: 'HolidayDate', header: 'Date', align: 'center', width: '100px' },
       { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
     ];

@@ -7,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class DateTimeFormatPipe extends DatePipe implements PipeTransform {
     transform(datevalue: any, format: any): any {
-        console.log(datevalue + ',' + format);
         return super.transform(datevalue, format);
     }
 }

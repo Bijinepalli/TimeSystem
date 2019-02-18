@@ -401,6 +401,12 @@ export class TimesystemService {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
   }
+
+  ListEmployeeHoursByTimeSheetCategory(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByTimeSheetCategory', body, httpOptions);
+  }
+
   ListEmployeeHoursByBillingCodeClientOnly(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodeClientOnly', body, httpOptions);
@@ -624,7 +630,6 @@ export class TimesystemService {
   }
   timeSheetInsert(timesheet: TimeSheet) {
     const body = JSON.stringify(timesheet);
-    console.log(timesheet);
     return this.http.post<string>(this.url + 'TimeSheetInsert', body, httpOptions);
   }
   getTimeSheetForApprovalGet(employeeId: string) {
@@ -706,7 +711,6 @@ export class TimesystemService {
     return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
   }
   getHoursbyTimesheetforEmployee(startdate: string, enddate: string, employeeid: string) {
-    console.log(startdate, enddate, employeeid);
     const params = new HttpParams()
       .set('startdate', startdate)
       .set('enddate', enddate)
