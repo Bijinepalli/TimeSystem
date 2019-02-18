@@ -178,7 +178,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     // }
   }
   showTable(data: BillingCodes[]) {
-    if (data !== undefined && data !== null) {
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
       this._recData = this._reports[0].RowCount;
       if (this._reports.length === 0) {

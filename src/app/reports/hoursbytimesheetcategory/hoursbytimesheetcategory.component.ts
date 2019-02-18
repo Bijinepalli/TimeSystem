@@ -60,7 +60,7 @@ generateReport() {
     //   this._billingCodesSpecial.startDate = '';
     //   this._billingCodesSpecial.endDate = '';
     // }
-    this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
+    this.timesysSvc.ListEmployeeHoursByTimeSheetCategory(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);
       }

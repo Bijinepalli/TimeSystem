@@ -401,6 +401,12 @@ export class TimesystemService {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
   }
+
+  ListEmployeeHoursByTimeSheetCategory(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByTimeSheetCategory', body, httpOptions);
+  }
+
   ListEmployeeHoursByBillingCodeClientOnly(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodeClientOnly', body, httpOptions);
