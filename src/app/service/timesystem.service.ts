@@ -623,10 +623,10 @@ export class TimesystemService {
       .set('dateFormat', dateFormat);
     return this.http.get<TimePeriods[]>(this.url + 'GetPeriodEndforDropdown', { params });
   }
-  getOutstandingTimesheetReport(Dates: string) {
+  getOutstandingTimesheetReport(periodEnd: string) {
     const params = new HttpParams()
-      .set('strDates', Dates);
-    return this.http.get<TimeSheet>(this.url + 'GetOutStandingTimesheetReport', { params });
+      .set('periodEnd', periodEnd);
+    return this.http.get<TimeSheet[]>(this.url + 'GetOutStandingTimesheetReport', { params });
   }
   timeSheetInsert(timesheet: TimeSheet) {
     const body = JSON.stringify(timesheet);
