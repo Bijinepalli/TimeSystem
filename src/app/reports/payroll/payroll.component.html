@@ -81,7 +81,7 @@
           </td>
           <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
             <div
-              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'); else defaultColumn">
               <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
             </div>
             <ng-template #defaultColumn>
