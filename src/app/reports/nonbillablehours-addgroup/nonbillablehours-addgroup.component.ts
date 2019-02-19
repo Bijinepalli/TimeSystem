@@ -37,11 +37,11 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute) {
     this.cols = [
-      { field: 'Group1', header: 'Primary Report Group' },
-      { field: 'ID1', header: 'Delete' },
-      { field: 'ID1', header: 'Add Sub Group' },
-      { field: 'Group2', header: 'Secondary Report Group' },
-      { field: 'ID2', header: 'Delete' },
+      { field: 'Group1', header: 'Primary Report Group', align: 'left', width: 'auto' },
+      { field: 'ID1', header: 'Delete', align: 'center', width: 'auto' },
+      { field: 'ID1', header: 'Add Sub Group', align: 'center', width: 'auto' },
+      { field: 'Group2', header: 'Secondary Report Group', align: 'left', width: 'auto' },
+      { field: 'ID2', header: 'Delete', align: 'center', width: 'auto' },
     ];
   }
 
