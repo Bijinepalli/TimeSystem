@@ -48,13 +48,14 @@ export class PayrollComponent implements OnInit {
         (data) => {
           this.timesheet = data;
           for (let i = 0; i < PeriodEndReportPeriods; i++) {
-            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEndDate });
+            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEnd });
           }
         }
       );
   }
   getPeriodEndDetails(e) {
     this.showSpinner = true;
+    this.showReport = false;
     this.buildCols();
     this._timesheet = new TimeSheet();
     let _date = '';
@@ -67,7 +68,6 @@ export class PayrollComponent implements OnInit {
       this.showSpinner = true;
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
         (data) => {
-          console.log(JSON.stringify(data));
           this.showTable(data);
         }
       );

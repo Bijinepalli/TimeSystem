@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods } from '../model/objects';
+import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -16,7 +16,9 @@ import { DatePipe } from '@angular/common';
 export class TimesheetsComponent implements OnInit {
 
   cols: any[];
+  hourscols: any[];
   _recData: string;
+  _hoursData: string;
 
   _timeSheets: TimeSheetForEmplyoee[];
   _timePeriods: TimeSheetBinding[];
@@ -30,6 +32,13 @@ export class TimesheetsComponent implements OnInit {
   // selectTimePeriodDate: string;
   _timesheetsTimePeriod: TimeSheet[] = [];
   _timesheetApproval: TimeSheetForApproval[] = [];
+
+  _startDate: string;
+  _endDate: string;
+  Hourschrg = false;
+  _mainHeader: string;
+  HoursTable = false;
+  _hoursbytimesheetlist: HoursByTimesheet[] = [];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -52,6 +61,7 @@ export class TimesheetsComponent implements OnInit {
     this.getTimeSheets();
   }
   getTimeSheets() {
+    this._mainHeader = 'Your Time Sheets';
     const Mode = this.selectedValues ? '1' : '0';
     this.timesysSvc.getEmployeeTimeSheetList((localStorage.getItem('UserId')), Mode)
       .subscribe(
@@ -73,10 +83,8 @@ export class TimesheetsComponent implements OnInit {
     // this.selectTimePeriodDate = '';
     this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
       (data) => {
-        console.log(data);
         this.timesysSvc.getDatebyPeriod().subscribe(
           (data1) => {
-            console.log(data1);
             if (data !== undefined && data !== null && data.length > 0) {
               this._timePeriods = data;
               if (data1 !== undefined && data1 !== null && data1.length > 0) {
@@ -101,7 +109,13 @@ export class TimesheetsComponent implements OnInit {
   }
 
   OpenHoursCharged() {
-
+    this._mainHeader = 'Hours by Timesheet Category';
+    this.Hourschrg = true;
+    const datetoday = new Date();
+    datetoday.setMonth(datetoday.getMonth() - 1);
+    datetoday.setDate(1);
+    this._startDate = this.datePipe.transform(datetoday, 'MM-dd-yyyy');
+    this._endDate = '';
   }
   viewTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.navigateToTimesheet(rowData.Id, '');
@@ -142,7 +156,6 @@ export class TimesheetsComponent implements OnInit {
   }
 
   createTimesheetDialog() {
-    console.log(this.selectTimePeriod);
     if (this.selectTimePeriod !== undefined && this.selectTimePeriod !== null) {
       if (+this.selectTimePeriod.value > 0) {
         this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.value.toString()).subscribe(
@@ -182,8 +195,6 @@ export class TimesheetsComponent implements OnInit {
         );
 
       } else {
-        console.log(JSON.stringify(this.selectTimePeriod.value));
-        console.log(JSON.stringify(this.selectTimePeriod.code));
         this.navigateToTimesheet(this.selectTimePeriod.value, this.selectTimePeriod.code);
       }
     }
@@ -216,5 +227,32 @@ export class TimesheetsComponent implements OnInit {
       routerLinkTimesheet += '/' + TimesheetDate;
     }
     this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
+  }
+
+  showHours() {
+    this.HoursTable = true;
+    this.hourscols = [
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
+      { field: 'TANDM', header: 'T & M', align: 'center', width: '75px' },
+      { field: 'Project', header: 'Project', align: 'center', width: '75px' },
+      { field: 'NonBillable', header: 'NonBillable', align: 'center', width: '100px' },
+    ];
+    this._hoursData = '0';
+    this.timesysSvc.getHoursbyTimesheetforEmployee(
+      this._startDate,
+      this._endDate,
+      localStorage.getItem('UserId').toString()).subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._hoursbytimesheetlist = data;
+            this._hoursData = data.length.toString();
+          }
+        });
+  }
+  returntoTimesheets() {
+    this.HoursTable = false;
+    this.Hourschrg = false;
+    this._startDate = '';
+    this._endDate = '';
   }
 }

@@ -191,7 +191,9 @@ export class UtilizationchartComponent implements OnInit {
   }
 
   GetMethods() {
-    this.getEmployees();
+    // this.getEmployees();
+    this.selectedEmp = localStorage.getItem('UserId').toString();
+    this.generateReport();
   }
 
   getEmployees() {

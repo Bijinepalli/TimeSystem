@@ -87,7 +87,7 @@ export class DepartmentsComponent implements OnInit {
     this.cols = [
       { field: 'Name', header: 'Department Name', align: 'left', width: '250px' },
       { field: 'Description', header: 'Description', align: 'left', width: 'auto' },
-      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: '200px' },
+      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: 'auto' },
     ];
     this.empcols = [
       { field: 'Name', header: 'Employee Name', align: 'left', width: '150px' },
@@ -197,7 +197,6 @@ export class DepartmentsComponent implements OnInit {
         (outputData) => {
           this.deptEmployeesDialog = true;
           if (outputData !== undefined && outputData !== null && outputData.length > 0) {
-            console.log(outputData);
             this._deptEmployeesList = outputData;
             this._recDataEmp = outputData.length + ' employees found';
             overlaypanel.toggle(event);

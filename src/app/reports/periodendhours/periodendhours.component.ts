@@ -65,6 +65,7 @@ export class PeriodendhoursComponent implements OnInit {
   }
   onDateChange(e) {
     this.showSpinner = true;
+    this.showReport = false;
     this.buildCols();
     this._timesheet = new TimeSheet();
     let _date = '';
@@ -73,12 +74,10 @@ export class PeriodendhoursComponent implements OnInit {
       _date = this.datePipe.transform(this.selectedDate, 'yyyy/MM/dd');
       // this.selectedDate = _date;
     }
-    console.log(_date);
     this._timesheet.PeriodEndDate = _date;
     if (_date !== null && _date !== '') {
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
         (data) => {
-          console.log(data);
           this.showTable(data);
         }
       );

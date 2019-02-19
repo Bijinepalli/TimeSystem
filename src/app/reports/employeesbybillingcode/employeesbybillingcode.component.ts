@@ -56,11 +56,11 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
-      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '175px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '120px' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '150px' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-      { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '120px' },
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;
@@ -142,7 +142,6 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.showSpinner = true;
     if (this._selectcheckbox.length > 0) {
       this._billingCodesSpecial = new BillingCodesSpecial();
-      console.log(this._selectcheckbox.length, this._displayCheckBoxes.length);
       if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
         this._billingCodesSpecial.value = '';
       } else {
@@ -150,14 +149,10 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       }
       this._billingCodesSpecial.codeStatus = this.selectedType.toString();
       this._billingCodesSpecial.relStatus = this.selectedassignStatus.toString();
-      console.log('Inactive=' + this.selectedType.toString());
-      console.log('Rel=' + this.selectedassignStatus.toString());
-
       if (this.selectedBillingType === 0) {
         // tslint:disable-next-line:max-line-length
         this.timesysSvc.listAllClientItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            console.log(data);
             this._reports = data;
             this._recData = this._reports.length;
             this.showBillingCodeList = false;
@@ -169,7 +164,6 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       } else if (this.selectedBillingType === 1) {
         this.timesysSvc.listAllProjectDataForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            console.log(data);
             this._reports = data;
             this._recData = this._reports.length;
             this.showBillingCodeList = false;
@@ -181,7 +175,6 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       } else {
         this.timesysSvc.listAllBillingItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            console.log(data);
             this._reports = data;
             this._recData = this._reports.length;
             this.showBillingCodeList = false;

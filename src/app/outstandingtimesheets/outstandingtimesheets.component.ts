@@ -36,7 +36,6 @@ export class OutstandingtimesheetsComponent implements OnInit {
       });
   }
   editTimeSheet(timeSheet: TimeSheet) {
-    console.log(JSON.stringify(timeSheet));
     this.confSvc.confirm({
       message: 'Do you want to edit the timesheet?',
       accept: () => {

@@ -184,6 +184,7 @@ export class BillingCodes {
     CalendarDate?: string;
     color?: string;
     weight?: string;
+    RowCount?: number;
 }
 export class BillingCodesSpecial {
     value?: string;
@@ -195,6 +196,7 @@ export class BillingCodesSpecial {
     sortOrder?: string;
     billingCycle?: string;
     includeTotals?: number;
+    includePeriodEnd?: number;
 }
 // export class Invoice {
 //     LastName?: string;
@@ -446,5 +448,14 @@ export class NonBillablesTotalHours {
     Nov?: string;
     Dec?: string;
     Total?: string;
+}
+export class HoursByTimesheet {
+    ChangeSort?: number;
+    ChangeType?: string;
+    BillingName?: string;
+    Key?: string;
+    TANDM?: string;
+    Project?: string;
+    NonBillable?: string;
 }
 

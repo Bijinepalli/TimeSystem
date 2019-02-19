@@ -91,25 +91,25 @@ export class BillingcodelistingComponent implements OnInit {
       this.cols = [
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
-        { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '110px' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+        { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
     } else if (type === '1') {
       this.cols = [
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
     } else if (type === '2') {
       this.cols = [
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
       ];
     }
   }

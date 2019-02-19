@@ -88,7 +88,6 @@ export class MaintaintimesheetComponent implements OnInit {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
       this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
       this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
-      console.log('Period End - ' + this._timesheetPeriodEnd);
       if (+this._timesheetId.toString() < 0) {
         this._periodEndDateString = this._timesheetPeriodEnd;
         this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
@@ -130,7 +129,6 @@ export class MaintaintimesheetComponent implements OnInit {
     this._IsTimeSheetSubmitted = false;
 
     if (this._timesheetId > 0) {
-      console.log(this._timesheetId.toString());
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
@@ -179,14 +177,10 @@ export class MaintaintimesheetComponent implements OnInit {
       if (this._timePeriods !== undefined && this._timePeriods !== null && this._timePeriods.length > 0) {
         const startPeriod = data1.filter(P => P.RowNumber === (this._timePeriods[0].RowNumber - 1));
         // this._periodEnddate = new Date(this._timePeriods[0].FuturePeriodEnd);
-        console.log('End Date from DB - ');
-        console.log(this._timePeriods[0].FuturePeriodEnd);
         this._periodEnddate = this.getNewDateVal(this._timePeriods[0].FuturePeriodEnd);
 
         if (startPeriod !== undefined && startPeriod !== null && startPeriod.length > 0) {
           // this._peroidStartDate = new Date(startPeriod[0].FuturePeriodEnd);
-          console.log('Start Date from DB - ');
-          console.log(startPeriod[0].FuturePeriodEnd);
           this._peroidStartDate = this.getNewDateVal(startPeriod[0].FuturePeriodEnd);
         }
         this.getDateAndWeekArrays();
@@ -213,28 +207,16 @@ export class MaintaintimesheetComponent implements OnInit {
 
 
   getDateAndWeekArrays() {
-    console.log('Start Date after conversion - ');
-    console.log(this._peroidStartDate);
-    console.log('End Date after conversion - ');
-    console.log(this._periodEnddate);
-
     this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-    console.log('Days Length - ');
-    console.log(this._days);
     if (this._days > 0) {
       for (let i = 0; i < this._days - 1; i++) {
         const dtNew = new Date(this._peroidStartDate.getFullYear(),
           this._peroidStartDate.getMonth(),
           this._peroidStartDate.getDate() + (i + 1));
-        console.log(dtNew);
         this._DateArray.push(this.datePipe.transform(dtNew, 'yyyy-MM-dd'));
         this._weekArray.push(dtNew.getDay());
       }
     }
-    console.log('DateArray - ');
-    console.log(this._DateArray);
-    console.log('WeekArray - ');
-    console.log(this._weekArray);
   }
 
   defaultControlsToForm() {
@@ -400,7 +382,6 @@ export class MaintaintimesheetComponent implements OnInit {
     return days + 1;
   }
   getClientProjectCategoryDropDown(timeSheetUserId: string) {
-    // console.log(timeSheetUserId);
     const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
     const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
     this.timesysSvc.getEmployeeClientProjectNonBillableDetails(timeSheetUserId, cEndDate, cStartDate).subscribe(
@@ -435,7 +416,6 @@ export class MaintaintimesheetComponent implements OnInit {
             _timesdataNonBill.value = data2[j].Id;
             this.nonBillable.push(_timesdataNonBill);
           }
-          console.log(this.nonBillable);
         }
       });
   }
@@ -638,7 +618,6 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       this.timeSheetForm.enable();
     }
-    // console.log(this._isTimesheetToAprrove + 'Super');
     if (this._isTimesheetToAprrove) {
       const superComments = this.timeSheetForm.get('txtSuperComments');
       superComments.enable();
@@ -782,30 +761,47 @@ export class MaintaintimesheetComponent implements OnInit {
       'drpProjBillDefault', 'txtProjBillWeeklyTotalDefault', 'Project Billable', this._timeProjBill, 1);
     this.DataMissingValidations('drpNONBill_', 'txtNonBillWeeklyTotals_',
       'drpNonBillDefault', 'txtNonBillWeeklyTotalDefault', 'Non Billable ', this._timeNONbill, 1);
-    // console.log(this._TotalValidationErrors);
   }
   getHolidayErrors(rowId) {
     let countError = 0;
     for (let i = 0; i < this._DateArray.length; i++) {
-      for (let j = 0; j < this._holidays.length; j++) {
-        if (this._timeNONbill.length > 0) {
-          if (this._DateArray[i] !== this._holidays[j].HolidayDate
-            && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
-            if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
-              countError++;
-              this._errorHourlyNonBillArray.push(i);
-            }
+      const dateHoliday = this._holidays.find(P => P.HolidayDate === this._DateArray[i]);
+      if (this._timeNONbill.length > 0) {
+        if (dateHoliday === undefined
+          && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
+          if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
+            countError++;
+            this._errorHourlyNonBillArray.push(i);
           }
-        } else {
-          if (this._DateArray[i] !== this._holidays[j].HolidayDate
-            && this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== '') {
-            if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
-              countError++;
-              this._errorHourlyNonBillArray.push(i);
-            }
+        }
+      } else {
+        if (dateHoliday === undefined
+          && this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== '') {
+          if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
+            countError++;
+            this._errorHourlyNonBillArray.push(i);
           }
         }
       }
+      // for (let j = 0; j < this._holidays.length; j++) {
+      //   if (this._timeNONbill.length > 0) {
+      //     if (this._DateArray[i] !== this._holidays[j].HolidayDate
+      //       && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
+      //       if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
+      //         countError++;
+      //         this._errorHourlyNonBillArray.push(i);
+      //       }
+      //     }
+      //   } else {
+      //     if (this._DateArray[i] !== this._holidays[j].HolidayDate
+      //       && this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== '') {
+      //       if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
+      //         countError++;
+      //         this._errorHourlyNonBillArray.push(i);
+      //       }
+      //     }
+      //   }
+      // }
     }
     if (countError > 0) {
       // tslint:disable-next-line:max-line-length
@@ -836,9 +832,6 @@ export class MaintaintimesheetComponent implements OnInit {
     let weekDayProjCountWarning = 0;
     let weekEndNonCountWarning = 0;
     let weekDayNonCountWarning = 0;
-    console.log(this._timeTandM);
-    console.log(this._timeProjBill + 'heeyyyyy');
-    console.log(this._timeNONbill + 'heeyyyyy');
     if (this._timeTandM !== null && this._timeTandM !== undefined && this._timeTandM.length > 0) {
       for (let j = 0; j < this._timeTandM.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
@@ -983,7 +976,6 @@ export class MaintaintimesheetComponent implements OnInit {
   getVertexHolidaysList(timeSheetUserId, cEndDate, cStartDate) {
     this.timesysSvc.GetClientAndVertexHolidaysForTSPeriod(timeSheetUserId, cEndDate, cStartDate).subscribe(
       (data) => {
-        console.log(data);
         this._holidays = data;
       });
   }
@@ -1048,10 +1040,10 @@ export class MaintaintimesheetComponent implements OnInit {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
-            this.SaveSPCall(false);
+            this.SaveSPCall(false, '');
           }
         } else {
-          this.SaveSPCall(false);
+          this.SaveSPCall(false, '');
         }
       }
       if (this._errorMessage !== '') {
@@ -1087,10 +1079,10 @@ export class MaintaintimesheetComponent implements OnInit {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
-            this.SaveSPCall(true);
+            this.SaveSPCall(true, '');
           }
         } else {
-          this.SaveSPCall(true);
+          this.SaveSPCall(true, '');
         }
         if (this._errorMessage !== '') {
           this._errorBlock = this._errorMessage;
@@ -1119,10 +1111,10 @@ export class MaintaintimesheetComponent implements OnInit {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtComments').value !== null && this.timeSheetForm.get('txtComments').value !== '') {
-            this.SaveSPCall(true);
+            this.SaveSPCall(true, '');
           }
         } else {
-          this.SaveSPCall(true);
+          this.SaveSPCall(true, '');
         }
         if (this._errorMessage !== '') {
           this._errorBlock = this._errorMessage;
@@ -1130,13 +1122,12 @@ export class MaintaintimesheetComponent implements OnInit {
       }
     }
   }
-  SaveSPCall(submitted: boolean) {
+  SaveSPCall(submitted: boolean, type: string) {
     let timeSheetSubmit: TimeSheetSubmit;
     timeSheetSubmit = {};
     timeSheetSubmit.timeSheet = {};
     timeSheetSubmit.timeSheet.Id = this._timesheetId;
     timeSheetSubmit.timeSheet.PeriodEnd = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
-
     if (this.timeSheetForm.get('txtComments') !== undefined &&
       this.timeSheetForm.get('txtComments') !== null && this.timeSheetForm.get('txtComments').value !== null &&
       this.timeSheetForm.get('txtComments').value.toString() !== ''
@@ -1154,16 +1145,22 @@ export class MaintaintimesheetComponent implements OnInit {
 
         let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
         timeLineAndTimeCellSaveArr = [];
-        for (let i = 0; i < this._timeTandM.length; i++) {
-          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+        if (type === '' || type === 'TandM') {
+          for (let i = 0; i < this._timeTandM.length; i++) {
+            this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+          }
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
         }
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
-        for (let i = 0; i < this._timeProjBill.length; i++) {
-          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+        if (type === '' || type === 'ProjBill') {
+          for (let i = 0; i < this._timeProjBill.length; i++) {
+            this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+          }
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
         }
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
-        for (let i = 0; i < this._timeNONbill.length; i++) {
-          this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+        if (type === '' || type === 'NonBill') {
+          for (let i = 0; i < this._timeNONbill.length; i++) {
+            this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+          }
         }
         this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
         if (timeLineAndTimeCellSaveArr.length > 0) {
@@ -1203,20 +1200,27 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
       timeLineAndTimeCellSaveArr = [];
-      for (let i = 0; i < this._timeTandM.length; i++) {
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+      if (type === '' || type === 'TandM') {
+        for (let i = 0; i < this._timeTandM.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandM_' + i, 'txttimeTandMHours_' + i + '_', 'TANDM');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
       }
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpTandMDefault', 'txttimeTandMHoursDefault_', 'TANDM');
-      for (let i = 0; i < this._timeProjBill.length; i++) {
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+      if (type === '' || type === 'ProjBill') {
+        for (let i = 0; i < this._timeProjBill.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBill_' + i, 'txtProjBillHours_' + i + '_', 'PROJBILL');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
       }
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpProjBillDefault', 'txtProjBillHoursDefault_', 'PROJBILL');
-      for (let i = 0; i < this._timeNONbill.length; i++) {
-        this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+      if (type === '' || type === 'NonBill') {
+        for (let i = 0; i < this._timeNONbill.length; i++) {
+          this.buildValues(timeLineAndTimeCellSaveArr, 'drpNONBill_' + i, 'txtNonBillHours_' + i + '_', 'NONBILL');
+        }
+        this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
       }
-      this.buildValues(timeLineAndTimeCellSaveArr, 'drpNonBillDefault', 'txtNonBillHoursDefault_', 'NONBILL');
       if (timeLineAndTimeCellSaveArr.length > 0) {
         timeSheetSubmit.timeLineAndTimeCellArr = timeLineAndTimeCellSaveArr;
+        console.log(timeSheetSubmit);
         this.timesysSvc.TimeLineAndTimeCell_DeleteAndInsert(timeSheetSubmit)
           .subscribe(
             (outputData) => {
@@ -1289,7 +1293,7 @@ export class MaintaintimesheetComponent implements OnInit {
 
   }
   checkPendingTimesheets() {
-    if (this._timesheetUserId.toString() !== localStorage.getItem('UserId')) {
+    if (this._timesheetUserId !== undefined && this._timesheetUserId.toString() !== localStorage.getItem('UserId')) {
       // this.timesysSvc.getTimeSheetForApprovalCheck(this._timesheetUserId.toString())
       //   .subscribe(
       //     (data) => {
@@ -1299,12 +1303,10 @@ export class MaintaintimesheetComponent implements OnInit {
           break;
         }
       }
-      console.log(this._isTimesheetToAprrove + '-----Aprrove');
       if (!this._isTimesheetToAprrove) {
         this._isTimesheetView = true;
       }
       this.getClientProjectCategoryDropDown(this._timesheetUserId.toString());
-      // console.log(this._isTimesheetToAprrove);
       // if (this._isTimesheetToAprrove) {
       //   this.getClientProjectCategoryDropDown(this._employee[0].ID.toString());
       // } else {
@@ -1316,13 +1318,65 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
   Accept(txtSuper: any) {
-    // console.log(txtSuper.value);
     this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
   }
   Reject() {
     this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
   }
   getWantedDetailsOnLoad() {
+
+  }
+  saveByType(rowData: any, type: string) {
+    this._errorMessage = '';
+    this._errorBlock = '';
+    this._warningBlock = '';
+    this._warningMessage = '';
+    this.TotalHoursExceedValidation();
+    if (type === 'TandM') {
+      this.DataMissingValidations('drpTandM_', 'txtTANDMWeeklyTotals_',
+        'drpTandMDefault', 'txtTANDMWeeklyTotalDefault', 'Time & Materials Billable', this._timeTandM, 1);
+    } else if (type === 'ProjBill') {
+      this.DataMissingValidations('drpProjBill_', 'txtProjBillWeeklyTotals_',
+        'drpProjBillDefault', 'txtProjBillWeeklyTotalDefault', 'Project Billable', this._timeProjBill, 1);
+    } else if (type === 'NonBill') {
+      this.DataMissingValidations('drpNONBill_', 'txtNonBillWeeklyTotals_',
+        'drpNonBillDefault', 'txtNonBillWeeklyTotalDefault', 'Non Billable ', this._timeNONbill, 1);
+
+      if (this._employee[0].CompanyHolidays) {
+        this.nonBillableValidations();
+      }
+      this.getWeekendHours();
+    }
+    if (this._errorMessage !== '') {
+      this._errorBlock = this._errorMessage;
+    } else {
+      this.SaveSPCall(false, type);
+    }
+  }
+  deleteByType(rowData: any) {
+    this.confSvc.confirm({
+      message: 'Are you sure want to delete this row?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.timesysSvc.onlyTimeLineAndCellDelete(rowData)
+          .subscribe((data) => {
+            if (+this._timesheetId.toString() < 0) {
+              this.resetForm();
+              this.defaultControlsToForm();
+              this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+              this.getTimesheetTimeLineTimeCellDetails();
+            } else {
+              this.resetForm();
+              this.defaultControlsToForm();
+              this.getClientProjectCategoryDropDown(this._timesheetUserId);
+              this.getTimesheetTimeLineTimeCellDetails();
+            }
+          });
+      },
+      reject: () => {
+      }
+    });
 
   }
 }

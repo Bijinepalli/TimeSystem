@@ -54,7 +54,7 @@ export class CompaniesComponent implements OnInit {
     this.CheckSecurity();
     this.cols = [
       { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
-      { field: 'DefaultCompany', header: 'Default', align: 'center', width: '70px' },
+      { field: 'DefaultCompany', header: 'Default', align: 'center', width: '120px' },
     ];
 
     this._years = [

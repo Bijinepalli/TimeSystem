@@ -352,7 +352,7 @@ export class EmployeesComponent implements OnInit {
         { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
         { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
         { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-        { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+        { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
         { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
       ];
@@ -362,7 +362,7 @@ export class EmployeesComponent implements OnInit {
           { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-          { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
+          { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
           { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
@@ -840,9 +840,8 @@ export class EmployeesComponent implements OnInit {
     if (this.IsControlUndefined('frmHoursPerDay')) {
       this._selectedEmployee.HoursPerDay = '8.00';
     } else {
-      // tslint:disable-next-line:max-line-length
-      if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 24 && this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() > 0) {
-        console.log('822');
+      if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 24 &&
+        this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() > 0) {
         this._selectedEmployee.HoursPerDay = this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim();
       } else {
         this.errMsg += 'Hours Per Day should be greater than 0 hours and less than 24 hours<br>';

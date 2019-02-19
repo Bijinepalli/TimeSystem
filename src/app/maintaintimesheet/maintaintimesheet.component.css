@@ -48,7 +48,12 @@
 }
 
 .errorBox {
-  border: 1px solid red;
+  color: crimson;
+  text-decoration: underline;
+}
+.warningBox {
+  color: green;
+  text-decoration: underline;
 }
 
 .TotalsDisabled {

@@ -5,7 +5,7 @@ import {
   Holidays, Companies, CompanyHolidays, Projects, AppSettings, Employee, LoginErrorMessage, Customers,
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
-  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours,
+  TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours, HoursByTimesheet,
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
@@ -401,6 +401,12 @@ export class TimesystemService {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
   }
+
+  ListEmployeeHoursByTimeSheetCategory(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByTimeSheetCategory', body, httpOptions);
+  }
+
   ListEmployeeHoursByBillingCodeClientOnly(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodeClientOnly', body, httpOptions);
@@ -624,7 +630,6 @@ export class TimesystemService {
   }
   timeSheetInsert(timesheet: TimeSheet) {
     const body = JSON.stringify(timesheet);
-    console.log(timesheet);
     return this.http.post<string>(this.url + 'TimeSheetInsert', body, httpOptions);
   }
   getTimeSheetForApprovalGet(employeeId: string) {
@@ -681,7 +686,6 @@ export class TimesystemService {
     return this.http.get<Employee[]>(this.url + 'GetEmployeesBySupervisor', { params });
   }
   GetClientAndVertexHolidaysForTSPeriod(employeeId: string, periodEnd: string, periodStart: string) {
-    console.log('service');
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
       .set('endDate', periodEnd)
@@ -706,6 +710,16 @@ export class TimesystemService {
       .set('EmployeeId', EmployeeId.toString());
     return this.http.get<TimeSheet[]>(this.url + 'GetEmployeesNoTimesheetforInvoice', { params });
   }
-
+  getHoursbyTimesheetforEmployee(startdate: string, enddate: string, employeeid: string) {
+    const params = new HttpParams()
+      .set('startdate', startdate)
+      .set('enddate', enddate)
+      .set('employeeid', employeeid);
+    return this.http.get<HoursByTimesheet[]>(this.url + 'TimeSheetHoursByEmployee', { params });
+  }
+  onlyTimeLineAndCellDelete(_timeLine: TimeLine) {
+    const body = JSON.stringify(_timeLine);
+    return this.http.post<TimeSheet>(this.url + 'OnlyTimeLineAndTimeCell_Delete', body, httpOptions);
+  }
 
 }

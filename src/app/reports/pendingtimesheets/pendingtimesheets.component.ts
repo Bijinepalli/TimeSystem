@@ -60,7 +60,6 @@ export class PendingtimesheetsComponent implements OnInit {
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
-            console.log(data);
             for (let i = 0; i < data.length; i++) {
               this.dates.push({ label: data[i].FuturePeriodEnd, value: data[i].FuturePeriodEnd });
             }
@@ -80,7 +79,6 @@ export class PendingtimesheetsComponent implements OnInit {
 
   getDatefortheperiod() {
     this._reports = null;
-    console.log(this.selectedDate);
     const _periodEndDate = new Date(this.selectedDate);
     this.getPendingTimesheets(_periodEndDate);
     this.timesysSvc.getOutstandingTimesheetReport(this.previousDates.toString().slice(1))

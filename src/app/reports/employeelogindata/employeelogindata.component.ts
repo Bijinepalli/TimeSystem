@@ -35,7 +35,7 @@ export class EmployeelogindataComponent implements OnInit {
     ];
     this.selectedType = '0';
     this.selectedSalaryType = '2';
-   }
+  }
 
   ngOnInit() {
     this.cols = [
@@ -75,12 +75,10 @@ export class EmployeelogindataComponent implements OnInit {
     } else if (this.selectedSalaryType === '1') {
       _Salaried = '0';
     }
-    console.log('InActive - ' + _InActive + ' , ' + 'Salaried - ' + _Salaried);
 
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
-          console.log(data);
           this._listEmployeeLoginData = data;
           this._recData = this._listEmployeeLoginData.length + ' matching employees';
         }

@@ -72,10 +72,10 @@ export class HoursbyemployeeComponent implements OnInit {
     this.selectedbreakOut = 0;
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '200px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '175px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '175px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '220px' },
     ];
   }
 
@@ -84,10 +84,7 @@ export class HoursbyemployeeComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    console.log(this._startDate);
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    console.log(this._startDate);
-
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -99,7 +96,6 @@ export class HoursbyemployeeComponent implements OnInit {
             this._clients = data.filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
           } else {
             this._clients = data;
-            console.log('Data:' + data);
           }
           for (let i = 0; i < this._clients.length; i++) {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
@@ -167,9 +163,7 @@ export class HoursbyemployeeComponent implements OnInit {
   // }
   generateReport() {
     let dateValid: any;
-    console.log(this._startDate + '-tehius');
     const dateCheck = new Date(this._startDateSelect);
-    console.log(dateCheck);
     if (dateCheck.toString() === 'Invalid Date') {
       dateValid = this._startDate;
     } else {
@@ -197,7 +191,7 @@ export class HoursbyemployeeComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
-      console.log(_start, _end, this._endDate);
+      this._billingCodesSpecial.includePeriodEnd = this.showPeriodEndDetail === true ? 1 : 0;
       if (this.selectedbreakOut.toString() === '0') {
         switch (this.selectedBillingType) {
           case 0:
@@ -254,9 +248,9 @@ export class HoursbyemployeeComponent implements OnInit {
   }
 
   showTable(data: BillingCodes[]) {
-    if (data !== undefined && data !== null) {
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      this._recData = this._reports.length;
+      this._recData = this._reports[0].RowCount;
     } else {
       this._reports = [];
       this._recData = 0;
@@ -271,20 +265,20 @@ export class HoursbyemployeeComponent implements OnInit {
     if (this.selectedbreakOut.toString() === '0') {
       this.cols = [
         { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
       ];
     } else {
       this.cols = [
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
         { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
       ];
     }
     if (this.showPeriodEndDetail) {
-      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '130px' });
+      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '150px' });
     }
   }
 
