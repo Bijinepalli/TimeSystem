@@ -96,7 +96,7 @@ export class NonbillablehoursComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
             this.showReport = true;
-            this._recData = this._reports[0].RowCount.toString();
+            this._recData = this._reports[1].RowCount.toString();
           }
           this.showSpinner = false;
         }
