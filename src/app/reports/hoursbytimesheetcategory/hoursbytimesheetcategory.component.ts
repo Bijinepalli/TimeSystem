@@ -83,8 +83,8 @@ generateReport() {
       { field: 'LastName', header: 'Last Name', align: 'left', width: '200px' },
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
       { field: 'TANDM', header: 'T & M', align: 'right', width: '100px' },
-      { field: 'Project', header: 'Project', align: 'right', width: '100px' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '100px' },
+      { field: 'Project', header: 'Project', align: 'right', width: '101px' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '133px' },
     ];
   }
   showHelp(file: string) {
