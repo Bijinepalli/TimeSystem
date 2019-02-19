@@ -26,6 +26,8 @@ export class PeriodendhoursComponent implements OnInit {
   _recData = 0;
   cols: any;
   _timesheet: TimeSheet;
+  showBillingCodeList = false;
+  changeCodeList = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -95,6 +97,8 @@ export class PeriodendhoursComponent implements OnInit {
     }
     this.showReport = true;
     this.showSpinner = false;
+    this.showBillingCodeList = false;
+    this.changeCodeList = true;
   }
   buildCols() {
     this.cols = [
@@ -110,6 +114,12 @@ export class PeriodendhoursComponent implements OnInit {
       { field: 'TotalHours', header: 'Total Hours', align: 'right', width: '110px' },
       { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '200px' }
     ];
+  }
+  startOver() {
+    this.showBillingCodeList = false;
+    this.changeCodeList = false;
+    this.showReport = false;
+    this.showSpinner = false;
   }
   viewTimeSheet(rowData: TimeSheet) {
     this.navigateToTimesheet(rowData.TimesheetID, '');
