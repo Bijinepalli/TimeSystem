@@ -36,6 +36,9 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute) {
+  }
+
+  ngOnInit() {
     this.cols = [
       { field: 'Group1', header: 'Primary Report Group', align: 'left', width: 'auto' },
       { field: 'ID1', header: 'Delete', align: 'center', width: 'auto' },
@@ -43,9 +46,6 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
       { field: 'Group2', header: 'Secondary Report Group', align: 'left', width: 'auto' },
       { field: 'ID2', header: 'Delete', align: 'center', width: 'auto' },
     ];
-  }
-
-  ngOnInit() {
     this.activatedRoute.params.subscribe((params) => {
       this._Id = params['id'] === undefined ? -1 : params['id'];
       this.setheader(this._Id);

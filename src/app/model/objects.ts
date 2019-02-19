@@ -288,15 +288,15 @@ export class TimeLineAndTimeCell {
 }
 
 export class TimeSheetForEmplyoee {
-    Id: number;
-    EmployeeId: number;
-    PeriodEnd: string;
-    Resubmitted: string;
-    Submitted: string;
-    SubmitDate: string;
-    SemiMonthly: string;
-    Hours: number;
-    ApprovalStatus: string;
+    Id?: number;
+    EmployeeId?: number;
+    PeriodEnd?: string;
+    Resubmitted?: string;
+    Submitted?: string;
+    SubmitDate?: string;
+    SemiMonthly?: string;
+    Hours?: string;
+    ApprovalStatus?: string;
 }
 export class TimePeriods {
     PresentPeriodEnd: string;
@@ -448,6 +448,7 @@ export class NonBillablesTotalHours {
     Nov?: string;
     Dec?: string;
     Total?: string;
+    RowCount?: string;
 }
 export class HoursByTimesheet {
     ChangeSort?: number;
