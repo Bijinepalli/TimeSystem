@@ -72,10 +72,10 @@ export class HoursbyemployeeComponent implements OnInit {
     this.selectedbreakOut = 0;
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '200px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '175px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '175px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '220px' },
     ];
   }
 
@@ -265,20 +265,20 @@ export class HoursbyemployeeComponent implements OnInit {
     if (this.selectedbreakOut.toString() === '0') {
       this.cols = [
         { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
       ];
     } else {
       this.cols = [
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
         { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
       ];
     }
     if (this.showPeriodEndDetail) {
-      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '130px' });
+      this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '150px' });
     }
   }
 
