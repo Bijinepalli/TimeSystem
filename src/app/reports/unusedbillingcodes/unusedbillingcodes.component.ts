@@ -27,14 +27,25 @@ export class UnusedbillingcodesComponent implements OnInit {
   selectedUsageType: number;
   dates: SelectItem[];
   selectedDate: string;
-  dateFormat: string;
+  _DateFormat: string;
+  _DisplayDateFormat: string;
   periodEnd: any;
-  admin = false;
+  IsAdmin = false;
   helpText: any;
   visibleHelp = false;
+  showSpinner = false;
+  showReport = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe, private commonSvc: CommonService) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private commonSvc: CommonService
+  ) { }
+
+  ngOnInit() {
     this.codeType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -47,26 +58,24 @@ export class UnusedbillingcodesComponent implements OnInit {
     ];
     this.selectedCodeType = 0;
     this.selectedUsageType = 1;
-  }
-
-  ngOnInit() {
     this.cols = [
       { field: 'Key', header: 'Code', align: 'left', width: 'auto' },
       { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
     ];
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.populateDateDrop();
     this.getReports();
   }
 
   populateDateDrop() {
     this.dates = [];
-    this.dateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();  // Get the date format from appsettings
     this.periodEnd = this.getNextPeriodDate();
     for (let i = 0; i <= 24; i++) {
       this.periodEnd = new Date(this.periodEnd.getFullYear(), this.periodEnd.getMonth(), this.periodEnd.getDate() - 7);
-      const val = this.datePipe.transform(this.periodEnd, 'MM-dd-yyyy');
+      const val = this.datePipe.transform(this.periodEnd, this._DisplayDateFormat);
       if (i === 0) {
         this.selectedDate = val;
       }
@@ -82,12 +91,16 @@ export class UnusedbillingcodesComponent implements OnInit {
     if (useSemiMonthly) {
       const startDate = new Date(this.commonSvc.getAppSettingsValue('SemiMonthlyStartDate').toString());
       if (currentDate > startDate) {
-        // tslint:disable-next-line:max-line-length
-        returnValue = currentDate.getDate() > 15 ? new Date(currentDate.getFullYear(), currentDate.getMonth(), 0) : new Date(currentDate.getFullYear(), currentDate.getMonth(), 15);
+        returnValue = currentDate.getDate() > 15 ?
+          new Date(currentDate.getFullYear(), currentDate.getMonth(), 0) :
+          new Date(currentDate.getFullYear(), currentDate.getMonth(), 15);
       } else {
         days = this.getDaysTillFriday(currentDate);
-        // tslint:disable-next-line:max-line-length
-        if (new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(days.toString(), 10)) > startDate) {
+        if (
+          new Date(currentDate.getFullYear(),
+            currentDate.getMonth(),
+            currentDate.getDate() + parseInt(days.toString(), 10)
+          ) > startDate) {
           returnValue = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
         } else {
           returnValue = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(days.toString(), 10));
@@ -131,16 +144,25 @@ export class UnusedbillingcodesComponent implements OnInit {
   }
 
   getReports() {
+    this.showSpinner = true;
+    this.setHeader();
+    this.showReport = false;
     this.timesysSvc.getUnusedBillingCodes(this.selectedCodeType.toString(), this.selectedUsageType.toString(), this.selectedDate.toString())
       .subscribe(
         (data) => {
-          this._codeList = data;
-          this._recData = data.length + ' matching rows';
-          this.setHeader();
+          this.showReport = false;
+          this._codeList = [];
+          this._recData = 0;
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._codeList = data;
+            this.showReport = true;
+          }
+          this._recData = this._codeList.length;
+          this.showSpinner = false;
         }
       );
     // Check for role and activate buttons only if role is admin
-    this.admin = true;
+    this.IsAdmin = true;
   }
   deleteCodes() {
     this.confSvc.confirm({

@@ -17,7 +17,6 @@ import { CommonService } from '../../service/common.service';
 export class NonbillablehoursComponent implements OnInit {
 
   reportType: SelectItem[];
-  _recData = 0;
   _reports: NonBillables[] = [];
   cols: any;
   selectedReportType: number;
@@ -26,6 +25,7 @@ export class NonbillablehoursComponent implements OnInit {
   endDate: string;
   totalChecked = false;
   showReport = false;
+  _recData = 0;
   rowdata: any;
   helpText: any;
   visibleHelp = false;
@@ -69,6 +69,8 @@ export class NonbillablehoursComponent implements OnInit {
     this.startDate = this.datePipe.transform(start, 'MM-dd-yyyy');
     this.endDate = this.datePipe.transform(end, 'MM-dd-yyyy');
     this.totalChecked = true;
+    this.showReport = false;
+    this._recData = 0;
   }
 
   changeReportgroup() {
@@ -93,10 +95,14 @@ export class NonbillablehoursComponent implements OnInit {
     } else {
       this.timesysSvc.getNonBillableHours(start, end, this.selectedReportType.toString(), this.totalChecked.toString()).subscribe(
         (data) => {
-          if (data !== null) {
+          this.showReport = false;
+          this._reports = [];
+          this._recData = 0;
+          if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
-            this.showReport = true;
+            this._recData = this._reports.length;
           }
+          this.showReport = true;
           this.showSpinner = false;
         }
       );

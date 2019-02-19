@@ -170,16 +170,15 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     // }
   }
   showTable(data: BillingCodes[]) {
-    if (data !== undefined && data !== null) {
+    this.showReport = false;
+    this._reports = [];
+    this._recData = 0;
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
       this._recData = this._reports.length;
-    } else {
-      this._reports = [];
-      this._recData = 0;
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+      this.showReport = true;
     }
     this.showBillingCodeList = false;
-    this.showReport = true;
     this.changeCodeList = true;
     this.showSpinner = false;
   }

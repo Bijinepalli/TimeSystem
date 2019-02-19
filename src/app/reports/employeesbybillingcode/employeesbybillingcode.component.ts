@@ -36,8 +36,18 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService
+  ) { }
+
+  ngOnInit() {
+    this.Initialisations();
+  }
+
+  Initialisations() {
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -66,19 +76,21 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.selectedBillingType = 0;
     this.selectedassignStatus = 0;
   }
-
-  ngOnInit() {
-  }
   showBillingCodes() {
     this.showSpinner = true;
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
         (data) => {
-          if (this.selectedType < 2) {
-            this._clients = data.filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
-          } else {
-            this._clients = data;
+          if (data !== undefined && data !== null && data.length > 0) {
+            if (this.selectedType < 2) {
+              data = data.filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
+              if (data !== undefined && data !== null && data.length > 0) {
+                this._clients = data;
+              }
+            } else {
+              this._clients = data;
+            }
           }
           for (let i = 0; i < this._clients.length; i++) {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
@@ -91,10 +103,12 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     } else if (this.selectedBillingType === 1) {
       this.timesysSvc.getProjects('').subscribe(
         (data) => {
-          if (this.selectedType < 2) {
-            this._projects = data[0].filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
-          } else {
-            this._projects = data[0];
+          if (data !== undefined && data !== null && data.length > 0) {
+            if (this.selectedType < 2) {
+              this._projects = data[0].filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
+            } else {
+              this._projects = data[0];
+            }
           }
           for (let i = 0; i < this._projects.length; i++) {
             this._displayCheckBoxes.push({ label: this._projects[i].ProjectName, value: this._projects[i].Key });
@@ -107,10 +121,12 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     } else {
       this.timesysSvc.getNonBillables('').subscribe(
         (data) => {
-          if (this.selectedType < 2) {
-            this._nonBillables = data[0].filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
-          } else {
-            this._nonBillables = data[0];
+          if (data !== undefined && data !== null && data.length > 0) {
+            if (this.selectedType < 2) {
+              this._nonBillables = data[0].filter(P => P.Inactive === (this.selectedType === 0 ? false : true));
+            } else {
+              this._nonBillables = data[0];
+            }
           }
           for (let i = 0; i < this._nonBillables.length; i++) {
             this._displayCheckBoxes.push({ label: this._nonBillables[i].ProjectName, value: this._nonBillables[i].Key });
@@ -140,6 +156,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   }
   generateReport() {
     this.showSpinner = true;
+    this.showReport = false;
     if (this._selectcheckbox.length > 0) {
       this._billingCodesSpecial = new BillingCodesSpecial();
       if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
@@ -153,10 +170,15 @@ export class EmployeesbybillingcodeComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.timesysSvc.listAllClientItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            this._reports = data;
+            this.showReport = false;
+            this._reports = [];
+            this._recData = 0;
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._reports = data;
+              this.showReport = true;
+            }
             this._recData = this._reports.length;
             this.showBillingCodeList = false;
-            this.showReport = true;
             this.changeCodeList = true;
             this.showSpinner = false;
           }
@@ -164,10 +186,15 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       } else if (this.selectedBillingType === 1) {
         this.timesysSvc.listAllProjectDataForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            this._reports = data;
+            this.showReport = false;
+            this._reports = [];
+            this._recData = 0;
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._reports = data;
+              this.showReport = true;
+            }
             this._recData = this._reports.length;
             this.showBillingCodeList = false;
-            this.showReport = true;
             this.changeCodeList = true;
             this.showSpinner = false;
           }
@@ -175,17 +202,20 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       } else {
         this.timesysSvc.listAllBillingItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            this._reports = data;
+            this.showReport = false;
+            this._reports = [];
+            this._recData = 0;
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._reports = data;
+              this.showReport = true;
+            }
             this._recData = this._reports.length;
             this.showBillingCodeList = false;
-            this.showReport = true;
             this.changeCodeList = true;
             this.showSpinner = false;
           }
         );
       }
-    } else {
-      this.msgSvc.add({ severity: 'error', summary: 'Error in report generation', detail: 'No Billing Codes Selected' });
     }
   }
   startOver() {

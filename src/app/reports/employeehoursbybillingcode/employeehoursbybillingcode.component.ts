@@ -15,9 +15,10 @@ import { DatePipe } from '@angular/common';
 export class EmployeehoursbybillingcodeComponent implements OnInit {
   billingCycle: SelectItem[];
   selectedbillingCycle: number;
-  _startDate = '';
+  _startDate: any;
   _startDateSelect = '';
-  _endDate = '';
+  _endDateSelect = '';
+  _endDate: any;
   showSpinner = false;
   _selectcheckbox: SelectItem[] = [];
   _displayCheckBoxes: SelectItem[] = [];
@@ -25,19 +26,32 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   _selectString = '';
   showBillingCodeList = false;
   allcheckbox = false;
+
   changeCodeList = false;
   showReport = false;
   _recData = 0;
   cols: any;
   _reports: any[] = [];
+
   _billingCodesSpecial: BillingCodesSpecial;
   helpText: any;
   visibleHelp = false;
   showTotals = false;
   nowrap = 'nowrap';
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe
+  ) { }
+
+  ngOnInit() {
+    this.Initialisations();
+  }
+
+  Initialisations() {
     this.billingCycle = [
       { label: 'Weekly', value: 0 },
       { label: 'Bi-Weekly', value: 1 },
@@ -45,14 +59,10 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       { label: 'All (Show T&M, Projects, Non-Billables)', value: 3 }
     ];
     this.selectedbillingCycle = 3;
-  }
-
-  ngOnInit() {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._startDate = new Date(year, month - 1, 1);
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
 
@@ -79,10 +89,16 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     if (this.selectedbillingCycle < 3) {
       this.timesysSvc.getClients().subscribe(
         (data) => {
-          if (selectedType < 2) {
-            this._clients = data.filter(P => P.Inactive === (selectedType === 0 ? false : true));
-          } else {
-            this._clients = data;
+          this._clients = [];
+          if (data !== undefined && data !== null && data.length > 0) {
+            if (selectedType < 2) {
+              data = data.filter(P => P.Inactive === (selectedType === 0 ? false : true));
+              if (data !== undefined && data !== null && data.length > 0) {
+                this._clients = data;
+              }
+            } else {
+              this._clients = data;
+            }
           }
           for (let i = 0; i < this._clients.length; i++) {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
@@ -98,10 +114,34 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   }
   generateReport() {
     this.showSpinner = true;
+
+    this._billingCodesSpecial = new BillingCodesSpecial();
+    let _start = '';
+    let _end = '';
+    this._startDateSelect = '';
+    this._endDateSelect = '';
+    let dateValid: any;
+    const dateCheck = new Date(this._startDate);
+    if (dateCheck.toString() === 'Invalid Date') {
+      dateValid = this._startDate;
+    } else {
+      dateValid = dateCheck;
+    }
+
+    if (this._startDate !== undefined && this._startDate !== null && this._startDate !== '') {
+      _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
+      this._startDateSelect = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
+    }
+    if (this._endDate !== undefined && this._endDate !== null && this._endDate !== '') {
+      _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
+      this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+    }
+    this._billingCodesSpecial.startDate = _start;
+    this._billingCodesSpecial.endDate = _end;
+    this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+    this.buildCols();
     if (this.selectedbillingCycle < 3) {
       if (this._selectcheckbox.length > 0) {
-        this.buildCols();
-        this._billingCodesSpecial = new BillingCodesSpecial();
         if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
           this._billingCodesSpecial.value = '';
         } else {
@@ -117,27 +157,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         } else if (this.selectedbillingCycle === 3) {
           _selectedBillingCycle = 'A';
         }
-        let dateValid: any;
-        const dateCheck = new Date(this._startDateSelect);
-        if (dateCheck.toString() === 'Invalid Date') {
-          dateValid = this._startDate;
-        } else {
-          dateValid = dateCheck;
-        }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
-        let _start = '';
-        let _end = '';
-        if (this._startDate !== null && this._startDate !== '') {
-          _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
-          this._startDate = _start;
-        }
-        if (this._endDate !== null && this._endDate !== '') {
-          _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-          this._endDate = _end;
-        }
-        this._billingCodesSpecial.startDate = _start;
-        this._billingCodesSpecial.endDate = _end;
-        this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
             this.showTable(data);
@@ -145,52 +166,23 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         );
       }
     } else {
-      this.buildCols();
-      this._billingCodesSpecial = new BillingCodesSpecial();
-      let _start = '';
-      let _end = '';
-      let dateValid: any;
-      const dateCheck = new Date(this._startDateSelect);
-      if (dateCheck.toString() === 'Invalid Date') {
-        dateValid = this._startDate;
-      } else {
-        dateValid = dateCheck;
-      }
-      if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
-      }
-      if (this._endDate !== null && this._endDate !== '') {
-        _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
-      }
-      this._billingCodesSpecial.startDate = _start;
-      this._billingCodesSpecial.endDate = _end;
-      this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
         }
       );
     }
-    // else {
-    //   this.msgSvc.add({ severity: 'error', summary: 'Error in report generation', detail: 'No Billing Codes Selected' });
-    // }
   }
   showTable(data: BillingCodes[]) {
+    this.showReport = false;
+    this._reports = [];
+    this._recData = 0;
     if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
       this._recData = this._reports[0].RowCount;
-      if (this._reports.length === 0) {
-        this.msgSvc.add({ severity: 'error', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
-      }
-    } else {
-      this._reports = [];
-      this._recData = 0;
-      this.msgSvc.add({ severity: 'error', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+      this.showReport = true;
     }
     this.showBillingCodeList = false;
-    this.showReport = true;
     this.changeCodeList = true;
     this.showSpinner = false;
   }
@@ -221,22 +213,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.showReport = false;
     this._selectcheckbox = [];
     this.allcheckbox = false;
-    // this.selectedbillingCycle = 3;
     this.showSpinner = false;
-    // const today = new Date();
-    // const month = today.getMonth();
-    // const year = today.getFullYear();
-    // this._startDate = new Date(year, month - 1, 1).toString();
-    let dateValid: any;
-    const dateCheck = new Date(this._startDateSelect);
-    if (dateCheck.toString() === 'Invalid Date') {
-      dateValid = this._startDate;
-    } else {
-      dateValid = dateCheck;
-    }
-    this._startDate = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
-    this._startDateSelect = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
-    // this._endDate = '';
-    this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
   }
 }
