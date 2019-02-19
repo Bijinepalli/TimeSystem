@@ -47,13 +47,8 @@
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g" *ngIf="showReport">
-<<<<<<< HEAD
   <!-- <p-scrollPanel [style]="{width: '100%', height: '460px'}"> -->
     <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
-=======
- 
-    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" > 
->>>>>>> 24d0a120762d168da9a077dd4e79c227a9f30203
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
@@ -96,11 +91,7 @@
         </tr>
       </ng-template>
     </p-table>
-<<<<<<< HEAD
   <!-- </p-scrollPanel> -->
-=======
-  
->>>>>>> 24d0a120762d168da9a077dd4e79c227a9f30203
 </div>
 <p-progressSpinner class="positionMiddle" appendTo="body" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
