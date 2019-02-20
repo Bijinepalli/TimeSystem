@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { SelectItem } from 'primeng/api';
+import { Router } from '@angular/router';
 import { BillingCodes } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -17,19 +16,33 @@ export class RevenuereportComponent implements OnInit {
   _revenueslist: BillingCodes[] = [];
   _startDateSelect: Date;
   _endDateSelect: Date;
-  showList = false;
+
   cols: any;
-  _recData: string;
+  _recData = 0;
   _revenuesPageNo: number;
+
+  showReport = false;
+  showSpinner = false;
+
+  visibleHelp: boolean;
+  helpText: string;
+
   _errorBlock = '';
   _errorMessage = '';
+
   _frm = new FormGroup({});
 
-  constructor(private timesysSvc: TimesystemService, private router: Router,
-    private datePipe: DatePipe) {
-  }
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private datePipe: DatePipe
+  ) { }
 
   ngOnInit() {
+    this.Initialisations();
+  }
+
+  Initialisations() {
     this.cols = [
       { field: 'Name', header: 'Client Name', align: 'left', width: 'auto' },
       { field: 'PeriodEnd', header: 'Period End', align: 'left', width: '150px' },
@@ -37,7 +50,9 @@ export class RevenuereportComponent implements OnInit {
     ];
     this.addControls();
   }
+
   addControls() {
+    this._frm = new FormGroup({});
     this._frm.addControl('_startDateSelect', new FormControl(null, Validators.required));
     this._frm.addControl('_endDateSelect', new FormControl(null, Validators.required));
   }
@@ -53,35 +68,45 @@ export class RevenuereportComponent implements OnInit {
     this._frm.reset();
   }
 
+  get currentFormControls() {
+    return this._frm.controls;
+  }
   showRevenueReport() {
-    this.clearList();
+    this.showSpinner = true;
+    this.clearControls();
     let startDate = this._frm.controls['_startDateSelect'].value.toString().trim();
     startDate = this.datePipe.transform(new Date(startDate), 'yyyy-MM-dd');
     let endDate = this._frm.controls['_endDateSelect'].value.toString().trim();
     endDate = this.datePipe.transform(new Date(endDate), 'yyyy-MM-dd');
-    this.showList = true;
+
     this.timesysSvc.getRevenueReports(startDate, endDate)
       .subscribe(
         (outputData) => {
+          this.showReport = true;
+          this._revenueslist = [];
+          this._recData = 0;
           if (outputData !== undefined && outputData !== null && outputData.length > 0) {
-            this._recData = outputData.length.toString();
             this._revenueslist = outputData;
+            this._recData = this._revenueslist.length;
           }
+          this.showSpinner = false;
         });
   }
-  clearList() {
+
+  clearControls() {
     this._errorBlock = '';
     this._errorMessage = '';
     this._revenueslist = [];
-    this._recData = '0';
+    this._recData = 0;
     this._revenuesPageNo = 0;
   }
+
   startOver() {
-    this.showList = false;
-    this.clearList();
+    this.showReport = false;
+    this.clearControls();
     this.resetForm();
   }
-  get currentFormControls() {
-    return this._frm.controls;
-  }
+
+
+
 }
