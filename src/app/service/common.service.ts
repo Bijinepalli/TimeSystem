@@ -50,39 +50,17 @@ export class CommonService {
     if (valueLen !== otherLen) { return false; }
 
     // Compare two items
-    const compare = function (item1, item2) {
 
-      // Get the object type
-      const itemType = Object.prototype.toString.call(item1);
-
-      // If an object or array, compare recursively
-      if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
-        // if (!this.isArrayEqual(item1, item2)) { return false; } // Need to check same function calling
-      } else {
-
-        // If the two items are not the same type, return false
-        if (itemType !== Object.prototype.toString.call(item2)) { return false; }
-
-        // Else if it's a function, convert to a string and compare
-        // Otherwise, just compare
-        if (itemType === '[object Function]') {
-          if (item1.toString() !== item2.toString()) { return false; }
-        } else {
-          if (item1 !== item2) { return false; }
-        }
-
-      }
-    };
 
     // Compare properties
     if (type === '[object Array]') {
       for (let i = 0; i < valueLen; i++) {
-        if (compare(value[i], other[i]) === false) { return false; }
+        if (this.compare(value[i], other[i]) === false) { return false; }
       }
     } else {
       for (const key in value) {
         if (value.hasOwnProperty(key)) {
-          if (compare(value[key], other[key]) === false) { return false; }
+          if (this.compare(value[key], other[key]) === false) { return false; }
         }
       }
     }
@@ -90,6 +68,30 @@ export class CommonService {
     // If nothing failed, return true
     return true;
 
+  }
+
+  compare(item1, item2) {
+
+    // Get the object type
+    const itemType = Object.prototype.toString.call(item1);
+
+    // If an object or array, compare recursively
+    if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
+      if (!this.isArrayEqual(item1, item2)) { return false; } // Need to check same function calling
+    } else {
+
+      // If the two items are not the same type, return false
+      if (itemType !== Object.prototype.toString.call(item2)) { return false; }
+
+      // Else if it's a function, convert to a string and compare
+      // Otherwise, just compare
+      if (itemType === '[object Function]') {
+        if (item1.toString() !== item2.toString()) { return false; }
+      } else {
+        if (item1 !== item2) { return false; }
+      }
+
+    }
   }
 
 
