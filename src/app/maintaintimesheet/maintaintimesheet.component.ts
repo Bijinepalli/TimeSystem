@@ -81,6 +81,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _SubmittedOn = 'N/A';
   _Resubmittal = 'No';
   _pageState = '';
+  _ApprovalId = 0;
 
   _peroidStartDate: Date = new Date('2018-11-01');
   _periodEnddate: Date = new Date('2018-11-15');
@@ -91,37 +92,21 @@ export class MaintaintimesheetComponent implements OnInit {
   ngOnInit() {
     this._errorMessage = '';
     this._warningMessage = '';
-    if (this.activatedRoute.snapshot.queryParams['id']) {
-      this.activatedRoute
-        .queryParams
-        .subscribe(params => {
-          this._timesheetId = params['id'] === undefined ? -1 : params['id'];
-          this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
-          this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
-          this._pageState = params['state'] === undefined ? '' : params['state'];
-          console.log('this._pageState');
-          console.log(this._pageState);
-          if (+this._timesheetId.toString() < 0) {
-            this._periodEndDateString = this._timesheetPeriodEnd;
-            this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
-          }
-        });
-    } else {
-      this.activatedRoute.params.subscribe((params) => {
-        this._timesheetId = params['id'] === undefined ? -1 : params['id'];
-        this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
-        this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
-        this._pageState = params['state'] === undefined ? '' : params['state'];
-        console.log('this._pageState');
-        console.log(this._pageState);
-        if (+this._timesheetId.toString() < 0) {
-          this._periodEndDateString = this._timesheetPeriodEnd;
-          this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
-        }
-      });
-    }
-
-
+    this.activatedRoute.params.subscribe((params) => {
+      this._timesheetId = params['id'] === undefined ? -1 : params['id'];
+      this._actualTimeSheetId = params['id'] === undefined ? -1 : params['id'];
+      this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
+      this._pageState = params['state'] === undefined ? '' : params['state'];
+      this._ApprovalId = params['approvalId'] === undefined ? -1 : params['approvalId'];
+      console.log('this._pageState');
+      console.log(this._pageState);
+      console.log(this._timesheetId);
+      console.log(this._ApprovalId);
+      if (+this._timesheetId.toString() < 0) {
+        this._periodEndDateString = this._timesheetPeriodEnd;
+        this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
+      }
+    });
     this.defaultControlsToForm();
     this.getTimesheetTimeLineTimeCellDetails();
   }
@@ -135,6 +120,8 @@ export class MaintaintimesheetComponent implements OnInit {
           this._EmployeeName = this._employee[0].FirstName + ' ' + this._employee[0].LastName;
           if (this._employee[0].SupervisorId !== undefined && this._employee[0].SupervisorId > 0) {
             this.timesysSvc.getEmployee(this._employee[0].SupervisorId.toString(), '', '').subscribe((superEmp) => {
+              console.log('superEmp');
+              console.log(superEmp);
               this._supervisor = superEmp;
             });
           }
@@ -635,6 +622,7 @@ export class MaintaintimesheetComponent implements OnInit {
       this.timeSheetForm.controls['txtSuperComments'].setValue(this._timeSheetEntries[0].SupervisorComments);
       if (this._timeSheetEntries[0].SupervisorComments !== undefined && this._timeSheetEntries[0].SupervisorComments !== '') {
         this._isTimesheetApprovedOrRejected = true;
+        this.timeSheetForm.get('txtSuperComments').disable();
       }
     }
     this.TANDMTotalCalculation();
@@ -1260,8 +1248,18 @@ export class MaintaintimesheetComponent implements OnInit {
                     this._IsTimeSheetSubmittedJustNow = true;
                     // tslint:disable-next-line:max-line-length
                     if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
+                      const timeSheetApp = new TimeSheetForApproval();
+                      timeSheetApp.EmployeeId = +localStorage.getItem('UserId');
+                      timeSheetApp.SupervisorId = this._supervisor[0].ID;
+                      timeSheetApp.TimesheetId = this._timesheetId;
+                      timeSheetApp.PeriodEnd = this._periodEndDateDisplay;
+                      this.timesysSvc.timeSheetPendingForApprovalInsert(timeSheetApp)
+                        .subscribe(
+                          (inputData) => {
+                            // tslint:disable-next-line:max-line-length
+                            this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor:' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                          });
                       // tslint:disable-next-line:max-line-length
-                      this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor:' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
                     } else {
                       this._submitMessage = 'Your timesheet has been submitted';
                     }
@@ -1326,8 +1324,17 @@ export class MaintaintimesheetComponent implements OnInit {
                   this._IsTimeSheetSubmittedJustNow = true;
                   // tslint:disable-next-line:max-line-length
                   if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
-                    // tslint:disable-next-line:max-line-length
-                    this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor:' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                    const timeSheetApp = new TimeSheetForApproval();
+                    timeSheetApp.EmployeeId = +localStorage.getItem('UserId');
+                    timeSheetApp.SupervisorId = this._supervisor[0].ID;
+                    timeSheetApp.TimesheetId = this._timesheetId;
+                    timeSheetApp.PeriodEnd = this._periodEndDateDisplay;
+                    this.timesysSvc.timeSheetPendingForApprovalInsert(timeSheetApp)
+                      .subscribe(
+                        (inputData) => {
+                          // tslint:disable-next-line:max-line-length
+                          this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor:' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                        });
                   } else {
                     this._submitMessage = 'Your timesheet has been submitted';
                   }
@@ -1422,11 +1429,50 @@ export class MaintaintimesheetComponent implements OnInit {
       this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
     }
   }
-  Accept() {
-    this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+  Approve() {
+    const timeSheetApp = new TimeSheetForApproval();
+    timeSheetApp.Id = this._ApprovalId;
+    timeSheetApp.Status = 'A';
+    timeSheetApp.Comments = this.timeSheetForm.get('txtSuperComments').value;
+    this.timesysSvc.timeSheetPendingForApprovalUpdate(timeSheetApp)
+      .subscribe(
+        (inputData) => {
+          // tslint:disable-next-line:max-line-length
+          // this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+          const timesheet = new TimeSheet();
+          timesheet.TimesheetID = this._timesheetId.toString();
+          timesheet.Status = '2';
+          this.timesysSvc.timeSheetApprovalStatusUpdate(timesheet)
+            .subscribe(
+              (inputTime) => {
+                // tslint:disable-next-line:max-line-length
+                this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+              });
+        });
+
+
   }
   Reject() {
-    this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+    const timeSheetApp = new TimeSheetForApproval();
+    timeSheetApp.Id = this._ApprovalId;
+    timeSheetApp.Status = 'R';
+    timeSheetApp.Comments = this.timeSheetForm.get('txtSuperComments').value;
+    this.timesysSvc.timeSheetPendingForApprovalUpdate(timeSheetApp)
+      .subscribe(
+        (inputData) => {
+          // tslint:disable-next-line:max-line-length
+          // this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+          const timesheet = new TimeSheet();
+          timesheet.TimesheetID = this._timesheetId.toString();
+          timesheet.Status = '3';
+          this.timesysSvc.timeSheetApprovalStatusUpdate(timesheet)
+            .subscribe(
+              (inputTime) => {
+                // tslint:disable-next-line:max-line-length
+                this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+              });
+        });
+
   }
   getWantedDetailsOnLoad() {
 

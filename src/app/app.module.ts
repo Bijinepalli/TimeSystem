@@ -148,7 +148,7 @@ const appRoutes: Routes = [
       { path: 'maintaintimesheet', component: MaintaintimesheetComponent },
       { path: 'maintaintimesheet/:id', component: MaintaintimesheetComponent },
       { path: 'maintaintimesheet/:id/:periodEnd', component: MaintaintimesheetComponent },
-      { path: 'maintaintimesheet/:id/:state', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheet/:id/:approvalId/:state', component: MaintaintimesheetComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
       // { path: 'searchissue/:id', component: SearchissueComponent },

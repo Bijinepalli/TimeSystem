@@ -310,10 +310,10 @@ export class TimeSheetBinding {
     code?: string;
 }
 export class TimeSheetForApproval {
-    Id: number;
-    EmployeeId: number;
-    SupervisorId: number;
-    TimesheetId: number;
+    Id?: number;
+    EmployeeId?: number;
+    SupervisorId?: number;
+    TimesheetId?: number;
     PeriodEnd: string;
     EmployeeName: string;
     Status: string;

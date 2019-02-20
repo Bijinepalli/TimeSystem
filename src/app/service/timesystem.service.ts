@@ -727,5 +727,20 @@ export class TimesystemService {
     const body = JSON.stringify(_timeLine);
     return this.http.post<TimeSheet>(this.url + 'OnlyTimeLineAndTimeCell_Delete', body, httpOptions);
   }
+  timeSheetPendingForApprovalInsert(_timeSheetApp: TimeSheetForApproval) {
+    const body = JSON.stringify(_timeSheetApp);
+    console.log(body);
+    return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetPendingForApprovalInsert', body, httpOptions);
+  }
 
+  timeSheetPendingForApprovalUpdate(_timeSheetApp: TimeSheetForApproval) {
+    const body = JSON.stringify(_timeSheetApp);
+    console.log(body);
+    return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetPendingForApprovalUpdate', body, httpOptions);
+  }
+  timeSheetApprovalStatusUpdate(_timeSheet: TimeSheet) {
+    const body = JSON.stringify(_timeSheet);
+    console.log(body);
+    return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetApprovalStatusUpdate', body, httpOptions);
+  }
 }

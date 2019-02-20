@@ -39,9 +39,10 @@ export class ApprovaltimesheetsComponent implements OnInit {
     this.confSvc.confirm({
       message: 'Do you want to approve the timesheet?',
       accept: () => {
-        // this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.TimesheetId + '/' + 'A'], { skipLocationChange: true });
-        this.router.navigate(['menu/maintaintimesheet'],
-          { queryParams: { 'id': timeSheet.TimesheetId, 'state': 'A' }, skipLocationChange: true });
+        // tslint:disable-next-line:max-line-length
+        this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.TimesheetId + '/' + timeSheet.Id + '/' + 'A'], { skipLocationChange: true });
+        // this.router.navigate(['menu/maintaintimesheet'],
+        //   { queryParams: { 'id': timeSheet.TimesheetId, 'state': 'A' }, skipLocationChange: true });
       }
     });
   }
