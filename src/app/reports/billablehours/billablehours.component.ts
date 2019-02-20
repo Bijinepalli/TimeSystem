@@ -60,12 +60,12 @@ export class BillablehoursComponent implements OnInit {
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '200px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
-      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '175px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '200px' },
       { field: 'CalendarDate', header: 'Date', align: 'center', width: '100px' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '126px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '130px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;
@@ -145,6 +145,7 @@ export class BillablehoursComponent implements OnInit {
           this.showReport = true;
           this.changeCodeList = true;
           this.showSpinner = false;
+          this._totalhours = parseFloat(this._totalhours);
         });
   }
   startOver() {

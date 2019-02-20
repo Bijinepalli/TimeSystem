@@ -29,7 +29,7 @@
     </p-fieldset>
   </div>
 </div>
-<p-panel [toggleable]="true" header="Filter results by:">
+<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-4">
       <label class="label" style="padding:0px 10px;">Select a Pay Period:</label>
@@ -47,8 +47,8 @@
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g" *ngIf="showReport">
- 
-    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" > 
+  <!-- <p-scrollPanel [style]="{width: '100%', height: '460px'}"> -->
+    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
@@ -56,6 +56,8 @@
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+                label="Start Over" (click)="startOver()"></button>&nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
         </div>
@@ -79,7 +81,7 @@
           </td>
           <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
             <div
-              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'); else defaultColumn">
               <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
             </div>
             <ng-template #defaultColumn>
@@ -89,7 +91,7 @@
         </tr>
       </ng-template>
     </p-table>
-  
+  <!-- </p-scrollPanel> -->
 </div>
 <p-progressSpinner class="positionMiddle" appendTo="body" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>

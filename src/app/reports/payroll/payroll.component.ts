@@ -27,6 +27,8 @@ export class PayrollComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
   selectedPeriod: any;
+  showBillingCodeList = false;
+  changeCodeList = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private datePipe: DatePipe) {
@@ -62,7 +64,6 @@ export class PayrollComponent implements OnInit {
       _date = this.datePipe.transform(this.selectedDate, 'yyyy/MM/dd');
       // this.selectedDate = _date;
     }
-    this._timesheet.PeriodEndDate = _date;
     if (_date !== null && _date !== '') {
       this.showSpinner = true;
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
@@ -85,6 +86,8 @@ export class PayrollComponent implements OnInit {
     }
     this.showReport = true;
     this.showSpinner = false;
+    this.showBillingCodeList = false;
+    this.changeCodeList = true;
   }
   buildCols() {
     this.cols = [
@@ -112,6 +115,12 @@ export class PayrollComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  startOver() {
+    this.showBillingCodeList = false;
+    this.changeCodeList = false;
+    this.showReport = false;
+    this.showSpinner = false;
   }
   viewTimeSheet(rowData: TimeSheet) {
     this.navigateToTimesheet(rowData.TimesheetID, '');

@@ -23,7 +23,7 @@ export class HolidaysreportComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'CalendarYear', header: 'Year', align: 'center', width: '75px' },
+      { field: 'CalendarYear', header: 'Year', align: 'center', width: '100px' },
       { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
       { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
       { field: 'HolidayDate', header: 'Holiday Date', align: 'center', width: '150px' },
