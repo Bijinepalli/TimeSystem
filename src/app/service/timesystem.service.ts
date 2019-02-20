@@ -696,14 +696,20 @@ export class TimesystemService {
     const body = JSON.stringify(_timesheetId);
     return this.http.post<TimeSheet>(this.url + 'TimeSheetDelete', body, httpOptions);
   }
-  getAllWantedDetailsOnLoad(employeeId: string) {
+  getAllWantedDetailsOnLoad(timeSheetemployeeId: string) {
     const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');
 
-    const params = new HttpParams()
-      .set('EmployeeId', employeeId);
+    let params = new HttpParams()
+      .set('EmployeeId', timeSheetemployeeId);
     const data2 = this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
 
-    return forkJoin([data1, data2]);
+    params = new HttpParams()
+      .set('EmployeeID', timeSheetemployeeId !== '' ? timeSheetemployeeId : '0')
+      .set('LoginID', '')
+      .set('Password', '');
+    const data3 = this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
+
+    return forkJoin([data1, data2, data3]);
   }
   getEmployeesNoTimesheetforInvoice(EmployeeId: string) {
     const params = new HttpParams()
