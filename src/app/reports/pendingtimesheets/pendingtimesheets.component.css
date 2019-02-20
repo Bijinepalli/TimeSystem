@@ -1,4 +1,7 @@
 :host ::ng-deep tr.ui-state-highlight{
-    background: #323232 !important;
-    color: #dedede !important;
+    background: white !important;
+    color: #323232 !important;
+}
+:host ::ng-deep tr:nth-child(even) {
+    background-color: #f9f9f9 !important;
 }

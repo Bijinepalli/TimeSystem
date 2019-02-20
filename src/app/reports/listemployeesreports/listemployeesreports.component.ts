@@ -42,34 +42,35 @@ export class ListemployeesreportsComponent implements OnInit {
     this._startDate = '';
     this._endDate = '';
     this._status = [
-      { label: 'Active', value: '1' },
-      { label: 'InActive', value: '0' },
+      { label: 'Active', value: '0' },
+      { label: 'InActive', value: '1' },
       { label: 'Both', value: '' }
     ];
-    this._statusselected = '1';
     this._paid = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
       { label: 'Both', value: '' }
     ];
-    this._paidselected = '';
     this._Ipay = [
       { label: 'Eligible', value: '1' },
       { label: 'Ineligible', value: '0' },
       { label: 'Both', value: '' }
     ];
-    this._Ipayselected = '';
     this._timesheets = [
       { label: 'Submits', value: '1' },
       { label: 'Exempt', value: '0' },
       { label: 'Both', value: '' }
     ];
-    this._timesheetsselected = '';
     this._holidays = [
       { label: 'Vertex', value: '1' },
       { label: 'Client', value: '0' },
       { label: 'Both', value: '' }
     ];
+
+    this._statusselected = '0';
+    this._paidselected = '';
+    this._Ipayselected = '';
+    this._timesheetsselected = '';
     this._holidaysselected = '';
 
     this._headerLabels = [

@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Company Holiday Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Company Holiday Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('ViewHolidays.htm')"></i>
   </div>
   <div class="ui-g-12 ui-md-2 ui-g-nopad">
@@ -13,25 +14,31 @@
 </div>
 <br>
 <p-panel [toggleable]="true" header="Filter results by:">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-1 label">Calendar Year :</div>
-  <div class="ui-g-12 ui-md-2">
-    <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="bottom"
-      [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-1 label">Calendar Year :</div>
+    <div class="ui-g-12 ui-md-2">
+      <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="bottom"
+        [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
+    </div>
   </div>
-</div>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
-<div class="ui-g">
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0">
+  <div class="ui-g-12 ui-md-12 ui-lg-12" style="color:red;font-weight: 400;padding: 14px;">
+    No Matching Data for the Selection Criteria
+  </div>
+</div>
+<div class="ui-g" *ngIf="showReport">
   <p-scrollPanel [style]="{width: '100%', height: '100%'}">
-    <p-table #dt [columns]="cols" [value]="_holidayList" [(selection)]="_selectedHolidays" [responsive]="false" dataKey="ID">
+    <p-table #dt [columns]="cols" [value]="_holidayList" [(selection)]="_selectedHolidays" [responsive]="false"
+      dataKey="ID">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-              style="width:auto"> &nbsp;
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
         </div>
@@ -40,7 +47,9 @@
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
           </th>
         </tr>
       </ng-template>
@@ -54,6 +63,8 @@
     </p-table>
   </p-scrollPanel>
 </div>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <p-scrollPanel [style]="{width: '100%', height: '100%'}">
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
