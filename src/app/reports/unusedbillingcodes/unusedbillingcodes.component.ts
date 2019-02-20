@@ -3,7 +3,7 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { CommonService } from '../../service/common.service';
 import { SelectItem } from 'primeng/api';
 import { Router } from '@angular/router';
-import { NonBillables } from '../../model/objects';
+import { NonBillables, TimePeriods } from '../../model/objects';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 
@@ -27,14 +27,25 @@ export class UnusedbillingcodesComponent implements OnInit {
   selectedUsageType: number;
   dates: SelectItem[];
   selectedDate: string;
-  dateFormat: string;
+  _DateFormat: string;
+  _DisplayDateFormat: string;
   periodEnd: any;
-  admin = false;
+  IsAdmin = false;
   helpText: any;
   visibleHelp = false;
+  showSpinner = false;
+  showReport = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe, private commonSvc: CommonService) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private commonSvc: CommonService
+  ) { }
+
+  ngOnInit() {
     this.codeType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -47,100 +58,60 @@ export class UnusedbillingcodesComponent implements OnInit {
     ];
     this.selectedCodeType = 0;
     this.selectedUsageType = 1;
-  }
-
-  ngOnInit() {
     this.cols = [
       { field: 'Key', header: 'Code', align: 'left', width: 'auto' },
       { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '108px' },
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
     ];
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.populateDateDrop();
-    this.getReports();
   }
 
   populateDateDrop() {
     this.dates = [];
-    this.dateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();  // Get the date format from appsettings
-    this.periodEnd = this.getNextPeriodDate();
-    for (let i = 0; i <= 24; i++) {
-      this.periodEnd = new Date(this.periodEnd.getFullYear(), this.periodEnd.getMonth(), this.periodEnd.getDate() - 7);
-      const val = this.datePipe.transform(this.periodEnd, 'MM-dd-yyyy');
-      if (i === 0) {
-        this.selectedDate = val;
-      }
-      this.dates.push({ label: val, value: val });
-    }
-  }
-
-  getNextPeriodDate() {
-    let returnValue = null;
-    const currentDate = new Date();
-    let days = 0;
-    const useSemiMonthly = this.commonSvc.getAppSettingsValue('SemiMonthly').toString();  // Get the value 'SemiMonthly' from appsettings
-    if (useSemiMonthly) {
-      const startDate = new Date(this.commonSvc.getAppSettingsValue('SemiMonthlyStartDate').toString());
-      if (currentDate > startDate) {
-        // tslint:disable-next-line:max-line-length
-        returnValue = currentDate.getDate() > 15 ? new Date(currentDate.getFullYear(), currentDate.getMonth(), 0) : new Date(currentDate.getFullYear(), currentDate.getMonth(), 15);
-      } else {
-        days = this.getDaysTillFriday(currentDate);
-        // tslint:disable-next-line:max-line-length
-        if (new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(days.toString(), 10)) > startDate) {
-          returnValue = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() - 1);
-        } else {
-          returnValue = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(days.toString(), 10));
-        }
-      }
-    } else {
-      days = this.getDaysTillFriday(currentDate);
-      returnValue = new Date(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate() + parseInt(days.toString(), 10));
-    }
-    return returnValue;
-  }
-
-  getDaysTillFriday(currentDate: Date) {
-    let daysTillFriday = 0;
-    switch (currentDate.getDay()) {
-      case 0:
-        daysTillFriday = 5;
-        break;
-      case 1:
-        daysTillFriday = 4;
-        break;
-      case 2:
-        daysTillFriday = 3;
-        break;
-      case 3:
-        daysTillFriday = 2;
-        break;
-      case 4:
-        daysTillFriday = 1;
-        break;
-      case 5:
-        daysTillFriday = 0;
-        break;
-      case 6:
-        daysTillFriday = 6;
-        break;
-      default:
-        break;
-    }
-    return daysTillFriday;
+    this.selectedDate = '';
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();  // Get the date format from appsettings
+    this.timesysSvc.getPeriodEndDate()
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            const dbData = data;
+            const periodEnd = new Date(dbData[0].FuturePeriodEnd.toString());
+            for (let i = 0; i <= 24; i++) {
+              const dropdownValue = periodEnd.setDate(periodEnd.getDate() - 7);
+              if (i === 0) {
+                this.selectedDate = this.datePipe.transform(dropdownValue, 'MM-dd-yyyy');
+              }
+              // tslint:disable-next-line:max-line-length
+              this.dates.push({ label: this.datePipe.transform(dropdownValue, 'MM-dd-yyyy'), value: this.datePipe.transform(dropdownValue, 'MM-dd-yyyy') });
+            }
+            this.getReports();
+          }
+        });
   }
 
   getReports() {
+    this.showSpinner = true;
+    this.setHeader();
+    this.showReport = false;
     this.timesysSvc.getUnusedBillingCodes(this.selectedCodeType.toString(), this.selectedUsageType.toString(), this.selectedDate.toString())
       .subscribe(
         (data) => {
-          this._codeList = data;
-          this._recData = data.length + ' matching rows';
-          this.setHeader();
+          this.showReport = false;
+          this._codeList = [];
+          this._recData = 0;
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._codeList = data;
+            this.showReport = true;
+          }
+          this._recData = this._codeList.length;
+          this.showSpinner = false;
         }
       );
     // Check for role and activate buttons only if role is admin
-    this.admin = true;
+    this.IsAdmin = true;
   }
   deleteCodes() {
     this.confSvc.confirm({

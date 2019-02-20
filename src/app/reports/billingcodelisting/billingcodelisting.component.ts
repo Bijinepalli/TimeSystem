@@ -15,14 +15,29 @@ export class BillingcodelistingComponent implements OnInit {
   billingType: SelectItem[];
   selectedType: number;
   selectedBillingType: number;
+
   _reports: any[] = [];
   cols: any;
+
   _recData: any;
+  showReport = false;
+  showSpinner = false;
   visibleHelp: boolean;
   helpText: string;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService
+  ) { }
+
+  ngOnInit() {
+    this.Initialisations();
+    this.searchReports();
+  }
+
+  Initialisations() {
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -35,23 +50,20 @@ export class BillingcodelistingComponent implements OnInit {
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;
+    this._reports = [];
+    this.showReport = false;
   }
 
-  ngOnInit() {
-    this._reports = [];
-    this.setCols(this.selectedBillingType.toString());
-    this.timesysSvc.listAllClientItems(this.selectedType.toString())
-      .subscribe(
-        (data) => {
-          this._reports = data;
-          this._recData = data.length + ' matching rows';
-        }
-      );
-  }
+
 
   searchReports() {
-    this._reports = [];
+    this.showSpinner = true;
     let mode = null;
+
+    this._reports = [];
+    this.setCols(this.selectedBillingType.toString());
+    this.showReport = false;
+
     if (this.selectedType.toString() === '2') {
       mode = '';
     } else {
@@ -59,27 +71,42 @@ export class BillingcodelistingComponent implements OnInit {
     }
     switch (this.selectedBillingType.toString()) {
       case '0':
-        this.setCols('0');
         this.timesysSvc.listAllClientItems(mode).subscribe(
           (data) => {
-            this._reports = data;
-            this._recData = data.length + ' matching rows';
+            this._reports = [];
+            if (data !== undefined && data !== null
+              && data.length > 0) {
+              this._reports = data;
+              this.showReport = true;
+            }
+            this._recData = this._reports.length;
+            this.showSpinner = false;
           });
         break;
       case '1':
-        this.setCols('1');
         this.timesysSvc.listAllProjectData(mode).subscribe(
           (data) => {
-            this._reports = data;
-            this._recData = data.length + ' matching rows';
+            this._reports = [];
+            if (data !== undefined && data !== null
+              && data.length > 0) {
+              this._reports = data;
+              this.showReport = true;
+            }
+            this._recData = this._reports.length;
+            this.showSpinner = false;
           });
         break;
       case '2':
-        this.setCols('2');
         this.timesysSvc.listAllBillingItems(mode).subscribe(
           (data) => {
-            this._reports = data;
-            this._recData = data.length + ' matching rows';
+            this._reports = [];
+            if (data !== undefined && data !== null
+              && data.length > 0) {
+              this._reports = data;
+              this.showReport = true;
+            }
+            this._recData = this._reports.length;
+            this.showSpinner = false;
           });
         break;
     }

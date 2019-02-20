@@ -251,13 +251,14 @@ export class HoursbyemployeeComponent implements OnInit {
     if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
       this._recData = this._reports[0].RowCount;
+      this.showReport = true;
     } else {
       this._reports = [];
       this._recData = 0;
+      this.showReport = false;
       this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
     }
     this.showBillingCodeList = false;
-    this.showReport = true;
     this.changeCodeList = true;
     this.showSpinner = false;
   }

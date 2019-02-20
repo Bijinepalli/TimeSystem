@@ -18,6 +18,8 @@ export class HolidaysreportComponent implements OnInit {
   cols: any;
   helpText: any;
   visibleHelp = false;
+  showReport = false;
+  showSpinner = false;
 
   constructor(private timesysSvc: TimesystemService) { }
 
@@ -31,6 +33,7 @@ export class HolidaysreportComponent implements OnInit {
     this.getHolidayYears();
   }
   getHolidayYears() {
+    this.showSpinner = true;
     this._years = [];
     this._years.push({ label: 'All Years', value: 0 });
     this.timesysSvc.getHolidayYears()
@@ -47,6 +50,7 @@ export class HolidaysreportComponent implements OnInit {
   }
 
   getHolidays() {
+    this.showSpinner = true;
     let year = '';
     if (this.selectedYear.toString() !== '0') {
       year = this.selectedYear.toString();
@@ -56,8 +60,15 @@ export class HolidaysreportComponent implements OnInit {
     this.timesysSvc.getHolidayList(year)
       .subscribe(
         (data) => {
-          this._holidayList = data;
-          this._recData = data.length + ' holidays found';
+          this.showReport = false;
+          this._holidayList = [];
+          this._recData = 0;
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._holidayList = data;
+            this._recData = this._holidayList.length;
+            this.showReport = true;
+          }
+          this.showSpinner = false;
         }
       );
   }
