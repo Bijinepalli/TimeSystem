@@ -353,7 +353,7 @@ export class EmployeesComponent implements OnInit {
         { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
         { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
         { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
-        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
       ];
     } else {
@@ -363,7 +363,7 @@ export class EmployeesComponent implements OnInit {
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
           { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
         this.cols = [
@@ -371,14 +371,14 @@ export class EmployeesComponent implements OnInit {
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
           { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       } else {
         this.cols = [
           { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       }
     }

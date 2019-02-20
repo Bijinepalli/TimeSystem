@@ -12,12 +12,10 @@
 </div>
 <div class="ui-g">
   <div class="ui-g-12">
-    <div class="ui-g-12 ui-g-nopad errorBlockHeader"
-      *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
+    <div class="ui-g-12 ui-g-nopad errorBlockHeader" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
       Errors
     </div>
-    <div class="ui-g-12 ui-g-nopad errorBlock"
-      *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
+    <div class="ui-g-12 ui-g-nopad errorBlock" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
       [innerHTML]="_errorBlock | sanitizeHtmlString">
     </div>
   </div>
@@ -25,37 +23,39 @@
 <br>
 <br>
 <div *ngIf="!showList">
-  <p-panel [toggleable]="true" header="Filter results by:">
-    <div class="ui-g">
-      <!-- <div class="label">
+  <form [formGroup]="_frm">
+    <p-panel [toggleable]="true" header="Filter results by:">
+      <div class="ui-g">
+        <!-- <div class="label">
         Client Billing Cycle:
       </div>
       <div class="ui-g-5">
         <p-selectButton [options]="billingCycle" pTooltip="Show clients with this billing cycle on the report"
           tooltipPosition="bottom" [(ngModel)]="selectedbillingCycle"></p-selectButton>
       </div> -->
-      <div class="ui-g-3">
-        <label class="label" style="padding:0px 10px;">Date From:</label>
-        <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
-          tooltipPosition="bottom" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true"
-          yearRange="1900:2100" [(ngModel)]="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
-        <label class="label" style="padding:0px 10px;">to</label>
-        <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
-          tooltipPosition="bottom" [(ngModel)]="_endDateSelect" dateFormat="mm-dd-yy" [monthNavigator]="true"
-          showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [inputStyle]="{'width':'100px'}"></p-calendar>
-      </div>
-      <!-- <div class="ui-g-2 label" style="text-align: left">
+        <div class="ui-g-3">
+          <label class="label" style="padding:0px 10px;">Date From:</label>
+          <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
+            tooltipPosition="bottom" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true"
+            yearRange="1900:2100" formControlName="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
+          <label class="label" style="padding:0px 10px;">to</label>
+          <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
+            tooltipPosition="bottom" formControlName="_endDateSelect" dateFormat="mm-dd-yy" [monthNavigator]="true"
+            showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [inputStyle]="{'width':'100px'}"></p-calendar>
+        </div>
+        <!-- <div class="ui-g-2 label" style="text-align: left">
         <p-checkbox binary="true" label="Total by Billing Code" pTooltip="Check this option to include a total of hours for each billing code"
           tooltipPosition="bottom" [(ngModel)]="showTotals" binary="true"></p-checkbox>
       </div> -->
-    </div>
-    <p-footer>
-      <div style="text-align: right">
-        <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=showRevenueReport()
-          pTooltip="Get the revenue report" tooltipPosition="bottom"></button>
       </div>
-    </p-footer>
-  </p-panel>
+      <p-footer>
+        <div style="text-align: right">
+          <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=showRevenueReport()
+            pTooltip="Get the revenue report" tooltipPosition="bottom" [disabled]="hasFormErrors()"></button>
+        </div>
+      </p-footer>
+    </p-panel>
+  </form>
 </div>
 <div *ngIf="showList" class="ui-g">
   <p-table #dt [columns]="cols" [value]="_revenueslist" [paginator]="true" [rows]="20" [first]="_revenuesPageNo"
@@ -77,7 +77,8 @@
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
         </th>
       </tr>
     </ng-template>

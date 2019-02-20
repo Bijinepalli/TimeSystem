@@ -2,3 +2,6 @@
     background: #dedede !important;
     color: #323232 !important;
 }
+/* :host ::ng-deep tr:nth-child(even) {
+    background-color: white !important;
+} */

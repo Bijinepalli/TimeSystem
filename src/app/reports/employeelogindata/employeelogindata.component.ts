@@ -44,8 +44,8 @@ export class EmployeelogindataComponent implements OnInit {
       { field: 'LoginID', header: 'Login ID', align: 'left', width: '200px' },
       { field: 'DecryptedPassword', header: 'Password', align: 'left', width: 'auto' },
       { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
-      { field: 'Salaried', header: 'Salaried', align: 'center', width: '100px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '110px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
     ];
     this.getEmployeesForReport();
   }

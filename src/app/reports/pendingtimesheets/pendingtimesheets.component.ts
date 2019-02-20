@@ -48,6 +48,7 @@ export class PendingtimesheetsComponent implements OnInit {
       { field: 'Status', header: 'Status', align: 'left', width: '200px' },
     ];
     this.populateDateDrop();
+    this.ccFinance = true;
   }
 
   //#region 'Populate Dropdown'

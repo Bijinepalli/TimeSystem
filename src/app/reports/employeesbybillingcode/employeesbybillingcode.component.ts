@@ -57,7 +57,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '120px' },
-      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '150px' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '200px' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '120px' },
