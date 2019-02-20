@@ -1,5 +1,5 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;color:red">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;">
     View Outstanding Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('PendingTimesheets.htm')"></i>
   </div>
@@ -24,7 +24,7 @@
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g" *ngIf="showReport">
   <p-scrollPanel [style]="{width: '100%', height: '570px'}">
-    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees" dataKey="ID">
+    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees" dataKey="Id">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
@@ -67,7 +67,7 @@
 </div>
 <div class="ui-g-12" style="border:solid 1px #d3d3d3">
     <div class="ui-g-12 ui-md-2">
-      <button pButton label="Email Employees" (click)="emailEmployee()"></button>
+      <button pButton label="Email Employees" (click)="emailEmployee()" [disabled]="true"></button>
     </div>
     <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
       <p-checkbox [(ngModel)]="byCob" binary="true"></p-checkbox> By COB

@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { MenuItem, MessageService, ConfirmationService } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
 import { TimesystemService } from '../service/timesystem.service';
@@ -19,6 +19,7 @@ declare var jQuery: any;
 export class Master2Component implements OnInit {
 
   @ViewChild('bigMenu') bigMenu: Menu;
+  @ViewChild('bigMenu2') bigMenu2: Menu;
   @ViewChild('smallMenu') smallMenu: Menu;
 
   public visibleHelp = false;
@@ -49,13 +50,11 @@ export class Master2Component implements OnInit {
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
     private datePipe: DatePipe,
-  ) {
-
-  }
+  ) { }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    // this.selectInitialMenuItemBasedOnUrl();
+    // this.selectInitialMenuItemBasedOnUrl(-1);
   }
 
   ngOnInit() {
@@ -153,19 +152,19 @@ export class Master2Component implements OnInit {
               localStorage.getItem('SubmitsTime').toString() === 'false'
             ) {
               this.dashboard = [{
-                label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+                label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')
               },
-              { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
             } else {
               this.dashboard = [{
-                label: 'Dashboard', command: (event) => this.navigateByRoute(event, '/menu/dashboard')
+                label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')
               },
-              { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
-              { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              { label: 'Timesheets', queryParams: { Id: -2 }, command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
+              { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
-              // this.selectInitialMenuItemBasedOnUrl();
             }
+            this.selectInitialMenuItemBasedOnUrl(-1);
           });
     }
   }
@@ -187,7 +186,7 @@ export class Master2Component implements OnInit {
             label: data[cnt].label,
             queryParams: data[cnt].queryParams,
             items: submenuItems,
-            command: (event) => this.navigateByRoute(event, data[cnt].routerLink)
+            command: (event) => this.navigateByRoute(event, data[cnt].routerLink),
           });
         } else {
           menuItem.push({
@@ -220,52 +219,56 @@ export class Master2Component implements OnInit {
     if (event.item.queryParams !== undefined && event.item.queryParams !== null) {
       queryParamsNew = { Id: event.item.queryParams.Id, TS: _np };
     } else {
-      queryParamsNew = { TS: _np };
+      queryParamsNew = { Id: -999, TS: _np };
     }
     this.router.navigate([path], { queryParams: queryParamsNew, skipLocationChange: true });
+    this.selectInitialMenuItemBasedOnUrl(queryParamsNew.Id);
   }
 
-  selectInitialMenuItemBasedOnUrl() {
-    const path = document.location.pathname;
-    if (this.menuItems !== undefined && this.menuItems !== null && this.menuItems.length > 0) {
-      let menuItem = this.getSelectedMenuItem(path, this.menuItems);
-      if (menuItem !== undefined && menuItem !== null) {
-      } else {
-        for (let cnt = 0; cnt < this.menuItems.length; cnt++) {
-          if (this.menuItems[cnt].items !== undefined && this.menuItems[cnt].items !== null && this.menuItems[cnt].items.length > 0) {
-            menuItem = this.getSelectedMenuItem(path, this.menuItems[cnt].items);
-            if (menuItem !== undefined && menuItem !== null) {
-              break;
+  selectInitialMenuItemBasedOnUrl(Id) {
+    let MainCnt = 0;
+    if (this.bigMenu !== undefined && this.bigMenu !== null) {
+      if (this.bigMenu.model !== undefined && this.bigMenu.model !== null && this.bigMenu.model.length > 0) {
+        this.bigMenu.model.forEach(sm => {
+          if (sm !== undefined && sm !== null) {
+            sm.expanded = false;
+            sm.styleClass = '';
+            if (sm.queryParams.Id === Id) {
+              sm.expanded = true;
+              sm.styleClass = 'ActiveRouteLink';
+              MainCnt++;
             }
           }
-        }
+        });
       }
-      if (menuItem !== undefined && menuItem !== null) {
-        if (this.bigMenu !== undefined &&
-          this.bigMenu !== null &&
-          this.bigMenu.container !== undefined &&
-          this.bigMenu.container !== null) {
+    }
 
-          const selectedIcon = this.bigMenu.container.querySelector(`.${menuItem.icon}`);
-          if (selectedIcon !== undefined && selectedIcon !== null) {
-            const menuselected = jQuery(selectedIcon).closest('li');
-            if (selectedIcon !== undefined && selectedIcon !== null) {
-              menuselected.addClass('menu-selected');
+    if (this.bigMenu2 !== undefined && this.bigMenu2 !== null) {
+      if (this.bigMenu2.model !== undefined && this.bigMenu2.model !== null && this.bigMenu2.model.length > 0) {
+        this.bigMenu2.model.forEach(m => {
+          if (m !== undefined && m !== null) {
+            if (MainCnt > 0) {
+              m.expanded = false;
+            }
+            if (m.items !== undefined && m.items !== null && m.items.length > 0) {
+              for (let cnt = 0; cnt < m.items.length; cnt++) {
+                let smm: any;
+                smm = m.items[cnt];
+                smm.expanded = false;
+                smm.styleClass = '';
+                if (m.expanded === true) {
+                  if (smm.queryParams.Id === Id) {
+                    smm.expanded = true;
+                    smm.styleClass = 'ActiveRouteLink';
+                  }
+                }
+              }
             }
           }
-        }
+        });
       }
     }
   }
-
-  getSelectedMenuItem(path: string, menuItems: any): any {
-    return menuItems.find((item) =>
-      item.routerLink !== undefined &&
-      item.routerLink !== null &&
-      item.routerLink === path);
-  }
-
-
 
   OpenMenu() {
     this.visibleSidebar = true;
@@ -276,6 +279,7 @@ export class Master2Component implements OnInit {
   }
 
   navigateTo() {
+    this.selectInitialMenuItemBasedOnUrl(-1);
     this.router.navigate(['/menu/dashboard'], { skipLocationChange: true });
   }
 

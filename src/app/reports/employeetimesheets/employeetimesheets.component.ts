@@ -57,7 +57,7 @@ export class EmployeetimesheetsComponent implements OnInit {
       { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: 'auto' },
       { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: 'auto' },
       { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: 'auto' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
     ];
   }
   getEmployees() {
