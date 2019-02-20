@@ -25,7 +25,7 @@
         pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
         tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
       <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom"
-        [(ngModel)]="selectedDate"></p-dropdown>
+       [(ngModel)]="selectedDate" [style]="{'width':'20%'}" [disabled]="!(this.selectedUsageType == 2)"></p-dropdown>
     </div>
   </div>
   <p-footer>
@@ -38,8 +38,9 @@
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g" *ngIf="showReport">
   <div class="ui-g-6 ui-m-6">
-    <button pButton pTooltip="Delete Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right"
-      class="ui-button-info" label="Delete Codes" (click)=deleteCodes() *ngIf="IsAdmin"></button>
+    <button pButton pTooltip="Delete Codes" [disabled]="true" tooltipPosition="right" class="ui-button-info"
+      label="Delete Codes" (click)=deleteCodes()></button>
+      <!-- [disabled]="!(this._selectedCode.length>0)" -->
   </div>
   <div class="ui-g-6 ui-m-6" style="display: none">
     <button pButton pTooltip="Inactivate Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right"
@@ -98,16 +99,6 @@
     </p-table>
   </p-scrollPanel>
 </div>
-<!-- <div class="ui-g" *ngIf="admin">
-  <div class="ui-g-6 ui-m-6" style="text-align:right">
-    <button pButton pTooltip="Delete Codes" tooltipPosition="bottom" class="ui-button-info" label="Delete Codes"
-      (click)=deleteCodes()></button>
-  </div>
-  <div class="ui-g-6 ui-m-6" style="text-align:left; display: none">
-    <button pButton pTooltip="Inactivate Codes" tooltipPosition="bottom" class="ui-button-info" label="Inactivate Codes"
-      (click)=deleteCodes()></button>
-  </div>
-</div> -->
 <p-confirmDialog></p-confirmDialog>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
@@ -116,3 +107,5 @@
     <div [innerHtml]="helpText" class="helpDisplayClass"></div>
   </p-scrollPanel>
 </p-sidebar>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

@@ -353,7 +353,7 @@ export class EmployeesComponent implements OnInit {
         { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
         { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
         { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
-        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
       ];
     } else {
@@ -363,7 +363,7 @@ export class EmployeesComponent implements OnInit {
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
           { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
         this.cols = [
@@ -371,14 +371,14 @@ export class EmployeesComponent implements OnInit {
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
           { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       } else {
         this.cols = [
           { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
           { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
           { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: 'auto' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       }
     }
@@ -516,6 +516,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   sortNonBillables(nonBillablesData: NonBillables[]) {
+
     if (nonBillablesData != null && nonBillablesData.length > 0) {
       nonBillablesData = nonBillablesData.sort(
         function (a, b) {
@@ -1149,24 +1150,41 @@ export class EmployeesComponent implements OnInit {
   /* #region Modal Popups Related Functionality */
 
   hasFormErrorsModal() {
-    let isValidModal = false;
+    // let isValidModal = false;
+    let cancelApproval = false;
     switch (this._popUpHeader) {
       case 'Non-Billable Item':
-        isValidModal = !(this._nonBillablesAssignToEmp.length > 0);
+        cancelApproval = this.commonSvc.isArrayEqual(this._nonBillablesAssignToEmpSaved, this._nonBillablesAssignToEmp);
         break;
       case 'Project':
-        isValidModal = !(this._projectsAssignToEmp.length > 0);
+        cancelApproval = this.commonSvc.isArrayEqual(this._projectsAssignToEmpSaved, this._projectsAssignToEmp);
         break;
       case 'Client':
-        isValidModal = !(this._clientsAssignToEmp.length > 0);
+        cancelApproval = this.commonSvc.isArrayEqual(this._clientsAssignToEmpSaved, this._clientsAssignToEmp);
         break;
       case 'Rate':
-        isValidModal = true;
         break;
       default:
         break;
     }
-    return isValidModal;
+
+    // switch (this._popUpHeader) {
+    //   case 'Non-Billable Item':
+    //     isValidModal = cancelApproval || !(cancelApproval === false && this._nonBillablesAssignToEmp.length > 0);
+    //     break;
+    //   case 'Project':
+    //     isValidModal = cancelApproval || !(cancelApproval === false && this._projectsAssignToEmp.length > 0);
+    //     break;
+    //   case 'Client':
+    //     isValidModal = cancelApproval || !(cancelApproval === false && this._clientsAssignToEmp.length > 0);
+    //     break;
+    //   case 'Rate':
+    //     isValidModal = true;
+    //     break;
+    //   default:
+    //     break;
+    // }
+    return cancelApproval;
   }
   cancelModal() {
     let cancelApproval = false;
@@ -1631,4 +1649,67 @@ export class EmployeesComponent implements OnInit {
   cancelTerminate() {
     this.clearControlsTerminate();
   }
+
+
+  isArrayEqual(value, other) {
+
+    // Get the value type
+    const type = Object.prototype.toString.call(value);
+
+    // If the two objects are not the same type, return false
+    if (type !== Object.prototype.toString.call(other)) { return false; }
+
+    // If items are not an object or array, return false
+    if (['[object Array]', '[object Object]'].indexOf(type) < 0) { return false; }
+
+    // Compare the length of the length of the two items
+    const valueLen = type === '[object Array]' ? value.length : Object.keys(value).length;
+    const otherLen = type === '[object Array]' ? other.length : Object.keys(other).length;
+    if (valueLen !== otherLen) { return false; }
+
+    // Compare two items
+    const compare = function (item1, item2) {
+
+      // Get the object type
+      const itemType = Object.prototype.toString.call(item1);
+
+      // If an object or array, compare recursively
+      if (['[object Array]', '[object Object]'].indexOf(itemType) >= 0) {
+        if (!this.isArrayEqual(item1, item2)) { return false; } // Need to check same function calling
+      } else {
+
+        // If the two items are not the same type, return false
+        if (itemType !== Object.prototype.toString.call(item2)) { return false; }
+
+        // Else if it's a function, convert to a string and compare
+        // Otherwise, just compare
+        if (itemType === '[object Function]') {
+          if (item1.toString() !== item2.toString()) { return false; }
+        } else {
+          if (item1 !== item2) { return false; }
+        }
+
+      }
+    };
+
+    // Compare properties
+    if (type === '[object Array]') {
+      for (let i = 0; i < valueLen; i++) {
+        if (compare(value[i], other[i]) === false) { return false; }
+      }
+    } else {
+      for (const key in value) {
+        if (value.hasOwnProperty(key)) {
+          if (compare(value[key], other[key]) === false) { return false; }
+        }
+      }
+    }
+
+    // If nothing failed, return true
+    return true;
+
+  }
+
+
 }
+
