@@ -3,7 +3,7 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
+import { NonBillables, BillingCodesSpecial, NonBillablesTotalHours } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { DateFormats } from 'src/app/model/constants';
 import { CommonService } from '../../service/common.service';
@@ -17,7 +17,7 @@ import { CommonService } from '../../service/common.service';
 export class NonbillablehoursComponent implements OnInit {
 
   reportType: SelectItem[];
-  _reports: NonBillables[] = [];
+  _reports: NonBillablesTotalHours[] = [];
   cols: any;
   selectedReportType: number;
   _headerType: string;
@@ -56,7 +56,7 @@ export class NonbillablehoursComponent implements OnInit {
       { field: 'Jun', header: 'JUN', align: 'right', width: '75px' },
       { field: 'Jul', header: 'JUL', align: 'right', width: '75px' },
       { field: 'Aug', header: 'AUG', align: 'right', width: '75px' },
-      { field: 'Sep', header: 'SEp', align: 'right', width: '75px' },
+      { field: 'Sep', header: 'SEP', align: 'right', width: '75px' },
       { field: 'Oct', header: 'OCT', align: 'right', width: '75px' },
       { field: 'Nov', header: 'NOV', align: 'right', width: '75px' },
       { field: 'Dec', header: 'DEC', align: 'right', width: '75px' },
@@ -100,32 +100,12 @@ export class NonbillablehoursComponent implements OnInit {
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
-            this._recData = this._reports.length;
+            this._recData = +this._reports[1].RowCount;
           }
           this.showReport = true;
           this.showSpinner = false;
         }
       );
-    }
-  }
-
-  sortReport() {
-    if (this._reports !== null) {
-      for (let i = 0; i < this._reports.length; i++) {
-        const rowD = this._reports[i];
-        const group = rowD.Group1;
-        if (i === 0) {
-          this.rowdata[group] = { index: 0, size: 1 };
-        } else {
-          const prevrowD = this._reports[i - 1];
-          const prevrowG = prevrowD.Group1;
-          if (group === prevrowG) {
-            this.rowdata[group].size++;
-          } else {
-            this.rowdata[group] = { index: i, size: 1 };
-          }
-        }
-      }
     }
   }
 

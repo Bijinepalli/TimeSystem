@@ -30,7 +30,7 @@ export class EmployeehoursComponent implements OnInit {
   showReport = false;
   _billingCodesSpecial: BillingCodesSpecial;
   _reports: any[] = [];
-  _recData = 0;
+  _recData: string;
   cols: any;
   helpText: any;
   visibleHelp = false;
@@ -55,9 +55,7 @@ export class EmployeehoursComponent implements OnInit {
 
   ngOnInit() {
     const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
+    this._startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
   showBillingCodes() {
@@ -152,12 +150,13 @@ export class EmployeehoursComponent implements OnInit {
     }
   }
   showTable(data: BillingCodes[]) {
-    if (data !== undefined && data !== null) {
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      this._recData = this._reports.length;
+      console.log(this._reports[1].RowCount);
+      this._recData = this._reports[0].RowCount.toString();
     } else {
       this._reports = [];
-      this._recData = 0;
+      this._recData = '0';
       this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
     }
     this.showBillingCodeList = false;

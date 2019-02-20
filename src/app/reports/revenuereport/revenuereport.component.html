@@ -9,6 +9,18 @@
     <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
+<div class="ui-g">
+  <div class="ui-g-12">
+    <div class="ui-g-12 ui-g-nopad errorBlockHeader"
+      *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
+      Errors
+    </div>
+    <div class="ui-g-12 ui-g-nopad errorBlock"
+      *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
+      [innerHTML]="_errorBlock | sanitizeHtmlString">
+    </div>
+  </div>
+</div>
 <br>
 <br>
 <div *ngIf="!showList">

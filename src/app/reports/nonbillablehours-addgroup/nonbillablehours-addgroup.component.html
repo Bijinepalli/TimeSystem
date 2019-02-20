@@ -1,12 +1,13 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;color:red">
-    {{_header}}
+  <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;">
+    {{_header}}<i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    (click)="showHelp('CustomerSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 helpClass ui-g-nopad">
-      <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+      <!-- <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
 </div>
@@ -98,7 +99,7 @@
       </p-footer>
     </p-panel>
   </div>
-  <div class="ui-g" *ngIf="secondarygroup" style="">
+  <div class="ui-g" *ngIf="secondarygroup">
     <p-pickList [target]="list2" [source]="list1" filterBy="label" sourceHeader="Unassigned {{_popUpHeader}}s"
       targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true" [showSourceControls]="false" [showTargetControls]="false"
       sourceFilterPlaceholder="Search by {{_popUpHeader}}Name" targetFilterPlaceholder="Search by {{_popUpHeader}}Name"

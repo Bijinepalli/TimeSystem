@@ -19,6 +19,7 @@ declare var jQuery: any;
 export class Master2Component implements OnInit {
 
   @ViewChild('bigMenu') bigMenu: Menu;
+  @ViewChild('bigMenu2') bigMenu2: Menu;
   @ViewChild('smallMenu') smallMenu: Menu;
 
   public visibleHelp = false;
@@ -55,7 +56,7 @@ export class Master2Component implements OnInit {
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {
-    // this.selectInitialMenuItemBasedOnUrl();
+    this.selectInitialMenuItemBasedOnUrl();
   }
 
   ngOnInit() {
@@ -164,8 +165,8 @@ export class Master2Component implements OnInit {
               { label: 'Timesheets', command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
               { label: 'Pay Stubs', command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
-              // this.selectInitialMenuItemBasedOnUrl();
             }
+            this.selectInitialMenuItemBasedOnUrl();
           });
     }
   }
@@ -241,12 +242,27 @@ export class Master2Component implements OnInit {
         }
       }
       if (menuItem !== undefined && menuItem !== null) {
+        console.log(this.bigMenu);
+        console.log(this.bigMenu2);
         if (this.bigMenu !== undefined &&
           this.bigMenu !== null &&
           this.bigMenu.container !== undefined &&
           this.bigMenu.container !== null) {
 
           const selectedIcon = this.bigMenu.container.querySelector(`.${menuItem.icon}`);
+          if (selectedIcon !== undefined && selectedIcon !== null) {
+            const menuselected = jQuery(selectedIcon).closest('li');
+            if (selectedIcon !== undefined && selectedIcon !== null) {
+              menuselected.addClass('menu-selected');
+            }
+          }
+        }
+        if (this.bigMenu2 !== undefined &&
+          this.bigMenu2 !== null &&
+          this.bigMenu2.container !== undefined &&
+          this.bigMenu2.container !== null) {
+
+          const selectedIcon = this.bigMenu2.container.querySelector(`.${menuItem.icon}`);
           if (selectedIcon !== undefined && selectedIcon !== null) {
             const menuselected = jQuery(selectedIcon).closest('li');
             if (selectedIcon !== undefined && selectedIcon !== null) {
