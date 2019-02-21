@@ -98,10 +98,6 @@ export class MaintaintimesheetComponent implements OnInit {
       this._timesheetPeriodEnd = params['periodEnd'] === undefined ? -1 : params['periodEnd'];
       this._pageState = params['state'] === undefined ? '' : params['state'];
       this._ApprovalId = params['approvalId'] === undefined ? -1 : params['approvalId'];
-      console.log('this._pageState');
-      console.log(this._pageState);
-      console.log(this._timesheetId);
-      console.log(this._ApprovalId);
       if (+this._timesheetId.toString() < 0) {
         this._periodEndDateString = this._timesheetPeriodEnd;
         this._periodEndDateDisplay = this.datePipe.transform(this._timesheetPeriodEnd, 'MM-dd-yyyy');
@@ -120,8 +116,6 @@ export class MaintaintimesheetComponent implements OnInit {
           this._EmployeeName = this._employee[0].FirstName + ' ' + this._employee[0].LastName;
           if (this._employee[0].SupervisorId !== undefined && this._employee[0].SupervisorId > 0) {
             this.timesysSvc.getEmployee(this._employee[0].SupervisorId.toString(), '', '').subscribe((superEmp) => {
-              console.log('superEmp');
-              console.log(superEmp);
               this._supervisor = superEmp;
             });
           }
@@ -1302,7 +1296,6 @@ export class MaintaintimesheetComponent implements OnInit {
       }
       if (timeLineAndTimeCellSaveArr.length > 0) {
         timeSheetSubmit.timeLineAndTimeCellArr = timeLineAndTimeCellSaveArr;
-        console.log(timeSheetSubmit);
         this.timesysSvc.TimeLineAndTimeCell_DeleteAndInsert(timeSheetSubmit)
           .subscribe(
             (outputData) => {
@@ -1398,8 +1391,6 @@ export class MaintaintimesheetComponent implements OnInit {
       // this.timesysSvc.getTimeSheetForApprovalCheck(this._timesheetUserId.toString())
       //   .subscribe(
       //     (data) => {
-      console.log('this._timeSheetUsersSupervisor');
-      console.log(this._timeSheetUsersSupervisor);
       for (let i = 0; i < this._timeSheetForApprovalsOnLoad.length; i++) {
         if (this._timesheetId.toString() === this._timeSheetForApprovalsOnLoad[i].TimesheetId.toString()) {
           if (this._pageState !== '' && this._pageState === 'A'

@@ -68,7 +68,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused non-billable item"
-            tooltipPosition="bottom" (click)="deleteNonBillable(rowData)"></i>
+            tooltipPosition="left" (click)="deleteNonBillable(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -83,10 +83,15 @@
       (click)="showHelp('NonBillableUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          Item Code *<br>
+          Item Code <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode" pToolTip="Unique non-billable item code"
             tooltipPosition="bottom">
@@ -94,7 +99,7 @@
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          Item Name *<br>
+          Item Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName" pToolTip="Unique non-billable item name"
             tooltipPosition="bottom">

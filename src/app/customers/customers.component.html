@@ -69,7 +69,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused customer"
-            tooltipPosition="bottom" (click)="deleteCustomer(rowData)"></i>
+            tooltipPosition="left" (click)="deleteCustomer(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -84,6 +84,11 @@
       (click)="showHelp('CustomerUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -95,7 +100,7 @@
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Customer Number *<br>
+          Customer Number <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Customer Number" formControlName="customerNumber"
             pTooltip="The unique ID for the customer" tooltipPosition="bottom">

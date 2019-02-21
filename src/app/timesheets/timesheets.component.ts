@@ -50,7 +50,7 @@ export class TimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.cols = [
-      { field: 'PeriodEnd', header: 'PeriodEnd', align: 'center', width: 'auto' },
+      { field: 'PeriodEnd', header: 'Period End', align: 'center', width: 'auto' },
       { field: 'Submitted', header: 'Submitted', align: 'center', width: 'auto' },
       { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: 'auto' },
       { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: 'auto' },

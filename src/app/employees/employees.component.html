@@ -143,14 +143,19 @@
   <!-- <app-add-employee></app-add-employee> -->
   <form [formGroup]="_frmEmployee">
     <div class="ui-g">
+      <div class="ui-g-12" style="text-align:left" style="color:red;">
+        * marked fields are required to save the data.
+      </div>
+    </div>
+    <div class="ui-g">
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Last Name *<br>
+        Last Name <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Last Name" formControlName="frmLastName"
           appendTo="body" pToolTip="Employee's last name">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        First Name *<br>
+        First Name <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="First Name" formControlName="frmFirstName"
           appendTo="body" pToolTip="Employee's first name">
@@ -177,7 +182,7 @@
           maxlength="4" size="4">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Email Address *<br>
+        Email Address <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Email Address" formControlName="frmEmailAddress"
           appendTo="body" pToolTip="Employee's email address.">
@@ -197,7 +202,7 @@
         </p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Select Department *
+        Select Department <span class="mandatoryStar">* </span>
         <div style="height:5px"></div>
         <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department"
           formControlName="frmDepartment" pToolTip="Employee's Department" [style]="{'width':'99%'}"></p-dropdown>
@@ -304,7 +309,7 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6" *ngIf="chkTimesheetVerification">
         <div style="height:5px"></div>
-        Select Supervisor :
+        Select Supervisor <span class="mandatoryStar">* </span>:
         <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Supervisor"
           formControlName="frmSupervisor" pToolTip="Employee's Supervisor"></p-dropdown>
       </div>
@@ -498,7 +503,7 @@
 
   <div *ngIf="!_IsEditRate">
     <div class="ui-g-12" style="text-align:right">
-      <button pButton label="Add New Rate" *ngIf="!_HasEdit" (click)="addNewRate()"></button>
+      <button pButton icon="fa fa-plus fa-1x" label="Add New Rate" *ngIf="!_HasEdit" (click)="addNewRate()"></button>
       <!-- <div *ngIf="_recRateData === 0" class="NoDataStrip NoDataMessage" style="margin: .5em 0px;width:100%;">
         No matching data for the selected criteria
       </div> -->
@@ -553,7 +558,7 @@
         </ng-template>
         <ng-template pTemplate="emptymessage" let-columns>
           <tr>
-            <td colspan="7" align="center">
+            <td colspan="7" style="color:red;text-align: center;">
               No rates found
             </td>
           </tr>
@@ -564,8 +569,13 @@
   <form [formGroup]="_frmRate">
     <div *ngIf="_IsEditRate">
       <div class="ui-g">
+        <div class="ui-g-12" style="text-align:left" style="color:red;">
+          * marked fields are required to save the data.
+        </div>
+      </div>
+      <div class="ui-g">
         <div class="ui-g-4" style="text-align:right">
-          Client Name:
+          Client Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}"
@@ -573,14 +583,14 @@
           </p-dropdown>
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Customer Name:
+          Customer Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
             pToolTip="The customer to invoice this client">
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Effective Date:
+          Effective Date <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmEffectiveDate"
@@ -588,7 +598,7 @@
           (mm-dd-yyyy)
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Rate:
+          Rate <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext"

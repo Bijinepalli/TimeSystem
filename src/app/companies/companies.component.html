@@ -61,11 +61,11 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['HolidaysInUse'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this company. It has no hours assigned to its holidays."
-             tooltipPosition="bottom" (click)="deleteCompany(rowData)"></i>
+             tooltipPosition="left" (click)="deleteCompany(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i class="fa fa-calendar fa-150x" pTooltip="Manage the holidays assigned to this company" style="cursor:pointer;color:green"
-            tooltipPosition="bottom" (click)="assignCompanyHolidays(rowData)"></i>
+            tooltipPosition="left" (click)="assignCompanyHolidays(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -121,10 +121,15 @@
       (click)="showHelp('CompanyUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          Company Name *<br>
+          Company Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Company Name" formControlName="companyName"
             pTooltip="Unique company name" tooltipPosition="bottom">
