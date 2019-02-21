@@ -2,7 +2,8 @@
 <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" appendTo="body"></p-toast>
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Employees <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Employees <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('EmployeeSelect.htm')"></i>
   </div>
   <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
@@ -27,7 +28,8 @@
       <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="getEmployees()"></p-selectButton>
     </div>
     <div class="ui-g-12 ui-md-6 ui-lg-3">
-      <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="getEmployees()"></p-selectButton>
+      <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" (onChange)="getEmployees()">
+      </p-selectButton>
     </div>
   </div>
 </p-panel>
@@ -40,8 +42,8 @@
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -54,8 +56,9 @@
         <th style="width: 10em" *ngIf="!_HasEdit && _userAdmin">Reset Password</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
-            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          </p-sortIcon>
         </th>
         <th style="width: 5em">Clients</th>
         <th style="width: 6em">Projects</th>
@@ -66,15 +69,17 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['IsLocked'] === 'True'" class="fa fa-lock fa-150x" pTooltip="Please click here to unlock the user"
-            style="cursor:pointer;color:orange" tooltipPosition="bottom" (click)="unlockEmployee(rowData)"></i>
+          <i *ngIf="rowData['IsLocked'] === 'True'" class="fa fa-lock fa-150x"
+            pTooltip="Please click here to unlock the user" style="cursor:pointer;color:orange" tooltipPosition="bottom"
+            (click)="unlockEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x editIcon" pTooltip="Please click here to edit the employee" tooltipPosition="bottom"
-            (click)="editEmployee(rowData)"></i>
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Please click here to edit the employee"
+            tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x deleteIcon" pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
+          <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x deleteIcon"
+            pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
             tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
@@ -91,23 +96,23 @@
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-handshake-o fa-150x" pTooltip="Manage the clients assigned to this employee" style="cursor:pointer;color:orangered"
-            tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
+            class="fa fa-handshake-o fa-150x" pTooltip="Manage the clients assigned to this employee"
+            style="cursor:pointer;color:orangered" tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-wrench fa-150x" pTooltip="Manage the billable projects assigned to this employee" style="cursor:pointer;color:green"
-            tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
+            class="fa fa-wrench fa-150x" pTooltip="Manage the billable projects assigned to this employee"
+            style="cursor:pointer;color:green" tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-book fa-150x" pTooltip="Manage the non-billable items assigned to this employee" style="cursor:pointer;color:darkmagenta"
-            tooltipPosition="bottom" (click)="manageNonBillables(rowData)"></i>
+            class="fa fa-book fa-150x" pTooltip="Manage the non-billable items assigned to this employee"
+            style="cursor:pointer;color:darkmagenta" tooltipPosition="bottom" (click)="manageNonBillables(rowData)"></i>
         </td>
         <td style="text-align: center">
           <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-            class="fa fa-usd fa-150x" pTooltip="Manage the rate information assigned to this employee" style="cursor:pointer;color:navy"
-            tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
+            class="fa fa-usd fa-150x" pTooltip="Manage the rate information assigned to this employee"
+            style="cursor:pointer;color:navy" tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -125,26 +130,33 @@
   [modal]="true" class="dialogWidth" [width]="800">
   <p-header>
     {{employeeHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('EmployeeUpdate.htm')"></i>
   </p-header>
   <div class="ui-g">
     <div class="ui-g-12">
-      <div [innerHTML]="errMsg | sanitizeHtmlString" *ngIf="errMsg!==undefined && errMsg!==null && errMsg!==''" class="errorBlock">
+      <div [innerHTML]="errMsg | sanitizeHtmlString" *ngIf="errMsg!==undefined && errMsg!==null && errMsg!==''"
+        class="errorBlock">
       </div>
     </div>
   </div>
   <!-- <app-add-employee></app-add-employee> -->
   <form [formGroup]="_frmEmployee">
     <div class="ui-g">
+      <div class="ui-g-12" style="text-align:left" style="color:red;">
+        * marked fields are required to save the data.
+      </div>
+    </div>
+    <div class="ui-g">
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Last Name *<br>
+        Last Name <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
-        <input type="text" pInputText style="width:100%" placeholder="Last Name" formControlName="frmLastName" appendTo="body"
-          pToolTip="Employee's last name">
+        <input type="text" pInputText style="width:100%" placeholder="Last Name" formControlName="frmLastName"
+          appendTo="body" pToolTip="Employee's last name">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        First Name *<br>
+        First Name <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="First Name" formControlName="frmFirstName"
           appendTo="body" pToolTip="Employee's first name">
@@ -154,24 +166,24 @@
       <div class="ui-g-12 ui-md-5 ui-lg-5">
         Nick Name<br>
         <div style="height:5px"></div>
-        <input type="text" pInputText style="width:100%" placeholder="Nick Name" formControlName="frmNickName" appendTo="body"
-          pToolTip="The name the employee prefers to go by">
+        <input type="text" pInputText style="width:100%" placeholder="Nick Name" formControlName="frmNickName"
+          appendTo="body" pToolTip="The name the employee prefers to go by">
       </div>
-      <div class="ui-g-12 ui-md-5 ui-lg-5">
+      <!-- <div class="ui-g-12 ui-md-5 ui-lg-5">
         Login ID<br>
         <div style="height:5px"></div>
-        <input type="text" pInputText style="width:100%" placeholder="Login ID" formControlName="frmLoginID" appendTo="body"
-          pToolTip="The ID the employee logs in to the Extranet with">
-      </div>
-      <div class="ui-g-12 ui-md-2 ui-lg-2">
-        Payroll ID *<br>
+        <input type="text" pInputText style="width:100%" placeholder="Login ID" formControlName="frmLoginID"
+          appendTo="body" pToolTip="The ID the employee logs in to the Extranet with">
+      </div> -->
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
+        Payroll ID <span class="mandatoryStar">*</span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Payroll ID" formControlName="frmPayrollID"
           appendTo="body" pToolTip="The employee's unique ID in the payroll system" pKeyFilter="int" minlength="4"
           maxlength="4" size="4">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Email Address *<br>
+        Email Address <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Email Address" formControlName="frmEmailAddress"
           appendTo="body" pToolTip="Employee's email address.">
@@ -179,21 +191,22 @@
       <div class="ui-g-12 ui-md-5 ui-lg-5">
         Secondary Email Address<br>
         <div style="height:5px"></div>
-        <input type="text" pInputText style="width:100%" placeholder="Secondary Email Address" formControlName="frmSecondaryEmailAddress"
-          appendTo="body" pToolTip="Employee's secondary email address.">
+        <input type="text" pInputText style="width:100%" placeholder="Secondary Email Address"
+          formControlName="frmSecondaryEmailAddress" appendTo="body" pToolTip="Employee's secondary email address.">
       </div>
       <div class="ui-g-12 ui-md-2 ui-lg-2"></div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
         Security Level<br>
         <div style="height:5px"></div>
-        <p-dropdown appendTo="body" [options]="_SecurityLevels" placeholder="Select Security Level" formControlName="frmSecurityLevel"
-          pToolTip="Employee's security level" [style]="{'width':'99%'}"></p-dropdown>
+        <p-dropdown appendTo="body" [options]="_SecurityLevels" placeholder="Select Security Level"
+          formControlName="frmSecurityLevel" pToolTip="Employee's security level" [style]="{'width':'99%'}">
+        </p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Select Department *
+        Select Department <span class="mandatoryStar">* </span>
         <div style="height:5px"></div>
-        <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department" formControlName="frmDepartment"
-          pToolTip="Employee's Department" [style]="{'width':'99%'}"></p-dropdown>
+        <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department"
+          formControlName="frmDepartment" pToolTip="Employee's Department" [style]="{'width':'99%'}"></p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-2 ui-lg-2">
         Hours Per Day<br>
@@ -204,14 +217,14 @@
       <div class="ui-g-12 ui-md-5 ui-lg-5">
         Hire Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
-        <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmHireDate"
-          [inputStyle]="{'width':'90%'}"></p-calendar>
+        <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
+          formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"></p-calendar>
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
         Start Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
-        <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmStartDate"
-          [inputStyle]="{'width':'90%'}"></p-calendar>
+        <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
+          formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"></p-calendar>
       </div>
       <div class="ui-g-12 ui-md-2 ui-lg-2" *ngIf="lblTerminationDate">
         <div style="height:5px"></div>
@@ -221,38 +234,46 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried" [ngModelOptions]="{standalone: true}"
+        <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried"
+          [ngModelOptions]="{standalone: true}"
           pToolTip="Check if this employee is paid by salary and is not paid on an hourly basis"></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
         <p-checkbox appendTo="body" binary="true" label="Employee Must Submit Timesheets" [(ngModel)]="chkSubmitsTime"
-          [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee is required to submit timesheets"></p-checkbox>
+          [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee is required to submit timesheets">
+        </p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Employee is Eligible for Incentive Pay" [(ngModel)]="chkIPayEligible"
-          [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee is eligible to receive IPay (Incentive Pay)"></p-checkbox>
+        <p-checkbox appendTo="body" binary="true" label="Employee is Eligible for Incentive Pay"
+          [(ngModel)]="chkIPayEligible" [ngModelOptions]="{standalone: true}"
+          pToolTip="Check if this employee is eligible to receive IPay (Incentive Pay)"></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Employee follows company holiday schedule" [(ngModel)]="chkCompanyHolidays"
-          [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee follows the VERTEX holiday schedule"></p-checkbox>
+        <p-checkbox appendTo="body" binary="true" label="Employee follows company holiday schedule"
+          [(ngModel)]="chkCompanyHolidays" [ngModelOptions]="{standalone: true}"
+          pToolTip="Check if this employee follows the VERTEX holiday schedule"></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Send Email Alert When Pay Stub is Available" [(ngModel)]="chkPayAvailableAlert"
-          [ngModelOptions]="{standalone: true}" pToolTip="Checking this box means the employee will be send an email notice each time their pay stub is available online"></p-checkbox>
+        <p-checkbox appendTo="body" binary="true" label="Send Email Alert When Pay Stub is Available"
+          [(ngModel)]="chkPayAvailableAlert" [ngModelOptions]="{standalone: true}"
+          pToolTip="Checking this box means the employee will be send an email notice each time their pay stub is available online">
+        </p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Company Officer" [(ngModel)]="chkOfficer" [ngModelOptions]="{standalone: true}"
+        <p-checkbox appendTo="body" binary="true" label="Company Officer" [(ngModel)]="chkOfficer"
+          [ngModelOptions]="{standalone: true}"
           pToolTip="Check if this employee is an officer of the company. This is uncommon."></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-7 ui-lg-7">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Company Supervisor" [(ngModel)]="chkSupervisor" [disabled]="SupEmpCnt>0"
-          [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee is a supervisor of the company."></p-checkbox>
+        <p-checkbox appendTo="body" binary="true" label="Company Supervisor" [(ngModel)]="chkSupervisor"
+          [disabled]="SupEmpCnt>0" [ngModelOptions]="{standalone: true}"
+          pToolTip="Check if this employee is a supervisor of the company."></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
         <div style="height:5px"></div>
@@ -265,7 +286,8 @@
               <tr>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
                   {{col.header}}
-                  <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+                  <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                    ariaLabelDesc="Activate to sort in descending order"
                     ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
               </tr>
@@ -282,19 +304,20 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Timesheet Verification Needed" [(ngModel)]="chkTimesheetVerification"
-          [ngModelOptions]="{standalone: true}" pToolTip="Check if this employee needs a supervisor to verify Timesheet."></p-checkbox>
+        <p-checkbox appendTo="body" binary="true" label="Timesheet Verification Needed"
+          [(ngModel)]="chkTimesheetVerification" [ngModelOptions]="{standalone: true}"
+          pToolTip="Check if this employee needs a supervisor to verify Timesheet."></p-checkbox>
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6" *ngIf="chkTimesheetVerification">
         <div style="height:5px"></div>
-        Select Supervisor :
-        <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Supervisor" formControlName="frmSupervisor"
-          pToolTip="Employee's Supervisor"></p-dropdown>
+        Select Supervisor <span class="mandatoryStar">* </span>:
+        <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Supervisor"
+          formControlName="frmSupervisor" pToolTip="Employee's Supervisor"></p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEditEmployee">
         <div style="height:5px"></div>
-        <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
-          pTooltip="Change the status of this employee."></p-checkbox>
+        <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive"
+          [ngModelOptions]="{standalone: true}" pTooltip="Change the status of this employee."></p-checkbox>
       </div>
     </div>
   </form>
@@ -302,7 +325,8 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12" align="right">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveEmployee()" [disabled]="hasFormErrorsEmployee()"></button>
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveEmployee()"
+            [disabled]="hasFormErrorsEmployee()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelEmployee()" class="ui-button-danger"></button>
         </div>
@@ -311,12 +335,12 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="terminateDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
-  [width]="300" [closeOnEscape]="false" [closable]="false">
+<p-dialog [(visible)]="terminateDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true"
+  class="dialogWidth" [width]="300" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Terminate Employee
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-      (click)="showHelp('')"></i>
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle" (click)="showHelp('')"></i>
   </p-header>
   <form [formGroup]="_frmTerminateEmployee">
     <div class="ui-g">
@@ -324,7 +348,8 @@
         Termination Date (mm-dd-yyyy) <br>
         <div style="height:5px"></div>
         <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
-          [maxDate]="today" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmTerminateEmployeeDate"></p-calendar>
+          [maxDate]="today" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmTerminateEmployeeDate">
+        </p-calendar>
       </div>
     </div>
   </form>
@@ -332,7 +357,8 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveTerminate()" [disabled]="hasFormErrorsTerminate()"></button>
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveTerminate()"
+            [disabled]="hasFormErrorsTerminate()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelTerminate()" class="ui-button-danger"></button>
         </div>
@@ -341,11 +367,12 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="nonBillableDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
-  [width]="1000" [closeOnEscape]="false" [closable]="false">
+<p-dialog [(visible)]="nonBillableDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true"
+  class="dialogWidth" [width]="1000" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('AssignCompanyHolidays.htm')"></i>
   </p-header>
 
@@ -354,9 +381,10 @@
       <div class="ui-g-12 ui-md-12">
         <p-pickList [target]="_nonBillablesAssignToEmp" [source]="_nonBillablesNotAssignToEmp" filterBy="ProjectName"
           sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
-          [showSourceControls]="false" [showTargetControls]="false" sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
-          targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
-          (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+          [showSourceControls]="false" [showTargetControls]="false"
+          sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
+          targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
+          [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
           <ng-template let-attr pTemplate="item">
             <div class="ui-helper-clearfix">
               {{attr.ProjectName}}
@@ -371,7 +399,8 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()"
+            [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
         </div>
@@ -380,11 +409,12 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" blockScroll="true" [modal]="true" class="dialogWidth"
-  [width]="1000" [closeOnEscape]="false" [closable]="false">
+<p-dialog [(visible)]="projectDialog" [responsive]="true" showEffect="fade" blockScroll="true" [modal]="true"
+  class="dialogWidth" [width]="1000" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('AssignCompanyHolidays.htm')"></i>
   </p-header>
 
@@ -393,9 +423,10 @@
       <div class="ui-g-12 ui-md-12">
         <p-pickList [target]="_projectsAssignToEmp" [source]="_projectsNotAssignToEmp" filterBy="ProjectName"
           sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
-          [showSourceControls]="false" [showTargetControls]="false" sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
-          targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
-          (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+          [showSourceControls]="false" [showTargetControls]="false"
+          sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
+          targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
+          [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
           <ng-template let-attr pTemplate="item">
             <div class="ui-helper-clearfix">
               {{attr.ProjectName}}
@@ -410,7 +441,8 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()"
+            [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
         </div>
@@ -419,22 +451,24 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="clientDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" class="dialogWidth"
-  [width]="1000" [closeOnEscape]="false" [closable]="false">
+<p-dialog [(visible)]="clientDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true"
+  class="dialogWidth" [width]="1000" [closeOnEscape]="false" [closable]="false">
   <p-header>
     Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('AssignCompanyHolidays.htm')"></i>
   </p-header>
 
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12">
       <div class="ui-g-12 ui-md-12">
-        <p-pickList [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName" sourceHeader="Unassigned {{_popUpHeader}}s"
-          targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true" [showSourceControls]="false"
-          [showTargetControls]="false" sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
-          targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}" [targetStyle]="{'height':'300px'}"
-          (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+        <p-pickList [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName"
+          sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
+          [showSourceControls]="false" [showTargetControls]="false"
+          sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
+          targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
+          [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
           <ng-template let-attr pTemplate="item">
             <div class="ui-helper-clearfix">
               {{attr.ClientName}}
@@ -449,7 +483,8 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()"
+            [disabled]="hasFormErrorsModal()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
         </div>
@@ -458,20 +493,25 @@
   </p-footer>
 </p-dialog>
 
-<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100" [closeOnEscape]="false"
-  [closable]="false" blockScroll="true" class="dialogWidth">
+<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100"
+  [closeOnEscape]="false" [closable]="false" blockScroll="true" class="dialogWidth">
   <p-header>
     Change {{_popUpHeader}}s to {{_employeeNameHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('RateUpdate.htm')"></i>
   </p-header>
 
   <div *ngIf="!_IsEditRate">
     <div class="ui-g-12" style="text-align:right">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new rate" tooltipPosition="bottom" class="ui-button-info"
-        label="Add New Rate" (click)=addNewRate()></button>
+        label="Add New Rate" (click)=addNewRate() *ngIf="!_HasEdit"></button>
+      <!-- <div *ngIf="_recRateData === 0" class="NoDataStrip NoDataMessage" style="margin: .5em 0px;width:100%;">
+        No matching data for the selected criteria
+      </div> -->
     </div>
     <p-scrollPanel [style]="{width: '100%', height: '530px'}">
+      <!--  *ngIf="_recRateData > 0" -->
       <p-table #dt [columns]="_ratecols" [value]="_rates" [responsive]="false" dataKey="EmployeeID" [paginator]="true"
         [rows]="10">
         <ng-template pTemplate="caption">
@@ -479,8 +519,8 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recRateData}} matching rates</div>
             <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                style="width:70%"> &nbsp;
+              <input type="text" pInputText size="50" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:70%"> &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
           </div>
@@ -499,10 +539,12 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate" tooltipPosition="bottom" (click)="editRate(rowData)"></i>
+              <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate" tooltipPosition="bottom"
+                (click)="editRate(rowData)"></i>
             </td>
             <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-              <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+              <div
+                *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
                 <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
               </div>
               <ng-template #defaultColumn>
@@ -510,7 +552,15 @@
               </ng-template>
             </td>
             <td style="text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this rate" tooltipPosition="bottom" (click)="deleteRate(rowData)"></i>
+              <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this rate" tooltipPosition="bottom"
+                (click)="deleteRate(rowData)"></i>
+            </td>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="emptymessage" let-columns>
+          <tr>
+            <td colspan="7" style="color:red;text-align: center;">
+              No rates found
             </td>
           </tr>
         </ng-template>
@@ -520,21 +570,28 @@
   <form [formGroup]="_frmRate">
     <div *ngIf="_IsEditRate">
       <div class="ui-g">
+        <div class="ui-g-12" style="text-align:left" style="color:red;">
+          * marked fields are required to save the data.
+        </div>
+      </div>
+      <div class="ui-g">
         <div class="ui-g-4" style="text-align:right">
-          Client Name:
+          Client Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
-          <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}" formControlName="frmClientName"
-            pToolTip="The client hours are charged to" [style]="{'width':'85%'}"></p-dropdown>
+          <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}"
+            formControlName="frmClientName" pToolTip="The client hours are charged to" [style]="{'width':'85%'}">
+          </p-dropdown>
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Customer Name:
+          Customer Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
-          <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName" pToolTip="The customer to invoice this client">
+          <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
+            pToolTip="The customer to invoice this client">
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Effective Date:
+          Effective Date <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmEffectiveDate"
@@ -542,11 +599,11 @@
           (mm-dd-yyyy)
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Rate:
+          Rate <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
-          <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext" pToolTip="The hourly invoice rate for this employee"
-            (keypress)="numberOnly($event)">
+          <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext"
+            pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
         </div>
         <div class="ui-g-4">
         </div>
@@ -561,7 +618,8 @@
   <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEditRate; else cancelbutton">
-        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
+        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()"
+          [disabled]="hasFormErrorsRate()"></button>
         &nbsp;
         <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
       </div>

@@ -45,8 +45,15 @@ export class HoursbyemployeeComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe
+  ) { }
+
+  ngOnInit() {
     this.billingType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -77,9 +84,6 @@ export class HoursbyemployeeComponent implements OnInit {
       { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
       { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '220px' },
     ];
-  }
-
-  ngOnInit() {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
@@ -102,9 +106,9 @@ export class HoursbyemployeeComponent implements OnInit {
           }
           this._selectString = 'Clients (' + this._clients.length + ' matching codes found)';
           this.showBillingCodeList = true;
-          this.showSpinner = false;
           this.showPeriodEndDetail = true;
           this.showTotals = true;
+          this.showSpinner = false;
         }
       );
     } else if (this.selectedBillingType === 1) {
@@ -162,6 +166,7 @@ export class HoursbyemployeeComponent implements OnInit {
   //   this.generateReport();
   // }
   generateReport() {
+    this.showSpinner = true;
     let dateValid: any;
     const dateCheck = new Date(this._startDateSelect);
     if (dateCheck.toString() === 'Invalid Date') {
@@ -169,7 +174,6 @@ export class HoursbyemployeeComponent implements OnInit {
     } else {
       dateValid = dateCheck;
     }
-    this.showSpinner = true;
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
       this._billingCodesSpecial = new BillingCodesSpecial();
@@ -243,20 +247,18 @@ export class HoursbyemployeeComponent implements OnInit {
       }
     }
     // else {
-    //   this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+    //   this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
     // }
   }
 
   showTable(data: BillingCodes[]) {
+    this._reports = [];
+    this._recData = 0;
+    this.showReport = false;
     if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
       this._recData = this._reports[0].RowCount;
       this.showReport = true;
-    } else {
-      this._reports = [];
-      this._recData = 0;
-      this.showReport = false;
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
     }
     this.showBillingCodeList = false;
     this.changeCodeList = true;

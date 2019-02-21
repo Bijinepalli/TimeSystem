@@ -68,7 +68,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused project"
-           tooltipPosition="bottom" (click)="deleteProject(rowData)"></i>
+           tooltipPosition="left" (click)="deleteProject(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -82,6 +82,11 @@
       (click)="showHelp('ProjectUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">

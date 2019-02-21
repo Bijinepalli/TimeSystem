@@ -1398,7 +1398,10 @@ export class EmployeesComponent implements OnInit {
               detail: outputData.ErrorMessage
             });
           } else {
-            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Client saved successfully' });
+            this.msgSvc.add({
+              key: 'saveSuccess', severity: 'success', summary: 'Info Message',
+              detail: this._popUpHeader + ' saved successfully'
+            });
             this.clearModalControls();
             this.getEmployees();
           }
@@ -1489,6 +1492,8 @@ export class EmployeesComponent implements OnInit {
     this.timesysSvc.getEmployeeRates(empId)
       .subscribe(
         (data: Invoice[] = []) => {
+          this._rates = [];
+          this._recRateData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._rates = data;
             this._recRateData = this._rates.length;
@@ -1551,10 +1556,9 @@ export class EmployeesComponent implements OnInit {
               this.chkrateInactive = false;
             }
           }
-        }
-      );
-
+        });
   }
+
 
   cancelRateModal() {
     this.resetRateControls();
@@ -1633,11 +1637,18 @@ export class EmployeesComponent implements OnInit {
 
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
+    if (charCode === 46) {
+      if (this._frmRate.controls['frmRatetext'].value.toString().trim().indexOf('.') === -1) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+      return true;
     }
-    return true;
-
   }
   /* #endregion */
 

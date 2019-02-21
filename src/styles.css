@@ -266,3 +266,19 @@ body .ui-panel .ui-panel-content {
 /* .ActiveRouteLink .ui-menuitem-link{
 color:red;
 } */
+
+.mandatoryStar{
+  color:red!important;
+}
+
+.NoDataMessage{
+  color:red!important;
+  font-weight: 400!important;
+  padding: 14px!important;
+  text-align: left!important;
+}
+
+.NoDataStrip{
+  background: #e7e7e7!important;
+  border:0px!important;
+}

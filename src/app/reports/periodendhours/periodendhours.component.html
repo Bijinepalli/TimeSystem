@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Period End Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Period End Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('PeriodEndHours.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -32,7 +33,8 @@
   <div class="ui-g">
     <div class="ui-g-12 ui-md-4">
       <label class="label" style="padding:0px 10px;">Select a Pay Period :</label>
-      <p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate" pTooltip="Select the pay period end date to create the report"></p-dropdown>
+      <p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate"
+        pTooltip="Select the pay period end date to create the report"></p-dropdown>
     </div>
   </div>
   <p-footer>
@@ -45,7 +47,18 @@
   </p-footer>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
-<div class="ui-g" *ngIf="showReport">
+
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0 && changeCodeList">
+  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    No matching data for the selected criteria
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+      label="Start Over" (click)="startOver()"></button>
+  </div>
+</div>
+
+<div class="ui-g" *ngIf="showReport && _recData > 0">
   <!-- <p-scrollPanel [style]="{width: '100%', height: '460px'}"> -->
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
     <ng-template pTemplate="caption">
@@ -53,10 +66,10 @@
         <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
         <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp;
-          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-            label="Start Over" (click)="startOver()"></button>&nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+            class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
