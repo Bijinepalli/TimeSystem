@@ -68,7 +68,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused project"
-           tooltipPosition="bottom" (click)="deleteProject(rowData)"></i>
+           tooltipPosition="left" (click)="deleteProject(rowData)"></i>
         </td>
       </tr>
     </ng-template>
