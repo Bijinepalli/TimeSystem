@@ -1,4 +1,5 @@
 <p-confirmDialog></p-confirmDialog>
+<p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" appendTo="body"></p-toast>
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Employees <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
@@ -53,7 +54,8 @@
         <th style="width: 10em" *ngIf="!_HasEdit && _userAdmin">Reset Password</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
         </th>
         <th style="width: 5em">Clients</th>
         <th style="width: 6em">Projects</th>
@@ -263,7 +265,8 @@
               <tr>
                 <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
                   {{col.header}}
-                  <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                  <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+                    ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
                 </th>
               </tr>
             </ng-template>
@@ -465,7 +468,8 @@
 
   <div *ngIf="!_IsEditRate">
     <div class="ui-g-12" style="text-align:right">
-      <button pButton label="Add New Rate" *ngIf="!_HasEdit" (click)="addNewRate()"></button>
+      <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new rate" tooltipPosition="bottom" class="ui-button-info"
+        label="Add New Rate" (click)=addNewRate()></button>
     </div>
     <p-scrollPanel [style]="{width: '100%', height: '530px'}">
       <p-table #dt [columns]="_ratecols" [value]="_rates" [responsive]="false" dataKey="EmployeeID" [paginator]="true"
@@ -486,7 +490,8 @@
             <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
               {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+                ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
             </th>
             <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
           </tr>

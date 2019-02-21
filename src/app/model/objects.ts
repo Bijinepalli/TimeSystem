@@ -137,6 +137,7 @@ export class Clients {
     Rate?: string;
     EmployeeID?: number;
     RateID?: number;
+    ClientID?: number;
     RateMode?: string;
 }
 export class MasterPages {
@@ -364,6 +365,7 @@ export class Invoice {
     PONumber?: string;
     Inactive?: boolean;
     EffectiveDate?: string;
+    ClientID?: string;
 }
 
 export class MonthlyHours {
