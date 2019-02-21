@@ -243,7 +243,7 @@ export class HoursbyemployeeComponent implements OnInit {
       }
     }
     // else {
-    //   this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+    //   this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
     // }
   }
 
@@ -256,7 +256,7 @@ export class HoursbyemployeeComponent implements OnInit {
       this._reports = [];
       this._recData = 0;
       this.showReport = false;
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
     }
     this.showBillingCodeList = false;
     this.changeCodeList = true;

@@ -73,7 +73,7 @@ generateReport() {
     } else {
       this._reports = [];
       this._recData = 0;
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
     }
     this.showReport = true;
     this.showSpinner = false;
