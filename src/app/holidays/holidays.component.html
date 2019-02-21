@@ -68,7 +68,7 @@
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['InUse'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused holiday"
-            tooltipPosition="bottom" (click)="deleteHoliday(rowData)"></i>
+            tooltipPosition="left" (click)="deleteHoliday(rowData)"></i>
         </td>
       </tr>
     </ng-template>

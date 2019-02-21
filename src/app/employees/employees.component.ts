@@ -1397,8 +1397,10 @@ export class EmployeesComponent implements OnInit {
               detail: outputData.ErrorMessage
             });
           } else {
-            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', 
-              detail: this._popUpHeader + ' saved successfully' });
+            this.msgSvc.add({
+              key: 'saveSuccess', severity: 'success', summary: 'Info Message',
+              detail: this._popUpHeader + ' saved successfully'
+            });
             this.clearModalControls();
             this.getEmployees();
           }
@@ -1619,15 +1621,15 @@ export class EmployeesComponent implements OnInit {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode === 46) {
       if (this._frmRate.controls['frmRatetext'].value.toString().trim().indexOf('.') === -1) {
-          return true;
+        return true;
       } else {
-          return false;
+        return false;
       }
-  } else {
-     if (charCode > 31 && (charCode < 48 || charCode > 57)) {
-      return false;
-    }
-    return true;
+    } else {
+      if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+        return false;
+      }
+      return true;
     }
   }
   /* #endregion */
