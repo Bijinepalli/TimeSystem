@@ -242,7 +242,7 @@ export class ProjectsComponent implements OnInit {
     }
     this._selectedProject.ProjectName = this._frm.controls['projectName'].value.toString().trim();
     this._selectedProject.Key = this._frm.controls['projectCode'].value.toString().toUpperCase().trim();
-    if (this._frm.controls['parentCompany'] !== null && this._frm.controls['parentCompany'] !== undefined) {
+    if (this._frm.controls['parentCompany'].value !== null && this._frm.controls['parentCompany'].value !== undefined) {
       this._selectedProject.CompanyId = this._frm.controls['parentCompany'].value.toString().trim();
     }
     this._selectedProject.Inactive = this.chkInactive;
