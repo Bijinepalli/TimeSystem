@@ -31,7 +31,7 @@ export class PendingtimesheetsComponent implements OnInit {
   cols: any;
   byCob = false;
   ccFinance = false;
-  _recData = '';
+  _recData = 0;
   _selectedEmployees: TimeSheet;
   visibleHelp: boolean;
   helpText: string;
@@ -53,6 +53,7 @@ export class PendingtimesheetsComponent implements OnInit {
 
   //#region 'Populate Dropdown'
   populateDateDrop() {
+    this.showSpinner = true;
     this.dates = [];
     const _pastPeriods = this.commonSvc.getAppSettingsValue('OutstandingTimePeriods');
     const _futurePeriods = this.commonSvc.getAppSettingsValue('FutureTimePeriods');
@@ -66,6 +67,7 @@ export class PendingtimesheetsComponent implements OnInit {
             }
           }
           this.selectedDate = data[0].PresentPeriodEnd.toString();
+          this.showSpinner = false;
           this.getDatefortheperiod();
         });
   }
@@ -79,15 +81,19 @@ export class PendingtimesheetsComponent implements OnInit {
   }
 
   getDatefortheperiod() {
-    this._reports = null;
+    this.showSpinner = true;
+    this._reports = [];
     this.timesysSvc.getOutstandingTimesheetReport(this.selectedDate)
       .subscribe(
         (data) => {
+          this._reports = [];
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
-            this.showReport = true;
             this._reports = data;
             this._recData = this._reports.length;
           }
+          this.showReport = true;
+          this.showSpinner = false;
         }
       );
   }

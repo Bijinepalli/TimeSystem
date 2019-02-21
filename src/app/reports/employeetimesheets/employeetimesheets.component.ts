@@ -25,7 +25,8 @@ export class EmployeetimesheetsComponent implements OnInit {
   changeCodeList = false;
   showReport = false;
   cols: any[];
-  _recData: string;
+  _recData = 0;
+  _recDataPending = 0;
   _timeSheets: TimeSheetForEmplyoee[];
   _timePeriods: TimeSheetBinding[];
   selectedValues: Boolean;
@@ -94,23 +95,20 @@ export class EmployeetimesheetsComponent implements OnInit {
   }
   generateReport() {
     const Mode = '0';
-    console.log(this.codes.find(m => m.value === this.selectedCode));
     this.selectedEmployeeName = this.codes.find(m => m.value === this.selectedCode).label.toString();
     this.timesysSvc.getEmployeeTimeSheetList(this.selectedCode.toString(), Mode)
       .subscribe(
         (data) => {
+          this._timeSheets = [];
+          this._recData = 0;
+          this._recDataPending = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._timeSheets = data;
-            let count = 0;
-            for (let i = 0; i < this._timeSheets.length; i++) {
-              if (this._timeSheets[i]['Submitted'].toUpperCase() === 'NO') {
-                count++;
-              }
+            this._recData = this._timeSheets.length;
+            const Pending = data.filter(m => m.Submitted.toUpperCase() === 'NO');
+            if (Pending !== undefined && Pending !== null && Pending.length > 0) {
+              this._recDataPending = Pending.length;
             }
-            this._recData = this._timeSheets.length + ' timesheets found ( ' + count + ' pending )';
-          } else {
-            this._timeSheets = [];
-            this._recData = 'No records found';
           }
           this.showReport = true;
           this.showSpinner = false;

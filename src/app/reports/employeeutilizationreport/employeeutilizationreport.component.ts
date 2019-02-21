@@ -247,11 +247,13 @@ export class EmployeeutilizationreportComponent implements OnInit {
           _end,
           '8').subscribe(
             (data) => {
-              this._UtilizationReportDetails = data;
-              this._DistinctEmployee =
-                data.EmployeeLevelDetails.filter((value, index, self) => self.map(x => x.Name).indexOf(value.Name) === index);
+              if (data !== undefined && data !== null) {
+                this._UtilizationReportDetails = data;
+                this._DistinctEmployee =
+                  data.EmployeeLevelDetails.filter((value, index, self) => self.map(x => x.Name).indexOf(value.Name) === index);
 
-              this.ExportFilePath = 'http://172.16.16.217/TimeSystemHelpFiles/Help/EmployeeSelect.htm';
+                this.ExportFilePath = 'http://172.16.16.217/TimeSystemHelpFiles/Help/EmployeeSelect.htm';
+              }
               this.showSelectList = false;
               this.showDateRangeValues = true;
               this.showSpinner = false;

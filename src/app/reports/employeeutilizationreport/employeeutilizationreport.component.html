@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Employee Utilization Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Employee Utilization Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('EmployeeUtilizationReport.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -16,8 +17,8 @@
   <div class="ui-g">
     <div class="ui-g-12 ui-md-3">
       <label class="label" style="padding:0px 10px;">Select Department:</label>
-      <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name" pTooltip="Employee's Department"
-        tooltipPosition="bottom" [style]="{'width':'300px;'}"></p-dropdown>
+      <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name"
+        pTooltip="Employee's Department" tooltipPosition="bottom" [style]="{'width':'300px;'}"></p-dropdown>
     </div>
     <div class="ui-g-12 ui-md-3">
       <label class="label" style="padding:0px 10px;">Select:</label>
@@ -27,13 +28,14 @@
   </div>
   <p-footer>
     <div style="text-align: right">
-      <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom" class="ui-button-info"
-        label="Show Employees" (click)=showEmployees()></button>
+      <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom"
+        class="ui-button-info" label="Show Employees" (click)=showEmployees()></button>
     </div>
   </p-footer>
 </p-panel>
 
-<div class="ui-g" *ngIf="showDepartmentName && !(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
+<div class="ui-g"
+  *ngIf="showDepartmentName && !(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
   <div class="ui-g-12 ui-md-2" style="text-align: left;">
     <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
       Department : {{_selectedDepartment.Name}}
@@ -46,15 +48,16 @@
   </div>
   <div class="ui-g-12 ui-md-4" align="right">
     <ng-container *ngIf="showDateRangeValues">
-      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-        label="Start Over" (click)=startOver()></button>
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+        class="ui-button-warning" label="Start Over" (click)=startOver()></button>
     </ng-container>
   </div>
 </div>
 
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
-    <p-checkbox *ngIf="showSelectList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
+    <p-checkbox *ngIf="showSelectList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox"
+      (onChange)="selectAll()"></p-checkbox>
   </div>
 </div>
 <div *ngIf="showSelectList">
@@ -65,8 +68,9 @@
     <p-scrollPanel [style]="{height: '400px'}">
       <div class="ui-g" style="margin-bottom:10px">
         <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
-          <p-checkbox name="showBillingDetails" [value]="_dcb.value" pTooltip="Select the billing codes to appear in the report"
-            tooltipPosition="bottom" [label]="_dcb.label" [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
+          <p-checkbox name="showBillingDetails" [value]="_dcb.value"
+            pTooltip="Select the billing codes to appear in the report" tooltipPosition="bottom" [label]="_dcb.label"
+            [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
         </div>
       </div>
     </p-scrollPanel>
@@ -79,12 +83,14 @@
 <div class="ui-g" style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showSelectList">
   <div class="ui-g-12 ui-md-6">
     Date Range From:
-    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
+    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
+      pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
       tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}" [maxDate]="_todayDate"></p-calendar>
     <!-- [disabledDays]="[1,2,3,4,5,6]" -->
     <label class="label" style="padding:0px 10px">to</label>
-    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
+    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
+      pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
       tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}" [minDate]="_startDate"></p-calendar>
     <!-- [disabledDays]="[0,1,2,3,4,5]" -->
@@ -100,8 +106,14 @@
   </div>
 </div>
 
+<div class="ui-g" style="background: #e7e7e7;"
+  *ngIf="!(showFilters) && !(showSelectList) && (_UtilizationReportDetails !== undefined && !(_UtilizationReportDetails !== null))">
+  <div class="ui-g-12 ui-md-12 ui-lg-12" style="color:red;font-weight: 400;padding: 14px;">
+    No matching data for the selected criteria
+  </div>
+</div>
 
-<div class="ui-g-12" *ngIf="_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null">
+<div class="ui-g-12" *ngIf="(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
   <p-table #dt [responsive]="false" class="tablePadding">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
@@ -123,9 +135,10 @@
             style="width:auto"> &nbsp; -->
           <!-- <button pButton pTooltip="Change your selected Employees" tooltipPosition="bottom" class="ui-button-warning"
             label="Change Employees" (click)="changeEmployees()"></button>&nbsp; -->
-          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-            label="Start Over" (click)="startOver()"></button>&nbsp;
-          <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export" (click)="exportClick()"></button>&nbsp;
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+            class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+          <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
+            (click)="exportClick()"></button>&nbsp;
           <!-- <a pButton icon="fa fa-table" href="{{ExportFilePath}}" label="Export"></a> -->
         </div>
       </div>
@@ -133,7 +146,8 @@
   </p-table>
   <p-scrollPanel [style]="{width: '100%',height:'640px'}" styleClass="custombar1">
     <div style="width:100%;">
-      <table #dtUtilizationReport cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;" class="ui-table"
+      <table #dtUtilizationReport cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;"
+        class="ui-table"
         *ngIf="_UtilizationReportDetails.WeekNumDetails !== undefined && _UtilizationReportDetails.WeekNumDetails !== null && _UtilizationReportDetails.WeekNumDetails.length > 0">
         <thead class="ui-table-thead">
           <tr>
@@ -174,7 +188,8 @@
             </td>
             <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
               <ng-container *ngFor="let EmployeeLevelDetails of _UtilizationReportDetails.EmployeeLevelDetails">
-                <ng-container *ngIf="EmployeeLevelDetails.Name === distinctEmployees.Name && EmployeeLevelDetails.WeekNum === weekNumDetails.WeekNum">
+                <ng-container
+                  *ngIf="EmployeeLevelDetails.Name === distinctEmployees.Name && EmployeeLevelDetails.WeekNum === weekNumDetails.WeekNum">
                   <td class="tdValues" [ngStyle]="getDisplayColors(i,0)"></td>
                   <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
                     {{ EmployeeLevelDetails.Utilization}}%
