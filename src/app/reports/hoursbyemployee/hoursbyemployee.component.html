@@ -46,26 +46,14 @@
   </div> -->
 </div>
 
-<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0 && changeCodeList">
-  <div class="ui-g-12 ui-md-6 ui-lg-6" style="color:red;font-weight: 400;padding: 14px;">
-    No matching data for the selected criteria
-  </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
-    <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
-      class="ui-button-warning" label="Change Report" (click)="changeCodes()"></button>&nbsp;
-    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-      label="Start Over" (click)="startOver()"></button>
-  </div>
-</div>
-
 <div class="ui-g  ui-g-nopad">
   <div class="ui-g-6 ui-md-12">
     <p-checkbox *ngIf="showBillingCodeList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox"
       (onChange)="selectAll()"></p-checkbox>
   </div>
 </div>
-<div *ngIf="showBillingCodeList">
 
+<div *ngIf="showBillingCodeList">
   <p-panel class="panelEmpBilling">
     <p-header>
       <h3 class="first">{{_selectString}}</h3>
@@ -84,8 +72,10 @@
     </p-footer>
   </p-panel>
 </div>
+
 <div class="ui-g" style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showBillingCodeList">
-  <div class="ui-g">
+
+  <div class="ui-g-12 ui-g-nopad">
     <div class="ui-g-12 ui-md-5">
       Billing Code/Employee Assignment Status: <p-selectButton [options]="assignStatus"
         pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
@@ -97,7 +87,8 @@
         tooltipPosition="bottom" [(ngModel)]="selectedbreakOut"></p-selectButton>
     </div>
   </div>
-  <div class="ui-g">
+
+  <div class="ui-g-12 ui-g-nopad">
     <div class="ui-g-12 ui-md-4">
       Date Range From:
       <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
@@ -128,8 +119,22 @@
         class="ui-button-warning" label="Start Over" (click)=startOver()></button>
     </div>
   </div>
+
 </div>
-<div class="ui-g-12" *ngIf="showReport">
+
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0 && changeCodeList">
+  <div class="ui-g-12 ui-md-6 ui-lg-6" style="color:red;font-weight: 400;padding: 14px;">
+    No matching data for the selected criteria
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
+    <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
+      class="ui-button-warning" label="Change Report" (click)="changeCodes()"></button>&nbsp;
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+      label="Start Over" (click)="startOver()"></button>
+  </div>
+</div>
+
+<div class="ui-g" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
@@ -173,6 +178,7 @@
     </ng-template>
   </p-table>
 </div>
+
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
