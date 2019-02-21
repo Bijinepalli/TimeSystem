@@ -1,7 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px;">
     {{_header}}<i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-    (click)="showHelp('CustomerSelect.htm')"></i>
+      (click)="showHelp('CustomerSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
@@ -13,8 +13,8 @@
 </div>
 <div class="ui-g" *ngIf="!edit">
   <div class="ui-g-12" style="text-align:right">
-    <button pButton pTooltip="Add a new primary group" tooltipPosition="bottom" class="ui-button-info" label="Add Primary Group"
-      (click)=addPrimaryGroup()></button>
+    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new primary group" tooltipPosition="bottom" class="ui-button-info"
+      label="Add Primary Group" (click)=addPrimaryGroup()></button>
   </div>
   <div class="ui-g-12">
     <p-table #dt [columns]="cols" [value]="_groups" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
@@ -43,18 +43,18 @@
           <td>
             <a [routerLink]="" (click)="editGroup(rowData.Group1,rowData.ID1,'main')">{{rowData['Group1']}}</a>
           </td>
-          <td>
+          <td style="text-align: center">
             <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this report group and all of its subgroups"
               tooltipPosition="bottom" (click)="deleteGroup(rowData.ID1,'main')"></i>
           </td>
-          <td>
-            <i class="fa fa-plus fa-150x" pTooltip="Click to add a new subgroup to this report group" style="cursor:pointer;color:green"
+          <td style="text-align: center">
+            <i class="fa fa-plus fa-150x" pTooltip="Click to add a new subgroup to this report group" style="cursor:pointer;color:green;"
               tooltipPosition="bottom" (click)="addSubGroup(rowData.ID1)"></i>
           </td>
           <td>
             <a [routerLink]="" (click)="editGroup(rowData.Group2,rowData.ID2,'sub')">{{rowData['Group2']}}</a>
           </td>
-          <td>
+          <td style="text-align: center">
             <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this report group and all of its subgroups"
               tooltipPosition="left" (click)="deleteGroup(rowData.ID2,'sub')"></i>
           </td>

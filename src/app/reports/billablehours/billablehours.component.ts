@@ -140,6 +140,8 @@ export class BillablehoursComponent implements OnInit {
     if (this.endDate !== undefined && this.endDate !== null && this.endDate.toString() !== '') {
       end = this.datePipe.transform(this.endDate.toString(), 'MM-dd-yyyy');
     }
+    console.log(this.selectedBillingType.toString(), this.selectedCode.toString(),
+      this.selectedType.toString(), this.selectedassignStatus.toString(), start, end);
     this.timesysSvc.getBillableHours(
       this.selectedBillingType.toString(),
       this.selectedCode.toString(),
@@ -155,7 +157,7 @@ export class BillablehoursComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
             for (let i = 0; i < this._reports.length; i++) {
-              this._totalhours += +this._reports[i].Hours;
+              this._totalhours += parseFloat(this._reports[i].Hours);
             }
             this._recData = this._reports.length;
             this.showReport = true;
