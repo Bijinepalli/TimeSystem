@@ -84,10 +84,15 @@
       (click)="showHelp('ClientUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Client Code *<br>
+          Client Code <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode"
             appendTo="body" pToolTip="Unique client code that matches what's in the payroll system">
@@ -95,7 +100,7 @@
       </div>
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Client Name *<br>
+          Client Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName"
             appendTo="body" pToolTip="Unique client name that matches what's in the payroll system">

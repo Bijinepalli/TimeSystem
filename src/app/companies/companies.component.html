@@ -121,10 +121,15 @@
       (click)="showHelp('CompanyUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          Company Name *<br>
+          Company Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Company Name" formControlName="companyName"
             pTooltip="Unique company name" tooltipPosition="bottom">

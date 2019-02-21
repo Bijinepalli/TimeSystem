@@ -134,15 +134,20 @@
   </div>
   <!-- <app-add-employee></app-add-employee> -->
   <form [formGroup]="_frmEmployee">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Last Name *<br>
+        Last Name <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Last Name" formControlName="frmLastName" appendTo="body"
           pToolTip="Employee's last name">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        First Name *<br>
+        First Name <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="First Name" formControlName="frmFirstName"
           appendTo="body" pToolTip="Employee's first name">
@@ -162,14 +167,14 @@
           pToolTip="The ID the employee logs in to the Extranet with">
       </div>
       <div class="ui-g-12 ui-md-2 ui-lg-2">
-        Payroll ID *<br>
+        Payroll ID <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Payroll ID" formControlName="frmPayrollID"
           appendTo="body" pToolTip="The employee's unique ID in the payroll system" pKeyFilter="int" minlength="4"
           maxlength="4" size="4">
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Email Address *<br>
+        Email Address <span class="mandatoryStar">* </span><br>
         <div style="height:5px"></div>
         <input type="text" pInputText style="width:100%" placeholder="Email Address" formControlName="frmEmailAddress"
           appendTo="body" pToolTip="Employee's email address.">
@@ -188,7 +193,7 @@
           pToolTip="Employee's security level" [style]="{'width':'99%'}"></p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-5 ui-lg-5">
-        Select Department *
+        Select Department <span class="mandatoryStar">* </span>
         <div style="height:5px"></div>
         <p-dropdown appendTo="body" [options]="_departmentsList" placeholder="Select Department" formControlName="frmDepartment"
           pToolTip="Employee's Department" [style]="{'width':'99%'}"></p-dropdown>
@@ -284,7 +289,7 @@
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-6" *ngIf="chkTimesheetVerification">
         <div style="height:5px"></div>
-        Select Supervisor :
+        Select Supervisor <span class="mandatoryStar">* </span>:
         <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Supervisor" formControlName="frmSupervisor"
           pToolTip="Employee's Supervisor"></p-dropdown>
       </div>
@@ -514,22 +519,27 @@
   </div>
   <form [formGroup]="_frmRate">
     <div *ngIf="_IsEditRate">
+        <div class="ui-g">
+            <div class="ui-g-12" style="text-align:left" style="color:red;">
+              * marked fields are required to save the data.
+            </div>
+        </div>
       <div class="ui-g">
         <div class="ui-g-4" style="text-align:right">
-          Client Name:
+          Client Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}" formControlName="frmClientName"
             pToolTip="The client hours are charged to" [style]="{'width':'85%'}"></p-dropdown>
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Customer Name:
+          Customer Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName" pToolTip="The customer to invoice this client">
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Effective Date:
+          Effective Date <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmEffectiveDate"
@@ -537,7 +547,7 @@
           (mm-dd-yyyy)
         </div>
         <div class="ui-g-4" style="text-align:right">
-          Rate:
+          Rate <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext" pToolTip="The hourly invoice rate for this employee"

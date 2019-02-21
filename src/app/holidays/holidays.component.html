@@ -83,10 +83,15 @@
       (click)="showHelp('HolidayUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
+      <div class="ui-g">
+          <div class="ui-g-12" style="text-align:left" style="color:red;">
+            * marked fields are required to save the data.
+          </div>
+      </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          Holiday Name *<br>
+          Holiday Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input *ngIf="!_IsEdit || !(_IsEdit && (_selectedHoliday.InUse>0))" type="text" pInputText style="width:100%"
             placeholder="Holiday Name" pTooltip="The display name for the holiday" tooltipPosition="bottom"
@@ -96,7 +101,7 @@
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          Date * (mm-dd-yyyy)<br>
+          Date <span class="mandatoryStar">* </span> (mm-dd-yyyy)<br>
           <div style="height:5px"></div>
           <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate"
             appendTo="body" pTooltip="Select the date for the holiday" tooltipPosition="bottom"></p-calendar>

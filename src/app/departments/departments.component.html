@@ -87,9 +87,14 @@
   </p-header>
   <div *ngIf="_IsEditDepartment">
     <form [formGroup]="_frmDepartment">
+        <div class="ui-g">
+            <div class="ui-g-12" style="text-align:left" style="color:red;">
+              * marked fields are required to save the data.
+            </div>
+        </div>
       <div class="ui-g">
         <div class="ui-g-4" style="text-align:right">
-          Department Name:
+          Department Name <span class="mandatoryStar">* </span>:
         </div>
         <div class="ui-g-6">
           <input type="text" pInputText formControlName="frmName" pToolTip="Unique department name" tooltipPosition="bottom">
