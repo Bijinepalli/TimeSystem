@@ -1547,11 +1547,10 @@ export class EmployeesComponent implements OnInit {
     this.timesysSvc.getEmployeeRates(empId)
       .subscribe(
         (data: Invoice[] = []) => {
+          this._rates = [];
+          this._recRateData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._rates = data;
-            // for (let i = 0; i < this._rates.length; i++) {
-            //   this._rates[i].EffectiveDate = this._rates[i].EffectiveDate;
-            // }
             this._recRateData = this._rates.length;
           }
         }

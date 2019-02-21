@@ -30,24 +30,28 @@ export class PeriodendhoursComponent implements OnInit {
   changeCodeList = false;
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+    private confSvc: ConfirmationService, private datePipe: DatePipe) { }
+
+  ngOnInit() {
     this.populateDateDrop();
   }
 
-  ngOnInit() {
-  }
-
   populateDateDrop() {
+    this.showSpinner = true;
+    this.timesheet = [];
     this.dates = [];
     this.selectedDate = '';
     const PeriodEndReportPeriods = 48;    // GET VALUE FROM APPSETTINGS
     this.timesysSvc.getDatebyPeriod()
       .subscribe(
         (data) => {
-          this.timesheet = data;
-          for (let i = 0; i < PeriodEndReportPeriods; i++) {
-            this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEndDate });
+          if (data !== undefined && data !== null && data.length > 0) {
+            this.timesheet = data;
+            for (let i = 0; i < PeriodEndReportPeriods; i++) {
+              this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEndDate });
+            }
           }
+          this.showSpinner = false;
         }
       );
   }
@@ -86,18 +90,16 @@ export class PeriodendhoursComponent implements OnInit {
     }
   }
   showTable(data: TimeSheet[]) {
-    if (data !== undefined && data !== null) {
+    this._reports = [];
+    this._recData = 0;
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
       this._recData = ((this._reports.length) - 4);
-    } else {
-      this._reports = [];
-      this._recData = 0;
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
     }
     this.showReport = true;
-    this.showSpinner = false;
     this.showBillingCodeList = false;
     this.changeCodeList = true;
+    this.showSpinner = false;
   }
   buildCols() {
     this.cols = [

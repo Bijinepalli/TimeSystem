@@ -167,7 +167,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       );
     }
     // else {
-    //   this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No Matching Data for the Selection Criteria' });
+    //   this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
     // }
   }
   showTable(data: BillingCodes[]) {

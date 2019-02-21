@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;">
-    View Outstanding Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    View Outstanding Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('PendingTimesheets.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -16,22 +17,31 @@
   <div class="ui-g">
     <div class="ui-g-12 ui-md-4">
       <label class="label" style="padding:0px 10px;">Select a Period End :</label>
-      <p-dropdown [options]="dates" placeholder="Select Period End" [(ngModel)]="selectedDate" pTooltip="Pick the period end date to use. All outstanding timesheets for this period and earlier will be shown"
+      <p-dropdown [options]="dates" placeholder="Select Period End" [(ngModel)]="selectedDate"
+        pTooltip="Pick the period end date to use. All outstanding timesheets for this period and earlier will be shown"
         (onChange)="onDateChange($event)" appendTo="body"></p-dropdown>
     </div>
   </div>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
-<div class="ui-g" *ngIf="showReport">
-  <p-scrollPanel [style]="{width: '100%', height: '570px'}">
-    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees" dataKey="Id">
+
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+  <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
+    No matching data for the selected criteria
+  </div>
+</div>
+
+<div class="ui-g" *ngIf="showReport && _recData > 0">
+  <p-scrollPanel [style]="{width: '100%', height: '570px'}" class="custombar1">
+    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees"
+      dataKey="Id">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-              style="width:auto"> &nbsp;
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
         </div>
@@ -43,7 +53,9 @@
           </th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
           </th>
         </tr>
       </ng-template>
@@ -53,7 +65,8 @@
             <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
           </td>
           <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+            <div
+              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
               <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
             </div>
             <ng-template #defaultColumn>
@@ -65,17 +78,17 @@
     </p-table>
   </p-scrollPanel>
 </div>
-<div class="ui-g-12" style="border:solid 1px #d3d3d3">
-    <div class="ui-g-12 ui-md-2">
-      <button pButton label="Email Employees" (click)="emailEmployee()" [disabled]="true"></button>
-    </div>
-    <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
-      <p-checkbox [(ngModel)]="byCob" binary="true"></p-checkbox> By COB
-    </div>
-    <div class="ui-g-12 ui-md-3" style="padding-top: 13px">
-      <p-checkbox [(ngModel)]="ccFinance" binary="true"></p-checkbox> CC Finance on the Email
-    </div>
+<div class="ui-g-12" style="border:solid 1px #d3d3d3" *ngIf="showReport && _recData > 0">
+  <div class="ui-g-12 ui-md-2">
+    <button pButton label="Email Employees" (click)="emailEmployee()" [disabled]="true"></button>
   </div>
+  <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
+    <p-checkbox [(ngModel)]="byCob" binary="true"></p-checkbox> By COB
+  </div>
+  <div class="ui-g-12 ui-md-3" style="padding-top: 13px">
+    <p-checkbox [(ngModel)]="ccFinance" binary="true"></p-checkbox> CC Finance on the Email
+  </div>
+</div>
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
