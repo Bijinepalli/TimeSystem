@@ -44,9 +44,6 @@
   </p-footer>
 </p-panel>
 <div class="ui-g-12" *ngIf="showReport">
-  <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
-</div>
-<div class="ui-g-12" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
@@ -55,7 +52,8 @@
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
-          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>&nbsp;
+          <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
         </div>
       </div>
     </ng-template>

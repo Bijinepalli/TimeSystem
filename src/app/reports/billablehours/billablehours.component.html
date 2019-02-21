@@ -97,8 +97,8 @@
     No matching data for the selected criteria
   </div>
   <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
-    <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
-      class="ui-button-warning" label="Change Codes" (click)="changeCodes()"></button>&nbsp;
+    <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom" class="ui-button-warning"
+      label="Change Codes" (click)="changeCodes()"></button>&nbsp;
     <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
       label="Start Over" (click)="startOver()"></button>
   </div>
@@ -133,20 +133,17 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
+          <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width" [style.font-weight]="rowData['weight']"
+            [style.color]="rowData['color']">
             <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried' || col.header === 'Currently Associated'); else defaultColumn">
-              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+              <div *ngIf="rowData[col.field]!=null && rowData[col.field]!=''">
+                <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+              </div>
             </div>
             <ng-template #defaultColumn>
               {{rowData[col.field]}}
             </ng-template>
           </td>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="footer">
-        <tr>
-          <td colspan="7">*** Total Hours ***</td>
-          <td style="text-align: right">{{_totalhours}}</td>
         </tr>
       </ng-template>
     </p-table>

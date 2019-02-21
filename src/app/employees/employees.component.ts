@@ -113,6 +113,7 @@ export class EmployeesComponent implements OnInit {
 
   errMsg: string;
   _userAdmin = false;
+  _clientId: any;
 
 
   /* #endregion */
@@ -1476,63 +1477,7 @@ export class EmployeesComponent implements OnInit {
         }
       );
   }
-  editRate(dataRow: any) {
-    this.resetRateControls();
-    this._IsEditRate = true;
-    this._IsAddRate = false;
-    this._ratePlaceholder = null;
-    this._rateId = dataRow.ID;
-    this.timesysSvc.getEmployeeforRates(+this._employeeId)
-      .subscribe(
-        (data: Employee[] = []) => {
-        }
-      );
-    this.timesysSvc.listClientforRateId(+dataRow.ID)
-      .subscribe(
-        (data: Clients[] = []) => {
-          let clients = [];
-          clients = data;
-          for (let i = 0; i < clients.length; i++) {
-            this._clients.push({ label: clients[i].ClientName, value: clients[i].Id });
-          }
-        }
-      );
-    this.timesysSvc.getRate(+dataRow.ID)
-      .subscribe(
-        (data: Clients[] = []) => {
-          this._employeeId = data[0].EmployeeID.toString();
-          this._customerId = data[0].CustomerId.toString();
-          this._frmRate.controls['frmClientName'].setValue(data[0].ClientName);
-          this._frmRate.controls['frmCustomerName'].setValue(data[0].CustomerName);
-          this._frmRate.controls['frmCustomerName'].disable();
-          this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
 
-          if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
-            this._frmRate.controls['frmEffectiveDate'].setValue(new Date(data[0].EffectiveDate.replace(new RegExp('-', 'g'), '/')));
-          }
-
-          if (data[0].Inactive !== undefined && data[0].Inactive !== null) {
-            this.chkrateInactive = data[0].Inactive.toString().toLowerCase() === 'true' ? true : false;
-          } else {
-            this.chkrateInactive = false;
-          }
-        }
-      );
-
-  }
-
-  addControlsRate() {
-    this._frmRate.addControl('frmClientName', new FormControl(null, null));
-    this._frmRate.addControl('frmCustomerName', new FormControl(null, null));
-    this._frmRate.addControl('frmEffectiveDate', new FormControl(null, null));
-    this._frmRate.addControl('frmRatetext', new FormControl(null, Validators.required));
-    this._frmRate.addControl('frmInactive', new FormControl(null, null));
-    this.chkrateInactive = false;
-  }
-
-  hasFormErrorsRate() {
-    return !this._frmRate.valid;
-  }
   populateTable(empId: number) {
     this._IsEditRate = false;
     this._IsAddRate = false;
@@ -1557,6 +1502,64 @@ export class EmployeesComponent implements OnInit {
       );
   }
 
+  addControlsRate() {
+    this._frmRate.addControl('frmClientName', new FormControl(null, null));
+    this._frmRate.addControl('frmCustomerName', new FormControl(null, null));
+    this._frmRate.addControl('frmEffectiveDate', new FormControl(null, null));
+    this._frmRate.addControl('frmRatetext', new FormControl(null, Validators.required));
+    this._frmRate.addControl('frmInactive', new FormControl(null, null));
+    this.chkrateInactive = false;
+  }
+
+  hasFormErrorsRate() {
+    return !this._frmRate.valid;
+  }
+
+  editRate(dataRow: any) {
+    this.resetRateControls();
+    this._IsEditRate = true;
+    this._IsAddRate = false;
+    this._ratePlaceholder = null;
+    this._rateId = dataRow.ID.toString();
+    this._clientId = dataRow.ClientID.toString();
+    this.timesysSvc.listClientforRateId(+dataRow.ID)
+      .subscribe(
+        (data: Clients[] = []) => {
+          let clients = [];
+          if (data !== undefined && data !== null && data.length > 0) {
+            clients = data;
+            for (let i = 0; i < clients.length; i++) {
+              this._clients.push({ label: clients[i].ClientName, value: clients[i].Id });
+            }
+          }
+        }
+      );
+    this.timesysSvc.getRate(+dataRow.ID)
+      .subscribe(
+        (data: Clients[] = []) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            console.log(data);
+            this._employeeId = data[0].EmployeeID.toString();
+            this._customerId = data[0].CustomerId.toString();
+            this._frmRate.controls['frmClientName'].setValue(data[0].ClientName);
+            this._frmRate.controls['frmCustomerName'].setValue(data[0].CustomerName);
+            this._frmRate.controls['frmCustomerName'].disable();
+            this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
+
+            if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
+              this._frmRate.controls['frmEffectiveDate'].setValue(new Date(data[0].EffectiveDate.replace(new RegExp('-', 'g'), '/')));
+            }
+
+            if (data[0].Inactive !== undefined && data[0].Inactive !== null) {
+              this.chkrateInactive = data[0].Inactive.toString().toLowerCase() === 'true' ? true : false;
+            } else {
+              this.chkrateInactive = false;
+            }
+          }
+        });
+  }
+
+
   cancelRateModal() {
     this.resetRateControls();
     if (this._IsEditRate === true) {
@@ -1565,6 +1568,7 @@ export class EmployeesComponent implements OnInit {
     } else {
       this.rateDialog = false;
     }
+    this.populateTable(+this._employeeId.toString());
   }
 
   resetRateControls() {
@@ -1586,13 +1590,26 @@ export class EmployeesComponent implements OnInit {
     this._selectedRate.Rate = this._frmRate.controls['frmRatetext'].value.toString().trim();
     this._selectedRate.EmployeeID = +this._employeeId.toString();
     this._selectedRate.Inactive = this.chkrateInactive;
-    this._selectedRate.Id = +this._rateId;
+    this._selectedRate.RateID = +this._rateId;
+    this._selectedRate.Id = +this._clientId;
     if (this._IsAddRate === true) {
       this._selectedRate.RateMode = 'A';
+      this.saveRateSPCall();
     } else {
       this._selectedRate.RateMode = 'E';
+      this.confSvc.confirm({
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        message: 'You are retroactively changing a rate. Is this correct?',
+        accept: () => {
+          this.saveRateSPCall();
+        }
+      });
     }
-    console.log(this._selectedRate);
+
+  }
+
+  saveRateSPCall() {
     this.timesysSvc.updateRate(this._selectedRate)
       .subscribe(
         (outputData) => {
@@ -1607,15 +1624,17 @@ export class EmployeesComponent implements OnInit {
           } else {
             this.msgSvc.add({
               key: 'saveSuccess', severity: 'success',
-              summary: 'Info Message', detail: 'Employee saved successfully'
+              summary: 'Info Message', detail: 'Rate saved successfully'
             });
             this._IsAddRate = false;
             this._IsEditRate = false;
             this.resetRateControls();
+            this.populateTable(+this._employeeId.toString());
           }
         }
       );
   }
+
   numberOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode === 46) {
