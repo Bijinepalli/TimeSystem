@@ -66,7 +66,7 @@
             </div>
           </td>
           <td style="text-align: center">
-            <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-times fa-150x deleteIcon"
+            <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] !== 'Pending'" class="fa fa-times fa-150x deleteIcon"
               pTooltip="Delete this TimeSheet" tooltipPosition="left" (click)="deleteTimeSheet(rowData)"></i>
           </td>
         </tr>
