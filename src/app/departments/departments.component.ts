@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
 import { OverlayPanel } from 'primeng/primeng';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-departments',
@@ -98,7 +99,7 @@ export class DepartmentsComponent implements OnInit {
   CheckSecurity(PageId: string) {
     this._HasEdit = true;
 
-    this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), PageId)
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
         if (data != null && data.length > 0) {
           if (data[0].HasEdit) {

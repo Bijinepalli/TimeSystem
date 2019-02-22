@@ -8,6 +8,7 @@ import { LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 import { CommonService } from '../service/common.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -54,6 +55,7 @@ export class LoginComponent implements OnInit {
 
   Initialisations() {
     localStorage.clear();
+    sessionStorage.clear();
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     this.BuildFormControls();
@@ -168,18 +170,22 @@ export class LoginComponent implements OnInit {
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this.EmployeeData = data;
-            localStorage.setItem('UserId', this.EmployeeData[0].ID.toString());
-            localStorage.setItem('UserRole', this.EmployeeData[0].UserLevel.toString());
-            localStorage.setItem('HireDate', this.EmployeeData[0].HireDate.toString());
-            localStorage.setItem('currentUser',
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserId', this.EmployeeData[0].ID.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserRole', this.EmployeeData[0].UserLevel.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'HireDate', this.EmployeeData[0].HireDate.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'currentUser',
               this.EmployeeData[0].FirstName.toString() + (
                 (this.EmployeeData[0].LastName.toString() !== '') ?
                   (' ' + this.EmployeeData[0].LastName.toString()) : ''
               ));
-            localStorage.setItem('UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
-            localStorage.setItem('PayRollName', this.EmployeeData[0].PayRoleID.toString());
-            localStorage.setItem('SubmitsTime', this.EmployeeData[0].SubmitsTime.toString().toLowerCase());
-            localStorage.setItem('IsSupervisor', this.EmployeeData[0].IsSupervisor.toString().toLowerCase());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserEmailAddress',
+             this.EmployeeData[0].EmailAddress.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'PayRollName',
+             this.EmployeeData[0].PayRoleID.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'SubmitsTime',
+              this.EmployeeData[0].SubmitsTime.toString().toLowerCase());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'IsSupervisor',
+              this.EmployeeData[0].IsSupervisor.toString().toLowerCase());
             let PasswordExpired = false;
             const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
             if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {

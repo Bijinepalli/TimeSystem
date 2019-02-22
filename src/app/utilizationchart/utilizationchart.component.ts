@@ -5,6 +5,7 @@ import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
 import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { WeeklyhoursbyemployeeComponent } from '../reports/weeklyhoursbyemployee/weeklyhoursbyemployee.component';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-utilizationchart',
@@ -192,7 +193,7 @@ export class UtilizationchartComponent implements OnInit {
 
   GetMethods() {
     // this.getEmployees();
-    this.selectedEmp = localStorage.getItem('UserId').toString();
+    this.selectedEmp = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString();
     this.generateReport();
   }
 
@@ -200,13 +201,13 @@ export class UtilizationchartComponent implements OnInit {
     this.showSpinner = true;
 
     this.employees = [];
-    if (localStorage.getItem('UserRole').toString() === 'E') {
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString() === 'E') {
       this.employees.push({
-        label: localStorage.getItem('currentUser').toString(),
-        value: localStorage.getItem('UserId').toString()
+        label: sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser').toString(),
+        value: sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString()
       });
       // this.selectedEmp = this.employees[0];
-      this.selectedEmp = localStorage.getItem('UserId').toString();
+      this.selectedEmp = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString();
       this.showSpinner = false;
       this.generateReport();
     } else {
@@ -219,8 +220,9 @@ export class UtilizationchartComponent implements OnInit {
               for (let i = 0; i < data.length; i++) {
                 this.employees.push({ label: data[i].LastName + ', ' + data[i].FirstName, value: data[i].ID });
               }
-              // this.selectedEmp = this.employees.find(m => m.value.toString() === localStorage.getItem('UserId').toString());
-              this.selectedEmp = localStorage.getItem('UserId').toString();
+              // this.selectedEmp = this.employees.find(m => m.value.toString() ===
+              //     sessionStorage.getItem(environment.buildType.toString() + '_' +'UserId').toString());
+              this.selectedEmp = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString();
               this.generateReport();
             }
             this.showSpinner = false;

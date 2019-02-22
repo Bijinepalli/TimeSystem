@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonService } from '../service/common.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TimesystemService } from '../service/timesystem.service';
+import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -17,7 +19,24 @@ export class DashboardComponent implements OnInit {
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
-  ) { }
+    private router: Router,
+  ) {
+    this.CheckActiveSessionAndPageAuthorization();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSessionAndPageAuthorization() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['']);
+    }
+  }
 
   ngOnInit() {
     this.Initialisations();
@@ -25,29 +44,32 @@ export class DashboardComponent implements OnInit {
     this.GetMethods();
   }
 
+
+
+
   Initialisations() {
 
   }
 
   CheckSecurity() {
-    if (localStorage.getItem('SubmitsTime') !== undefined &&
-      localStorage.getItem('SubmitsTime') !== null &&
-      localStorage.getItem('SubmitsTime').toString() !== '' &&
-      localStorage.getItem('SubmitsTime').toString() === 'false'
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== null &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime').toString() !== '' &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime').toString() === 'false'
     ) {
       this.showOutStandingTimesheets = false;
     } else {
       this.showOutStandingTimesheets = true;
     }
-    if (localStorage.getItem('IsSupervisor') !== undefined &&
-    localStorage.getItem('IsSupervisor') !== null &&
-    localStorage.getItem('IsSupervisor').toString() !== '' &&
-    localStorage.getItem('IsSupervisor').toString() === 'false'
-  ) {
-    this.showApprovalTimesheets = false;
-  } else {
-    this.showApprovalTimesheets = true;
-  }
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'IsSupervisor') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'IsSupervisor') !== null &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'IsSupervisor').toString() !== '' &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'IsSupervisor').toString() === 'false'
+    ) {
+      this.showApprovalTimesheets = false;
+    } else {
+      this.showApprovalTimesheets = true;
+    }
   }
 
   GetMethods() {
@@ -61,7 +83,8 @@ export class DashboardComponent implements OnInit {
       const dtToday = new Date();
       const daysInMonth = new Date(dtToday.getFullYear(), dtToday.getMonth() + 1, 0).getDate();
       if ((+daysInMonth) - (+dtToday.getDate()) <= (+TimeSheetIntimationCountDown)) {
-        this.timesysSvc.getEmployeesNoTimesheetforInvoice(localStorage.getItem('UserId').toString())
+        this.timesysSvc.getEmployeesNoTimesheetforInvoice(
+          sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString())
           .subscribe(
             (data) => {
               if (data !== undefined && data !== null && data.length > 0) {

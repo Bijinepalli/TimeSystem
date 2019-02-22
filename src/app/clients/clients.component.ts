@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-clients',
@@ -93,7 +94,8 @@ export class ClientsComponent implements OnInit {
     this._HasEdit = true;
     this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
+          params['Id'].toString())
           .subscribe((data) => {
             if (data != null && data.length > 0) {
               if (data[0].HasEdit) {
@@ -299,10 +301,18 @@ export class ClientsComponent implements OnInit {
     }
     this._selectedClient.ClientName = this._frm.controls['clientName'].value.toString().trim();
     this._selectedClient.Key = this._frm.controls['clientCode'].value.toString().toUpperCase().trim();
-    this._selectedClient.CompanyId = this._frm.controls['parentCompany'].value.toString().trim();
-    this._selectedClient.CustomerId = this._frm.controls['customerName'].value.toString().trim();
-    this._selectedClient.BillingCycle = this._frm.controls['billingCycle'].value.toString().trim();
-    this._selectedClient.PONumber = this._frm.controls['poNumber'].value.toString().trim();
+    if (this._frm.controls['parentCompany'].value !== null && this._frm.controls['parentCompany'].value !== undefined) {
+      this._selectedClient.CompanyId = this._frm.controls['parentCompany'].value.toString().trim();
+    }
+    if (this._frm.controls['customerName'].value !== undefined && this._frm.controls['customerName'].value !== null) {
+      this._selectedClient.CustomerId = this._frm.controls['customerName'].value.toString().trim();
+    }
+    if (this._frm.controls['billingCycle'].value !== undefined && this._frm.controls['billingCycle'].value !== null) {
+      this._selectedClient.BillingCycle = this._frm.controls['billingCycle'].value.toString().trim();
+    }
+    if (this._frm.controls['poNumber'].value !== undefined && this._frm.controls['poNumber'].value !== null) {
+      this._selectedClient.PONumber = this._frm.controls['poNumber'].value.toString().trim();
+    }
     this._selectedClient.Inactive = this.chkInactive;
     this._selectedClient.ChargeType = this._billingCodes.Client;
     this.SaveClientSPCall();

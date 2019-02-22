@@ -9,6 +9,7 @@ import { Employee, EmailOptions, EmployeePasswordHistory } from '../model/object
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 import { CommonService } from '../service/common.service';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -109,7 +110,7 @@ export class ChangepasswordComponent implements OnInit {
   SubmitFunctionality() {
     const PasswordHistoryCheckLength = this.commonSvc.getAppSettingsValue('PasswordHistoryCheckLength');
     const employeePasswordHistory: EmployeePasswordHistory = {};
-    employeePasswordHistory.EmployeeID = +localStorage.getItem('UserId');
+    employeePasswordHistory.EmployeeID = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     employeePasswordHistory.CheckLength = PasswordHistoryCheckLength;
     employeePasswordHistory.Password = this.currentFormControls.password.value;
     this.timesysSvc.ValidateEmployeePasswordHistory(employeePasswordHistory).subscribe(_employeePasswordHistory => {
@@ -130,8 +131,8 @@ export class ChangepasswordComponent implements OnInit {
 
   UpdatePassword() {
     const employee: Employee = {};
-    employee.ID = +localStorage.getItem('UserId');
-    employee.CreatedBy = +localStorage.getItem('UserId');
+    employee.ID = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
+    employee.CreatedBy = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     employee.Password = this.currentFormControls.password.value;
     this.timesysSvc.Employee_UpdatePassword(employee).subscribe(_employee => {
       this.SendEmailChangePassword(this.currentFormControls.password.value);
@@ -142,7 +143,7 @@ export class ChangepasswordComponent implements OnInit {
     const _EmailOptions: EmailOptions = {};
     _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
     _EmailOptions.EmailType = 'Change Password';
-    _EmailOptions.To = localStorage.getItem('UserEmailAddress');
+    _EmailOptions.To = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress');
     _EmailOptions.SendAdmin = false;
     _EmailOptions.SendOnlyAdmin = false;
     _EmailOptions.ReplyTo = '';

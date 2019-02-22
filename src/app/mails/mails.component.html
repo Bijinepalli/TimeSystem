@@ -89,7 +89,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Email Type<br>
+          Email Type <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input *ngIf="!_IsEdit" type="text" pInputText style="width:100%" placeholder="Email Type" formControlName="txtEmailType">
           <label *ngIf="_IsEdit"><b>{{_selectedEmail.EmailType}}</b></label>

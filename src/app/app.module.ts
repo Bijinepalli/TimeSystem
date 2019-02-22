@@ -100,10 +100,12 @@ import { RevenuereportComponent } from './reports/revenuereport/revenuereport.co
 import { EmployeeutilizationreportComponent } from './reports/employeeutilizationreport/employeeutilizationreport.component';
 import { UtilizationchartComponent } from './utilizationchart/utilizationchart.component';
 import { EmployeetimesheetsComponent } from './reports/employeetimesheets/employeetimesheets.component';
+import { UnauthorizedaccessComponent } from './unauthorizedaccess/unauthorizedaccess.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'access', component: UnauthorizedaccessComponent },
   { path: 'changepassword/:code', component: ForgotpasswordComponent },
   {
     path: 'menu',
@@ -184,6 +186,7 @@ const appRoutes: Routes = [
   //     { path: 'invdashboard', component: AdminmasterComponent },
   //   ]
   // }
+  { path: '**', component: UnauthorizedaccessComponent },
 ];
 
 @NgModule({
@@ -245,6 +248,7 @@ const appRoutes: Routes = [
     EmployeeutilizationreportComponent,
     UtilizationchartComponent,
     EmployeetimesheetsComponent,
+    UnauthorizedaccessComponent,
   ],
   imports: [
     BrowserAnimationsModule,
