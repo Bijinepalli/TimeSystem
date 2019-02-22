@@ -83,9 +83,9 @@ export class Master2Component implements OnInit {
   }
 
   getUserDetails(): boolean {
-    if (localStorage.getItem('UserId') !== undefined &&
-      localStorage.getItem('UserId') !== null &&
-      localStorage.getItem('UserId').toString() !== '') {
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString() !== '') {
       this.getUserName();
       this.getPasswordExpiry();
       return true;
@@ -95,21 +95,21 @@ export class Master2Component implements OnInit {
   }
 
   getUserName() {
-    if (localStorage.getItem('currentUser') !== undefined &&
-      localStorage.getItem('currentUser') !== null &&
-      localStorage.getItem('currentUser').toString() !== '') {
-      this.fullName = 'Hello ' + localStorage.getItem('currentUser').toString();
-      if (localStorage.getItem('PayRollName') !== undefined &&
-        localStorage.getItem('PayRollName') !== null &&
-        localStorage.getItem('PayRollName').toString() !== '') {
-        this.fullName += ' (' + localStorage.getItem('PayRollName').toString() + ') ';
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser') !== null &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser').toString() !== '') {
+      this.fullName = 'Hello ' + sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser').toString();
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'PayRollName') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'PayRollName') !== null &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'PayRollName').toString() !== '') {
+        this.fullName += ' (' + sessionStorage.getItem(environment.buildType.toString() + '_' + 'PayRollName').toString() + ') ';
       }
       this.loginTime = this.datePipe.transform(Date(), 'EEEE, MMMM dd, yyyy');
     }
   }
 
   getPasswordExpiry() {
-    this.timesysSvc.getEmployee(localStorage.getItem('UserId').toString(), '', '')
+    this.timesysSvc.getEmployee(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString(), '', '')
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
@@ -140,16 +140,17 @@ export class Master2Component implements OnInit {
   }
 
   getNavItems() {
-    if (localStorage.getItem('UserRole') !== undefined && localStorage.getItem('UserRole') !== null) {
-      this.timesysSvc.getLeftNavMenu(localStorage.getItem('UserRole').toString(), '0')
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== null) {
+      this.timesysSvc.getLeftNavMenu(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), '0')
         .subscribe(
           (data) => {
             // this.menuItems=data;
             this.buildMenuItems(data);
-            if (localStorage.getItem('SubmitsTime') !== undefined &&
-              localStorage.getItem('SubmitsTime') !== null &&
-              localStorage.getItem('SubmitsTime').toString() !== '' &&
-              localStorage.getItem('SubmitsTime').toString() === 'false'
+            if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== undefined &&
+              sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== null &&
+              sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime').toString() !== '' &&
+              sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime').toString() === 'false'
             ) {
               this.dashboard = [{
                 label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')

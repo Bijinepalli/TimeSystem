@@ -11,6 +11,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { BillingCode, YearEndCodes } from '../model/constants';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-employees',
@@ -138,7 +139,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('UserRole').toString() === 'A') {
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString() === 'A') {
       this._userAdmin = true;
     }
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -282,7 +283,7 @@ export class EmployeesComponent implements OnInit {
   CheckSecurity(PageId: string) {
     this._HasEdit = true;
 
-    this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), PageId)
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
         if (data != null && data.length > 0) {
           if (data[0].HasEdit) {

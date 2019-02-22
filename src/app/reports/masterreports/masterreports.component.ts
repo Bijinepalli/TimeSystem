@@ -2,6 +2,7 @@ import { Component, ViewChild, OnInit, AfterViewInit, Input } from '@angular/cor
 import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
+import { environment } from 'src/environments/environment';
 
 declare var jQuery: any;
 
@@ -37,8 +38,9 @@ export class MasterreportsComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (localStorage.getItem('currentUser') != null && localStorage.getItem('currentUser') !== '') {
-      this.fullName = 'Welcome , ' + localStorage.getItem('currentUser');
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser') != null &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser') !== '') {
+      this.fullName = 'Welcome , ' + sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser');
 
     }
 
@@ -61,7 +63,8 @@ export class MasterreportsComponent implements OnInit {
   }
 
   getNavItems() {
-    if (localStorage.getItem('UserRole') !== undefined && localStorage.getItem('UserRole') !== null) {
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== null) {
       const handleSelected = function (event) {
         const allMenus = jQuery(event.originalEvent.target).closest('ul');
         const allLinks = allMenus.find('.menu-selected');
@@ -69,7 +72,7 @@ export class MasterreportsComponent implements OnInit {
         const selected = jQuery(event.originalEvent.target).closest('a');
         selected.addClass('menu-selected');
       };
-      switch (localStorage.getItem('UserRole').toString()) {
+      switch (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString()) {
         case 'A':
           this.menuItems = [
             {
