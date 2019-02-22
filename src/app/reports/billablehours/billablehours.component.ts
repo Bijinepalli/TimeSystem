@@ -37,7 +37,6 @@ export class BillablehoursComponent implements OnInit {
   endDate: Date;
   admin = false;
   _codeType: string;
-  _totalhours: any;
   helpText: any;
   visibleHelp = false;
 
@@ -133,15 +132,12 @@ export class BillablehoursComponent implements OnInit {
     this._recData = 0;
     let start = '';
     let end = '';
-    this._totalhours = 0.00;
     if (this.startDate !== undefined && this.startDate !== null && this.startDate.toString() !== '') {
       start = this.datePipe.transform(this.startDate.toString(), 'MM-dd-yyyy');
     }
     if (this.endDate !== undefined && this.endDate !== null && this.endDate.toString() !== '') {
       end = this.datePipe.transform(this.endDate.toString(), 'MM-dd-yyyy');
     }
-    console.log(this.selectedBillingType.toString(), this.selectedCode.toString(),
-      this.selectedType.toString(), this.selectedassignStatus.toString(), start, end);
     this.timesysSvc.getBillableHours(
       this.selectedBillingType.toString(),
       this.selectedCode.toString(),
@@ -156,16 +152,12 @@ export class BillablehoursComponent implements OnInit {
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
-            for (let i = 0; i < this._reports.length; i++) {
-              this._totalhours += parseFloat(this._reports[i].Hours);
-            }
-            this._recData = this._reports.length;
+            this._recData = this._reports[0].RowCount;
             this.showReport = true;
           }
           this.showBillingCodeList = false;
           this.changeCodeList = true;
           this.showSpinner = false;
-          this._totalhours = parseFloat(this._totalhours);
         });
   }
   startOver() {

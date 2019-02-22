@@ -1,5 +1,4 @@
 <p-confirmDialog></p-confirmDialog>
-<p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" appendTo="body"></p-toast>
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Employees <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
@@ -495,6 +494,7 @@
 
 <p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100"
   [closeOnEscape]="false" [closable]="false" blockScroll="true" class="dialogWidth">
+  <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" [autoZIndex]="true"></p-toast>
   <p-header>
     Change {{_popUpHeader}}s to {{_employeeNameHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
