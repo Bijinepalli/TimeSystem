@@ -24,7 +24,7 @@ export class EmployeesComponent implements OnInit {
   /* #region Global Variables */
 
 
-  ParamSubscribe: any;
+
 
   _billingCodes: BillingCode;
   _yec: YearEndCodes = new YearEndCodes();
@@ -116,6 +116,10 @@ export class EmployeesComponent implements OnInit {
   _userAdmin = false;
   _clientId: any;
 
+  showSpinner = false;
+
+  ParamSubscribe: any;
+  IsSecure = false;
 
   /* #endregion */
 
@@ -129,7 +133,23 @@ export class EmployeesComponent implements OnInit {
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
     public datepipe: DatePipe
-  ) { }
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
   /* #endregion*/
 
   /* #region Page Life Cycle Methods*/
@@ -139,22 +159,38 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
-    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString() === 'A') {
-      this._userAdmin = true;
-    }
+    this.showSpinner = true;
+    this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
-      this.ClearAllProperties();
-      this.Initialisations();
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         this.CheckSecurity(params['Id'].toString());
-        this.AddFormControls();
-        this.GetMethods();
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
   }
   /* #endregion */
 
   /* #region Basic Methods */
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
   ClearAllProperties() {
     this._billingCodes = new BillingCode();
     this.selectedType = 0;
@@ -243,6 +279,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
     this.cols = [
       { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
@@ -266,6 +303,12 @@ export class EmployeesComponent implements OnInit {
       { label: 'Hourly', value: 1 },
       { label: 'Both', value: 2 }
     ];
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString() === 'A') {
+      this._userAdmin = true;
+    }
+    this.AddFormControls();
+    this.showSpinner = false;
+    this.GetMethods();
   }
 
   AddFormControls() {
@@ -278,19 +321,6 @@ export class EmployeesComponent implements OnInit {
     this.getEmployees();
     this.getSupervisors();
     this.getDepartments();
-  }
-
-  CheckSecurity(PageId: string) {
-    this._HasEdit = true;
-
-    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
-      .subscribe((data) => {
-        if (data != null && data.length > 0) {
-          if (data[0].HasEdit) {
-            this._HasEdit = false;
-          }
-        }
-      });
   }
 
   showHelp(file: string) {
@@ -309,6 +339,7 @@ export class EmployeesComponent implements OnInit {
 
   /* #region Get Calls */
   getEmployees() {
+    this.showSpinner = true;
     this.setCols();
     if (this.selectedType === 1) {
       this.activeColumn = false;
@@ -344,6 +375,7 @@ export class EmployeesComponent implements OnInit {
             this._employees = [];
             this._recData = 'No employees found';
           }
+          this.showSpinner = false;
         }
       );
   }
@@ -387,6 +419,8 @@ export class EmployeesComponent implements OnInit {
   }
 
   getNonBillables(empId: number) {
+
+    this.showSpinner = true;
     this.timesysSvc.getEmployee(empId.toString(), '', '')
       .subscribe(
         (empdata) => {
@@ -421,12 +455,15 @@ export class EmployeesComponent implements OnInit {
                           this._nonBillablesNotAssignToEmp = dataUnAssign;
                         }
                       }
+                      this.showSpinner = false;
                     });
               });
         });
   }
 
   getProjects(empId: number) {
+
+    this.showSpinner = true;
     this.timesysSvc.getProjectsAssignToEmployee(empId)
       .subscribe(
         (data) => {
@@ -436,6 +473,8 @@ export class EmployeesComponent implements OnInit {
             this._projectsAssignToEmp = this._projectsAssignToEmp.concat(data);
             this._projectsAssignToEmpSaved = this._projectsAssignToEmpSaved.concat(data);
           }
+
+          this.showSpinner = false;
         }
       );
     this.timesysSvc.getProjectsNotAssignToEmployee(empId)
@@ -446,11 +485,15 @@ export class EmployeesComponent implements OnInit {
           } else {
             this._projectsNotAssignToEmp = [];
           }
+
+          this.showSpinner = false;
         }
       );
   }
 
   getClients(empId: number) {
+
+    this.showSpinner = true;
     this.timesysSvc.getClientsAssignToEmployee(empId)
       .subscribe(
         (data) => {
@@ -470,11 +513,15 @@ export class EmployeesComponent implements OnInit {
           } else {
             this._clientsNotAssignToEmp = [];
           }
+
+          this.showSpinner = false;
         }
       );
   }
 
   getSupervisors() {
+
+    this.showSpinner = true;
     this.timesysSvc.Supervisor_Get()
       .subscribe(
         (data) => {
@@ -483,11 +530,14 @@ export class EmployeesComponent implements OnInit {
           } else {
             this._Supervisors = [];
           }
+
+          this.showSpinner = false;
         }
       );
   }
 
   getDepartments() {
+    this.showSpinner = true;
     this._departmentsList = [];
     this.timesysSvc.getDepartments('')
       .subscribe(
@@ -498,6 +548,7 @@ export class EmployeesComponent implements OnInit {
               this._departmentsList.push({ label: data[i].Name, value: data[i].Id });
             }
           }
+          this.showSpinner = false;
         });
   }
 
@@ -506,15 +557,20 @@ export class EmployeesComponent implements OnInit {
   /* #region Sort Calls */
   sortTarget() {
     /**** Very very important code */
+    this.showSpinner = true;
     this.sortNonBillables(this._nonBillablesAssignToEmp);
     this.sortClients(this._projectsAssignToEmp);
     this.sortClients(this._clientsAssignToEmp);
+
+    this.showSpinner = false;
   }
   sortSource() {
     /**** Very very important code */
+    this.showSpinner = true;
     this.sortNonBillables(this._nonBillablesNotAssignToEmp);
     this.sortClients(this._projectsNotAssignToEmp);
     this.sortClients(this._clientsNotAssignToEmp);
+    this.showSpinner = false;
   }
 
   sortNonBillables(nonBillablesData: NonBillables[]) {

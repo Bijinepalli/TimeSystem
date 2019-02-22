@@ -178,8 +178,10 @@ export class LoginComponent implements OnInit {
                 (this.EmployeeData[0].LastName.toString() !== '') ?
                   (' ' + this.EmployeeData[0].LastName.toString()) : ''
               ));
-            sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserEmailAddress', this.EmployeeData[0].EmailAddress.toString());
-            sessionStorage.setItem(environment.buildType.toString() + '_' + 'PayRollName', this.EmployeeData[0].PayRoleID.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserEmailAddress',
+             this.EmployeeData[0].EmailAddress.toString());
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'PayRollName',
+             this.EmployeeData[0].PayRoleID.toString());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'SubmitsTime',
               this.EmployeeData[0].SubmitsTime.toString().toLowerCase());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'IsSupervisor',

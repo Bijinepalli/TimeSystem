@@ -3,6 +3,7 @@ import { CommonService } from '../service/common.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TimesystemService } from '../service/timesystem.service';
 import { environment } from 'src/environments/environment';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -18,13 +19,33 @@ export class DashboardComponent implements OnInit {
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
-  ) { }
+    private router: Router,
+  ) {
+    this.CheckActiveSessionAndPageAuthorization();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSessionAndPageAuthorization() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['']);
+    }
+  }
 
   ngOnInit() {
     this.Initialisations();
     this.CheckSecurity();
     this.GetMethods();
   }
+
+
+
 
   Initialisations() {
 

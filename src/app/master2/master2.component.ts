@@ -276,7 +276,7 @@ export class Master2Component implements OnInit {
   }
 
   logout() {
-    this.router.navigate([''], { skipLocationChange: true });
+    this.router.navigate(['']);
   }
 
   navigateTo() {

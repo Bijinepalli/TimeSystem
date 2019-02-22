@@ -4,6 +4,7 @@ import { SelectItem } from 'primeng/api';
 import { MasterPages } from '../model/objects';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-accessrights',
@@ -23,8 +24,15 @@ export class AccessrightsComponent implements OnInit {
   pageFormgroup: FormGroup;
   _showGrid = false;
 
-  constructor(private timesysSvc: TimesystemService, private fb: FormBuilder, private confSvc: ConfirmationService,
-    private msgSvc: MessageService) { }
+  constructor(
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+    private fb: FormBuilder,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService
+  ) {
+    this.commonSvc.setAppSettings();
+  }
 
   // @Input() set disableControl( condition : boolean ) {
   //   const action = condition ? 'disable' : 'enable';

@@ -59,30 +59,31 @@ export class SelecttimesheetperiodComponent implements OnInit {
           this._timesheetApproval = [];
           if (data !== undefined && data !== null && data.length > 0) {
             this._timesheets = data;
-            this.timesysSvc.getTimeSheetForApprovalCheck(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
-              (data1) => {
-                if (data1 !== undefined && data1 !== null && data1.length > 0) {
-                  this._timesheetApproval = data1.filter(P => P.PeriodEnd === this._timesheets[0].PeriodEnd && P.Status === 'P');
-                  if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
-                    this.msgSvc.add({
-                      key: 'alert',
-                      sticky: true,
-                      severity: 'error',
-                      summary: '',
-                      detail: 'A timesheet already has been submitted for this period and waiting for approval.',
-                    });
-                  } else {
-                    this.confSvc.confirm({
-                      message: 'A timesheet already has been submitted for this period.' +
-                        'This will be a resubmittal. Do you want to continue?',
-                      accept: () => {
-                        this.resubmittal();
-                      }
-                    });
+            this.timesysSvc.getTimeSheetForApprovalCheck(
+              sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
+                (data1) => {
+                  if (data1 !== undefined && data1 !== null && data1.length > 0) {
+                    this._timesheetApproval = data1.filter(P => P.PeriodEnd === this._timesheets[0].PeriodEnd && P.Status === 'P');
+                    if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'error',
+                        summary: '',
+                        detail: 'A timesheet already has been submitted for this period and waiting for approval.',
+                      });
+                    } else {
+                      this.confSvc.confirm({
+                        message: 'A timesheet already has been submitted for this period.' +
+                          'This will be a resubmittal. Do you want to continue?',
+                        accept: () => {
+                          this.resubmittal();
+                        }
+                      });
+                    }
                   }
                 }
-              }
-            );
+              );
           }
         }
       );
