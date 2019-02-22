@@ -162,5 +162,19 @@ overflow-y: auto;
       height: 20px;
       content: none;
     }
+
+  /* Override color for alert box*/
+    :host ::ng-deep.ui-toast-message.ui-toast-message-error {
+      background-color: #ffffff !important;
+      padding:0px !important;
+  }
+    .alertHeader{
+      background-color: indianred;
+      width:100%
+    }
+
+  :host ::ng-deep .alertToast .ui-toast-message-content{
+    padding:0px !important;
+  }
     
     

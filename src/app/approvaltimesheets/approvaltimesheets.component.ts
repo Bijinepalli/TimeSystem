@@ -6,6 +6,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimesystemService } from '../service/timesystem.service';
 import { CommonService } from '../service/common.service';
 import { TimeSheet, TimeSheetForApproval } from '../model/objects';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-approvaltimesheets',
@@ -25,7 +26,7 @@ export class ApprovaltimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.timesysSvc.getTimeSheetForApprovalGet(localStorage.getItem('UserId')).subscribe(
+    this.timesysSvc.getTimeSheetForApprovalGet(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
       (data) => {
         this._approvals = data;
         this.cols = [

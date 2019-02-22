@@ -5,6 +5,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
+import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-employeelogindata',
@@ -12,6 +14,7 @@ import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
   styleUrls: ['./employeelogindata.component.css']
 })
 export class EmployeelogindataComponent implements OnInit {
+
   types: SelectItem[];
   salaryTypes: SelectItem[];
   selectedType: string;
@@ -20,9 +23,74 @@ export class EmployeelogindataComponent implements OnInit {
   cols: any;
   _recData: any;
   visibleHelp = false;
+  showSpinner = false;
   helpText: any;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private fb: FormBuilder) {
+  ParamSubscribe: any;
+  IsSecure = false;
+  _HasEdit = true;
+
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private fb: FormBuilder,
+    private commonSvc: CommonService,
+    private route: ActivatedRoute) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.CheckSecurity(params['Id'].toString());
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+    this.Initialisations();
+  }
+  /* #endregion */
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+  Initialisations() {
     this.types = [
       { label: 'Active', value: '0' },
       { label: 'Inactive', value: '1' },
@@ -35,9 +103,6 @@ export class EmployeelogindataComponent implements OnInit {
     ];
     this.selectedType = '0';
     this.selectedSalaryType = '2';
-  }
-
-  ngOnInit() {
     this.cols = [
       { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },

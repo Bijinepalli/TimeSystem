@@ -6,6 +6,7 @@ import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimesystemService } from '../service/timesystem.service';
 import { CommonService } from '../service/common.service';
 import { TimeSheet } from '../model/objects';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-outstandingtimesheets',
@@ -25,22 +26,23 @@ export class OutstandingtimesheetsComponent implements OnInit {
 
   ngOnInit() {
     const numbers = this.commonSvc.getAppSettingsValue('UnsubmittedTimePeriods2');
-    this.timesysSvc.getOutStandingTimesheets(localStorage.getItem('UserId'), numbers).subscribe(
-      (data) => {
-        this._outStandings = data;
-        this.cols = [
-          { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
-          { field: 'ApprovalStatus', header: 'Status', align: 'left', width: 'auto' },
-          { field: 'TimeStamp', header: 'Created On', align: 'center', width: 'auto' },
-        ];
-      });
+    this.timesysSvc.getOutStandingTimesheets(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'),
+      numbers).subscribe(
+        (data) => {
+          this._outStandings = data;
+          this.cols = [
+            { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
+            { field: 'ApprovalStatus', header: 'Status', align: 'left', width: 'auto' },
+            { field: 'TimeStamp', header: 'Created On', align: 'center', width: 'auto' },
+          ];
+        });
   }
   editTimeSheet(timeSheet: TimeSheet) {
     this.confSvc.confirm({
       message: 'Do you want to edit the timesheet?',
       accept: () => {
         if (timeSheet.Id < 0) {
-          // localStorage.setItem('PeriodEndDate', timeSheet.PeriodEnd);
+          // sessionStorage.setItem(environment.buildType.toString() + '_' + 'PeriodEndDate', timeSheet.PeriodEnd);
           this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
         } else {
           this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });

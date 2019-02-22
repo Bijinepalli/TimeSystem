@@ -14,9 +14,15 @@ import { DatePipe, DecimalPipe } from '@angular/common';
   providers: [DatePipe, DecimalPipe],
 })
 export class AccesssystemComponent implements OnInit {
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder, private commonSvc: CommonService, private datePipe: DatePipe) {
+  constructor(private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private commonSvc: CommonService,
+    private datePipe: DatePipe) {
+    this.commonSvc.setAppSettings();
   }
   _monthlyHours: MonthlyHours[];
   cols: any = [];
