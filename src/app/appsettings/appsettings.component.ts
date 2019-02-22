@@ -110,6 +110,19 @@ export class AppsettingsComponent implements OnInit {
         this._appsettingsselection = [];
         this.getAppSettings();
         this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Saved Successfully' });
+        this.confSvc.confirm({
+          message: 'Do you want to see the changes in action right away by logging in again?',
+          header: 'Confirmation',
+          icon: 'pi pi-exclamation-triangle',
+          accept: () => {
+            /* do nothing */
+            this.router.navigate(['']);
+          },
+          reject: () => {
+            /* do nothing */
+          }
+        });
+
       } else {
         this.msgSvc.add({ key: 'saveSuccess', severity: 'warn', summary: 'Info Message', detail: 'An Error Occurred' });
       }
