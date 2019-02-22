@@ -6,6 +6,7 @@ import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-invoicedata',
@@ -29,15 +30,75 @@ export class InvoicedataComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
 
+  ParamSubscribe: any;
+  IsSecure = false;
+  _HasEdit = true;
+
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
+    private route: ActivatedRoute,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
-    private commonSvc: CommonService) { }
+    private commonSvc: CommonService) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.CheckSecurity(params['Id'].toString());
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+    this.Initialisations();
+  }
+  /* #endregion */
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+
+  Initialisations() {
     this._billingCycle = [
       { label: 'Weekly', value: 'W' },
       { label: 'Bi-Weekly', value: 'B' },
@@ -58,12 +119,23 @@ export class InvoicedataComponent implements OnInit {
       { field: 'PONumber', header: 'PO #', align: 'right', width: '100px' },
     ];
     this._selectedBillingCycle = 'A';
+
     const dateNow = new Date();
     const end = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0);
     const start = new Date(dateNow.getFullYear(), dateNow.getMonth(), 1);
     this._invoiceDate = dateNow;
     this._startDate = start;
     this._endDate = end;
+  }
+
+  ClearAllProperties() {
+    this._selectedBillingCycle = '';
+    this._invoiceDate = '';
+    this._startDate = '';
+    this._endDate = '';
+    this._reports = [];
+    this.showInvoiceList = false;
+    this.showReport = false;
   }
 
   generateReport() {
@@ -115,6 +187,7 @@ export class InvoicedataComponent implements OnInit {
     this.showReport = false;
     this.showSpinner = false;
   }
+
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(
