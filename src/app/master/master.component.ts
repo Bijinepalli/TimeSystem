@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 const DEFAULT_COLORS = ['#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
   '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
@@ -26,8 +27,9 @@ export class MasterComponent implements OnInit {
 
   getNavItems() {
     this._NavItems = ['Dashboard'];
-    if (localStorage.getItem('UserRole') !== undefined && localStorage.getItem('UserRole') !== null) {
-      switch (localStorage.getItem('UserRole').toString()) {
+    if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== undefined &&
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== null) {
+      switch (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString()) {
         case 'Admin':
           this._NavItems = ['Dashboard', 'Employees', 'Holidays', 'Companies', 'Billing Codes',
             'Project', 'Non-Billables', 'Customers', 'Clients', 'Year End', 'Email', 'Error Log', 'Reports', 'Configuration'];
@@ -49,7 +51,7 @@ export class MasterComponent implements OnInit {
   }
 
   logout() {
-    localStorage.clear();
+    sessionStorage.clear();
     this.router.navigate([''], { skipLocationChange: true });
   }
 

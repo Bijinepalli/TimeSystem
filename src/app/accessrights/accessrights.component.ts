@@ -4,6 +4,8 @@ import { SelectItem } from 'primeng/api';
 import { MasterPages } from '../model/objects';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { CommonService } from '../service/common.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-accessrights',
@@ -23,8 +25,16 @@ export class AccessrightsComponent implements OnInit {
   pageFormgroup: FormGroup;
   _showGrid = false;
 
-  constructor(private timesysSvc: TimesystemService, private fb: FormBuilder, private confSvc: ConfirmationService,
-    private msgSvc: MessageService) { }
+  constructor(
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+    private fb: FormBuilder,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private router: Router,
+  ) {
+    this.commonSvc.setAppSettings();
+  }
 
   // @Input() set disableControl( condition : boolean ) {
   //   const action = condition ? 'disable' : 'enable';
@@ -107,6 +117,20 @@ export class AccessrightsComponent implements OnInit {
           if (data != null && data[0].Role.toString() === this.pageFormgroup.get('roleDrp').value.toString()) {
             this.getPages();
             this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Saved Successfully' });
+
+            this.confSvc.confirm({
+              message: 'Do you want to see the changes in action right away by logging in again?',
+              header: 'Confirmation',
+              icon: 'pi pi-exclamation-triangle',
+              accept: () => {
+                /* do nothing */
+                this.router.navigate(['']);
+              },
+              reject: () => {
+                /* do nothing */
+              }
+            });
+
           } else {
             this.msgSvc.add({ key: 'saveSuccess', severity: 'warn', summary: 'Info Message', detail: 'An Error Occurred' });
           }

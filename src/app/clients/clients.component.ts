@@ -7,6 +7,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-clients',
@@ -93,7 +94,8 @@ export class ClientsComponent implements OnInit {
     this._HasEdit = true;
     this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(localStorage.getItem('UserRole').toString(), params['Id'].toString())
+        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
+          params['Id'].toString())
           .subscribe((data) => {
             if (data != null && data.length > 0) {
               if (data[0].HasEdit) {

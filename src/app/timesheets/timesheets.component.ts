@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-timesheets',
@@ -63,7 +64,7 @@ export class TimesheetsComponent implements OnInit {
   getTimeSheets() {
     this._mainHeader = 'Your Time Sheets';
     const Mode = this.selectedValues ? '1' : '0';
-    this.timesysSvc.getEmployeeTimeSheetList((localStorage.getItem('UserId')), Mode)
+    this.timesysSvc.getEmployeeTimeSheetList((sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')), Mode)
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
@@ -81,27 +82,28 @@ export class TimesheetsComponent implements OnInit {
     this._timePeriods = [];
     this.selectTimePeriod = null;
     // this.selectTimePeriodDate = '';
-    this.timesysSvc.getTimeSheetAfterDateDetails(localStorage.getItem('UserId'), localStorage.getItem('HireDate')).subscribe(
-      (data) => {
-        this.timesysSvc.getDatebyPeriod().subscribe(
-          (data1) => {
-            if (data !== undefined && data !== null && data.length > 0) {
-              this._timePeriods = data;
-              if (data1 !== undefined && data1 !== null && data1.length > 0) {
-                const selectedDateVal = data.find(m => this.datePipe.transform(m.code, 'MM-dd-yyyy') === data1[0].PeriodEndDate);
-                if (selectedDateVal !== undefined && selectedDateVal !== null) {
-                  this.selectTimePeriod = selectedDateVal;
+    this.timesysSvc.getTimeSheetAfterDateDetails(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'),
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'HireDate')).subscribe(
+        (data) => {
+          this.timesysSvc.getDatebyPeriod().subscribe(
+            (data1) => {
+              if (data !== undefined && data !== null && data.length > 0) {
+                this._timePeriods = data;
+                if (data1 !== undefined && data1 !== null && data1.length > 0) {
+                  const selectedDateVal = data.find(m => this.datePipe.transform(m.code, 'MM-dd-yyyy') === data1[0].PeriodEndDate);
+                  if (selectedDateVal !== undefined && selectedDateVal !== null) {
+                    this.selectTimePeriod = selectedDateVal;
+                  } else {
+                    this.selectTimePeriod = data[0];
+                  }
                 } else {
                   this.selectTimePeriod = data[0];
                 }
-              } else {
-                this.selectTimePeriod = data[0];
               }
-            }
-            this.timesheetDialog = true;
-          });
-      }
-    );
+              this.timesheetDialog = true;
+            });
+        }
+      );
   }
 
   ShowAllTimesheets() {
@@ -164,32 +166,33 @@ export class TimesheetsComponent implements OnInit {
             this._timesheetApproval = [];
             if (data !== undefined && data !== null && data.length > 0) {
               this._timesheetsTimePeriod = data;
-              this.timesysSvc.getTimeSheetForApprovalCheck(localStorage.getItem('UserId')).subscribe(
-                (data1) => {
-                  if (data1 !== undefined && data1 !== null && data1.length > 0) {
-                    this._timesheetApproval = data1.filter(P =>
-                      P.PeriodEnd === this._timesheetsTimePeriod[0].PeriodEnd
-                      && P.Status === 'P');
-                    if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
-                      this.msgSvc.add({
-                        key: 'alert',
-                        sticky: true,
-                        severity: 'error',
-                        summary: '',
-                        detail: 'A timesheet already has been submitted for this period and waiting for approval.',
-                      });
-                    } else {
-                      this.confSvc.confirm({
-                        message: 'A timesheet already has been submitted for this period.' +
-                          'This will be a resubmittal. Do you want to continue?',
-                        accept: () => {
-                          this.resubmittal();
-                        }
-                      });
+              this.timesysSvc.getTimeSheetForApprovalCheck(
+                sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
+                  (data1) => {
+                    if (data1 !== undefined && data1 !== null && data1.length > 0) {
+                      this._timesheetApproval = data1.filter(P =>
+                        P.PeriodEnd === this._timesheetsTimePeriod[0].PeriodEnd
+                        && P.Status === 'P');
+                      if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
+                        this.msgSvc.add({
+                          key: 'alert',
+                          sticky: true,
+                          severity: 'error',
+                          summary: '',
+                          detail: 'A timesheet already has been submitted for this period and waiting for approval.',
+                        });
+                      } else {
+                        this.confSvc.confirm({
+                          message: 'A timesheet already has been submitted for this period.' +
+                            'This will be a resubmittal. Do you want to continue?',
+                          accept: () => {
+                            this.resubmittal();
+                          }
+                        });
+                      }
                     }
                   }
-                }
-              );
+                );
             }
           }
         );
@@ -201,23 +204,25 @@ export class TimesheetsComponent implements OnInit {
   }
   resubmittal() {
     if (this._timesheetsTimePeriod !== undefined && this._timesheetsTimePeriod !== null && this._timesheetsTimePeriod.length > 0) {
-      this.timesysSvc.getUnSubmittedTimeSheetDetails(localStorage.getItem('UserId'), this._timesheetsTimePeriod[0].PeriodEnd).subscribe(
-        (data1) => {
-          if (data1 !== undefined && data1 !== null && data1.length > 0) {
-            this.navigateToTimesheet(data1[0].Id, '');
-          } else {
-            let _selectedTimesheet: TimeSheet = {};
-            _selectedTimesheet = new TimeSheet();
-            _selectedTimesheet.Id = this.selectTimePeriod.value;
-            _selectedTimesheet.TimeStamp = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
-            this.timesysSvc.timesheetCopyInsert(_selectedTimesheet).subscribe(
-              (data2) => {
-                if (data2 !== undefined && data2 !== null) {
-                  this.navigateToTimesheet(data2, '');
-                }
-              });
-          }
-        });
+      this.timesysSvc.getUnSubmittedTimeSheetDetails(
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'),
+        this._timesheetsTimePeriod[0].PeriodEnd).subscribe(
+          (data1) => {
+            if (data1 !== undefined && data1 !== null && data1.length > 0) {
+              this.navigateToTimesheet(data1[0].Id, '');
+            } else {
+              let _selectedTimesheet: TimeSheet = {};
+              _selectedTimesheet = new TimeSheet();
+              _selectedTimesheet.Id = this.selectTimePeriod.value;
+              _selectedTimesheet.TimeStamp = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+              this.timesysSvc.timesheetCopyInsert(_selectedTimesheet).subscribe(
+                (data2) => {
+                  if (data2 !== undefined && data2 !== null) {
+                    this.navigateToTimesheet(data2, '');
+                  }
+                });
+            }
+          });
     }
   }
   navigateToTimesheet(TimesheetId, TimesheetDate) {
@@ -241,7 +246,7 @@ export class TimesheetsComponent implements OnInit {
     this.timesysSvc.getHoursbyTimesheetforEmployee(
       this._startDate,
       this._endDate,
-      localStorage.getItem('UserId').toString()).subscribe(
+      sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString()).subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._hoursbytimesheetlist = data;

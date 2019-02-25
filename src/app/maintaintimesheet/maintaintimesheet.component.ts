@@ -14,6 +14,7 @@ import { OverlayPanelModule, OverlayPanel } from 'primeng/overlaypanel';
 import { InputTextModule, Dropdown } from 'primeng/primeng';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { DISABLED } from '@angular/forms/src/model';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-maintaintimesheet',
@@ -169,10 +170,11 @@ export class MaintaintimesheetComponent implements OnInit {
           }
         });
     } else {
-      this.getEmployeeDetails(localStorage.getItem('UserId').toString());
+      this.getEmployeeDetails(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString());
       const selectPeriodEndDate = this.datePipe.transform(this._periodEndDateString, 'yyyy-MM-dd');
       // this.getPeriodDates(selectPeriodEndDate);
-      this.getAllWantedDetailsOnLoad(localStorage.getItem('UserId').toString(), selectPeriodEndDate);
+      this.getAllWantedDetailsOnLoad(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString(),
+        selectPeriodEndDate);
     }
   }
 
@@ -215,7 +217,7 @@ export class MaintaintimesheetComponent implements OnInit {
       // For Validation Purpose
       const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
       const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
-      this.getVertexHolidaysList(localStorage.getItem('UserId'), cEndDate, cStartDate);
+      this.getVertexHolidaysList(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'), cEndDate, cStartDate);
     }
     // });
   }
@@ -1186,7 +1188,7 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       timeSheetSubmit.timeSheet.Comments = '';
     }
-    timeSheetSubmit.timeSheet.EmployeeId = +localStorage.getItem('UserId');
+    timeSheetSubmit.timeSheet.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     // tslint:disable-next-line:max-line-length
     if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
       timeSheetSubmit.timeSheet.Submitted = false;
@@ -1243,7 +1245,7 @@ export class MaintaintimesheetComponent implements OnInit {
                     // tslint:disable-next-line:max-line-length
                     if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
                       const timeSheetApp = new TimeSheetForApproval();
-                      timeSheetApp.EmployeeId = +localStorage.getItem('UserId');
+                      timeSheetApp.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
                       timeSheetApp.SupervisorId = this._supervisor[0].ID;
                       timeSheetApp.TimesheetId = this._timesheetId;
                       timeSheetApp.PeriodEnd = this._periodEndDateDisplay;
@@ -1260,7 +1262,7 @@ export class MaintaintimesheetComponent implements OnInit {
                   }
                   this.resetForm();
                   this.defaultControlsToForm();
-                  this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+                  this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
                   this.getTimesheetTimeLineTimeCellDetails();
                 }
               },
@@ -1268,7 +1270,7 @@ export class MaintaintimesheetComponent implements OnInit {
                 console.log(error);
               });
           if (this._actualTimeSheetId.toString() === '-1') {
-            localStorage.removeItem('PeriodEndDate');
+            sessionStorage.removeItem('PeriodEndDate');
             this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId], { skipLocationChange: true });
           }
         }
@@ -1318,7 +1320,7 @@ export class MaintaintimesheetComponent implements OnInit {
                   // tslint:disable-next-line:max-line-length
                   if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
                     const timeSheetApp = new TimeSheetForApproval();
-                    timeSheetApp.EmployeeId = +localStorage.getItem('UserId');
+                    timeSheetApp.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
                     timeSheetApp.SupervisorId = this._supervisor[0].ID;
                     timeSheetApp.TimesheetId = this._timesheetId;
                     timeSheetApp.PeriodEnd = this._periodEndDateDisplay;
@@ -1387,7 +1389,8 @@ export class MaintaintimesheetComponent implements OnInit {
 
   }
   checkPendingTimesheets() {
-    if (this._timesheetUserId !== undefined && this._timesheetUserId.toString() !== localStorage.getItem('UserId')) {
+    if (this._timesheetUserId !== undefined &&
+      this._timesheetUserId.toString() !== sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')) {
       // this.timesysSvc.getTimeSheetForApprovalCheck(this._timesheetUserId.toString())
       //   .subscribe(
       //     (data) => {
@@ -1396,7 +1399,8 @@ export class MaintaintimesheetComponent implements OnInit {
           if (this._pageState !== '' && this._pageState === 'A'
             && this._timeSheetUsersSupervisor !== undefined && this._timeSheetUsersSupervisor !== null
             && this._timeSheetUsersSupervisor.length > 0
-            && this._timeSheetUsersSupervisor[0].SupervisorId.toString() === localStorage.getItem('UserId')
+            && this._timeSheetUsersSupervisor[0].SupervisorId.toString() ===
+            sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')
           ) {
             this._isTimesheetToAprrove = true;
             this._showComments = true;
@@ -1412,12 +1416,12 @@ export class MaintaintimesheetComponent implements OnInit {
       // if (this._isTimesheetToAprrove) {
       //   this.getClientProjectCategoryDropDown(this._employee[0].ID.toString());
       // } else {
-      //   this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+      //   this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' +'UserId'));
       // }
       // });
     } else {
       this._showComments = true;
-      this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+      this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
     }
   }
   Approve() {
@@ -1506,7 +1510,7 @@ export class MaintaintimesheetComponent implements OnInit {
             if (+this._timesheetId.toString() < 0) {
               this.resetForm();
               this.defaultControlsToForm();
-              this.getClientProjectCategoryDropDown(localStorage.getItem('UserId'));
+              this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
               this.getTimesheetTimeLineTimeCellDetails();
             } else {
               this.resetForm();

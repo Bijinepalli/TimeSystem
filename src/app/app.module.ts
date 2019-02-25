@@ -101,10 +101,12 @@ import { EmployeeutilizationreportComponent } from './reports/employeeutilizatio
 import { UtilizationchartComponent } from './utilizationchart/utilizationchart.component';
 import { EmployeetimesheetsComponent } from './reports/employeetimesheets/employeetimesheets.component';
 import { RollbillingcodesComponent } from './rollbillingcodes/rollbillingcodes.component';
+import { UnauthorizedaccessComponent } from './unauthorizedaccess/unauthorizedaccess.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
+  { path: 'access', component: UnauthorizedaccessComponent },
   { path: 'changepassword/:code', component: ForgotpasswordComponent },
   {
     path: 'menu',
@@ -186,6 +188,7 @@ const appRoutes: Routes = [
   //     { path: 'invdashboard', component: AdminmasterComponent },
   //   ]
   // }
+  { path: '**', component: UnauthorizedaccessComponent },
 ];
 
 @NgModule({
@@ -248,6 +251,7 @@ const appRoutes: Routes = [
     UtilizationchartComponent,
     EmployeetimesheetsComponent,
     RollbillingcodesComponent,
+    UnauthorizedaccessComponent,
   ],
   imports: [
     BrowserAnimationsModule,

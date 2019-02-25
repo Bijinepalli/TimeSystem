@@ -6,6 +6,8 @@ import { SelectItem } from 'primeng/api';
 import { Invoice, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { InvokeFunctionExpr } from '@angular/compiler';
+import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-employeeclientrates',
   templateUrl: './employeeclientrates.component.html',
@@ -26,19 +28,87 @@ export class EmployeeclientratesComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+  ParamSubscribe: any;
+  IsSecure = false;
+  _HasEdit = true;
 
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private commonSvc: CommonService) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
 
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
   }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        this.CheckSecurity(params['Id'].toString());
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+    this.Initialisations();
+  }
+  /* #endregion */
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  Initialisations() {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
+  ClearAllProperties() {
+    this._startDate = '';
+    this._reports = [];
+    this.showReport = false;
+  }
+
   generateReport() {
     this.showSpinner = true;
     this.buildCols();
@@ -67,6 +137,7 @@ export class EmployeeclientratesComponent implements OnInit {
       }
     );
   }
+
   showTable(data: Invoice[]) {
     if (data !== undefined && data !== null) {
       this._reports = data;
@@ -79,6 +150,7 @@ export class EmployeeclientratesComponent implements OnInit {
     this.showReport = true;
     this.showSpinner = false;
   }
+
   buildCols() {
     this.cols = [
       { field: 'LastName', header: 'Last Name', align: 'left', width: '130px' },
@@ -90,6 +162,7 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
     ];
   }
+
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(
