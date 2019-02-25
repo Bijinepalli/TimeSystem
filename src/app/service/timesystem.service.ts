@@ -743,4 +743,9 @@ export class TimesystemService {
     console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetApprovalStatusUpdate', body, httpOptions);
   }
+  getEmployeePayroll(EmployeeId: string) {
+    const params = new HttpParams()
+      .set('EmployeeId', EmployeeId.toString());
+    return this.http.get<Employee[]>(this.url + 'GetPayrollForEmployee', { params });
+  }
 }

@@ -1,0 +1,89 @@
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Roll Billing Codes <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('CompanySelect.htm')"></i>
+  </div>
+</div>
+<br>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-12" style="text-align: center;font-weight: bold;font-size: 18px">
+    Non-Billable Item Year End Processing
+  </div>
+</div>
+<div class="ui-g" *ngIf="_showRoll">
+  <div class="ui-g-12 ui-md-12" style="text-align: center;font-weight: bold;color: red">
+    This Feature Can Only be Run Mid-December to January End
+  </div>
+</div>
+<br>
+<div class="ui-g">
+  <div class="ui-g-12 ui-md-12" style="font-family: Verdana; font-size: 10pt; color:Black; border-width: 1px; border-style: solid;
+border-color: Black; background-color: InfoBackground; padding: 8px; margin:10px;">
+    Selecting <b>'Add New Non-Billable Codes'</b> will:
+    <ul>
+      <li>
+        Create the new 'PTO' code and add it to all active salaried employees
+        required to submit timesheets.
+      </li>
+      <li>
+        Create the new 'Bench' code and add it to all active salaried employees
+        required to submit timesheets that currently
+        have a bench code assigned to them.
+      </li>
+      <li>
+        Create the new 'Holiday' code which is added to salaried employee timesheets
+        based on the holiday schedule of their assigned client(s) and/or projects(s).
+      </li>
+    </ul>
+    Selecting <b>'Inactivate Non-Billable Codes'</b> will:
+    <ul>
+      <li>Inactive all 'PTO', 'Bench', and 'Holiday' codes for the year indicated.</li>
+    </ul>
+  </div>
+</div>
+<form [formGroup]="rollBillingForm">
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-12" style="text-align: center">
+      <p-radioButton name="action" value="0" (onClick)="onradioChange()" formControlName="radaction1"></p-radioButton>
+      &nbsp;{{_action1}}&nbsp;
+      <p-radioButton name="action" value="1" (onClick)="onradioChange()" formControlName="radaction2"></p-radioButton>
+      &nbsp;{{_action2}}
+    </div>
+    <div class="ui-g-12 ui-md-12" style="text-align: center">
+      <div class="ui-g-12">
+        <div class="ui-g-12">
+          <div class="ui-g-3">Code</div>
+          <div class="ui-g-3">Name</div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            <input type="text" formControlName="txtBenchCode">
+          </div>
+          <div class="ui-g-3">
+            <input type="text" formControlName="txtBenchName">
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            <input type="text" formControlName="txtHolidayCode">
+          </div>
+          <div class="ui-g-3">
+            <input type="text" formControlName="txtHolidayName">
+          </div>
+        </div>
+        <div class="ui-g-12">
+          <div class="ui-g-3">
+            <input type="text" formControlName="txtPTOCode">
+          </div>
+          <div class="ui-g-3">
+            <input type="text" formControlName="txtPTOName">
+          </div>
+        </div>
+      </div>
+      <div class="ui-g-12">
+        <button type="button" pButton label="Add New Billing Code" (click)="Approve()"></button>&nbsp;
+      </div>
+    </div>
+  </div>
+</form>

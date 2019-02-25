@@ -1,7 +1,8 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-      View Your Pay Stubs <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
-    </div>
+    View Your Pay Stubs <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
+  </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
@@ -17,7 +18,18 @@
   <br>
   <br>
   <div class="ui-g-12">
-    <a href="https://www.onlineemployer.com/start.asp" style="color: black" target="_blank" class="HypExternal" title="Goto the Online Employer Web Site to view your latest payroll information">Current
+    <a href="https://www.onlineemployer.com/start.asp" style="color: black" target="_blank" class="HypExternal"
+      title="Goto the Online Employer Web Site to view your latest payroll information">Current
       Pay Stubs</a>&nbsp;
+  </div>
+  <div class="ui-g-12">
+    {{_headerText}}
+  </div>
+  <div class="ui-g-12">
+    {{_headerMinorText}}
+  </div>
+  <div class="ui-g-12">
+    <button pButton label="Access your latest 2011 pay stubs" *ngIf="!_displayCurrent" (click)="showPaystubs('')"></button>
+    <button pButton label="Access your older 2011 pay stubs" *ngIf="_displayCurrent" (click)="showPaystubs('old')"></button>
   </div>
 </div>
