@@ -1596,7 +1596,6 @@ export class EmployeesComponent implements OnInit {
       .subscribe(
         (data: Clients[] = []) => {
           if (data !== undefined && data !== null && data.length > 0) {
-            console.log(data);
             this._employeeId = data[0].EmployeeID.toString();
             this._customerId = data[0].CustomerId.toString();
             this._frmRate.controls['frmClientName'].setValue(data[0].ClientName);

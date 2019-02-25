@@ -8,8 +8,6 @@ import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
 import { environment } from '../../environments/environment';
 
-declare var jQuery: any;
-
 @Component({
   selector: 'app-master2',
   templateUrl: './master2.component.html',
@@ -173,15 +171,42 @@ export class Master2Component implements OnInit {
 
   buildMenuItems(data: LeftNavMenu[]) {
     this.menuItems = [];
-    this.buildSubMenus(this.menuItems, data);
+    const AdminMenuItems = data.filter(m => m.label === 'Admin');
+    const ReportsMenuItems = data.filter(m => m.label !== 'Admin');
+
+    data = [];
+
+    if (AdminMenuItems !== undefined && AdminMenuItems !== null && AdminMenuItems.length > 0) {
+      data.push({
+        label: 'Admin',
+        queryParams: { Id: '-4' },
+
+        items: AdminMenuItems[0].items,
+      });
+    }
+    if (ReportsMenuItems !== undefined && ReportsMenuItems !== null && ReportsMenuItems.length > 0) {
+      data.push({
+        label: 'Reports',
+        queryParams: { Id: '-5' },
+        items: ReportsMenuItems,
+      });
+    }
+
+    this.buildSubMenus(this.menuItems, data, '');
   }
 
-  buildSubMenus(menuItem: MenuItem[], data: LeftNavMenu[]) {
+  buildSubMenus(menuItem: MenuItem[], data: LeftNavMenu[], parentId: any) {
     for (let cnt = 0; cnt < data.length; cnt++) {
+      if (data[cnt].queryParams !== undefined && data[cnt].queryParams !== null) {
+        data[cnt].queryParams.Id = (parentId !== '' ? parentId + '@' : '') + (+(data[cnt].queryParams.Id));
+      } else {
+        data[cnt].queryParams = { Id: (parentId !== '' ? parentId + '@' : '') };
+      }
+
       if (data[cnt].items !== undefined && data[cnt].items !== null && data[cnt].items.length > 0) {
         let submenuItems: MenuItem[];
         submenuItems = [];
-        this.buildSubMenus(submenuItems, data[cnt].items);
+        this.buildSubMenus(submenuItems, data[cnt].items, data[cnt].queryParams.Id);
         if (data[cnt].routerLink !== undefined && data[cnt].routerLink !== null && data[cnt].routerLink !== '') {
           menuItem.push({
             label: data[cnt].label,
@@ -227,6 +252,7 @@ export class Master2Component implements OnInit {
   }
 
   selectInitialMenuItemBasedOnUrl(Id) {
+    const splitVals = Id.toString().split('@');
     let MainCnt = 0;
     if (this.bigMenu !== undefined && this.bigMenu !== null) {
       if (this.bigMenu.model !== undefined && this.bigMenu.model !== null && this.bigMenu.model.length > 0) {
@@ -234,10 +260,12 @@ export class Master2Component implements OnInit {
           if (sm !== undefined && sm !== null) {
             sm.expanded = false;
             sm.styleClass = '';
-            if (sm.queryParams.Id === Id) {
-              sm.expanded = true;
-              sm.styleClass = 'ActiveRouteLink';
-              MainCnt++;
+            if (sm.queryParams !== undefined && sm.queryParams !== null) {
+              if (sm.queryParams.Id === Id) {
+                sm.expanded = true;
+                sm.styleClass = 'ActiveRouteLinkNext';
+                MainCnt++;
+              }
             }
           }
         });
@@ -258,10 +286,30 @@ export class Master2Component implements OnInit {
                 smm.expanded = false;
                 smm.styleClass = '';
                 if (m.expanded === true) {
-                  if (smm.queryParams.Id === Id) {
-                    smm.expanded = true;
-                    smm.styleClass = 'ActiveRouteLink';
+                  if (smm.queryParams !== undefined && smm.queryParams !== null) {
+                    if (smm.queryParams.Id === splitVals[0] + '@' + splitVals[1]) {
+                      smm.expanded = true;
+                      smm.styleClass = 'ActiveRouteLinkNext';
+                    }
                   }
+                  if (smm.items !== undefined && smm.items !== null && smm.items.length > 0) {
+                    for (let subcnt = 0; subcnt < smm.items.length; subcnt++) {
+                      let smmm: any;
+                      smmm = smm.items[subcnt];
+                      smmm.expanded = false;
+                      smmm.styleClass = '';
+                      if (smm.expanded === true) {
+                        if (smmm.queryParams !== undefined && smmm.queryParams !== null) {
+                          if (smmm.queryParams.Id === splitVals[0] + '@' + splitVals[1] + '@' + splitVals[2]) {
+                            smmm.expanded = true;
+                            smmm.styleClass = 'ActiveRouteLink';
+                          }
+                        }
+                      }
+                    }
+                  }
+
+
                 }
               }
             }

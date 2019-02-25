@@ -95,7 +95,7 @@ export class DashboardComponent implements OnInit {
                 }
                 this.PendingTimesheetsNotification =
                   'Please make sure you save the hours (not necessarily submit) for the following time periods: '
-                  + pends.join() + ' to ensure proper month-end invoicing.';
+                  + pends.join(', ') + ' to ensure proper month-end invoicing.';
               }
             });
       }
