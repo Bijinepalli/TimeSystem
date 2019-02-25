@@ -69,7 +69,8 @@ export class EmployeeclientratesComponent implements OnInit {
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.CheckSecurity(params['Id'].toString());
+        const SplitVals = params['Id'].toString().split('@');
+this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -97,6 +98,7 @@ export class EmployeeclientratesComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
