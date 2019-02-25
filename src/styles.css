@@ -258,10 +258,26 @@ body .ui-panel .ui-panel-content {
   border:1px solid lightgreen;
 }
 
-.ActiveRouteLink{
-  /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff; */
+.ActiveRouteLink {
+  /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff,lightsalmon; */
   background:peachpuff;
 }
+
+.ActiveRouteLink > a {
+  /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff,lightsalmon; */
+  /* color:firebrick!important; */
+}
+
+.ActiveRouteLinkNext {
+  /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff; */
+  background:lavender;
+}
+
+.ActiveRouteLinkNext > a {
+  /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff,lightsalmon; */
+  /* color:firebrick!important; */
+}
+
 
 /* .ActiveRouteLink .ui-menuitem-link{
 color:red;
@@ -281,4 +297,20 @@ color:red;
 .NoDataStrip{
   background: #e7e7e7!important;
   border:0px!important;
+}
+
+/* body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a{
+  color:black;
+  background:#ffffff;
+  border:1px solid #ffffff;  
+}
+
+body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a .ui-panelmenu-icon{
+  color:black;
+} */
+body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a{
+  outline: 0 none;
+  border: 1px solid #007ad9;/* #005b9f;*/
+  background-color: #007ad9;/* #005b9f;*/
+  color: #ffffff;
 }
