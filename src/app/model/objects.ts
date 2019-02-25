@@ -461,4 +461,8 @@ export class HoursByTimesheet {
     Project?: string;
     NonBillable?: string;
 }
-
+export class PayStub {
+    FileName?: string;
+    Date?: string;
+    EmployeeName?: string;
+}
