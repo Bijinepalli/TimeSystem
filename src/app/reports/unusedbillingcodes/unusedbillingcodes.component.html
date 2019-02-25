@@ -13,92 +13,95 @@
   </div>
 </div>
 <br>
-<p-panel [toggleable]="true" header="Filter results by:">
-  <div class="ui-g">
-    <div class="ui-g-12 ui-md-3">
-      <label class="label" style="padding:0px 10px;">Select:</label>
-      <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report"
-        tooltipPosition="bottom" [(ngModel)]="selectedCodeType"></p-selectButton>
+<ng-container *ngIf="IsSecure">
+  <p-panel [toggleable]="true" header="Filter results by:">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-3">
+        <label class="label" style="padding:0px 10px;">Select:</label>
+        <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report"
+          tooltipPosition="bottom" [(ngModel)]="selectedCodeType"></p-selectButton>
+      </div>
+      <div class="ui-g-12 ui-md-5">
+        <p-selectButton [options]="usageTypes"
+          pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
+          tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
+        <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom"
+          [(ngModel)]="selectedDate" [style]="{'width':'20%'}" [disabled]="!(this.selectedUsageType == 2)"></p-dropdown>
+      </div>
     </div>
-    <div class="ui-g-12 ui-md-5">
-      <p-selectButton [options]="usageTypes"
-        pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
-        tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
-      <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom"
-       [(ngModel)]="selectedDate" [style]="{'width':'20%'}" [disabled]="!(this.selectedUsageType == 2)"></p-dropdown>
-    </div>
-  </div>
-  <p-footer>
-    <div style="text-align: right">
-      <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom"
-        class="ui-button-info" label="Generate Report" (click)=getReports()></button>
-    </div>
-  </p-footer>
-</p-panel>
-<div class="ui-g">&nbsp;</div>
-<div class="ui-g" *ngIf="showReport">
-  <div class="ui-g-6 ui-m-6">
-    <button pButton pTooltip="Delete Codes" [disabled]="true" tooltipPosition="right" class="ui-button-info"
-      label="Delete Codes" (click)=deleteCodes()></button>
+    <p-footer>
+      <div style="text-align: right">
+        <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom"
+          class="ui-button-info" label="Generate Report" (click)=getReports()></button>
+      </div>
+    </p-footer>
+  </p-panel>
+  <div class="ui-g">&nbsp;</div>
+  <div class="ui-g" *ngIf="showReport">
+    <div class="ui-g-6 ui-m-6">
+      <button pButton pTooltip="Delete Codes" [disabled]="true" tooltipPosition="right" class="ui-button-info"
+        label="Delete Codes" (click)=deleteCodes()></button>
       <!-- [disabled]="!(this._selectedCode.length>0)" -->
+    </div>
+    <div class="ui-g-6 ui-m-6" style="display: none">
+      <button pButton pTooltip="Inactivate Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right"
+        class="ui-button-info" label="Inactivate Codes" (click)=deleteCodes() *ngIf="IsAdmin"></button>
+    </div>
   </div>
-  <div class="ui-g-6 ui-m-6" style="display: none">
-    <button pButton pTooltip="Inactivate Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right"
-      class="ui-button-info" label="Inactivate Codes" (click)=deleteCodes() *ngIf="IsAdmin"></button>
-  </div>
-</div>
 
-<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0">
-  <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
-    No matching data for the selected criteria
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0">
+    <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
+      No matching data for the selected criteria
+    </div>
   </div>
-</div>
 
-<div class="ui-g" *ngIf="showReport">
-  <p-scrollPanel [style]="{width: '100%', height: '700px'}" styleClass="custombar1">
-    <p-table #dt [columns]="cols" [value]="_codeList" [(selection)]="_selectedCode" [responsive]="false" dataKey="Key">
-      <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-          </div>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th style="width: 3em">
-            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-          </th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td>
-            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-          </td>
-          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            <div *ngIf="(col.header === 'Inactive'); else defaultColumn">
-              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+  <div class="ui-g" *ngIf="showReport">
+    <p-scrollPanel [style]="{width: '100%', height: '700px'}" styleClass="custombar1">
+      <p-table #dt [columns]="cols" [value]="_codeList" [(selection)]="_selectedCode" [responsive]="false"
+        dataKey="Key">
+        <ng-template pTemplate="caption">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+              <input type="text" pInputText size="50" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
-            <ng-template #defaultColumn>
-              {{rowData[col.field]}}
-            </ng-template>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-  </p-scrollPanel>
-</div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 3em">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+            </td>
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+              <div *ngIf="(col.header === 'Inactive'); else defaultColumn">
+                <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+              </div>
+              <ng-template #defaultColumn>
+                {{rowData[col.field]}}
+              </ng-template>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-scrollPanel>
+  </div>
+</ng-container>
 <p-confirmDialog></p-confirmDialog>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>

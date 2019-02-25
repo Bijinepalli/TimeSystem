@@ -5,6 +5,8 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-employeehoursbybillingcode',
@@ -38,17 +40,96 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   visibleHelp = false;
   showTotals = false;
   nowrap = 'nowrap';
+  ParamSubscribe: any;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private datePipe: DatePipe
-  ) { }
+    private datePipe: DatePipe,
+    private route: ActivatedRoute,
+    private commonSvc: CommonService,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.Initialisations();
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+  ClearAllProperties() {
+    this.billingCycle = [];
+    this._billingCodesSpecial = new BillingCodesSpecial();
+
+    this._selectcheckbox = [];
+    this._displayCheckBoxes = [];
+    this.selectedbillingCycle = 3;
+    this._startDate = '';
+    this._startDateSelect = '';
+    this._endDateSelect = '';
+    this._endDate = '';
+
+    this._clients = [];
+    this._selectString = '';
+    this.showBillingCodeList = false;
+    this.allcheckbox = false;
+
+    this.changeCodeList = false;
+
+    this._reports = [];
+    this.cols = {};
+
+    this._recData = 0;
+    this.showReport = false;
+    this.visibleHelp = false;
+    this.helpText = '';
+    this.showTotals = false;
   }
 
   Initialisations() {

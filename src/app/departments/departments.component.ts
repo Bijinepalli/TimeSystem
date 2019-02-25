@@ -67,7 +67,8 @@ export class DepartmentsComponent implements OnInit {
       this.ClearAllProperties();
       this.Initialisations();
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.CheckSecurity(params['Id'].toString());
+        const SplitVals = params['Id'].toString().split('@');
+this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         this.AddFormControls();
         this.GetMethods();
       }
