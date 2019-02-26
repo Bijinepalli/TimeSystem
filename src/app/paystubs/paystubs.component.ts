@@ -7,6 +7,7 @@ import { TimesystemService } from '../service/timesystem.service';
 import { CommonService } from '../service/common.service';
 import { TimeSheet, Employee, PayStub } from '../model/objects';
 import { Tree } from 'primeng/primeng';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-paystubs',
@@ -29,7 +30,7 @@ export class PaystubsComponent implements OnInit {
     this.showToggleDisplay('');
   }
   showToggleDisplay(viewCurrent) {
-    this.timesysSvc.getEmployeePayroll(localStorage.getItem('UserId')).subscribe(
+    this.timesysSvc.getEmployeePayroll(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
       (data) => {
         if (viewCurrent === '') {
           this._headerMinorText = 'Latest 2011 Pay Stubs';
