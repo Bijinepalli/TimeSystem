@@ -71,7 +71,7 @@ export class InvoicedataComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -100,7 +100,6 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
 
 
   Initialisations() {
-    this.showSpinner = true;
     this._billingCycle = [
       { label: 'Weekly', value: 'W' },
       { label: 'Bi-Weekly', value: 'B' },
@@ -131,13 +130,19 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   }
 
   ClearAllProperties() {
+    this._billingCycle = [];
     this._selectedBillingCycle = '';
     this._invoiceDate = '';
     this._startDate = '';
     this._endDate = '';
-    this._reports = [];
     this.showInvoiceList = false;
+    this.showSpinner = false;
     this.showReport = false;
+    this._reports = [];
+    this._recData = 0;
+    this.cols = {};
+    this.visibleHelp = false;
+    this.helpText = '';
   }
 
   generateReport() {

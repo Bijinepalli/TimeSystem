@@ -115,27 +115,41 @@ export class EmployeehoursComponent implements OnInit {
       { label: 'Hourly', value: '0' },
       { label: 'Both', value: '' }
     ];
-    this.selectedhoursType = '';
     this.types = [
       { label: 'Active', value: '0' },
       { label: 'Inactive', value: '1' },
       { label: 'Both', value: '' }
     ];
     this.selectedType = '0';
+    this.selectedhoursType = '';
     const today = new Date();
     this._startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
 
   ClearAllProperties() {
+    this.types = [];
+    this.hoursType = [];
     this.selectedType = '0';
+    this.selectedhoursType = '';
     this._startDate = '';
+    this._endDate = '';
     this.showSpinner = false;
-    this.showBillingCodeList = false;
-    this._reports = [];
     this._selectcheckbox = [];
+    this._displayCheckBoxes = [];
+    this._employee = [];
+    this._selectString = '';
+    this.showBillingCodeList = false;
     this.allcheckbox = false;
-
+    this.changeCodeList = false;
+    this.showReport = false;
+    this._billingCodesSpecial = new BillingCodesSpecial();
+    this._reports = [];
+    this._recData = '';
+    this.cols = {};
+    this.helpText = '';
+    this.visibleHelp = false;
+    this.showTotals = false;
   }
 
   showBillingCodes() {

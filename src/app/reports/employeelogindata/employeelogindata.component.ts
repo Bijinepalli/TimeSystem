@@ -103,15 +103,6 @@ export class EmployeelogindataComponent implements OnInit {
     ];
     this.selectedType = '0';
     this.selectedSalaryType = '2';
-    this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-      { field: 'LoginID', header: 'Login ID', align: 'left', width: '200px' },
-      { field: 'DecryptedPassword', header: 'Password', align: 'left', width: 'auto' },
-      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
-      { field: 'Salaried', header: 'Salaried', align: 'center', width: '110px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
-    ];
     this.getEmployeesForReport();
   }
 
@@ -120,11 +111,12 @@ export class EmployeelogindataComponent implements OnInit {
     this.salaryTypes = [];
     this.selectedType = '0';
     this.selectedSalaryType = '2';
-    this.cols = [];
+    this.cols = {};
     this._listEmployeeLoginData = [];
     this._recData = '';
     this.visibleHelp = false;
     this.showSpinner = false;
+    this.helpText = '';
   }
 
   showHelp(file: string) {
@@ -140,6 +132,15 @@ export class EmployeelogindataComponent implements OnInit {
   }
 
   getEmployeesForReport() {
+    this.cols = [
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
+      { field: 'LoginID', header: 'Login ID', align: 'left', width: '200px' },
+      { field: 'DecryptedPassword', header: 'Password', align: 'left', width: 'auto' },
+      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '110px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
+    ];
     this.showSpinner = true;
     let _InActive = '';
     let _Salaried = '';
@@ -155,6 +156,7 @@ export class EmployeelogindataComponent implements OnInit {
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
+          this._listEmployeeLoginData = [];
           if (data !== undefined && data !== null && data.length > 0) {
             this._listEmployeeLoginData = data;
             this._recData = this._listEmployeeLoginData.length + ' matching employees';

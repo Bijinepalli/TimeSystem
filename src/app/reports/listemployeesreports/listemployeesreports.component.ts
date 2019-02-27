@@ -168,13 +168,27 @@ export class ListemployeesreportsComponent implements OnInit {
   }
 
   ClearAllProperties() {
-    this._startDate = '';
-    this._endDate = '';
+    this._status = [];
+    this._paid = [];
+    this._Ipay = [];
+    this._timesheets = [];
+    this._holidays = [];
     this._statusselected = '0';
     this._paidselected = '';
     this._Ipayselected = '';
     this._timesheetsselected = '';
     this._holidaysselected = '';
+    this._headerLabels = [];
+    this._defaultselected = [];
+    this.selectedColumns = [];
+    this._listEmployeesForReport = [];
+    this.cols = {};
+    this._recData = '';
+    this._startDate = '';
+    this._endDate = '';
+    this.visibleHelp = false;
+    this.helpText = '';
+    this.showSpinner = false;
   }
   getEmployeesForReport() {
     let _start = '';

@@ -21,15 +21,6 @@ export class NonbillablesComponent implements OnInit {
   nonBillableHdr: string;
   visibleHelp: boolean;
   helpText: string;
-
-  constructor(
-    private route: ActivatedRoute,
-    private confSvc: ConfirmationService,
-    private msgSvc: MessageService,
-    private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
-  ) { }
-
   _bc: BillingCode = new BillingCode();
   _companies: DrpList[] = [];
   _nonBillable: NonBillables[] = [];
@@ -40,8 +31,72 @@ export class NonbillablesComponent implements OnInit {
   _selectedNonBillable: NonBillables;
   chkInactive = false;
   _HasEdit = true;
+  showSpinner = false;
+
+  ParamSubscribe: any;
+  IsSecure: boolean;
+
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private commonSvc: CommonService,
+    private route: ActivatedRoute,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
+
   ngOnInit() {
-    this.CheckSecurity();
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  Initialisations() {
     this._status = [
       { label: 'Active', value: '1' },
       { label: 'Inactive', value: '0' },
@@ -59,21 +114,24 @@ export class NonbillablesComponent implements OnInit {
     this.getNonBillables();
     this.getCompanies();
   }
-  CheckSecurity() {
+  ClearAllProperties() {
+    this._selectedStatus = '';
+    this._status = [];
+    this.nonBillableDialog = false;
+    this.nonBillableHdr = '';
+    this.visibleHelp = false;
+    this.helpText = '';
+    this._bc = new BillingCode();
+    this._companies = [];
+    this._nonBillable = [];
+    this.cols = {};
+    this._recData = '';
+    this._frm = new FormGroup({});
+    this._IsEdit = false;
+    this._selectedNonBillable = new NonBillables();
+    this.chkInactive = false;
     this._HasEdit = true;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-          params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = false;
-              }
-            }
-          });
-      }
-    });
+    this.showSpinner = false;
   }
   changeStatus() {
     if (this._selectedStatus === '2') {
@@ -109,6 +167,7 @@ export class NonbillablesComponent implements OnInit {
   }
 
   getNonBillables() {
+    this.showSpinner = true;
     this.timesysSvc.getNonBillables(this._bc.NonBillable)
       .subscribe(
         (data) => {
@@ -146,12 +205,10 @@ export class NonbillablesComponent implements OnInit {
           } else {
             this._recData = 'No non-billable items found';
           }
+          this.showSpinner = false;
         }
       );
   }
-
-
-
   addNonBillable() {
     this._IsEdit = false;
     this._selectedNonBillable = {};
@@ -242,6 +299,7 @@ export class NonbillablesComponent implements OnInit {
     this.SaveNonBillableSPCall();
   }
   SaveNonBillableSPCall() {
+    this.showSpinner = true;
     this.timesysSvc.NonBillable_InsertOrUpdate(this._selectedNonBillable)
       .subscribe(
         (outputData) => {
@@ -267,8 +325,10 @@ export class NonbillablesComponent implements OnInit {
         (error) => {
           console.log(error);
         });
+    this.showSpinner = false;
   }
   deleteNonBillable(data: NonBillables) {
+    this.showSpinner = true;
     data.ChargeType = this._bc.NonBillable;
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + data.ProjectName + '?',
@@ -304,7 +364,7 @@ export class NonbillablesComponent implements OnInit {
       reject: () => {
         /* do nothing */
       }
-
     });
+    this.showSpinner = false;
   }
 }

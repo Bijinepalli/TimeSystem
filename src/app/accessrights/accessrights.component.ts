@@ -5,7 +5,9 @@ import { MasterPages } from '../model/objects';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../service/common.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-accessrights',
@@ -24,16 +26,72 @@ export class AccessrightsComponent implements OnInit {
   _disableEdit = true;
   pageFormgroup: FormGroup;
   _showGrid = false;
+  showSpinner = false;
+
+  ParamSubscribe: any;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
-    private fb: FormBuilder,
-    private confSvc: ConfirmationService,
-    private msgSvc: MessageService,
     private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private fb: FormBuilder,
+    private commonSvc: CommonService,
+    private route: ActivatedRoute,
   ) {
+    this.CheckActiveSession();
     this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
+
+  ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
   }
 
   // @Input() set disableControl( condition : boolean ) {
@@ -42,7 +100,7 @@ export class AccessrightsComponent implements OnInit {
   // }
 
 
-  ngOnInit() {
+  Initialisations() {
     this.pageFormgroup = this.fb.group({
       roleDrp: [''],
     });
@@ -57,7 +115,20 @@ export class AccessrightsComponent implements OnInit {
       { field: 'HasEdit', header: 'Edit' },
     ];
     this.getPages();
+  }
 
+  ClearAllProperties() {
+    this._recData = '';
+    this.cols = {};
+    this._pages = [];
+    this._pagesbyroles = [];
+    this._selectedPage = new MasterPages();
+    this._roles = [];
+    this.selectedRole = [];
+    this._disableEdit = true;
+    this.pageFormgroup = new FormGroup({});
+    this._showGrid = false;
+    this.showSpinner = false;
   }
 
   getPages() {
