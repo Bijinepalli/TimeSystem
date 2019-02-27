@@ -4,6 +4,8 @@ import { Router } from '@angular/router';
 import { BillingCodes } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { SortEvent } from 'primeng/api';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-revenuereport',
@@ -31,11 +33,14 @@ export class RevenuereportComponent implements OnInit {
   _errorMessage = '';
 
   _frm = new FormGroup({});
+  _DateFormat: any;
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private commonSvc: CommonService,
   ) { }
 
   ngOnInit() {
@@ -43,12 +48,16 @@ export class RevenuereportComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.cols = [
       { field: 'Name', header: 'Client Name', align: 'left', width: 'auto' },
       { field: 'PeriodEnd', header: 'Period End', align: 'left', width: '150px' },
       { field: 'Hours', header: 'T & M Hours', align: 'right', width: '140px' },
     ];
     this.addControls();
+    this.showSpinner = false;
   }
 
   addControls() {
@@ -107,6 +116,8 @@ export class RevenuereportComponent implements OnInit {
     this.resetForm();
   }
 
-
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PeriodEnd'], ['Hours']);
+  }
 
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
@@ -43,6 +43,8 @@ export class BillablehoursComponent implements OnInit {
   visibleHelp = false;
   ParamSubscribe: any;
   IsSecure: boolean;
+  _DateFormat: any;
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -134,6 +136,9 @@ export class BillablehoursComponent implements OnInit {
     this.visibleHelp = false;
   }
   Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -162,6 +167,7 @@ export class BillablehoursComponent implements OnInit {
     this.selectedBillingType = 0;
     this.selectedassignStatus = 0;
     this.admin = true; // check if role is admin
+    this.showSpinner = false;
   }
 
   showBillingCodes() {

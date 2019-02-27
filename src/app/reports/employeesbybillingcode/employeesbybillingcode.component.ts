@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
 import { CommonService } from 'src/app/service/common.service';
@@ -39,6 +39,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   visibleHelp = false;
   ParamSubscribe: any;
   IsSecure = false;
+  _DateFormat: any;
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -79,7 +81,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -130,6 +132,9 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   }
 
   Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -157,6 +162,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this.selectedType = 0;
     this.selectedBillingType = 0;
     this.selectedassignStatus = 0;
+    this.showSpinner = false;
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -325,5 +331,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, [], []);
   }
 }
