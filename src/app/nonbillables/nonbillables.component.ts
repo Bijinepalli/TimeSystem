@@ -3,7 +3,7 @@ import { TimesystemService } from '../service/timesystem.service';
 import { NonBillables, DrpList } from '../model/objects';
 import { BillingCode } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
@@ -21,6 +21,7 @@ export class NonbillablesComponent implements OnInit {
   nonBillableHdr: string;
   visibleHelp: boolean;
   helpText: string;
+  DisplayDateTimeFormat = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,7 @@ export class NonbillablesComponent implements OnInit {
   chkInactive = false;
   _HasEdit = true;
   ngOnInit() {
+    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     this.CheckSecurity();
     this._status = [
       { label: 'Active', value: '1' },
@@ -52,7 +54,7 @@ export class NonbillablesComponent implements OnInit {
     this.cols = [
       { field: 'ProjectName', header: 'Non-Billable Item Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
 
     this.addControls();
@@ -306,5 +308,8 @@ export class NonbillablesComponent implements OnInit {
       }
 
     });
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
   }
 }

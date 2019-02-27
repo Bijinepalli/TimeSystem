@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, HostL
 import { TimesystemService } from '../service/timesystem.service';
 import { Holidays } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
-import { ConfirmationService, MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SanitizeHtmlPipe } from '../sharedpipes/sanitizeHtmlString.pipe';
 import { Observable } from 'rxjs';
@@ -41,6 +41,7 @@ export class HolidaysComponent implements OnInit {
   showSpinner = false;
   IsSecure = false;
   ParamSubscribe: any;
+  DisplayDateFormat = '';
 
   constructor(
     private router: Router,
@@ -76,6 +77,7 @@ export class HolidaysComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -299,5 +301,7 @@ export class HolidaysComponent implements OnInit {
           }
         });
   }
-
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['HolidayDate'], ['CalendarYear']);
+  }
 }

@@ -27,8 +27,8 @@
       (onChange)="ShowAllTimesheets()"></p-checkbox>
   </div>
   <div class="ui-g">
-    <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false"
-      dataKey="Id">
+    <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
+      (sortFunction)="customSort($event)" [customSort]="true">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
@@ -58,16 +58,18 @@
               tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
           </td>
           <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
-            <div *ngIf="col.header.indexOf('Date') >= 0">
-              {{rowData[col.field]}}
+            <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
+              <label>{{rowData[col.field] | dateFormat: DisplayDateFormat}} </label>
+              <!-- <label>{{rowData[col.field]}} </label> -->
             </div>
-            <div *ngIf="col.header.indexOf('Date') == -1">
+            <ng-template #nondatecol>
               {{rowData[col.field]}}
-            </div>
+            </ng-template>
           </td>
           <td style="text-align: center">
-            <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] !== 'Pending'" class="fa fa-times fa-150x deleteIcon"
-              pTooltip="Delete this TimeSheet" tooltipPosition="left" (click)="deleteTimeSheet(rowData)"></i>
+            <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] !== 'Pending'"
+              class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this TimeSheet" tooltipPosition="left"
+              (click)="deleteTimeSheet(rowData)"></i>
           </td>
         </tr>
       </ng-template>

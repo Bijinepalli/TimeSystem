@@ -6,7 +6,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
-import { OverlayPanel } from 'primeng/primeng';
+import { OverlayPanel, SortEvent } from 'primeng/primeng';
 import { environment } from 'src/environments/environment';
 
 @Component({
@@ -68,7 +68,7 @@ export class DepartmentsComponent implements OnInit {
       this.Initialisations();
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         this.AddFormControls();
         this.GetMethods();
       }
@@ -305,5 +305,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         /* do nothing */
       }
     });
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, [], ['EmployeesCount']);
   }
 }

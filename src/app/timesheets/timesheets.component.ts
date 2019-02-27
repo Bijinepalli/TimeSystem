@@ -3,10 +3,11 @@ import { TimesystemService } from '../service/timesystem.service';
 import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-timesheets',
@@ -40,6 +41,7 @@ export class TimesheetsComponent implements OnInit {
   _mainHeader: string;
   HoursTable = false;
   _hoursbytimesheetlist: HoursByTimesheet[] = [];
+  DisplayDateFormat = '';
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -47,9 +49,11 @@ export class TimesheetsComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
+    private commonSvc: CommonService,
   ) { }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.cols = [
       { field: 'PeriodEnd', header: 'Period End', align: 'center', width: 'auto' },
       { field: 'Submitted', header: 'Submitted', align: 'center', width: 'auto' },
@@ -259,5 +263,8 @@ export class TimesheetsComponent implements OnInit {
     this.Hourschrg = false;
     this._startDate = '';
     this._endDate = '';
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['SubmitDate', 'PeriodEnd'], ['Hours']);
   }
 }

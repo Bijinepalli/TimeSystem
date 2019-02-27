@@ -36,7 +36,7 @@
   <div class="ui-g">&nbsp;</div>
   <div class="ui-g">
     <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo"
-      [responsive]="false" dataKey="Id">
+      (sortFunction)="customSort($event)" [customSort]="true" [responsive]="false" dataKey="Id">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
@@ -88,12 +88,18 @@
               (click)="resetEmployeePassword(rowData)"></i>
           </td>
           <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
-              {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+            <div *ngIf="(col.field === 'PasswordExpiresOn'); else nondatecol">
+              <label>{{rowData[col.field] | dateFormat: DisplayDateFormat}} </label>
+              <!-- <label>{{rowData[col.field]}} </label> -->
             </div>
-            <div *ngIf="col.header.indexOf('Inactive') == -1 && col.header.indexOf('Salaried') ==-1">
-              {{rowData[col.field]}}
-            </div>
+            <ng-template #nondatecol>
+              <div *ngIf="col.header.indexOf('Inactive') >= 0 || col.header.indexOf('Salaried') >= 0">
+                {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+              </div>
+              <div *ngIf="col.header.indexOf('Inactive') == -1 && col.header.indexOf('Salaried') ==-1">
+                {{rowData[col.field]}}
+              </div>
+            </ng-template>
           </td>
           <td style="text-align: center">
             <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
@@ -489,15 +495,15 @@
     </p-footer>
   </p-dialog>
 
-<p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100"
-  [closeOnEscape]="false" [closable]="false" blockScroll="true" class="dialogWidth">
-  <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" [autoZIndex]="true"></p-toast>
-  <p-header>
-    Change {{_popUpHeader}}s to {{_employeeNameHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
-      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-      (click)="showHelp('RateUpdate.htm')"></i>
-  </p-header>
+  <p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100"
+    [closeOnEscape]="false" [closable]="false" blockScroll="true" class="dialogWidth">
+    <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" [autoZIndex]="true"></p-toast>
+    <p-header>
+      Change {{_popUpHeader}}s to {{_employeeNameHdr}}
+      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+        (click)="showHelp('RateUpdate.htm')"></i>
+    </p-header>
 
     <div *ngIf="!_IsEditRate">
       <div class="ui-g-12" style="text-align:right">

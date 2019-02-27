@@ -3,10 +3,11 @@ import { TimesystemService } from '../service/timesystem.service';
 import { Projects, DrpList } from '../model/objects';
 import { BillingCode } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-projects',
@@ -20,6 +21,7 @@ export class ProjectsComponent implements OnInit {
   projectHdr: string;
   visibleHelp: boolean;
   helpText: string;
+  DisplayDateTimeFormat = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -27,6 +29,7 @@ export class ProjectsComponent implements OnInit {
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
+    private datePipe: DatePipe,
   ) { }
 
   cols: any;
@@ -43,6 +46,7 @@ export class ProjectsComponent implements OnInit {
   _HasEdit = true;
 
   ngOnInit() {
+    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
 
     this.CheckSecurity();
 
@@ -56,7 +60,7 @@ export class ProjectsComponent implements OnInit {
     this.cols = [
       { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
     this.addControls();
     this.getProjects();
@@ -313,5 +317,7 @@ export class ProjectsComponent implements OnInit {
 
     });
   }
-
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
+  }
 }

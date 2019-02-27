@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimesystemService } from '../service/timesystem.service';
@@ -18,6 +18,9 @@ export class ApprovaltimesheetsComponent implements OnInit {
 
   _approvals: TimeSheetForApproval[];
   cols: any;
+  DisplayDateFormat = '';
+  DisplayDateTimeFormat = '';
+
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
     private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe, private commonSvc: CommonService) {
@@ -26,6 +29,8 @@ export class ApprovaltimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     this.timesysSvc.getTimeSheetForApprovalGet(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
       (data) => {
         this._approvals = data;
@@ -46,6 +51,9 @@ export class ApprovaltimesheetsComponent implements OnInit {
     //   { queryParams: { 'id': timeSheet.TimesheetId, 'state': 'A' }, skipLocationChange: true });
     //   }
     // });
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PeriodEnd', 'CreatedOn'], []);
   }
 
 }

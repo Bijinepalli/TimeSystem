@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimesystemService } from '../service/timesystem.service';
@@ -17,6 +17,8 @@ import { environment } from 'src/environments/environment';
 export class OutstandingtimesheetsComponent implements OnInit {
   _outStandings: TimeSheet[];
   cols: any;
+  DisplayDateFormat = '';
+  DisplayDateTimeFormat = '';
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
     private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe, private commonSvc: CommonService) {
@@ -25,6 +27,8 @@ export class OutstandingtimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     const numbers = this.commonSvc.getAppSettingsValue('UnsubmittedTimePeriods2');
     this.timesysSvc.getOutStandingTimesheets(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'),
       numbers).subscribe(
@@ -51,5 +55,7 @@ export class OutstandingtimesheetsComponent implements OnInit {
       }
     });
   }
-
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PeriodEnd', 'CreatedOn'], []);
+  }
 }

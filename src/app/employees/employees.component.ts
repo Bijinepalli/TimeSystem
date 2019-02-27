@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, SortEvent } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
   AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments
@@ -120,6 +120,7 @@ export class EmployeesComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure = false;
+  DisplayDateFormat = '';
 
   /* #endregion */
 
@@ -159,6 +160,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -1795,7 +1797,9 @@ export class EmployeesComponent implements OnInit {
     return true;
 
   }
-
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PasswordExpiresOn'], ['Rate']);
+  }
 
 }
 
