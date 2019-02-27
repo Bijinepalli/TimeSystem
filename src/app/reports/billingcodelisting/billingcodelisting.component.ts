@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
@@ -152,7 +152,6 @@ export class BillingcodelistingComponent implements OnInit {
                 }
               });*/
               this._reports = data;
-              // console.log(JSON.stringify(this._reports));
               this.showReport = true;
             }
             this._recData = this._reports.length;
@@ -195,7 +194,7 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOnDT', header: 'Created On', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
@@ -228,4 +227,10 @@ export class BillingcodelistingComponent implements OnInit {
         }
       );
   }
+
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
+  }
+
+
 }

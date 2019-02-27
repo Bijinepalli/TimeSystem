@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppSettings } from '../model/objects';
 import { TimesystemService } from './timesystem.service';
 import { environment } from 'src/environments/environment';
+import { SortEvent } from 'primeng/api';
 
 @Injectable({
   providedIn: 'root'
@@ -93,6 +94,41 @@ export class CommonService {
 
     }
   }
+
+
+  customSortByCols(event: SortEvent, DateCols: string[], NumberCols: string[]) {
+    event.data.sort((data1, data2) => {
+      let value1 = data1[event.field];
+      let value2 = data2[event.field];
+
+      if (DateCols.includes(event.field)) {
+        value1 = Date.parse(value1);
+        value2 = Date.parse(value2);
+      }
+
+      if (NumberCols.includes(event.field)) {
+        value1 = (+value1);
+        value2 = (+value2);
+      }
+
+      let result = null;
+
+      if (value1 == null && value2 != null) {
+        result = -1;
+      } else if (value1 != null && value2 == null) {
+        result = 1;
+      } else if (value1 == null && value2 == null) {
+        result = 0;
+      } else if (typeof value1 === 'string' && typeof value2 === 'string') {
+        result = value1.localeCompare(value2);
+      } else {
+        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
+      }
+
+      return (event.order * result);
+    });
+  }
+
 
 
 }

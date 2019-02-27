@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
@@ -82,7 +82,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -297,5 +297,9 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this.showSpinner = false;
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+  }
+
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, [], ['TANDM', 'Project', 'NonBill']);
   }
 }
