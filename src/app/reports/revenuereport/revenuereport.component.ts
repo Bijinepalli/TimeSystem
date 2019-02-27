@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BillingCodes } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SortEvent } from 'primeng/api';
 import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-revenuereport',
@@ -35,16 +36,84 @@ export class RevenuereportComponent implements OnInit {
   _frm = new FormGroup({});
   _DateFormat: any;
   _DisplayDateFormat: any;
+  ParamSubscribe: any;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
     private datePipe: DatePipe,
+    private route: ActivatedRoute,
     private commonSvc: CommonService,
-  ) { }
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.Initialisations();
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+  ClearAllProperties() {
+    this._revenueslist = [];
+    this._startDateSelect = null;
+    this._endDateSelect = null;
+
+    this.cols = {};
+    this._recData = 0;
+    this._revenuesPageNo = 0;
+
+    this.showReport = false;
+    this.showSpinner = false;
+
+    this.visibleHelp = false;
+    this.helpText = '';
+
+    this._errorBlock = '';
+    this._errorMessage = '';
   }
 
   Initialisations() {

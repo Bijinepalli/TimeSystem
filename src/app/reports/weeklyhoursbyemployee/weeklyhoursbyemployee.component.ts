@@ -40,7 +40,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
   errMsg: string;
   ParamSubscribe: any;
-  IsSecure: boolean;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,

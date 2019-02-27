@@ -24,9 +24,9 @@ export class HolidaysreportComponent implements OnInit {
   showReport = false;
   showSpinner = false;
   ParamSubscribe: any;
-  IsSecure: boolean;
   _DateFormat: any;
   _DisplayDateFormat: any;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,

@@ -44,22 +44,101 @@ export class ClientsComponent implements OnInit {
 
   visibleHelp: boolean;
   helpText: string;
+  showSpinner = false;
+
+  ParamSubscribe: any;
+  IsSecure = false;
+  _HasEdit = true;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private route: ActivatedRoute,
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
-  ) { }
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
 
-  _HasEdit = true;
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.CheckSecurity();
-    // Add Controls to the Form
-    this.addControls();
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
 
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  ClearAllProperties() {
+    this.types = [];
+    this.selectedType = '';
+    this._billingCodes = new BillingCode();
+    this._clients = [];
+    this._clientsUsed = [];
+    this.cols = {};
+    this._recData = '';
+    this.clientDialog = false;
+    this._frm = new FormGroup({});
+    this._IsEdit = false;
+    this._selectedClient = new Clients();
+    this.chkInactive = false;
+    this._billingCycle = [];
+    this._customerNames = [];
+    this._companyNames = [];
+    this._customers = [];
+    this._companies = [];
+    this.visibleHelp = false;
+    this.helpText = '';
+    this._HasEdit = true;
+  }
+
+  Initialisations() {
+    this.showSpinner = true;
     this.types = [
       { label: 'Active', value: 'Active' },
       { label: 'Inactive', value: 'Inactive' },
@@ -74,38 +153,36 @@ export class ClientsComponent implements OnInit {
       { label: 'Weekly', value: 'W' }
     ];
 
-    this._billingCodes = new BillingCode();
-
-    this.getClients();
-    this.getCompanies();
-    this.getCustomers();
-
-    // Drop down loading Section - END
-
     this.cols = [
       { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '200px' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '350px' },
       { field: 'PONumber', header: 'PO#', align: 'left', width: '150px' },
     ];
+
+    this._billingCodes = new BillingCode();
+    this.addControls();
+    this.getClients();
+    this.getCompanies();
+    this.getCustomers();
   }
 
-  CheckSecurity() {
-    this._HasEdit = true;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-          params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = false;
-              }
-            }
-          });
-      }
-    });
-  }
+  // CheckSecurity() {
+  //   this._HasEdit = true;
+  //   this.route.queryParams.subscribe(params => {
+  //     if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+  //       this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
+  //         params['Id'].toString())
+  //         .subscribe((data) => {
+  //           if (data != null && data.length > 0) {
+  //             if (data[0].HasEdit) {
+  //               this._HasEdit = false;
+  //             }
+  //           }
+  //         });
+  //     }
+  //   });
+  // }
 
   clickButton(event: any) {
     if (this.selectedType === 'Both') {
@@ -128,6 +205,7 @@ export class ClientsComponent implements OnInit {
   }
 
   getClients() {
+    this.showSpinner = true;
     this.timesysSvc.getClients()
       .subscribe(
         (data) => {
@@ -150,6 +228,7 @@ export class ClientsComponent implements OnInit {
           }
         }
       );
+    this.showSpinner = false;
   }
   getUsedClients() {
     this.timesysSvc.getUsedBillingCodes(this._billingCodes.Client)
@@ -168,6 +247,7 @@ export class ClientsComponent implements OnInit {
           }
         }
       );
+    this.showSpinner = false;
   }
   getCustomers() {
     this.timesysSvc.getCustomers()
@@ -184,6 +264,7 @@ export class ClientsComponent implements OnInit {
           }
         }
       );
+    this.showSpinner = false;
   }
   getCompanies() {
     this.timesysSvc.getCompanies()
@@ -200,6 +281,7 @@ export class ClientsComponent implements OnInit {
           }
         }
       );
+    this.showSpinner = false;
   }
 
   addClient() {
