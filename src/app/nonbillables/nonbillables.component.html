@@ -1,8 +1,7 @@
 <p-confirmDialog></p-confirmDialog>
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Non Billable Items <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Non Billable Items <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('NonBillablesSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -17,16 +16,15 @@
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new item to the non-billable timesheet category"
-      tooltipPosition="bottom" class="ui-button-info" label="Add New Non-Billable Item" *ngIf="!_HasEdit"
-      (click)=addNonBillable()></button>
+      tooltipPosition="bottom" class="ui-button-info" label="Add New Non-Billable Item" *ngIf="!_HasEdit" (click)=addNonBillable()></button>
   </div>
 </div>
 <p-panel [toggleable]="true" header="Filter results by:">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12" style="text-align: left">
       <label class="label" style="padding:0px 10px;">Select:</label>
-      <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()"
-        pTooltip="Show non-billable items that have this status" tooltipPosition="bottom"></p-selectButton>
+      <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show non-billable items that have this status"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
   </div>
 </p-panel>
@@ -39,8 +37,8 @@
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter"
-            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -50,8 +48,8 @@
         <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+            ariaLabelAsc="Activate to sort in ascending order">
           </p-sortIcon>
         </th>
         <th style="width: 5em" *ngIf="!_HasEdit"> Delete</th>
@@ -78,9 +76,8 @@
           </ng-template>
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon"
-            pTooltip="Delete this unused non-billable item" tooltipPosition="left"
-            (click)="deleteNonBillable(rowData)"></i>
+          <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused non-billable item"
+            tooltipPosition="left" (click)="deleteNonBillable(rowData)"></i>
         </td>
       </tr>
     </ng-template>
@@ -91,8 +88,7 @@
   [width]="500">
   <p-header>
     {{nonBillableHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
-      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('NonBillableUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm">
@@ -106,16 +102,16 @@
         <div class="ui-g-12 ui-md-12">
           Item Code <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode"
-            pToolTip="Unique non-billable item code" tooltipPosition="bottom">
+          <input type="text" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode" pToolTip="Unique non-billable item code"
+            tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Item Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName"
-            pToolTip="Unique non-billable item name" tooltipPosition="bottom">
+          <input type="text" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName" pToolTip="Unique non-billable item name"
+            tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
@@ -123,7 +119,8 @@
           <div style="height:5px"></div>
           <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
             pToolTip="Check to mark this non-billable item as inactive. It will not be allowed on new timesheets 
-          and will remove the associated hours from all unsubmitted timesheets." tooltipPosition="bottom"></p-checkbox>
+          and will remove the associated hours from all unsubmitted timesheets."
+            tooltipPosition="bottom"></p-checkbox>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
@@ -139,9 +136,8 @@
   <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
-        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveNonBillable()"
-          [disabled]="hasFormErrors()" pTooltip="Save the data for the non-billable item"
-          tooltipPosition="bottom"></button>
+        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveNonBillable()" [disabled]="hasFormErrors()"
+          pTooltip="Save the data for the non-billable item" tooltipPosition="bottom"></button>
         &nbsp;
         <button pButton label="Cancel" (click)="cancelNonBillable()" class="ui-button-danger"></button>
       </div>

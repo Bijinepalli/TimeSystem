@@ -1,7 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Employee Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Employee Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('EmployeeListing.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -33,8 +32,8 @@
       IPay:
     </div>
     <div class="ui-g-5">
-      <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected"
-        pTooltip="Select only employees that cannot get IPay" tooltipPosition="bottom"></p-selectButton>
+      <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected" pTooltip="Select only employees that cannot get IPay"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
   </div>
   <div class="ui-g">
@@ -42,15 +41,15 @@
       TimeSheets:
     </div>
     <div class="ui-g-2">
-      <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected"
-        pTooltip="Select only employees that do not submit timesheets" tooltipPosition="bottom"></p-selectButton>
+      <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected" pTooltip="Select only employees that do not submit timesheets"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
     <div class="ui-g-1 label">
       Holidays:
     </div>
     <div class="ui-g-2">
-      <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected"
-        pTooltip="Select only employees that follow the Vertex holiday schedule" tooltipPosition="bottom">
+      <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected" pTooltip="Select only employees that follow the Vertex holiday schedule"
+        tooltipPosition="bottom">
       </p-selectButton>
     </div>
     <div class="ui-g-1 label">
@@ -58,21 +57,18 @@
     </div>
     <div class="ui-g-5">
       <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
-        [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
-        pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
+        [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
         tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
       <label class="label" style="padding:0px 10px">to</label>
       <p-calendar [readonlyInput]="true" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true"
-        showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-        pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
+        showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
         tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
     </div>
   </div>
   <p-footer>
     <div style="text-align: right">
-      <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-        (click)=getEmployeesForReport() pTooltip="Show the employees that match your choices"
-        tooltipPosition="bottom"></button>
+      <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=getEmployeesForReport()
+        pTooltip="Show the employees that match your choices" tooltipPosition="bottom"></button>
       <!-- <i class="fa fa-play-circle fa-2x" pTooltip="Search" style="cursor:pointer;color:green" (click)="getEmployeesForReport()"
         pTooltip="Show the employees that match your choices" tooltipPosition="bottom"></i> -->
     </div>
@@ -80,21 +76,20 @@
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g">
-  <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true"
-    [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)"
-    [customSort]="true">
+  <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true" [paginator]="true"
+    [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true">
     <ng-template pTemplate="caption">
       <div style="text-align:left">
-        <p-multiSelect [options]="_headerLabels" [(ngModel)]="selectedColumns" optionLabel="header"
-          selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns">
+        <p-multiSelect [options]="_headerLabels" [(ngModel)]="selectedColumns" optionLabel="header" selectedItemsLabel="{0} columns selected"
+          [style]="{minWidth: '200px'}" defaultLabel="Choose Columns">
         </p-multiSelect>
       </div>
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter"
-            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -104,8 +99,8 @@
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+            ariaLabelAsc="Activate to sort in ascending order">
           </p-sortIcon>
         </th>
       </tr>
@@ -113,11 +108,9 @@
 
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width"
-          [style.text-align]="col.align">
+        <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width" [style.text-align]="col.align">
 
-          <div
-            *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
+          <div *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
             {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
           </div>
           <ng-template #elsepart>

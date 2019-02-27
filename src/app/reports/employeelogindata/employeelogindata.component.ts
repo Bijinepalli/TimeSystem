@@ -66,7 +66,7 @@ export class EmployeelogindataComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -81,9 +81,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       .subscribe((data) => {
         this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
-          if (data[0].HasEdit) {
-            this._HasEdit = false;
-          }
+          this.ClearAllProperties();
           this.IsSecure = true;
           this.Initialisations();
         } else {
@@ -91,8 +89,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         }
       });
   }
+
   Initialisations() {
-    this.showSpinner = true;
     this.types = [
       { label: 'Active', value: '0' },
       { label: 'Inactive', value: '1' },
@@ -105,6 +103,35 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     ];
     this.selectedType = '0';
     this.selectedSalaryType = '2';
+    this.getEmployeesForReport();
+  }
+
+  ClearAllProperties() {
+    this.types = [];
+    this.salaryTypes = [];
+    this.selectedType = '0';
+    this.selectedSalaryType = '2';
+    this.cols = {};
+    this._listEmployeeLoginData = [];
+    this._recData = '';
+    this.visibleHelp = false;
+    this.showSpinner = false;
+    this.helpText = '';
+  }
+
+  showHelp(file: string) {
+    this.timesysSvc.getHelp(file)
+      .subscribe(
+        (data) => {
+          this.visibleHelp = true;
+          const parser = new DOMParser();
+          const parsedHtml = parser.parseFromString(data, 'text/html');
+          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
+        }
+      );
+  }
+
+  getEmployeesForReport() {
     this.cols = [
       { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
@@ -114,24 +141,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '110px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
     ];
-    this.getEmployeesForReport();
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-
-        }
-      );
-
-  }
-  getEmployeesForReport() {
+    this.showSpinner = true;
     let _InActive = '';
     let _Salaried = '';
     if (this.selectedType !== '2') {
@@ -146,8 +156,12 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {
-          this._listEmployeeLoginData = data;
-          this._recData = this._listEmployeeLoginData.length + ' matching employees';
+          this._listEmployeeLoginData = [];
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._listEmployeeLoginData = data;
+            this._recData = this._listEmployeeLoginData.length + ' matching employees';
+            this.showSpinner = false;
+          }
         }
       );
   }

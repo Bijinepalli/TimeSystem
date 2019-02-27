@@ -1,10 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { AppSettings } from '../model/objects';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
+import { DatePipe } from '@angular/common';
+import { CommonService } from '../service/common.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-appsettings',
   templateUrl: './appsettings.component.html',
@@ -12,17 +15,80 @@ import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 })
 export class AppsettingsComponent implements OnInit {
 
-  // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService, private fb: FormBuilder) { }
+  ParamSubscribe: any;
+  IsSecure: boolean;
+
   _appsettings: AppSettings[] = [];
   _recData: any;
   cols: any;
   _appsettingsselection: string[];
   _appsettingInsert: AppSettings[] = [];
+  showSpinner = false;
 
   appSettingsFormGroup = new FormGroup({});
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private commonSvc: CommonService,
+    private route: ActivatedRoute,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  Initialisations() {
     this.getAppSettings();
     this.cols = [
       { field: 'Type', header: 'Type' },
@@ -30,11 +96,6 @@ export class AppsettingsComponent implements OnInit {
       { field: 'Value', header: 'Value' },
       { field: 'Description', header: 'Description' },
     ];
-
-  }
-
-  hasFormErrors() {
-    return !this.appSettingsFormGroup.valid;
   }
   getAppSettings() {
     this.timesysSvc.getAppSettings()
@@ -46,7 +107,18 @@ export class AppsettingsComponent implements OnInit {
         }
       );
   }
+  ClearAllProperties() {
+    this._appsettings = [];
+    this._recData = '';
+    this.cols = {};
+    this._appsettingsselection = [];
+    this._appsettingInsert = [];
+    this.showSpinner = false;
+  }
 
+  hasFormErrors() {
+    return !this.appSettingsFormGroup.valid;
+  }
   getRowColor(r: number) {
     if (r % 2 === 0) {
       return 'RowColor';

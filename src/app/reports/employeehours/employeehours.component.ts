@@ -94,6 +94,7 @@ export class EmployeehoursComponent implements OnInit {
       .subscribe((data) => {
         this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
           }
@@ -106,22 +107,50 @@ export class EmployeehoursComponent implements OnInit {
   }
 
   Initialisations() {
-    this.showSpinner = true;
+    // this.showSpinner = true;
+    // const jsonDate = '/Date(1517855400000+0530)/';
+    // const date = new Date(parseInt(jsonDate.substr(6)));
+    // console.log(date);
     this.hoursType = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
       { label: 'Both', value: '' }
     ];
-    this.selectedhoursType = '';
     this.types = [
       { label: 'Active', value: '0' },
       { label: 'Inactive', value: '1' },
       { label: 'Both', value: '' }
     ];
     this.selectedType = '0';
+    this.selectedhoursType = '';
     const today = new Date();
     this._startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+  }
+
+  ClearAllProperties() {
+    this.types = [];
+    this.hoursType = [];
+    this.selectedType = '0';
+    this.selectedhoursType = '';
+    this._startDate = '';
+    this._endDate = '';
+    this.showSpinner = false;
+    this._selectcheckbox = [];
+    this._displayCheckBoxes = [];
+    this._employee = [];
+    this._selectString = '';
+    this.showBillingCodeList = false;
+    this.allcheckbox = false;
+    this.changeCodeList = false;
+    this.showReport = false;
+    this._billingCodesSpecial = new BillingCodesSpecial();
+    this._reports = [];
+    this._recData = '';
+    this.cols = {};
+    this.helpText = '';
+    this.visibleHelp = false;
+    this.showTotals = false;
   }
 
   showBillingCodes() {
@@ -227,7 +256,6 @@ export class EmployeehoursComponent implements OnInit {
   showTable(data: BillingCodes[]) {
     if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      console.log(this._reports[1].RowCount);
       this._recData = this._reports[0].RowCount.toString();
     } else {
       this._reports = [];

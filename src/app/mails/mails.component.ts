@@ -6,6 +6,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Email } from '../model/objects';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-mails',
   templateUrl: './mails.component.html',
@@ -33,18 +34,73 @@ export class MailsComponent implements OnInit {
   chkIsDefaultSignature = false;
   _emailSignature = '';
   _HasEdit = true;
-  // tslint:disable-next-line:max-line-length
+  showSpinner = false;
+
+  ParamSubscribe: any;
+  IsSecure: boolean;
+
   constructor(
-    private route: ActivatedRoute,
-    private confSvc: ConfirmationService,
-    private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
     private commonSvc: CommonService,
-  ) { }
+    private route: ActivatedRoute,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
 
-    this.CheckSecurity();
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  Initialisations() {
     this.cols = [
       { field: 'EmailType', header: 'Email Type', align: 'left', width: 'auto' },
       { field: 'Subject', header: 'Subject', align: 'left', width: 'auto' },
@@ -54,25 +110,27 @@ export class MailsComponent implements OnInit {
       { field: 'BodyIsTemplate', header: 'Is Body Template', align: 'center', width: 'auto' },
       { field: 'AddSignature', header: 'Is Signature Added', align: 'center', width: 'auto' },
     ];
-
     this.getEmails();
     this.addControls();
   }
-  CheckSecurity() {
+  ClearAllProperties() {
+    this._lstEmails = [];
+    this._recData = '';
+    this.cols = {};
+    this.emailDialog = false;
+    this.emailHdr = 'Add Client';
+    this._frmEmail = new FormGroup({});
+    this._selectedEmail = new Email();
+    this._IsEdit = false;
+    this.visibleHelp = false;
+    this.helpText = '';
+    this.chkIsHighPriority = false;
+    this.chkIsSubjectTemplate = false;
+    this.chkIsBodyTemplate = false;
+    this.chkIsDefaultSignature = false;
+    this._emailSignature = '';
     this._HasEdit = true;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-          params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = false;
-              }
-            }
-          });
-      }
-    });
+    this.showSpinner = false;
   }
   getEmails() {
     const _email: Email = {};

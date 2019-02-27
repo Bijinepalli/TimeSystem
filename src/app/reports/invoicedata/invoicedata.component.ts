@@ -102,7 +102,6 @@ export class InvoicedataComponent implements OnInit {
 
 
   Initialisations() {
-    this.showSpinner = true;
     this._billingCycle = [
       { label: 'Weekly', value: 'W' },
       { label: 'Bi-Weekly', value: 'B' },
@@ -133,13 +132,19 @@ export class InvoicedataComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this._billingCycle = [];
     this._selectedBillingCycle = '';
     this._invoiceDate = '';
     this._startDate = '';
     this._endDate = '';
-    this._reports = [];
     this.showInvoiceList = false;
+    this.showSpinner = false;
     this.showReport = false;
+    this._reports = [];
+    this._recData = 0;
+    this.cols = {};
+    this.visibleHelp = false;
+    this.helpText = '';
   }
 
   generateReport() {
