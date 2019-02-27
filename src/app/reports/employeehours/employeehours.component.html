@@ -92,7 +92,8 @@
   </div>
 </div>
 <div class="ui-g-12" *ngIf="showReport">
-  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" (sortFunction)="customSort($event)"
+    [customSort]="true">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
@@ -108,9 +109,12 @@
     </ng-template>
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="showTotals == false ? col.field : ''" [style.width]="col.width">
+        <th *ngFor="let col of columns" [pSortableColumn]="showTotals == false ? col.field : ''"
+          [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon *ngIf="showTotals == false" [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          <p-sortIcon *ngIf="showTotals == false" [field]="col.field" ariaLabel="Activate to sort"
+            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          </p-sortIcon>
         </th>
       </tr>
     </ng-template>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
@@ -29,6 +29,7 @@ export class InvoicedataComponent implements OnInit {
   cols: any;
   visibleHelp: boolean;
   helpText: string;
+  DisplayDateFormat = '';
 
   ParamSubscribe: any;
   IsSecure = false;
@@ -66,12 +67,13 @@ export class InvoicedataComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -201,5 +203,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['InvoiceDate', 'StartDate', 'EndDate'], ['Hours', 'Rate', 'Amount']);
   }
 }

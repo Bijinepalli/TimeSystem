@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, Employee } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-employeetimesheets',
@@ -34,9 +35,11 @@ export class EmployeetimesheetsComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
   selectedEmployeeName: string;
+  DisplayDateFormat = '';
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) {
+
+    private confSvc: ConfirmationService, private datePipe: DatePipe, private commonSvc: CommonService) {
     this.hoursType = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
@@ -60,6 +63,7 @@ export class EmployeetimesheetsComponent implements OnInit {
       { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: 'auto' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
     ];
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
   }
   getEmployees() {
     this.showSpinner = true;
@@ -146,5 +150,8 @@ export class EmployeetimesheetsComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PeriodEnd', 'SubmitDate'], []);
   }
 }

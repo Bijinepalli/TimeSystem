@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Invoice, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
@@ -17,6 +17,7 @@ import { environment } from 'src/environments/environment';
 export class EmployeeclientratesComponent implements OnInit {
   _startDate = '';
   _endDate = '';
+  _storeDate = '';
   showAll = false;
   showReport = false;
   showSpinner = false;
@@ -31,6 +32,7 @@ export class EmployeeclientratesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  DisplayDateFormat = '';
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -65,12 +67,13 @@ export class EmployeeclientratesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -118,10 +121,19 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     if (this.showAll === false) {
       let _start = '';
       let _end = '';
-
-      if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+      const date = Date.parse(this._startDate);
+      if (Number.isNaN(date)) {
+        const today = new Date();
+        const month = today.getMonth();
+        const year = today.getFullYear();
+        this._storeDate = new Date(year, month - 1, 1).toString();
+        console.log(this._storeDate);
+      } else {
+        this._storeDate = this._startDate;
+      }
+      if (this._storeDate !== null && this._storeDate !== '') {
+        _start = this.datePipe.transform(this._storeDate, 'yyyy-MM-dd');
+        this._startDate = this.datePipe.transform(this._storeDate, 'MM-dd-yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
@@ -176,5 +188,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['EffectiveDate'], ['Rate', 'EmployeeID', 'ClientID']);
   }
 }

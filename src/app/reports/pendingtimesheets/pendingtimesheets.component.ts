@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { NonBillables, BillingCodesSpecial, TimeSheet, Employee, TimePeriods } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
@@ -66,6 +66,7 @@ export class PendingtimesheetsComponent implements OnInit {
               this.dates.push({ label: data[i].FuturePeriodEnd, value: data[i].FuturePeriodEnd });
             }
           }
+          console.log(this.dates);
           this.selectedDate = data[0].PresentPeriodEnd.toString();
           this.showSpinner = false;
           this.getDatefortheperiod();
@@ -83,6 +84,7 @@ export class PendingtimesheetsComponent implements OnInit {
   getDatefortheperiod() {
     this.showSpinner = true;
     this._reports = [];
+    console.log(this.selectedDate);
     this.timesysSvc.getOutstandingTimesheetReport(this.selectedDate)
       .subscribe(
         (data) => {
@@ -92,6 +94,7 @@ export class PendingtimesheetsComponent implements OnInit {
             this._reports = data;
             this._recData = this._reports.length;
           }
+          console.log(this._reports);
           this.showReport = true;
           this.showSpinner = false;
         }
@@ -109,6 +112,9 @@ export class PendingtimesheetsComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PeriodEnd'], []);
   }
 
 }

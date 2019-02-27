@@ -1,11 +1,12 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, SortEvent } from 'primeng/api';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
 import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-listemployeesreports',
@@ -34,11 +35,14 @@ export class ListemployeesreportsComponent implements OnInit {
   _startDate: string;
   visibleHelp = false;
   helpText: any;
+  DisplayDateFormat = '';
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private fb: FormBuilder,
-    private datePipe: DatePipe) { }
+    private datePipe: DatePipe, private commonSvc: CommonService) { }
 
   ngOnInit() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+
     this._startDate = '';
     this._endDate = '';
     this._status = [
@@ -134,5 +138,8 @@ export class ListemployeesreportsComponent implements OnInit {
         }
       );
 
+  }
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['HireDate'], []);
   }
 }

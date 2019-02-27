@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Employee-Client Billing Rates <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Employee-Client Billing Rates <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('ListEmployeeClientRates.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -14,39 +15,43 @@
 </div>
 <br>
 <p-panel [toggleable]="true" header="Filter results by:">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-3">
-    <label class="label" style="padding:0px 10px;"> Date From:</label>
-    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
-      yearRange="1900:2100" [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
-      tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
-    <label class="label" style="padding:0px 10px">to</label>
-    <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
-      yearRange="1900:2100" [(ngModel)]="_endDate" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
-      tooltipPosition="bottom" [inputStyle]="{'width':'100px'}">></p-calendar>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-3">
+      <label class="label" style="padding:0px 10px;"> Date From:</label>
+      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true"
+        showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
+        pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
+      <label class="label" style="padding:0px 10px">to</label>
+      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true"
+        showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"
+        pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
+        tooltipPosition="bottom" [inputStyle]="{'width':'100px'}">></p-calendar>
+    </div>
+    <div class="ui-g-12 ui-md-3" style="padding-top: 13px">
+      <p-checkbox binary="true" label="" [(ngModel)]="showAll" binary="true"></p-checkbox>
+      <label class="label" style="padding:0px 10px;">Include Employees With No Rates</label>
+    </div>
   </div>
-  <div class="ui-g-12 ui-md-3" style="padding-top: 13px">
-    <p-checkbox binary="true" label="" [(ngModel)]="showAll" binary="true"></p-checkbox>
-    <label class="label" style="padding:0px 10px;">Include Employees With No Rates</label>
-  </div>
-</div>
-<p-footer>
+  <p-footer>
     <div style="text-align: right">
-        <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-        (click)=generateReport() pTooltip="Show the employee - client rates that match your choices" tooltipPosition="bottom"></button>
+      <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+        (click)=generateReport() pTooltip="Show the employee - client rates that match your choices"
+        tooltipPosition="bottom"></button>
     </div>
   </p-footer>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
 <div class="ui-g" *ngIf="showReport">
-  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20">
+  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
+    (sortFunction)="customSort($event)" [customSort]="true">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
         <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter"
+            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -55,14 +60,17 @@
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          </p-sortIcon>
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-          <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+          <div
+            *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>
     </ng-template>
@@ -70,18 +78,27 @@
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          </p-sortIcon>
         </th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-          <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+          <div
+            *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
             <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
           </div>
           <ng-template #defaultColumn>
-            {{rowData[col.field]}}
+            <div *ngIf="(col.field === 'EffectiveDate'); else nondatecol">
+              <label>{{rowData[col.field] | dateFormat: DisplayDateFormat}} </label>
+              <!-- <label>{{rowData[col.field]}} </label> -->
+            </div>
+            <ng-template #nondatecol>
+              {{rowData[col.field]}}
+            </ng-template>
           </ng-template>
         </td>
       </tr>

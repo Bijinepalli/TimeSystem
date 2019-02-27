@@ -30,6 +30,7 @@ export class OutstandingtimesheetsComponent implements OnInit {
       numbers).subscribe(
         (data) => {
           this._outStandings = data;
+          console.log(JSON.stringify(this._outStandings));
           this.cols = [
             { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
             { field: 'ApprovalStatus', header: 'Status', align: 'left', width: 'auto' },
