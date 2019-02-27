@@ -7,7 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SanitizeHtmlPipe } from '../sharedpipes/sanitizeHtmlString.pipe';
 import { Observable } from 'rxjs';
 import { DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 
@@ -19,15 +19,6 @@ import { environment } from 'src/environments/environment';
 })
 export class HolidaysComponent implements OnInit {
 
-  // tslint:disable-next-line:max-line-length
-  constructor(
-    private route: ActivatedRoute,
-    private confSvc: ConfirmationService,
-    private msgSvc: MessageService,
-    private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
-    private datePipe: DatePipe,
-  ) { }
   _holidays: Holidays[] = [];
   _yec: YearEndCodes = new YearEndCodes();
   _years; any;
@@ -47,11 +38,83 @@ export class HolidaysComponent implements OnInit {
   _IsEdit = false;
 
   _HasEdit = true;
+  showSpinner = false;
+  IsSecure = false;
+  ParamSubscribe: any;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+    public datepipe: DatePipe
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+  /* #endregion */
 
-    this.CheckSecurity();
+  /* #region Basic Methods */
 
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  ClearAllProperties() {
+
+
+  }
+
+  Initialisations() {
     this._dialogwidth = 830;
     this._years = [
       { label: '2010', value: '2010' },
@@ -79,23 +142,7 @@ export class HolidaysComponent implements OnInit {
     this.getHolidays();
     this.addControls();
   }
-
-  CheckSecurity() {
-    this._HasEdit = true;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-          params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = false;
-              }
-            }
-          });
-      }
-    });
-  }
+   /* #endregion*/
 
   getHolidays() {
     this.timesysSvc.getHolidays(this.selectedYear, this._yec.HolidayCode + this.selectedYear)
@@ -193,7 +240,7 @@ export class HolidaysComponent implements OnInit {
       this._selectedHoliday.Id = -1;
     }
     this._selectedHoliday.HolidayName = this._frm.controls['holidayName'].value.toString().trim();
-    this._selectedHoliday.HolidayDate = this.datePipe.transform(this._frm.controls['holidayDate'].value, 'yyyy/MM/dd');
+    this._selectedHoliday.HolidayDate = this.datepipe.transform(this._frm.controls['holidayDate'].value, 'yyyy/MM/dd');
     this._selectedHoliday.CalendarYear = new Date(this._selectedHoliday.HolidayDate).getFullYear();
     this.SaveHolidaySPCall();
   }
