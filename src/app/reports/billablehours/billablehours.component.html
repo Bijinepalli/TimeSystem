@@ -124,10 +124,8 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+          <th *ngFor="let col of columns" [style.width]="col.width">
             {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
-              ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
           </th>
         </tr>
       </ng-template>
@@ -141,7 +139,12 @@
               </div>
             </div>
             <ng-template #defaultColumn>
-              {{rowData[col.field]}}
+                <div *ngIf="col.header === 'Date'; else nondatecol">
+                    <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                  </div>
+                  <ng-template #nondatecol>
+                    {{rowData[col.field]}}
+                  </ng-template>
             </ng-template>
           </td>
         </tr>

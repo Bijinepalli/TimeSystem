@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { CommonService } from '../../service/common.service';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, SortEvent } from 'primeng/api';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NonBillables, TimePeriods } from '../../model/objects';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -79,7 +79,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -125,6 +125,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
 
   Initialisations() {
     this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.codeType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -143,14 +145,13 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '108px' },
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
     ];
-    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
-    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
+    this.showSpinner = false;
     this.populateDateDrop();
   }
   populateDateDrop() {
+    this.showSpinner = true;
     this.dates = [];
     this.selectedDate = '';
-    this._DateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();  // Get the date format from appsettings
     this.timesysSvc.getPeriodEndDate()
       .subscribe(
         (data) => {
@@ -160,13 +161,16 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
             for (let i = 0; i <= 24; i++) {
               const dropdownValue = periodEnd.setDate(periodEnd.getDate() - 7);
               if (i === 0) {
-                this.selectedDate = this.datePipe.transform(dropdownValue, 'MM-dd-yyyy');
+                this.selectedDate = this.datePipe.transform(dropdownValue, this._DisplayDateFormat);
               }
-              // tslint:disable-next-line:max-line-length
-              this.dates.push({ label: this.datePipe.transform(dropdownValue, 'MM-dd-yyyy'), value: this.datePipe.transform(dropdownValue, 'MM-dd-yyyy') });
+              this.dates.push({
+                label: this.datePipe.transform(dropdownValue, this._DisplayDateFormat),
+                value: this.datePipe.transform(dropdownValue, this._DisplayDateFormat)
+              });
             }
             this.getReports();
           }
+          this.showSpinner = false;
         });
   }
 
@@ -269,4 +273,9 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         }
       );
   }
+
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
+  }
+
 }

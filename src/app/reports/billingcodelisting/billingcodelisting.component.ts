@@ -28,7 +28,10 @@ export class BillingcodelistingComponent implements OnInit {
   helpText: string;
   ParamSubscribe: any;
   IsSecure = false;
-  DisplayDateFormat = '';
+
+  _DateFormat: any;
+  _DisplayDateFormat: any;
+
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -104,7 +107,8 @@ export class BillingcodelistingComponent implements OnInit {
 
   Initialisations() {
     this.showSpinner = true;
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
-import { SelectItem } from 'primeng/api';
+import { SelectItem, SortEvent } from 'primeng/api';
 import { Holidays } from '../../model/objects';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/service/common.service';
@@ -25,6 +25,8 @@ export class HolidaysreportComponent implements OnInit {
   showSpinner = false;
   ParamSubscribe: any;
   IsSecure: boolean;
+  _DateFormat: any;
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -62,7 +64,7 @@ export class HolidaysreportComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -97,12 +99,15 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
 
   Initialisations() {
     this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.cols = [
       { field: 'CalendarYear', header: 'Year', align: 'center', width: '100px' },
       { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
       { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
       { field: 'HolidayDate', header: 'Holiday Date', align: 'center', width: '150px' },
     ];
+    this.showSpinner = false;
     this.getHolidayYears();
   }
   getHolidayYears() {
@@ -157,4 +162,9 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         }
       );
   }
+
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['HolidayDate'], ['CalendarYear']);
+  }
+
 }

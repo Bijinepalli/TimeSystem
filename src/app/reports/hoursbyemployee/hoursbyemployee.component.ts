@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { MessageService, ConfirmationService } from 'primeng/api';
+import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
@@ -48,6 +48,8 @@ export class HoursbyemployeeComponent implements OnInit {
   visibleHelp = false;
   ParamSubscribe: any;
   IsSecure: boolean;
+  _DateFormat: any;
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -89,7 +91,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -149,6 +151,9 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   }
 
   Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.billingType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -183,7 +188,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._startDateSelect = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
+    this.showSpinner = false;
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -280,12 +286,12 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       let _end = '';
 
       if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
+        _start = this.datePipe.transform(dateValid, this._DateFormat);
+        this._startDate = this.datePipe.transform(dateValid, this._DisplayDateFormat);
       }
       if (this._endDate !== null && this._endDate !== '') {
-        _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+        _end = this.datePipe.transform(this._endDate, this._DateFormat);
+        this._endDate = this.datePipe.transform(this._endDate, this._DisplayDateFormat);
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
@@ -381,6 +387,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   }
 
   startOver() {
+    this.showSpinner = true;
     this.showBillingCodeList = false;
     this.changeCodeList = false;
     this.showReport = false;
@@ -392,13 +399,16 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._startDate = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
     this._endDate = '';
+    this.showSpinner = false;
   }
   changeCodes() {
+    this.showSpinner = true;
     this.changeCodeList = false;
     this.showReport = false;
     this.showBillingCodeList = true;
+    this.showSpinner = false;
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
@@ -412,4 +422,9 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         }
       );
   }
+
+  customSort(event: SortEvent) {
+    this.commonSvc.customSortByCols(event, ['PeriodEnd'], ['Hours']);
+  }
+
 }
