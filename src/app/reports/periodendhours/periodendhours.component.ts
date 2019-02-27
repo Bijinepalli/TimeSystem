@@ -5,6 +5,8 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { NonBillables, BillingCodesSpecial, TimeSheet } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-periodendhours',
@@ -28,12 +30,91 @@ export class PeriodendhoursComponent implements OnInit {
   _timesheet: TimeSheet;
   showBillingCodeList = false;
   changeCodeList = false;
+  ParamSubscribe: any;
+  IsSecure = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe) { }
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private commonSvc: CommonService,
+    private datePipe: DatePipe
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  ClearAllProperties() {
+    this.dates = [];
+    this.dateFormat = '';
+    this.periodEnd = '';
+    this.selectedDate = '';
+    this.timesheet = [];
+    this.showReport = false;
+    this._reports = [];
+    this._recData = 0;
+    this.cols = {};
+    this._timesheet = new TimeSheet();
+    this.helpText = '';
+    this.visibleHelp = false;
+    this.showBillingCodeList = false;
+    this.changeCodeList = false;
+  }
+
+  Initialisations() {
     this.populateDateDrop();
+    // this.dates.push({ label: 'Select Period End', value: '' });
+    // this.selectedDate = '0';
   }
 
   populateDateDrop() {

@@ -13,97 +13,100 @@
   </div>
 </div>
 <br>
-<div class="ui-g">
-  <!-- <div class="ui-g-12 ui-md-8"></div> -->
-  <div class="ui-g-12 ui-md-12">
-    <p-fieldset legend="Assumptions" [toggleable]="true" collapsed="true">
-      <div>
-        <b>Report Assumptions for the Pay Period:</b>
-        <ul>
-          <li>An employee's <i>active</i> status did not change. </li>
-          <li>An employee's <i>salaried/hourly</i> status did not change. </li>
-          <li>An employee's <i>IPay eligibility</i> status did not change. </li>
-          <li>An employee's <i>hours per day</i> did not change. </li>
-        </ul>
-      </div>
-    </p-fieldset>
-  </div>
-</div>
-<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
+<ng-container *ngIf="IsSecure">
   <div class="ui-g">
-    <div class="ui-g-12 ui-md-4">
-      <label class="label" style="padding:0px 10px;">Select a Pay Period :</label>
-      <p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate"
-        pTooltip="Select the pay period end date to create the report"></p-dropdown>
-    </div>
-  </div>
-  <p-footer>
-    <div style="text-align: right">
-      <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-          label="Start Over" (click)=startOver()></button> &nbsp; -->
-      <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
-        label="Generate Report" [disabled]="!(this.selectedDate!=='')" (click)=onDateChange($event)></button>&nbsp;
-    </div>
-  </p-footer>
-</p-panel>
-<div class="ui-g">&nbsp;</div>
-
-<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0 && changeCodeList">
-  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
-    No matching data for the selected criteria
-  </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
-    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-      label="Start Over" (click)="startOver()"></button>
-  </div>
-</div>
-
-<div class="ui-g" *ngIf="showReport && _recData > 0">
-  <!-- <p-scrollPanel [style]="{width: '100%', height: '460px'}"> -->
-  <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
-    <ng-template pTemplate="caption">
-      <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-        <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter"
-            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-            class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
-          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+    <!-- <div class="ui-g-12 ui-md-8"></div> -->
+    <div class="ui-g-12 ui-md-12">
+      <p-fieldset legend="Assumptions" [toggleable]="true" collapsed="true">
+        <div>
+          <b>Report Assumptions for the Pay Period:</b>
+          <ul>
+            <li>An employee's <i>active</i> status did not change. </li>
+            <li>An employee's <i>salaried/hourly</i> status did not change. </li>
+            <li>An employee's <i>IPay eligibility</i> status did not change. </li>
+            <li>An employee's <i>hours per day</i> did not change. </li>
+          </ul>
         </div>
+      </p-fieldset>
+    </div>
+  </div>
+  <p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-4">
+        <label class="label" style="padding:0px 10px;">Select a Pay Period :</label>
+        <p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate"
+          pTooltip="Select the pay period end date to create the report"></p-dropdown>
       </div>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th style="width: 8em">View</th>
-        <th *ngFor="let col of columns" [style.width]="col.width">
-          {{col.header}}
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-      <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
-          <!-- <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet"
-                      tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i> -->
-          <i class="fa fa-eye fa-150x viewIcon" *ngIf="+(rowData['TimesheetID']) > 0" pTooltip="View this TimeSheet"
-            tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
-          <!-- *ngIf="rowData['Submitted'] === 'Yes'" -->
-        </td>
-        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-          <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'); else defaultColumn">
-            <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+    </div>
+    <p-footer>
+      <div style="text-align: right">
+        <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+          label="Start Over" (click)=startOver()></button> &nbsp; -->
+        <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
+          label="Generate Report" [disabled]="!(this.selectedDate!=='')" (click)=onDateChange($event)></button>&nbsp;
+      </div>
+    </p-footer>
+  </p-panel>
+  <div class="ui-g">&nbsp;</div>
+
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0 && changeCodeList">
+    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+      No matching data for the selected criteria
+    </div>
+    <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+        class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
+    </div>
+  </div>
+
+  <div class="ui-g" *ngIf="showReport && _recData > 0">
+    <!-- <p-scrollPanel [style]="{width: '100%', height: '460px'}"> -->
+    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+              class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
-          <ng-template #defaultColumn>
-            {{rowData[col.field]}}
-          </ng-template>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-  <!-- </p-scrollPanel> -->
-</div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 8em">View</th>
+          <th *ngFor="let col of columns" [style.width]="col.width">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td style="text-align: center">
+            <!-- <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet"
+                      tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i> -->
+            <i class="fa fa-eye fa-150x viewIcon" *ngIf="+(rowData['TimesheetID']) > 0" pTooltip="View this TimeSheet"
+              tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
+            <!-- *ngIf="rowData['Submitted'] === 'Yes'" -->
+          </td>
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'); else defaultColumn">
+              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+            </div>
+            <ng-template #defaultColumn>
+              {{rowData[col.field]}}
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <!-- </p-scrollPanel> -->
+  </div>
+</ng-container>
+
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
