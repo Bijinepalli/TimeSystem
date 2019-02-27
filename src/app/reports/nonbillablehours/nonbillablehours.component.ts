@@ -35,7 +35,7 @@ export class NonbillablehoursComponent implements OnInit {
   dateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
   errMsg: string;
   ParamSubscribe: any;
-  IsSecure: boolean;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,

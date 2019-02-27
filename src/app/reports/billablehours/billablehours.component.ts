@@ -42,7 +42,7 @@ export class BillablehoursComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
   ParamSubscribe: any;
-  IsSecure: boolean;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,

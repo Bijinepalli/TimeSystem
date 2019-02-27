@@ -9,6 +9,7 @@
     <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
+<ng-container *ngIf="IsSecure">
 <div class="ui-g">
   <div class="ui-g-12">
     <div class="ui-g-12 ui-g-nopad errorBlockHeader"
@@ -99,6 +100,7 @@
     </ng-template>
   </p-table>
 </div>
+</ng-container>
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
