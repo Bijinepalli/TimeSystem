@@ -72,7 +72,7 @@
             </div>
             <ng-template #defaultColumn>
               <div *ngIf="col.header === 'Created On'; else nondatecol">
-                <label>{{rowData[col.field] | dateFormat: 'MM-dd-yyyy'}} </label>
+                <label>{{rowData[col.field] | dateFormat: DisplayDateFormat}} </label>
               </div>
               <ng-template #nondatecol>
                   {{rowData[col.field]}}

@@ -28,7 +28,7 @@ export class BillingcodelistingComponent implements OnInit {
   helpText: string;
   ParamSubscribe: any;
   IsSecure = false;
-
+  DisplayDateFormat = '';
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -104,6 +104,7 @@ export class BillingcodelistingComponent implements OnInit {
 
   Initialisations() {
     this.showSpinner = true;
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -151,7 +152,7 @@ export class BillingcodelistingComponent implements OnInit {
                 }
               });*/
               this._reports = data;
-              console.log(JSON.stringify(this._reports));
+              // console.log(JSON.stringify(this._reports));
               this.showReport = true;
             }
             this._recData = this._reports.length;
