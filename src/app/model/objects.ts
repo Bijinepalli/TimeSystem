@@ -130,7 +130,7 @@ export class Clients {
     BillingCycle?: string;
     PONumber?: string;
     Inactive?: boolean;
-    CreatedOn?: string;
+    CreatedOn?: String;
     InUse?: boolean;
     ChargeType?: string;
     EffectiveDate?: string;
@@ -139,6 +139,7 @@ export class Clients {
     RateID?: number;
     ClientID?: number;
     RateMode?: string;
+    CreatedOnDT?: Date;
 }
 export class MasterPages {
     ID?: number;

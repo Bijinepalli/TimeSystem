@@ -263,7 +263,7 @@ export class Master2Component implements OnInit {
             if (sm.queryParams !== undefined && sm.queryParams !== null) {
               if (sm.queryParams.Id === Id) {
                 sm.expanded = true;
-                sm.styleClass = 'ActiveRouteLinkNext';
+                sm.styleClass = 'ActiveRouteLink';
                 MainCnt++;
               }
             }
@@ -289,7 +289,11 @@ export class Master2Component implements OnInit {
                   if (smm.queryParams !== undefined && smm.queryParams !== null) {
                     if (smm.queryParams.Id === splitVals[0] + '@' + splitVals[1]) {
                       smm.expanded = true;
-                      smm.styleClass = 'ActiveRouteLinkNext';
+                      // smm.styleClass = 'ActiveRouteLinkNext';
+                      if (smm.items !== undefined && smm.items !== null && smm.items.length > 0) {
+                      } else {
+                        smm.styleClass = 'ActiveRouteLink';
+                      }
                     }
                   }
                   if (smm.items !== undefined && smm.items !== null && smm.items.length > 0) {
@@ -302,14 +306,21 @@ export class Master2Component implements OnInit {
                         if (smmm.queryParams !== undefined && smmm.queryParams !== null) {
                           if (smmm.queryParams.Id === splitVals[0] + '@' + splitVals[1] + '@' + splitVals[2]) {
                             smmm.expanded = true;
-                            smmm.styleClass = 'ActiveRouteLink';
+                            smmm.styleClass = 'ActiveRouteLink'; // ActiveRouteLink
                           }
                         }
                       }
                     }
                   }
-
-
+                } else {
+                  if (smm.items !== undefined && smm.items !== null && smm.items.length > 0) {
+                    for (let subcnt = 0; subcnt < smm.items.length; subcnt++) {
+                      let smmm: any;
+                      smmm = smm.items[subcnt];
+                      smmm.expanded = false;
+                      smmm.styleClass = '';
+                    }
+                  }
                 }
               }
             }

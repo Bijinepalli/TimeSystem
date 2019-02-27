@@ -65,7 +65,7 @@ export class BillingcodelistingComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -143,7 +143,15 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
             this._reports = [];
             if (data !== undefined && data !== null
               && data.length > 0) {
+              /*const dataParsed = JSON.parse(data, function (key, value) {
+                if (key === "CreatedOnDT") {
+                  return new Date(value);
+                } else {
+                  return value;
+                }
+              });*/
               this._reports = data;
+              console.log(JSON.stringify(this._reports));
               this.showReport = true;
             }
             this._recData = this._reports.length;
@@ -186,7 +194,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+        { field: 'CreatedOnDT', header: 'Created On', align: 'center', width: '150px' },
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];

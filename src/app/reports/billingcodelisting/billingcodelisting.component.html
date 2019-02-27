@@ -1,7 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Billing Code Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Billing Code Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('ListBillingCodes.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -18,8 +17,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-3">
         <label class="label" style="padding:0px 10px;">Select:</label>
-        <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType" tooltipPosition="bottom"
-          pTooltip="Show this type of billing code on the report"></p-selectButton>
+        <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType" tooltipPosition="bottom" pTooltip="Show this type of billing code on the report"></p-selectButton>
       </div>
       <div class="ui-g-12 ui-md-2">
         <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
@@ -28,8 +26,8 @@
     </div>
     <p-footer>
       <div style="text-align: right">
-        <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom"
-          class="ui-button-info" label="Generate Report" (click)=searchReports()></button>
+        <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info"
+          label="Generate Report" (click)=searchReports()></button>
       </div>
     </p-footer>
   </p-panel>
@@ -50,8 +48,8 @@
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
         </div>
@@ -60,8 +58,8 @@
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+              ariaLabelAsc="Activate to sort in ascending order">
             </p-sortIcon>
           </th>
         </tr>
@@ -73,8 +71,14 @@
               <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
             </div>
             <ng-template #defaultColumn>
-              {{rowData[col.field]}}
+              <div *ngIf="col.header === 'Created On'; else nondatecol">
+                <label>{{rowData[col.field] | dateFormat: 'MM-dd-yyyy'}} </label>
+              </div>
+              <ng-template #nondatecol>
+                  {{rowData[col.field]}}
+              </ng-template>
             </ng-template>
+
           </td>
         </tr>
       </ng-template>
