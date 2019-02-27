@@ -70,7 +70,7 @@ export class EmployeeclientratesComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -98,7 +98,6 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   }
 
   Initialisations() {
-    this.showSpinner = true;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
@@ -106,9 +105,19 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
   ClearAllProperties() {
+
     this._startDate = '';
-    this._reports = [];
+    this._endDate = '';
+    this.showAll = false;
     this.showReport = false;
+    this.showSpinner = false;
+    this._invoice = null;
+    this._billingCodesSpecial = null;
+    this._reports = [];
+    this._recData = 0;
+    this.cols = [];
+    this.visibleHelp = false;
+    this.helpText = '';
   }
 
   generateReport() {

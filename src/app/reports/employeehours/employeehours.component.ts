@@ -78,7 +78,7 @@ export class EmployeehoursComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -93,6 +93,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       .subscribe((data) => {
         this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
           }
@@ -105,7 +106,10 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   }
 
   Initialisations() {
-    this.showSpinner = true;
+    // this.showSpinner = true;
+    // const jsonDate = '/Date(1517855400000+0530)/';
+    // const date = new Date(parseInt(jsonDate.substr(6)));
+    // console.log(date);
     this.hoursType = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
@@ -121,6 +125,17 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const today = new Date();
     this._startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+  }
+
+  ClearAllProperties() {
+    this.selectedType = '0';
+    this._startDate = '';
+    this.showSpinner = false;
+    this.showBillingCodeList = false;
+    this._reports = [];
+    this._selectcheckbox = [];
+    this.allcheckbox = false;
+
   }
 
   showBillingCodes() {
@@ -217,7 +232,6 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
   showTable(data: BillingCodes[]) {
     if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      console.log(this._reports[1].RowCount);
       this._recData = this._reports[0].RowCount.toString();
     } else {
       this._reports = [];
