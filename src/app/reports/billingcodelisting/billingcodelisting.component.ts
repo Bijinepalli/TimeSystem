@@ -156,6 +156,7 @@ export class BillingcodelistingComponent implements OnInit {
                 }
               });*/
               this._reports = data;
+              console.log(this._reports);
               this.showReport = true;
             }
             this._recData = this._reports.length;
