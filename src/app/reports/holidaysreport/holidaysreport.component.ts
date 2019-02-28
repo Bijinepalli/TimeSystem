@@ -69,7 +69,6 @@ export class HolidaysreportComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.showSpinner = false;
   }
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
@@ -96,6 +95,7 @@ export class HolidaysreportComponent implements OnInit {
     this.helpText = '';
     this.visibleHelp = false;
     this.showReport = false;
+    this.showSpinner = false;
   }
 
   Initialisations() {
@@ -125,6 +125,7 @@ export class HolidaysreportComponent implements OnInit {
             const _date: Date = new Date();
             this.selectedYear = _date.getFullYear();
             this.getHolidays();
+          } else {
             this.showSpinner = false;
           }
         });
@@ -135,21 +136,21 @@ export class HolidaysreportComponent implements OnInit {
     let year = '';
     if (this.selectedYear.toString() !== '0') {
       year = this.selectedYear.toString();
-    } else {
-      year = '';
     }
+    this.showReport = false;
+    this._holidayList = [];
+    this._recData = 0;
     this.timesysSvc.getHolidayList(year)
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
-            this.showReport = false;
             this._holidayList = [];
             this._recData = 0;
             if (data !== undefined && data !== null && data.length > 0) {
               this._holidayList = data;
               this._recData = this._holidayList.length;
-              this.showReport = true;
             }
+            this.showReport = true;
           }
           this.showSpinner = false;
         }
