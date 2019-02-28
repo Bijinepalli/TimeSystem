@@ -41,6 +41,7 @@ export class ListemployeesreportsComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  showReport: boolean;
 
   constructor(private timesysSvc: TimesystemService,
     private router: Router,
@@ -100,7 +101,6 @@ export class ListemployeesreportsComponent implements OnInit {
           }
           this.IsSecure = true;
           this.Initialisations();
-          this.getEmployeesForReport();
         } else {
           this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
@@ -108,6 +108,7 @@ export class ListemployeesreportsComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._startDate = '';
     this._endDate = '';
@@ -168,6 +169,7 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
     this.selectedColumns = this._defaultselected;
+    this.getEmployeesForReport();
   }
 
   ClearAllProperties() {
@@ -196,6 +198,8 @@ export class ListemployeesreportsComponent implements OnInit {
   getEmployeesForReport() {
     let _start = '';
     let _end = '';
+    this.showReport = false;
+    this.showSpinner = true;
     if (this._startDate !== '' && this._startDate !== null) {
       _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
       this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
@@ -209,9 +213,14 @@ export class ListemployeesreportsComponent implements OnInit {
       .subscribe(
         (data) => {
           this._listEmployeesForReport = data;
-          this._recData = data.length + ' matching employees';
+          this._recData = 0;
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._recData = data.length + ' matching employees';
+            this.showReport = true;
+          }
         }
       );
+    this.showSpinner = false;
   }
 
   showHelp(file: string) {

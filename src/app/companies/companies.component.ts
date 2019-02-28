@@ -22,7 +22,7 @@ export class CompaniesComponent implements OnInit {
   _yec: YearEndCodes = new YearEndCodes();
   _bc: BillingCode = new BillingCode();
   cols: any;
-  _recData: any;
+  _recData = 0;
 
   companyDialog = false;
   companyHdr = 'Add Company';
@@ -45,6 +45,7 @@ export class CompaniesComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure = false;
+  showReport: boolean;
 
   constructor(
     private router: Router,
@@ -119,7 +120,8 @@ export class CompaniesComponent implements OnInit {
     this._yec = new YearEndCodes();
     this._bc = new BillingCode();
     this.cols = {};
-    this._recData = '';
+    this._recData = 0;
+    this.showReport = false;
 
     this.companyDialog = false;
     this.companyHolidayDialog = false;
@@ -198,12 +200,15 @@ export class CompaniesComponent implements OnInit {
         });
   }
   getCompanies() {
+    this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getCompanies()
       .subscribe(
         (data) => {
-          if (data !== undefined && data !== null) {
+          if (data !== undefined && data !== null && data.length > 0) {
             this._companies = data;
-            this._recData = data.length + ' companies found';
+            this._recData = data.length;
             if (this._companyHours !== undefined && this._companyHours !== null && this._companyHours.length > 0) {
               for (let r = 0; r < this._companies.length; r++) {
                 const exist = this._companyHours.filter((p) => p.Id === this._companies[r].Id).length;
@@ -212,15 +217,14 @@ export class CompaniesComponent implements OnInit {
                 }
               }
             }
-          } else {
-            this._companies = [];
-            this._recData = 'No companies found';
           }
+          this.showReport = true;
+          this.showSpinner = false;
         },
         (error) => {
           console.log(error);
+          this.showSpinner = false;
         });
-        this.showSpinner = false;
   }
 
   addCompany() {

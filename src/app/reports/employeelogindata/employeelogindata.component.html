@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Employee Login Data Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Employee Login Data Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('EmployeeLoginData.htm')"></i>
   </div>
   <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
@@ -12,64 +13,73 @@
   </div>
 </div>
 <br>
-<p-panel [toggleable]="true" header="Filter results by:">
-  <div class="ui-g">
-    <div class="ui-g-12 ui-md-6 ui-lg-3">
-      <label class="label" style="padding:0px 10px;">Select:</label>
-      <p-selectButton [options]="types" [(ngModel)]="selectedType" pTooltip="Show employees that have this status"
-        tooltipPosition="bottom"></p-selectButton>
+<ng-container *ngIf="IsSecure">
+  <p-panel [toggleable]="true" header="Filter results by:">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-6 ui-lg-3">
+        <label class="label" style="padding:0px 10px;">Select:</label>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType" pTooltip="Show employees that have this status"
+          tooltipPosition="bottom"></p-selectButton>
+      </div>
+      <div class="ui-g-12 ui-md-6 ui-lg-2">
+        <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType"
+          pTooltip="Show employees that are paid this way" tooltipPosition="bottom"></p-selectButton>
+      </div>
     </div>
-    <div class="ui-g-12 ui-md-6 ui-lg-2">
-      <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType" pTooltip="Show employees that are paid this way"
-        tooltipPosition="bottom"></p-selectButton>
+    <p-footer>
+      <div style="text-align: right">
+        <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom"
+          class="ui-button-info" label="Generate Report" (click)=getEmployeesForReport()></button>
+      </div>
+    </p-footer>
+  </p-panel>
+  <div class="ui-g">&nbsp;</div>
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0">
+    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+      No matching data for the selected criteria
     </div>
   </div>
-  <p-footer>
-    <div style="text-align: right">
-      <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom" class="ui-button-info"
-        label="Generate Report" (click)=getEmployeesForReport()></button>
-    </div>
-  </p-footer>
-</p-panel>
-<div class="ui-g">&nbsp;</div>
-<div class="ui-g">
-  <p-table #dt [columns]="cols" [value]="_listEmployeeLoginData" [paginator]="true" [rows]="20" [responsive]="false"
-    dataKey="ID">
-    <ng-template pTemplate="caption">
-      <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
-        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp;
-          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+  <div class="ui-g" *ngIf="showReport">
+    <p-table #dt [columns]="cols" [value]="_listEmployeeLoginData" [paginator]="true" [rows]="20" [responsive]="false"
+      dataKey="ID">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+          </div>
         </div>
-      </div>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-          {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
-            ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
-        </th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-      <tr [pSelectableRow]="rowData">
-        <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width" [style.text-align]="col.align">
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width"
+            [style.text-align]="col.align">
 
-          <div *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0">
-            {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
-          </div>
-          <div *ngIf="col.header.indexOf('Inactive') == -1 && col.header.indexOf('Salaried') ==-1">
-            {{rowData[col.field]}}
-          </div>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+            <div *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0">
+              {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+            </div>
+            <div *ngIf="col.header.indexOf('Inactive') == -1 && col.header.indexOf('Salaried') ==-1">
+              {{rowData[col.field]}}
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</ng-container>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <div [innerHtml]="helpText" class="helpDisplayClass"></div>
 </p-sidebar>

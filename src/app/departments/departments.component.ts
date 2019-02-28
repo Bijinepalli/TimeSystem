@@ -20,7 +20,7 @@ export class DepartmentsComponent implements OnInit {
   ParamSubscribe: any;
 
   cols: any;
-  _recData: any;
+  _recData = 0;
   visibleHelp = false;
   helpText: string;
   _HasEdit = false;
@@ -41,6 +41,9 @@ export class DepartmentsComponent implements OnInit {
   deptEmployeesDialog = false;
   _deptEmployeePageNo: number;
   deptEmployeeHdr = '';
+  showSpinner: boolean;
+  IsSecure: boolean;
+  showReport: boolean;
 
 
   /* #region Constructor */
@@ -53,7 +56,25 @@ export class DepartmentsComponent implements OnInit {
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
     public datepipe: DatePipe
-  ) { }
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+
   /* #endregion*/
 
   /* #region Page Life Cycle Methods*/
@@ -63,14 +84,15 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
-      this.ClearAllProperties();
-      this.Initialisations();
+      this.IsSecure = false;
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
         this.CheckSecurity(SplitVals[SplitVals.length - 1]);
-        this.AddFormControls();
-        this.GetMethods();
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
   }
@@ -78,11 +100,12 @@ export class DepartmentsComponent implements OnInit {
 
   ClearAllProperties() {
     this.cols = {};
-    this._recData = '';
+    this._recData = 0;
 
     this._departmentsPageNo = 0;
     this._departmentList = [];
     this._HasEdit = true;
+    this.showReport = false;
   }
 
   Initialisations() {
@@ -95,17 +118,23 @@ export class DepartmentsComponent implements OnInit {
       { field: 'Name', header: 'Employee Name', align: 'left', width: '150px' },
       { field: 'EmailAddress', header: 'Email', align: 'left', width: 'auto' },
     ];
+    this.AddFormControls();
+    this.GetMethods();
   }
-
   CheckSecurity(PageId: string) {
-    this._HasEdit = true;
-
+    this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
-        if (data != null && data.length > 0) {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
           }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
       });
   }
@@ -132,12 +161,17 @@ export class DepartmentsComponent implements OnInit {
   }
 
   getDepartments() {
+    this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getDepartments('')
       .subscribe((data) => {
         if (data !== undefined && data !== null && data.length > 0) {
           this._departmentList = data;
-          this._recData = data.length + ' departments found';
+          this._recData = data.length;
         }
+        this.showReport = true;
+        this.showSpinner = false;
       });
   }
 

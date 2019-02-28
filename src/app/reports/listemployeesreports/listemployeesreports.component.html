@@ -12,6 +12,7 @@
   </div>
 </div>
 <br>
+<ng-container *ngIf="IsSecure">
 <p-panel [toggleable]="true" header="Filter results by:">
   <div class="ui-g">
     <div class="ui-g-1 label">
@@ -75,7 +76,14 @@
   </p-footer>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
-<div class="ui-g">
+
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0">
+  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    No matching data for the selected criteria
+  </div>
+</div>
+
+<div class="ui-g" *ngIf="showReport">
   <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true" [paginator]="true"
     [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true">
     <ng-template pTemplate="caption">
@@ -132,6 +140,10 @@
     </ng-template>
   </p-table>
 </div>
+</ng-container>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
 
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <p-scrollPanel [style]="{width: '100%', height: '100%'}">
