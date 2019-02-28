@@ -1,4 +1,4 @@
-<p-confirmDialog></p-confirmDialog>
+
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Departments <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
@@ -6,6 +6,7 @@
       (click)="showHelp('CompanySelect.htm')"></i>
   </div>
 </div>
+<ng-container *ngIf="IsSecure">
 <div class="ui-g" style="height:50px;">
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
@@ -13,12 +14,17 @@
       class="ui-button-info" label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
   </div>
 </div>
-<div class="ui-g">
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    No matching data for the selected criteria
+  </div>
+</div>
+<div class="ui-g" *ngIf="showReport && _recData > 0">
   <p-table #dt [columns]="cols" [value]="_departmentList" [responsive]="false" dataKey="ID" [paginator]="true"
     [rows]="20" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} departments found</div>
         <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format"
@@ -127,3 +133,14 @@
     </div>
   </p-footer>
 </p-dialog>
+</ng-container>
+<p-confirmDialog></p-confirmDialog>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
+
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '800px'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-scrollPanel>
+</p-sidebar>

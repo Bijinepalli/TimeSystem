@@ -14,6 +14,7 @@
   </div>
 </div>
 <br>
+<ng-container *ngIf="IsSecure">
 <p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-3">
@@ -34,7 +35,7 @@
   </p-footer>
 </p-panel>
 <div *ngIf="changeCodeList">
-  <div class="ui-g-12">
+  <div class="ui-g">
     Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? (_endDate):'Latest'}}
     <!-- | date : 'dd-MM-yyyy' -->
   </div>
@@ -91,7 +92,16 @@
       label="Start Over" (click)=startOver()></button>
   </div>
 </div>
-<div class="ui-g-12" *ngIf="showReport">
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0 && changeCodeList">
+  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    No matching data for the selected criteria
+  </div>
+  <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
+    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
+      label="Start Over" (click)="startOver()"></button>
+  </div>
+</div>
+<div class="ui-g" *ngIf="showReport">
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" (sortFunction)="customSort($event)"
     [customSort]="true">
     <ng-template pTemplate="caption">
@@ -134,6 +144,7 @@
     </ng-template>
   </p-table>
 </div>
+</ng-container>
 <!-- <div class="spinner__container"> -->
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>

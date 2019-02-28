@@ -1,18 +1,18 @@
-<ng-container *ngIf="IsSecure">
-  <div class="ui-g ui-g-nopad mainHeader">
-    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-      Holidays <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-        style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-        (click)="showHelp('HolidaySelect.htm')"></i>
-    </div>
-    <div class="ui-g-3 ui-md-2 ui-g-nopad">
-      <div class="ui-g-3 ui-md-6"></div>
-      <div class="ui-g-3 ui-md-4"></div>
-      <div class="ui-g-6 ui-md-2 ui-g-nopad">
-        <!-- <a (click)="showHelp('HolidaySelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
-      </div>
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Holidays <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="showHelp('HolidaySelect.htm')"></i>
+  </div>
+  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+    <div class="ui-g-3 ui-md-6"></div>
+    <div class="ui-g-3 ui-md-4"></div>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      <!-- <a (click)="showHelp('HolidaySelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
     </div>
   </div>
+</div>
+<ng-container *ngIf="IsSecure">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-10"></div>
     <div class="ui-g-12 ui-md-2" style="text-align: right">
@@ -31,12 +31,17 @@
     </div>
   </p-panel>
   <div class="ui-g">&nbsp;</div>
-  <div class="ui-g">
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+      No matching data for the selected criteria
+    </div>
+  </div>
+  <div class="ui-g"  *ngIf="showReport && _recData > 0">
     <p-table #dt [columns]="cols" [value]="_holidays" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
       (sortFunction)="customSort($event)" [customSort]="true">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} holidays found</div>
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format"

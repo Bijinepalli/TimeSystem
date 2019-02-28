@@ -24,7 +24,7 @@ export class HolidaysComponent implements OnInit {
   _years; any;
   selectedYear: any;
   cols: any;
-  _recData: any;
+  _recData = 0;
   _helpPage: any;
   _sidebarHelp = false;
   _dialogwidth: number;
@@ -42,6 +42,7 @@ export class HolidaysComponent implements OnInit {
   IsSecure = false;
   ParamSubscribe: any;
   DisplayDateFormat = '';
+  showReport: boolean;
 
   constructor(
     private router: Router,
@@ -144,19 +145,21 @@ export class HolidaysComponent implements OnInit {
     this.getHolidays();
     this.addControls();
   }
-   /* #endregion*/
+  /* #endregion*/
 
   getHolidays() {
+    this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getHolidays(this.selectedYear, this._yec.HolidayCode + this.selectedYear)
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null) {
             this._holidays = data;
-            this._recData = data.length + ' holidays found';
-          } else {
-            this._holidays = [];
-            this._recData = 'No holidays found';
+            this._recData = data.length;
           }
+          this.showReport = true;
+          this.showSpinner = false;
         }
       );
   }
