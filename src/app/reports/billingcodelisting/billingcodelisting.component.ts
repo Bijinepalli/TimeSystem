@@ -31,7 +31,7 @@ export class BillingcodelistingComponent implements OnInit {
 
   _DateFormat: any;
   _DisplayDateFormat: any;
-
+  _sortArray = [];
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -199,6 +199,7 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
         { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+        { field: 'CreatedOnSearch', header: 'Created On DT', align: 'center', width: '150px' },
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
@@ -218,6 +219,7 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
       ];
     }
+    this._sortArray = ['Key', 'ClientName', 'Inactive', 'CreatedOnSearch', 'BillingCycle', 'CompanyName', 'ProjectName'];
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
