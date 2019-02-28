@@ -113,10 +113,11 @@ export class HolidaysreportComponent implements OnInit {
   getHolidayYears() {
     this.showSpinner = true;
     this._years = [];
-    this._years.push({ label: 'All Years', value: 0 });
+    this._years.push({ label: 'All Years', value: '0' });
     this.timesysSvc.getHolidayYears()
       .subscribe(
         (data) => {
+          console.log(data);
           for (let i = 0; i < data.length; i++) {
             this._years.push({ label: data[i].CalendarYear.toString(), value: data[i].CalendarYear.toString() });
           }
@@ -138,6 +139,7 @@ export class HolidaysreportComponent implements OnInit {
     this.timesysSvc.getHolidayList(year)
       .subscribe(
         (data) => {
+          console.log(data);
           this.showReport = false;
           this._holidayList = [];
           this._recData = 0;
