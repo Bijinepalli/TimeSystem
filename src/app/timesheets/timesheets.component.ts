@@ -120,6 +120,12 @@ export class TimesheetsComponent implements OnInit {
     this._timePeriods = [];
     this.selectTimePeriod = null;
     this.showReport = false;
+    this.HoursTable = false;
+    this.Hourschrg = false;
+    this._hoursbytimesheetlist = [];
+    this._hoursData = 0;
+    this._startDate = null;
+    this._endDate = null;
     this.showSpinner = false;
   }
 
