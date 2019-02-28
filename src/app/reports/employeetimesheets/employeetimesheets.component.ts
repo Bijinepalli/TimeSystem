@@ -85,6 +85,7 @@ export class EmployeetimesheetsComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -122,6 +123,7 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.visibleHelp = false;
     this.helpText = '';
     this.selectedEmployeeName = '';
+    this.showSpinner = false;
   }
 
   Initialisations() {
@@ -180,6 +182,7 @@ export class EmployeetimesheetsComponent implements OnInit {
     );
   }
   generateReport() {
+    this.showSpinner = true;
     const Mode = '0';
     this.selectedEmployeeName = this.codes.find(m => m.value === this.selectedCode).label.toString();
     this.timesysSvc.getEmployeeTimeSheetList(this.selectedCode.toString(), Mode)

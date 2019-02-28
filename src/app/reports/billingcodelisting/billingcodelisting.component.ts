@@ -73,6 +73,7 @@ export class BillingcodelistingComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -95,10 +96,8 @@ export class BillingcodelistingComponent implements OnInit {
     this.billingType = [];
     this.selectedType = 0;
     this.selectedBillingType = 0;
-
     this._reports = [];
     this.cols = {};
-
     this._recData = '';
     this.showReport = false;
     this.visibleHelp = false;
@@ -145,51 +144,32 @@ export class BillingcodelistingComponent implements OnInit {
       case '0':
         this.timesysSvc.listAllClientItems(mode).subscribe(
           (data) => {
-            this._reports = [];
-            if (data !== undefined && data !== null
-              && data.length > 0) {
-              /*const dataParsed = JSON.parse(data, function (key, value) {
-                if (key === "CreatedOnDT") {
-                  return new Date(value);
-                } else {
-                  return value;
-                }
-              });*/
-              this._reports = data;
-              console.log(this._reports);
-              this.showReport = true;
-            }
-            this._recData = this._reports.length;
-            this.showSpinner = false;
+            this.showTable(data);
           });
         break;
       case '1':
         this.timesysSvc.listAllProjectData(mode).subscribe(
           (data) => {
-            this._reports = [];
-            if (data !== undefined && data !== null
-              && data.length > 0) {
-              this._reports = data;
-              this.showReport = true;
-            }
-            this._recData = this._reports.length;
-            this.showSpinner = false;
+            this.showTable(data);
           });
         break;
       case '2':
         this.timesysSvc.listAllBillingItems(mode).subscribe(
           (data) => {
-            this._reports = [];
-            if (data !== undefined && data !== null
-              && data.length > 0) {
-              this._reports = data;
-              this.showReport = true;
-            }
-            this._recData = this._reports.length;
-            this.showSpinner = false;
+            this.showTable(data);
           });
         break;
     }
+  }
+  showTable(data: any) {
+    this._reports = [];
+    if (data !== undefined && data !== null
+      && data.length > 0) {
+      this._reports = data;
+      this.showReport = true;
+    }
+    this._recData = this._reports.length;
+    this.showSpinner = false;
   }
 
   setCols(type: string) {

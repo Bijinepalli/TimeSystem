@@ -96,13 +96,13 @@ export class HoursbyemployeeComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
-        this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
           this.ClearAllProperties();
           this.IsSecure = true;
@@ -110,6 +110,7 @@ export class HoursbyemployeeComponent implements OnInit {
         } else {
           this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
+        this.showSpinner = false;
       });
   }
 
@@ -247,6 +248,7 @@ export class HoursbyemployeeComponent implements OnInit {
     }
   }
   selectAll() {
+    this.showSpinner = true;
     this._selectcheckbox = [];
     for (let i = 0; i < this._displayCheckBoxes.length; i++) {
       this._selectcheckbox.push(this._displayCheckBoxes[i].value);
@@ -254,6 +256,7 @@ export class HoursbyemployeeComponent implements OnInit {
     if (this.allcheckbox === false) {
       this._selectcheckbox = [];
     }
+    this.showSpinner = false;
   }
   selectcheck() {
     if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
@@ -394,7 +397,6 @@ export class HoursbyemployeeComponent implements OnInit {
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.selectedassignStatus = 0;
-    this.showSpinner = false;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();

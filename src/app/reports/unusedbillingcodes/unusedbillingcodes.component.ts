@@ -84,6 +84,7 @@ export class UnusedbillingcodesComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -196,6 +197,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     this.IsAdmin = true;
   }
   deleteCodes() {
+    this.showSpinner = true;
     this.confSvc.confirm({
       message: 'Are you sure you want to delete the selected item(s) ?',
       header: 'Confirmation',
@@ -221,8 +223,10 @@ export class UnusedbillingcodesComponent implements OnInit {
         this.getReports();
       }
     });
+    this.showSpinner = false;
   }
   setHeader() {
+    this.showSpinner = true;
     if (this.selectedCodeType === 0) {
       switch (this.selectedUsageType.toString()) {
         case '0':
@@ -260,6 +264,7 @@ export class UnusedbillingcodesComponent implements OnInit {
           break;
       }
     }
+    this.showSpinner = false;
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)

@@ -77,6 +77,7 @@ export class PeriodendhoursComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -109,6 +110,7 @@ export class PeriodendhoursComponent implements OnInit {
     this.visibleHelp = false;
     this.showBillingCodeList = false;
     this.changeCodeList = false;
+    this.showSpinner = false;
   }
 
   Initialisations() {

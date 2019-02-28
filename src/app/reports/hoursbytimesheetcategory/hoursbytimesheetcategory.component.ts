@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { BillingCodes, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-hoursbytimesheetcategory',
@@ -27,10 +28,19 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   helpText: any;
   visibleHelp = false;
   showTotals = false;
+  showTotalsonGenerate = false;
   DisplayDateFormat = '';
   ParamSubscribe: any;
   IsSecure = false;
 
+  @ViewChild('dt') dt: Table;
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -103,6 +113,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     this.helpText = '';
     this.visibleHelp = false;
     this.showTotals = false;
+    this.showTotalsonGenerate = false;
   }
   Initialisations() {
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
@@ -115,6 +126,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     this._endDate = '';
   }
   generateReport() {
+    this.resetSort();
     this.showSpinner = true;
     this.buildCols();
     // if (this.showAll === false) {
@@ -143,6 +155,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     this._billingCodesSpecial.startDate = _start;
     this._billingCodesSpecial.endDate = _end;
     this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+    this.showTotalsonGenerate = this.showTotals === true ? true : false;
     // }
     // else {
     //   this._billingCodesSpecial.startDate = '';

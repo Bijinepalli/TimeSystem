@@ -70,7 +70,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
       this.Initialisations();
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         this.GetMethods();
       }
     });
