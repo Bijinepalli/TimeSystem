@@ -139,7 +139,7 @@ export class Clients {
     RateID?: number;
     ClientID?: number;
     RateMode?: string;
-    CreatedOnDT?: Date;
+    CreatedOnSearch?: Date;
 }
 export class MasterPages {
     ID?: number;
