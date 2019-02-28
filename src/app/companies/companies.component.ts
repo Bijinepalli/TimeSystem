@@ -17,15 +17,6 @@ export class CompaniesComponent implements OnInit {
   selectedYear: number;
   visibleHelp: boolean;
   helpText: string;
-
-  constructor(
-    private route: ActivatedRoute,
-    private confSvc: ConfirmationService,
-    private msgSvc: MessageService,
-    private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
-  ) { }
-
   _companies: Companies[] = [];
   _companyHours: Companies[] = [];
   _yec: YearEndCodes = new YearEndCodes();
@@ -50,9 +41,105 @@ export class CompaniesComponent implements OnInit {
   _years: any;
 
   _HasEdit = true;
+  showSpinner = false;
+
+  ParamSubscribe: any;
+  IsSecure = false;
+
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.CheckSecurity();
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  ClearAllProperties() {
+    // this.selectedYear = null;
+    this.visibleHelp = false;
+    this.helpText = '';
+    this._companies = [];
+    this._companyHours = [];
+    this._yec = new YearEndCodes();
+    this._bc = new BillingCode();
+    this.cols = {};
+    this._recData = '';
+
+    this.companyDialog = false;
+    this.companyHolidayDialog = false;
+    this._slctedCompanyId = null;
+
+    this._frm = new FormGroup({});
+    this.chkDefaultCompany = false;
+    this._selectedCompany = {};
+    this._IsEdit = false;
+
+    this._slctHolidays = [];
+    this._slctHolidaysSaved = [];
+    this._availableHolidays = [];
+    this._years = {};
+
+    this._HasEdit = true;
+  }
+  Initialisations() {
+    // this.CheckSecurity();
+    this.showSpinner = true;
     this.cols = [
       { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
       { field: 'DefaultCompany', header: 'Default', align: 'center', width: '120px' },
@@ -78,22 +165,22 @@ export class CompaniesComponent implements OnInit {
     this.addControls();
   }
 
-  CheckSecurity() {
-    this._HasEdit = true;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-          params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = false;
-              }
-            }
-          });
-      }
-    });
-  }
+  // CheckSecurity() {
+  //   this._HasEdit = true;
+  //   this.route.queryParams.subscribe(params => {
+  //     if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+  //       this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
+  //         params['Id'].toString())
+  //         .subscribe((data) => {
+  //           if (data != null && data.length > 0) {
+  //             if (data[0].HasEdit) {
+  //               this._HasEdit = false;
+  //             }
+  //           }
+  //         });
+  //     }
+  //   });
+  // }
 
   getCompanyUsedHours() {
     this.timesysSvc.getCompaniesWithUseHours(this._bc.NonBillable, this._yec.HolidayCode)
@@ -133,6 +220,7 @@ export class CompaniesComponent implements OnInit {
         (error) => {
           console.log(error);
         });
+        this.showSpinner = false;
   }
 
   addCompany() {

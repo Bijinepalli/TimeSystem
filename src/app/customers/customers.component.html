@@ -12,6 +12,7 @@
     </div>
   </div>
 </div>
+<ng-container *ngIf="IsSecure">
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
   <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
@@ -36,7 +37,7 @@
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+          <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
@@ -126,6 +127,11 @@
     </div>
   </p-footer>
 </p-dialog>
+</ng-container>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
+
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <div [innerHtml]="helpText" class="helpDisplayClass"></div>
 </p-sidebar>

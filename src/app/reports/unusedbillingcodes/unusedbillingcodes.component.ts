@@ -37,7 +37,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   showSpinner = false;
   showReport = false;
   ParamSubscribe: any;
-  IsSecure: boolean;
+  IsSecure = false;
 
   constructor(
     private timesysSvc: TimesystemService,

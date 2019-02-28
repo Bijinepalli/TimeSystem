@@ -1,66 +1,65 @@
 <div class="ui-g">
-    <form [formGroup]="appSettingsFormGroup" (ngSubmit)="onSubmit()">
-      <p-scrollPanel [style]="{width: '100%', height: '550px'}">
-        <p-table #dt [columns]="cols" [value]="_appsettings" [rows]="20" [responsive]="false" dataKey="Id">
-          <ng-template pTemplate="caption">
-            <div class="ui-g ui-g-nopad recordsBar">
-              <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
-              <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-                <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-                <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                  style="width:auto"> &nbsp;
-                <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-              </div>
+  <form [formGroup]="appSettingsFormGroup" (ngSubmit)="onSubmit()">
+    <p-scrollPanel [style]="{width: '100%', height: '550px'}">
+      <p-table #dt [columns]="cols" [value]="_appsettings" [rows]="20" [responsive]="false" dataKey="Id">
+        <ng-template pTemplate="caption">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+              <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                style="width:auto"> &nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width: 3em">
-              </th>
-              <th>Type</th>
-              <th>Data Key</th>
-              <th>Description</th>
-              <th>Value</th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-            <tr [pSelectableRow]="rowData">
-              <td>
-                <p-checkbox binary="true" formControlName="chkAppSetting_{{rowData.Id}}" (onChange)="toggleControls(rowData.Id)"></p-checkbox>
-              </td>
-              <td>
-                {{rowData.Type}}
-              </td>
-              <td>
-                {{rowData.DataKey}}
-              </td>
-              <td>
-                {{rowData.Description}}
-              </td>
-              <td>
-                <div *ngIf="_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1">
-                  <input type="text" pInputText style="width:100%" required [value]="rowData.Value" formControlName="txtAppSettingVal_{{rowData.Id}}">
-                </div>
-                <div *ngIf="!(_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1)">
-                  <input type="hidden" [value]="rowData.Value" formControlName="hdnAppSettingVal_{{rowData.Id}}">
-                  {{rowData.Value}}
-                </div>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-scrollPanel>
-      <p-footer>
-        <div class="ui-g" style="text-align: right">
-          <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" class="ui-button-success" type="submit" [disabled]="hasFormErrors()"></button>
-            &nbsp;
-            <button pButton label="Cancel" (click)="CancelClick()" class="ui-button-danger"></button>
           </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 3em">
+            </th>
+            <th>Type</th>
+            <th>Data Key</th>
+            <th>Description</th>
+            <th>Value</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td>
+              <p-checkbox binary="true" formControlName="chkAppSetting_{{rowData.Id}}" (onChange)="toggleControls(rowData.Id)"></p-checkbox>
+            </td>
+            <td>
+              {{rowData.Type}}
+            </td>
+            <td>
+              {{rowData.DataKey}}
+            </td>
+            <td>
+              {{rowData.Description}}
+            </td>
+            <td>
+              <div *ngIf="_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1">
+                <input type="text" pInputText style="width:100%" required [value]="rowData.Value" formControlName="txtAppSettingVal_{{rowData.Id}}">
+              </div>
+              <div *ngIf="!(_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1)">
+                <input type="hidden" [value]="rowData.Value" formControlName="hdnAppSettingVal_{{rowData.Id}}">
+                {{rowData.Value}}
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </p-scrollPanel>
+    <p-footer>
+      <div class="ui-g" style="text-align: right">
+        <div class="ui-g-12 ui-md-12">
+          <button pButton label="Save" class="ui-button-success" type="submit" [disabled]="hasFormErrors()"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="CancelClick()" class="ui-button-danger"></button>
         </div>
-      </p-footer>
-      <p-confirmDialog></p-confirmDialog>
-      <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess"></p-toast>
-    </form>
-  </div>
-  
+      </div>
+    </p-footer>
+  </form>
+</div>
+<p-confirmDialog></p-confirmDialog>
+<p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess"></p-toast>

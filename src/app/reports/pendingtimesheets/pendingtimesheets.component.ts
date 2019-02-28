@@ -9,6 +9,7 @@ import { CommonService } from '../../service/common.service';
 import { TimesheetsComponent } from 'src/app/timesheets/timesheets.component';
 import { parse } from 'querystring';
 import { DateFormats } from 'src/app/model/constants';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-pendingtimesheets',
@@ -35,12 +36,90 @@ export class PendingtimesheetsComponent implements OnInit {
   _selectedEmployees: TimeSheet;
   visibleHelp: boolean;
   helpText: string;
+  ParamSubscribe: any;
+  IsSecure = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private commonSvc: CommonService, private datepipe: DatePipe) {
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private commonSvc: CommonService,
+    private datepipe: DatePipe
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
   }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  ClearAllProperties() {
+    this.dates = [];
+    this.dateFormat = '';
+    this.periodEnd = '';
+    this.selectedDate = '';
+    this.timesheet = [];
+    this.previousDates = '';
+    this.submittedTimesheets = [];
+    this.timesheetDate = [];
+    this._reports = [];
+    this.showReport = false;
+    this.cols = {};
+    this.byCob = false;
+    this.ccFinance = false;
+    this._recData = 0;
+    this._selectedEmployees = new TimeSheet();
+    this.visibleHelp = false;
+    this.helpText = '';
+  }
+  Initialisations() {
     this.cols = [
       { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },

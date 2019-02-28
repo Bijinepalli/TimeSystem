@@ -40,7 +40,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
   errMsg: string;
   ParamSubscribe: any;
-  IsSecure: boolean;
+  IsSecure = false;
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -78,6 +79,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   ngOnInit() {
     this.showSpinner = true;
     this.IsSecure = false;
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
@@ -209,7 +211,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDate = '';
   }
   changeCodes() {

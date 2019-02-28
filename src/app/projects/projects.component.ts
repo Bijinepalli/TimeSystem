@@ -22,16 +22,6 @@ export class ProjectsComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
   DisplayDateTimeFormat = '';
-
-  constructor(
-    private route: ActivatedRoute,
-    private confSvc: ConfirmationService,
-    private msgSvc: MessageService,
-    private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
-    private datePipe: DatePipe,
-  ) { }
-
   cols: any;
   _bc: BillingCode = new BillingCode();
   _projects: Projects[] = [];
@@ -42,14 +32,79 @@ export class ProjectsComponent implements OnInit {
   _IsEdit = false;
   _selectedProject: Projects;
   chkInactive = false;
+  showSpinner = false;
 
   _HasEdit = true;
 
+  ParamSubscribe: any;
+  IsSecure: boolean;
+
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private commonSvc: CommonService,
+    private route: ActivatedRoute,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
+
   ngOnInit() {
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+
+  Initialisations() {
     this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
-
-    this.CheckSecurity();
-
     this._status = [
       { label: 'Active', value: '1' },
       { label: 'Inactive', value: '0' },
@@ -66,24 +121,25 @@ export class ProjectsComponent implements OnInit {
     this.getProjects();
     this.getCompanies();
   }
-
-  CheckSecurity() {
+  ClearAllProperties() {
+    this._selectedStatus = '';
+    this._status = [];
+    this.projectDialog = false;
+    this.projectHdr = '';
+    this.visibleHelp = false;
+    this.helpText = '';
+    this.cols = {};
+    this._bc = new BillingCode();
+    this._projects = [];
+    this._companies = [];
+    this._recData = '';
+    this._frm = new FormGroup({});
+    this._IsEdit = false;
+    this._selectedProject = new Projects();
+    this.chkInactive = false;
+    this.showSpinner = false;
     this._HasEdit = true;
-    this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-          params['Id'].toString())
-          .subscribe((data) => {
-            if (data != null && data.length > 0) {
-              if (data[0].HasEdit) {
-                this._HasEdit = false;
-              }
-            }
-          });
-      }
-    });
   }
-
   changeStatus() {
     if (this._selectedStatus === '2') {
       this.cols = [
@@ -103,6 +159,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   getCompanies() {
+    this.showSpinner = true;
     this.timesysSvc.getCompanies()
       .subscribe(
         (data) => {
@@ -113,11 +170,13 @@ export class ProjectsComponent implements OnInit {
           } else {
             this._companies = [];
           }
+          this.showSpinner = false;
         }
       );
   }
 
   getProjects() {
+    this.showSpinner = true;
     this.timesysSvc.getProjects(this._bc.Project)
       .subscribe(
         (data) => {
@@ -154,6 +213,7 @@ export class ProjectsComponent implements OnInit {
           } else {
             this._recData = 'No projects found';
           }
+          this.showSpinner = false;
         }
       );
   }
@@ -257,6 +317,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   SaveProjectSPCall() {
+    this.showSpinner = true;
     this.timesysSvc.Project_InsertOrUpdate(this._selectedProject)
       .subscribe(
         (outputData) => {
@@ -277,8 +338,10 @@ export class ProjectsComponent implements OnInit {
         (error) => {
           console.log(error);
         });
+    this.showSpinner = false;
   }
   deleteProject(data: Projects) {
+    this.showSpinner = true;
     data.ChargeType = this._bc.Project;
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + data.ProjectName + '?',
@@ -314,8 +377,8 @@ export class ProjectsComponent implements OnInit {
       reject: () => {
         /* do nothing */
       }
-
     });
+    this.showSpinner = false;
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['CreatedOn'], []);

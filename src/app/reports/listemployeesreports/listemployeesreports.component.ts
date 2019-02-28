@@ -1,12 +1,13 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import { TimesystemService } from '../../service/timesystem.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-listemployeesreports',
@@ -36,13 +37,78 @@ export class ListemployeesreportsComponent implements OnInit {
   visibleHelp = false;
   helpText: any;
   DisplayDateFormat = '';
+  showSpinner = false;
+  ParamSubscribe: any;
+  IsSecure = false;
+  _HasEdit = true;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private fb: FormBuilder,
-    private datePipe: DatePipe, private commonSvc: CommonService) { }
+  constructor(private timesysSvc: TimesystemService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private commonSvc: CommonService) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+    this.Initialisations();
+    this.getEmployeesForReport();
+  }
+  /* #endregion */
 
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
+          this.IsSecure = true;
+          this.Initialisations();
+          this.getEmployeesForReport();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  Initialisations() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._startDate = '';
     this._endDate = '';
     this._status = [
@@ -102,7 +168,30 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
     this.selectedColumns = this._defaultselected;
-    this.getEmployeesForReport();
+  }
+
+  ClearAllProperties() {
+    this._status = [];
+    this._paid = [];
+    this._Ipay = [];
+    this._timesheets = [];
+    this._holidays = [];
+    this._statusselected = '0';
+    this._paidselected = '';
+    this._Ipayselected = '';
+    this._timesheetsselected = '';
+    this._holidaysselected = '';
+    this._headerLabels = [];
+    this._defaultselected = [];
+    this.selectedColumns = [];
+    this._listEmployeesForReport = [];
+    this.cols = {};
+    this._recData = '';
+    this._startDate = '';
+    this._endDate = '';
+    this.visibleHelp = false;
+    this.helpText = '';
+    this.showSpinner = false;
   }
   getEmployeesForReport() {
     let _start = '';

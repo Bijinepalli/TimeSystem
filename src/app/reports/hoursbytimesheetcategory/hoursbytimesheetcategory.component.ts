@@ -6,6 +6,7 @@ import { SelectItem } from 'primeng/api';
 import { BillingCodes, BillingCodesSpecial } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-hoursbytimesheetcategory',
@@ -27,13 +28,84 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   visibleHelp = false;
   showTotals = false;
   DisplayDateFormat = '';
+  ParamSubscribe: any;
+  IsSecure = false;
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private datePipe: DatePipe, private commonSvc: CommonService) { }
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private commonSvc: CommonService,
+    private datePipe: DatePipe
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
 
+  ClearAllProperties() {
+    this._startDate = '';
+    this._endDate = '';
+    this.showReport = false;
+    this.showSpinner = false;
+    this._reports = [];
+    this._recData = 0;
+    this.cols = {};
+    this._billingCodesSpecial = new BillingCodesSpecial();
+    this.helpText = '';
+    this.visibleHelp = false;
+    this.showTotals = false;
+  }
+  Initialisations() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();

@@ -101,7 +101,6 @@ export class EmployeeclientratesComponent implements OnInit {
   }
 
   Initialisations() {
-    this.showSpinner = true;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
@@ -109,9 +108,19 @@ export class EmployeeclientratesComponent implements OnInit {
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
   ClearAllProperties() {
+
     this._startDate = '';
-    this._reports = [];
+    this._endDate = '';
+    this.showAll = false;
     this.showReport = false;
+    this.showSpinner = false;
+    this._invoice = null;
+    this._billingCodesSpecial = null;
+    this._reports = [];
+    this._recData = 0;
+    this.cols = [];
+    this.visibleHelp = false;
+    this.helpText = '';
   }
 
   generateReport() {

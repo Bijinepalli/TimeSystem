@@ -8,6 +8,7 @@
     <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
+<ng-container *ngIf="IsSecure">
 <div class="ui-g">
   <div class="ui-g-12">
     <div class="ui-g-12 ui-g-nopad errorBlockHeader" *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
@@ -65,7 +66,7 @@
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+          <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp;
           <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
             label="Start Over" (click)="startOver()"></button>&nbsp;
@@ -97,6 +98,7 @@
     </ng-template>
   </p-table>
 </div>
+</ng-container>
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
