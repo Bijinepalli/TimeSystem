@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from
 import { TimesystemService } from '../service/timesystem.service';
 import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -19,8 +19,8 @@ export class TimesheetsComponent implements OnInit {
 
   cols: any[];
   hourscols: any[];
-  _recData: string;
-  _hoursData: string;
+  _recData = 0;
+  _hoursData = 0;
 
   _timeSheets: TimeSheetForEmplyoee[];
   _timePeriods: TimeSheetBinding[];
@@ -35,25 +35,102 @@ export class TimesheetsComponent implements OnInit {
   _timesheetsTimePeriod: TimeSheet[] = [];
   _timesheetApproval: TimeSheetForApproval[] = [];
 
-  _startDate: string;
-  _endDate: string;
+  _startDate: Date;
+  _endDate: Date;
+
   Hourschrg = false;
   _mainHeader: string;
   HoursTable = false;
   _hoursbytimesheetlist: HoursByTimesheet[] = [];
-  DisplayDateFormat = '';
+
+  _DisplayDateFormat = '';
+  showSpinner = false;
+  ParamSubscribe: any;
+  IsSecure: boolean;
+  _HasEdit: boolean;
+  _DateFormat: any;
+  _TimeStampFormat: any;
+  _DisplayTimeStampFormat: any;
+  showReport = false;
 
   constructor(
-    private timesysSvc: TimesystemService,
     private router: Router,
-    private msgSvc: MessageService,
+    private route: ActivatedRoute,
     private confSvc: ConfirmationService,
-    private datePipe: DatePipe,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
-  ) { }
+    public datepipe: DatePipe
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
+
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.IsSecure = false;
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+  /* #endregion */
+
+  /* #region Basic Methods */
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.ClearAllProperties();
+    this.IsSecure = true;
+    this.showSpinner = false;
+    this.Initialisations();
+  }
+
+  ClearAllProperties() {
+    this.showSpinner = true;
+    this.cols = [];
+    this._timeSheets = [];
+    this._recData = 0;
+
+    this._timePeriods = [];
+    this.selectTimePeriod = null;
+    this.showReport = false;
+    this.showSpinner = false;
+  }
+
+
+  Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
+    this._TimeStampFormat = this.commonSvc.getAppSettingsValue('	TimeStampFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this._DisplayTimeStampFormat = this.commonSvc.getAppSettingsValue('	DisplayTimeStampFormat');
+
     this.cols = [
       { field: 'PeriodEnd', header: 'Period End', align: 'center', width: 'auto' },
       { field: 'Submitted', header: 'Submitted', align: 'center', width: 'auto' },
@@ -63,26 +140,31 @@ export class TimesheetsComponent implements OnInit {
       { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
       { field: 'ApprovalStatus', header: 'Approval Status', align: 'left', width: 'auto' },
     ];
+    this.showSpinner = false;
     this.getTimeSheets();
   }
   getTimeSheets() {
+    this.showSpinner = true;
     this._mainHeader = 'Your Time Sheets';
+    this.showReport = false;
     const Mode = this.selectedValues ? '1' : '0';
     this.timesysSvc.getEmployeeTimeSheetList((sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')), Mode)
       .subscribe(
         (data) => {
+          this._timeSheets = [];
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._timeSheets = data;
-            this._recData = this._timeSheets.length + ' records found';
-          } else {
-            this._timeSheets = [];
-            this._recData = 'No records found';
+            this._recData = data.length;
           }
+          this.showReport = true;
+          this.showSpinner = false;
         }
       );
   }
 
   getTimeSheetPeriods() {
+    this.showSpinner = true;
     this._timePeriods = [];
     this.selectTimePeriod = null;
     // this.selectTimePeriodDate = '';
@@ -91,10 +173,13 @@ export class TimesheetsComponent implements OnInit {
         (data) => {
           this.timesysSvc.getDatebyPeriod().subscribe(
             (data1) => {
+              this._timePeriods = [];
+              this.selectTimePeriod = null;
               if (data !== undefined && data !== null && data.length > 0) {
                 this._timePeriods = data;
                 if (data1 !== undefined && data1 !== null && data1.length > 0) {
-                  const selectedDateVal = data.find(m => this.datePipe.transform(m.code, 'MM-dd-yyyy') === data1[0].PeriodEndDate);
+                  const selectedDateVal = data.find(m =>
+                    this.datepipe.transform(m.code, this._DisplayDateFormat) === data1[0].PeriodEndDate);
                   if (selectedDateVal !== undefined && selectedDateVal !== null) {
                     this.selectTimePeriod = selectedDateVal;
                   } else {
@@ -104,6 +189,7 @@ export class TimesheetsComponent implements OnInit {
                   this.selectTimePeriod = data[0];
                 }
               }
+              this.showSpinner = false;
               this.timesheetDialog = true;
             });
         }
@@ -115,13 +201,16 @@ export class TimesheetsComponent implements OnInit {
   }
 
   OpenHoursCharged() {
+    this.showSpinner = true;
     this._mainHeader = 'Hours by Timesheet Category';
     this.Hourschrg = true;
     const datetoday = new Date();
     datetoday.setMonth(datetoday.getMonth() - 1);
     datetoday.setDate(1);
-    this._startDate = this.datePipe.transform(datetoday, 'MM-dd-yyyy');
-    this._endDate = '';
+    // this._startDate = this.datepipe.transform(datetoday, this._DisplayDateFormat);
+    this._startDate = datetoday;
+    this._endDate = null;
+    this.showSpinner = false;
   }
   viewTimeSheet(rowData: TimeSheetForEmplyoee) {
     this.navigateToTimesheet(rowData.Id, '');
@@ -162,6 +251,9 @@ export class TimesheetsComponent implements OnInit {
   }
 
   createTimesheetDialog() {
+    this.showSpinner = true;
+    this._timesheetsTimePeriod = [];
+    this._timesheetApproval = [];
     if (this.selectTimePeriod !== undefined && this.selectTimePeriod !== null) {
       if (+this.selectTimePeriod.value > 0) {
         this.timesysSvc.getTimeSheetDetails(this.selectTimePeriod.value.toString()).subscribe(
@@ -185,7 +277,9 @@ export class TimesheetsComponent implements OnInit {
                           summary: '',
                           detail: 'A timesheet already has been submitted for this period and waiting for approval.',
                         });
+                        this.showSpinner = false;
                       } else {
+                        this.showSpinner = false;
                         this.confSvc.confirm({
                           message: 'A timesheet already has been submitted for this period.' +
                             'This will be a resubmittal. Do you want to continue?',
@@ -194,39 +288,51 @@ export class TimesheetsComponent implements OnInit {
                           }
                         });
                       }
+                    } else {
+                      this.showSpinner = false;
                     }
                   }
                 );
+            } else {
+              this.showSpinner = false;
             }
           }
         );
 
       } else {
+        this.showSpinner = false;
         this.navigateToTimesheet(this.selectTimePeriod.value, this.selectTimePeriod.code);
       }
+    } else {
+      this.showSpinner = false;
     }
   }
   resubmittal() {
+    this.showSpinner = true;
     if (this._timesheetsTimePeriod !== undefined && this._timesheetsTimePeriod !== null && this._timesheetsTimePeriod.length > 0) {
       this.timesysSvc.getUnSubmittedTimeSheetDetails(
         sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'),
         this._timesheetsTimePeriod[0].PeriodEnd).subscribe(
           (data1) => {
             if (data1 !== undefined && data1 !== null && data1.length > 0) {
+              this.showSpinner = false;
               this.navigateToTimesheet(data1[0].Id, '');
             } else {
               let _selectedTimesheet: TimeSheet = {};
               _selectedTimesheet = new TimeSheet();
               _selectedTimesheet.Id = this.selectTimePeriod.value;
-              _selectedTimesheet.TimeStamp = this.datePipe.transform(new Date(), 'yyyy-MM-dd HH:mm:ss');
+              _selectedTimesheet.TimeStamp = this.datepipe.transform(new Date(), this._TimeStampFormat);
               this.timesysSvc.timesheetCopyInsert(_selectedTimesheet).subscribe(
                 (data2) => {
+                  this.showSpinner = false;
                   if (data2 !== undefined && data2 !== null) {
                     this.navigateToTimesheet(data2, '');
                   }
                 });
             }
           });
+    } else {
+      this.showSpinner = false;
     }
   }
   navigateToTimesheet(TimesheetId, TimesheetDate) {
@@ -239,32 +345,57 @@ export class TimesheetsComponent implements OnInit {
   }
 
   showHours() {
-    this.HoursTable = true;
+    this.showSpinner = true;
+    this.HoursTable = false;
     this.hourscols = [
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
       { field: 'TANDM', header: 'T & M', align: 'center', width: '75px' },
       { field: 'Project', header: 'Project', align: 'center', width: '75px' },
       { field: 'NonBillable', header: 'NonBillable', align: 'center', width: '100px' },
     ];
-    this._hoursData = '0';
+    this._hoursbytimesheetlist = [];
+    this._hoursData = 0;
+    let _start = '';
+    let _end = '';
+
+    if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
+      _start = this.datepipe.transform(this._startDate, this._DateFormat);
+    }
+
+    if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
+      _end = this.datepipe.transform(this._endDate, this._DateFormat);
+    }
+
     this.timesysSvc.getHoursbyTimesheetforEmployee(
-      this._startDate,
-      this._endDate,
+      _start,
+      _end,
       sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString()).subscribe(
         (data) => {
+          this._hoursbytimesheetlist = [];
+          this._hoursData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._hoursbytimesheetlist = data;
-            this._hoursData = data.length.toString();
+            this._hoursData = data.length;
           }
+          this.HoursTable = true;
+          this.showSpinner = false;
         });
   }
+
   returntoTimesheets() {
+    this.showSpinner = true;
     this.HoursTable = false;
     this.Hourschrg = false;
-    this._startDate = '';
-    this._endDate = '';
+    this._hoursbytimesheetlist = [];
+    this._hoursData = 0;
+    this._startDate = null;
+    this._endDate = null;
+    this.showSpinner = false;
+    this.getTimeSheets();
   }
+
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['SubmitDate', 'PeriodEnd'], ['Hours']);
   }
+
 }

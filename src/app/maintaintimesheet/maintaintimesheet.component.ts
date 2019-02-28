@@ -1441,7 +1441,7 @@ export class MaintaintimesheetComponent implements OnInit {
             .subscribe(
               (inputTime) => {
                 // tslint:disable-next-line:max-line-length
-                this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+                this.router.navigate(['/menu/dashboard/'], { queryParams: { Id: -1 }, skipLocationChange: true });
               });
         });
 
@@ -1464,7 +1464,7 @@ export class MaintaintimesheetComponent implements OnInit {
             .subscribe(
               (inputTime) => {
                 // tslint:disable-next-line:max-line-length
-                this.router.navigate(['/menu/dashboard/'], { skipLocationChange: true });
+                this.router.navigate(['/menu/dashboard/'], { queryParams: { Id: -1 }, skipLocationChange: true });
               });
         });
 

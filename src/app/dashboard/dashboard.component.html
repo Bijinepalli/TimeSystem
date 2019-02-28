@@ -1,6 +1,3 @@
-<!-- <div class="ui-g ui-md-12 ui-lg-12" style="height:70px;font-size:30px;">
-  
-</div> -->
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Administration
@@ -10,139 +7,68 @@
 </div>
 <br>
 
-<div class="ui-g" *ngIf="PendingTimesheetsNotification">
-  <div class="ui-g-12 ui-md-12">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 timesheetNotification">
-      {{PendingTimesheetsNotification}}
-    </div>
-  </div>
-</div>
+<ng-container *ngIf="IsSecure">
 
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
-    <div class="ui-g-12 ui-md-12" *ngIf="showOutStandingTimesheets">
-      <div class="ui-g-12 ui-md-12 cardBlock">
-        <div class="ui-g-12 ui-md-12 cardBlockHeader">
-          Outstanding Timesheets
-        </div>
-        <div class="ui-g-12 ui-md-12">
-          <app-outstandingtimesheets></app-outstandingtimesheets>
-        </div>
+  <div class="ui-g" *ngIf="PendingTimesheetsNotification">
+    <div class="ui-g-12 ui-md-12">
+      <div class="ui-g-12 ui-md-12 ui-lg-12 timesheetNotification">
+        {{PendingTimesheetsNotification}}
       </div>
     </div>
-    <div class="ui-g-12 ui-md-12" *ngIf="showApprovalTimesheets">
-      <div class="ui-g-12 ui-md-12 cardBlock">
-        <div class="ui-g-12 ui-md-12 cardBlockHeader">
-          Approval Timesheets
-        </div>
-        <div class="ui-g-12 ui-md-12">
-          <app-approvaltimesheets></app-approvaltimesheets>
+  </div>
+
+  <div class="ui-g">
+
+    <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+
+      <div class="ui-g-12 ui-md-12" *ngIf="showOutStandingTimesheets">
+        <div class="ui-g-12 ui-md-12 cardBlock">
+          <div class="ui-g-12 ui-md-12 cardBlockHeader">
+            Outstanding Timesheets
+          </div>
+          <div class="ui-g-12 ui-md-12">
+            <app-outstandingtimesheets></app-outstandingtimesheets>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
-    <div class="ui-g-12 ui-md-12" *ngIf="showOutStandingTimesheets">
-      <div class="ui-g-12 ui-md-12 cardBlock">
-        <div class="ui-g-12 ui-md-12 cardBlockHeader">
-          Utilization Details
+
+      <div class="ui-g-12 ui-md-12" *ngIf="showApprovalTimesheets">
+        <div class="ui-g-12 ui-md-12 cardBlock">
+          <div class="ui-g-12 ui-md-12 cardBlockHeader">
+            Approval Timesheets
+          </div>
+          <div class="ui-g-12 ui-md-12">
+            <app-approvaltimesheets></app-approvaltimesheets>
+          </div>
         </div>
-        <div class="ui-g-12 ui-md-12">
-          <app-utilizationchart></app-utilizationchart>
+      </div>
+
+    </div>
+
+    <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad">
+
+      <div class="ui-g-12 ui-md-12" *ngIf="showOutStandingTimesheets">
+        <div class="ui-g-12 ui-md-12 cardBlock">
+          <div class="ui-g-12 ui-md-12 cardBlockHeader">
+            Utilization Details
+          </div>
+          <div class="ui-g-12 ui-md-12">
+            <app-utilizationchart></app-utilizationchart>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-</div>
-<!-- 
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Employees
-      </div>
-      <div class="ui-g-12 ui-md-12">
 
-      </div>
     </div>
-  </div>
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Holidays
-      </div>
-      <div class="ui-g-12 ui-md-12">
 
-      </div>
-    </div>
   </div>
 
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Billing Codes
-      </div>
-      <div class="ui-g-12 ui-md-12">
+</ng-container>
 
-      </div>
-    </div>
-  </div>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
 
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-312 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Customers
-      </div>
-      <div class="ui-g-12 ui-md-12">
-
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<!-- 
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Year End
-      </div>
-      <div class="ui-g-12 ui-md-12">
-
-      </div>
-    </div>
-  </div>
-
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Error Log
-      </div>
-      <div class="ui-g-12 ui-md-12">
-
-      </div>
-    </div>
-  </div>
-
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Report
-      </div>
-      <div class="ui-g-12 ui-md-12">
-
-      </div>
-    </div>
-  </div>
-
-  <div class="ui-g-12 ui-md-3">
-    <div class="ui-g-12 ui-md-12 cardBlock">
-      <div class="ui-g-12 ui-md-12 cardBlockMenuHeader">
-        Configuration
-      </div>
-      <div class="ui-g-12 ui-md-12">
-
-      </div>
-    </div>
-  </div> 
-</div>-->
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '800px'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-scrollPanel>
+</p-sidebar>
