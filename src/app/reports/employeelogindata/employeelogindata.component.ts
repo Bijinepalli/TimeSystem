@@ -72,6 +72,7 @@ export class EmployeelogindataComponent implements OnInit {
       }
     });
     this.Initialisations();
+    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -91,6 +92,7 @@ export class EmployeelogindataComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
     this.types = [
       { label: 'Active', value: '0' },
       { label: 'Inactive', value: '1' },
@@ -104,6 +106,7 @@ export class EmployeelogindataComponent implements OnInit {
     this.selectedType = '0';
     this.selectedSalaryType = '2';
     this.getEmployeesForReport();
+    this.showSpinner = false;
   }
 
   ClearAllProperties() {

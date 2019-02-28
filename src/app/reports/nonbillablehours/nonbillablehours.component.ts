@@ -81,6 +81,7 @@ export class NonbillablehoursComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -116,7 +117,7 @@ export class NonbillablehoursComponent implements OnInit {
   }
 
   Initialisations() {
-    // this.showSpinner = true;
+    this.showSpinner = true;
     this.reportType = [
       { label: 'VTX Suite', value: 1 },
       { label: 'Internal Functions', value: 2 },
@@ -149,6 +150,7 @@ export class NonbillablehoursComponent implements OnInit {
     this.totalChecked = true;
     this.showReport = false;
     this._recData = 0;
+    this.showSpinner = false;
   }
 
   changeReportgroup() {

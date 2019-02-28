@@ -85,6 +85,7 @@ export class ListemployeesreportsComponent implements OnInit {
     });
     this.Initialisations();
     this.getEmployeesForReport();
+    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -108,6 +109,7 @@ export class ListemployeesreportsComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._startDate = '';
     this._endDate = '';
@@ -168,6 +170,7 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
     this.selectedColumns = this._defaultselected;
+    this.showSpinner = false;
   }
 
   ClearAllProperties() {
@@ -194,6 +197,7 @@ export class ListemployeesreportsComponent implements OnInit {
     this.showSpinner = false;
   }
   getEmployeesForReport() {
+    this.showSpinner = true;
     let _start = '';
     let _end = '';
     if (this._startDate !== '' && this._startDate !== null) {
@@ -208,8 +212,11 @@ export class ListemployeesreportsComponent implements OnInit {
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
-          this._listEmployeesForReport = data;
-          this._recData = data.length + ' matching employees';
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._listEmployeesForReport = data;
+            this._recData = data.length + ' matching employees';
+            this.showSpinner = false;
+          }
         }
       );
   }

@@ -85,6 +85,7 @@ export class EmployeehoursComponent implements OnInit {
       }
     });
     this.Initialisations();
+    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -107,10 +108,7 @@ export class EmployeehoursComponent implements OnInit {
   }
 
   Initialisations() {
-    // this.showSpinner = true;
-    // const jsonDate = '/Date(1517855400000+0530)/';
-    // const date = new Date(parseInt(jsonDate.substr(6)));
-    // console.log(date);
+    this.showSpinner = true;
     this.hoursType = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
@@ -126,6 +124,7 @@ export class EmployeehoursComponent implements OnInit {
     const today = new Date();
     this._startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this.showSpinner = false;
   }
 
   ClearAllProperties() {
@@ -159,19 +158,21 @@ export class EmployeehoursComponent implements OnInit {
     // if (this.selectedhoursType === '' && this.selectedType === '') {
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
       (data) => {
-        // if (this.selectedType === '0' || this.selectedType === '1') {
-        //   this._employee = data.filter(P => P.Inactive === (this.selectedType === '0' ? false : true));
-        // } else {
-        this._employee = data;
-        // }
-        for (let i = 0; i < this._employee.length; i++) {
-          this._displayCheckBoxes.push({
-            label: this._employee[i].LastName + ' ' + this._employee[i].FirstName,
-            value: this._employee[i].ID
-          });
+        if (data !== undefined && data !== null && data.length > 0) {
+          // if (this.selectedType === '0' || this.selectedType === '1') {
+          //   this._employee = data.filter(P => P.Inactive === (this.selectedType === '0' ? false : true));
+          // } else {
+          this._employee = data;
+          // }
+          for (let i = 0; i < this._employee.length; i++) {
+            this._displayCheckBoxes.push({
+              label: this._employee[i].LastName + ' ' + this._employee[i].FirstName,
+              value: this._employee[i].ID
+            });
+          }
+          this._selectString = 'Employees (' + this._employee.length + ' matching codes found)';
+          this.showBillingCodeList = true;
         }
-        this._selectString = 'Employees (' + this._employee.length + ' matching codes found)';
-        this.showBillingCodeList = true;
         this.showSpinner = false;
       }
     );
@@ -197,6 +198,7 @@ export class EmployeehoursComponent implements OnInit {
     // }
   }
   selectAll() {
+    this.showSpinner = true;
     this._selectcheckbox = [];
     for (let i = 0; i < this._displayCheckBoxes.length; i++) {
       this._selectcheckbox.push(this._displayCheckBoxes[i].value);
@@ -204,13 +206,16 @@ export class EmployeehoursComponent implements OnInit {
     if (this.allcheckbox === false) {
       this._selectcheckbox = [];
     }
+    this.showSpinner = false;
   }
   selectcheck() {
+    this.showSpinner = true;
     if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
       this.allcheckbox = true;
     } else {
       this.allcheckbox = false;
     }
+    this.showSpinner = false;
   }
   generateReport() {
     this.showSpinner = true;

@@ -115,7 +115,7 @@ export class InvoicedataComponent implements OnInit {
       { field: 'ProductCode', header: 'Product Code', align: 'left', width: '150px' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
       { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
-      { field: 'Amount', header: 'Amount', align: 'right', width: '80px' },
+      { field: 'Amount', header: 'Amount', align: 'right', width: '100px' },
       { field: 'StartDate', header: 'Start Date', align: 'center', width: '100px' },
       { field: 'EndDate', header: 'End Date', align: 'center', width: '100px' },
       { field: 'ClientName', header: 'Description', align: 'left', width: 'auto' },

@@ -4,11 +4,15 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
+import { DatePipe } from '@angular/common';
+import { CommonService } from 'src/app/service/common.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-nonbillablehours-addgroup',
   templateUrl: './nonbillablehours-addgroup.component.html',
-  styleUrls: ['./nonbillablehours-addgroup.component.css']
+  styleUrls: ['./nonbillablehours-addgroup.component.css'],
+  providers: [DatePipe]
 })
 export class NonbillablehoursAddgroupComponent implements OnInit {
 
@@ -28,19 +32,104 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
   selectedType: number;
   _nonBillables: NonBillables[] = [];
   _selectednonBillables: NonBillables[] = [];
+  showSpinner = false;
 
   list1: any[];
   list2: any[];
   _popUpHeader = '';
   visibleHelp: boolean;
   helpText: string;
+  ParamSubscribe: any;
+  IsSecure = false;
 
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private datePipe: DatePipe,
+    private commonSvc: CommonService
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute) {
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
   }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+    this.showSpinner = false;
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
+  }
+
+  ClearAllProperties() {
+    this._header = '';
+    this._recData = 0;
+    this.cols = {};
+    this._groups = [];
+    this.groupName = '';
+    this._selectString = '';
+    this._selectcheckbox = [];
+    this._displayCheckBoxes = [];
+    this.allcheckbox = false;
+    this.secondarygroup = false;
+    this.edit = false;
+    this.mode = '';
+    this._Id = 0;
+    this.selectedType = 0;
+    this._nonBillables = [];
+    this._selectednonBillables = [];
+    this.showSpinner = false;
+    this.list1 = [];
+    this.list2 = [];
+    this._popUpHeader = '';
+    this.visibleHelp = false;
+    this.helpText = '';
+  }
+
+  Initialisations() {
     this.cols = [
       { field: 'Group1', header: 'Primary Report Group', align: 'left', width: 'auto' },
       { field: 'ID1', header: 'Delete', align: 'center', width: 'auto' },
@@ -48,7 +137,7 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
       { field: 'Group2', header: 'Secondary Report Group', align: 'left', width: 'auto' },
       { field: 'ID2', header: 'Delete', align: 'center', width: 'auto' },
     ];
-    this.activatedRoute.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this._Id = params['id'] === undefined ? -1 : params['id'];
       this.setheader(this._Id);
       this.timesysSvc.getNonBillableHourGroups((+this._Id + 1).toString())
@@ -74,6 +163,7 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
   }
 
   selectAll() {
+    this.showSpinner = true;
     this._selectcheckbox = [];
     for (let i = 0; i < this._displayCheckBoxes.length; i++) {
       this._selectcheckbox.push(this._displayCheckBoxes[i].value);
@@ -81,14 +171,17 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
     if (this.allcheckbox === false) {
       this._selectcheckbox = [];
     }
+    this.showSpinner = false;
   }
 
   selectcheck() {
+    this.showSpinner = true;
     if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
       this.allcheckbox = true;
     } else {
       this.allcheckbox = false;
     }
+    this.showSpinner = false;
   }
 
   editGroup(Name: string, Id: string, type: string) {
@@ -125,6 +218,7 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
   }
 
   populateCheckboxlist() {
+    this.showSpinner = true;
     this.list1 = [];
     this._popUpHeader = 'Report Group';
     this.timesysSvc.getNonBillables('1')
@@ -149,6 +243,7 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
             }
           }
           this._selectString = 'Non Billables (' + this._nonBillables.length + ') matching codes found';
+          this.showSpinner = false;
         }
       );
   }

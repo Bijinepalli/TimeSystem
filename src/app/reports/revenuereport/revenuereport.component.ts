@@ -82,6 +82,7 @@ export class RevenuereportComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
   CheckSecurity(PageId: string) {
     this.showSpinner = true;

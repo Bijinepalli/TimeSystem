@@ -88,6 +88,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -129,9 +130,11 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this.helpText = '';
     this.visibleHelp = false;
     this.errMsg = '';
+    this.showSpinner = false;
   }
 
   Initialisations() {
+    this.showSpinner = true;
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -162,6 +165,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
     this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this.showSpinner = false;
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -184,6 +188,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     );
   }
   selectAll() {
+    this.showSpinner = true;
     this._selectcheckbox = [];
     for (let i = 0; i < this._displayCheckBoxes.length; i++) {
       this._selectcheckbox.push(this._displayCheckBoxes[i].value);
@@ -191,6 +196,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     if (this.allcheckbox === false) {
       this._selectcheckbox = [];
     }
+    this.showSpinner = false;
   }
   selectcheck() {
     if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
@@ -206,13 +212,13 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.selectedassignStatus = 0;
-    this.showSpinner = false;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
     // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDate = '';
+    this.showSpinner = false;
   }
   changeCodes() {
     this.changeCodeList = false;

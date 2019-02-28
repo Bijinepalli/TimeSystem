@@ -69,6 +69,7 @@ export class HolidaysreportComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
@@ -117,14 +118,16 @@ export class HolidaysreportComponent implements OnInit {
     this.timesysSvc.getHolidayYears()
       .subscribe(
         (data) => {
-          for (let i = 0; i < data.length; i++) {
-            this._years.push({ label: data[i].CalendarYear.toString(), value: data[i].CalendarYear.toString() });
+          if (data !== undefined && data !== null && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              this._years.push({ label: data[i].CalendarYear.toString(), value: data[i].CalendarYear.toString() });
+            }
+            const _date: Date = new Date();
+            this.selectedYear = _date.getFullYear();
+            this.getHolidays();
+            this.showSpinner = false;
           }
-          const _date: Date = new Date();
-          this.selectedYear = _date.getFullYear();
-          this.getHolidays();
-        }
-      );
+        });
   }
 
   getHolidays() {
@@ -138,13 +141,15 @@ export class HolidaysreportComponent implements OnInit {
     this.timesysSvc.getHolidayList(year)
       .subscribe(
         (data) => {
-          this.showReport = false;
-          this._holidayList = [];
-          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
-            this._holidayList = data;
-            this._recData = this._holidayList.length;
-            this.showReport = true;
+            this.showReport = false;
+            this._holidayList = [];
+            this._recData = 0;
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._holidayList = data;
+              this._recData = this._holidayList.length;
+              this.showReport = true;
+            }
           }
           this.showSpinner = false;
         }

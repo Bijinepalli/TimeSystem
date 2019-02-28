@@ -60,9 +60,9 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="showTotals == false ? col.field : ''" [style.width]="col.width">
+          <th *ngFor="let col of columns" [pSortableColumn]="showTotalsonGenerate == false ? col.field : ''" [style.width]="col.width">
             {{col.header}}
-            <p-sortIcon *ngIf="showTotals == false" [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+            <p-sortIcon *ngIf="showTotalsonGenerate == false" [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
               ariaLabelAsc="Activate to sort in ascending order">
             </p-sortIcon>
           </th>
