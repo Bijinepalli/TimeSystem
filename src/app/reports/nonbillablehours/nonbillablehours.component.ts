@@ -24,6 +24,8 @@ export class NonbillablehoursComponent implements OnInit {
   _headerType: string;
   startDate: string;
   endDate: string;
+  _storeStartDate = '';
+  _storeEndDate = '';
   totalChecked = false;
   showReport = false;
   _recData = 0;
@@ -45,9 +47,9 @@ export class NonbillablehoursComponent implements OnInit {
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     private commonSvc: CommonService
-    ) {
-      this.CheckActiveSession();
-      this.commonSvc.setAppSettings();
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
   }
   CheckActiveSession() {
     let sessionActive = false;
@@ -165,9 +167,27 @@ export class NonbillablehoursComponent implements OnInit {
     this.showSpinner = true;
     this.setHeader();
     this.rowdata = {};
-    const start = this.datePipe.transform(this.startDate, this.dateFormat);
-    const end = this.datePipe.transform(this.endDate, this.dateFormat);
-    if (new Date(this.startDate).getFullYear().toString() !== new Date(this.endDate).getFullYear().toString()) {
+    const _dateS = Date.parse(this.startDate);
+      if (Number.isNaN(_dateS)) {
+        const today = new Date();
+        const month = today.getMonth();
+        const year = today.getFullYear();
+        this._storeStartDate = new Date(year, month - 1, 1).toString();
+      } else {
+        this._storeStartDate = this.startDate;
+      }
+    const _dateE = Date.parse(this.endDate);
+    if (Number.isNaN(_dateE)) {
+      const today = new Date();
+      const month = today.getMonth();
+      const year = today.getFullYear();
+      this._storeEndDate = new Date(year, month - 1, 1).toString();
+    } else {
+      this._storeEndDate = this.endDate;
+    }
+    const start = this.datePipe.transform(this._storeStartDate, this.dateFormat);
+    const end = this.datePipe.transform(this._storeEndDate, this.dateFormat);
+    if (new Date(this._storeStartDate).getFullYear().toString() !== new Date(this._storeEndDate).getFullYear().toString()) {
       this.errMsg += 'Date cannot span over years';
       this.showSpinner = false;
     } else {

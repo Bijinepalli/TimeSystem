@@ -118,7 +118,7 @@ export class MasterreportsComponent implements OnInit {
         case 'PM':
           this.menuItems = [
             {
-              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
+              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'], queryParams: { Id: -1 },
               command: (event) => handleSelected(event), title: 'Dashboard'
             },
             {
@@ -136,7 +136,7 @@ export class MasterreportsComponent implements OnInit {
         default:
           this.menuItems = [
             {
-              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'],
+              label: 'Dashboard', icon: 'fa fa-tachometer', routerLink: ['/menu/dashboard'], queryParams: { Id: -1 },
               command: (event) => handleSelected(event), title: 'Dashboard'
             },
           ];
@@ -174,6 +174,6 @@ export class MasterreportsComponent implements OnInit {
     this.visibleSidebar = true;
   }
   navigateTo() {
-    this.router.navigate(['/menu/dashboard'], { skipLocationChange: true });
+    this.router.navigate(['/menu/dashboard'], { queryParams: { Id: -1 }, skipLocationChange: true });
   }
 }

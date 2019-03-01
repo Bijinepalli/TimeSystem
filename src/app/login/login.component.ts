@@ -63,8 +63,8 @@ export class LoginComponent implements OnInit {
 
   // Common Methods
 
-  navigateTo(url: any) {
-    this.router.navigate([url], { skipLocationChange: true });
+  navigateTo(url: any, queryParams: any) {
+    this.router.navigate([url], { queryParams: queryParams, skipLocationChange: true });
   }
 
   onReject() {
@@ -179,9 +179,9 @@ export class LoginComponent implements OnInit {
                   (' ' + this.EmployeeData[0].LastName.toString()) : ''
               ));
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserEmailAddress',
-             this.EmployeeData[0].EmailAddress.toString());
+              this.EmployeeData[0].EmailAddress.toString());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'PayRollName',
-             this.EmployeeData[0].PayRoleID.toString());
+              this.EmployeeData[0].PayRoleID.toString());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'SubmitsTime',
               this.EmployeeData[0].SubmitsTime.toString().toLowerCase());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'IsSupervisor',
@@ -202,11 +202,11 @@ export class LoginComponent implements OnInit {
               this.timesysSvc.InsertForgotPasswordHistory(forgotPasswordHistory).subscribe(dataForgot => {
                 if (dataForgot !== null) {
                   forgotPasswordHistory = dataForgot;
-                  this.navigateTo('/changepassword/' + forgotPasswordHistory.UniqueCode.toString());
+                  this.navigateTo('/changepassword/' + forgotPasswordHistory.UniqueCode.toString(), {});
                 }
               });
             } else {
-              this.navigateTo('/menu/dashboard');
+              this.navigateTo('/menu/dashboard', { Id: -1 });
             }
           }
         }

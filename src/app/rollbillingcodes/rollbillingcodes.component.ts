@@ -15,7 +15,7 @@ import { TimeSheet } from '../model/objects';
 export class RollbillingcodesComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
-
+  _NonBillSelect = false;
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
     private fb: FormBuilder, private commonSvc: CommonService) { }
@@ -52,6 +52,7 @@ export class RollbillingcodesComponent implements OnInit {
     }
   }
   onradioChange(value: string) {
+    this._NonBillSelect = true;
     if (value === '0') {
       this.commonSvc.getAppSettingsValue('TimeSheetIntimationCountDown');
       this.rollBillingForm.controls['txtBenchCode'].setValue('');
