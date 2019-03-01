@@ -154,7 +154,7 @@ export class HolidaysComponent implements OnInit {
     this.timesysSvc.getHolidays(this.selectedYear, this._yec.HolidayCode + this.selectedYear)
       .subscribe(
         (data) => {
-          if (data !== undefined && data !== null) {
+          if (data !== undefined && data !== null && data.length > 0) {
             this._holidays = data;
             this._recData = data.length;
           }
