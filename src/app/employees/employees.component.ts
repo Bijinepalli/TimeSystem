@@ -123,6 +123,7 @@ export class EmployeesComponent implements OnInit {
   DisplayDateFormat = '';
   showReport: boolean;
   _sortArray: string[];
+  _sortArrayRates: string[];
 
   /* #endregion */
 
@@ -1551,6 +1552,7 @@ export class EmployeesComponent implements OnInit {
       { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
     ];
+    this._sortArrayRates = ['ClientName', 'CustomerName', 'EffectiveDateSearch', 'Rate', 'Inactive'];
     this.timesysSvc.getEmployeeRates(empId)
       .subscribe(
         (data: Invoice[] = []) => {
