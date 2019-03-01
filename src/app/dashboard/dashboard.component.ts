@@ -145,7 +145,11 @@ export class DashboardComponent implements OnInit {
               }
               this.showSpinner = false;
             });
+      } else {
+        this.showSpinner = false;
       }
+    } else {
+      this.showSpinner = false;
     }
   }
 
