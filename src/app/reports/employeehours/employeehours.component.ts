@@ -33,7 +33,7 @@ export class EmployeehoursComponent implements OnInit {
   showReport = false;
   _billingCodesSpecial: BillingCodesSpecial;
   _reports: any[] = [];
-  _recData: string;
+  _recData = 0;
   cols: any;
   helpText: any;
   visibleHelp = false;
@@ -145,7 +145,7 @@ export class EmployeehoursComponent implements OnInit {
     this.showReport = false;
     this._billingCodesSpecial = new BillingCodesSpecial();
     this._reports = [];
-    this._recData = '';
+    this._recData = 0;
     this.cols = {};
     this.helpText = '';
     this.visibleHelp = false;
@@ -259,16 +259,15 @@ export class EmployeehoursComponent implements OnInit {
     }
   }
   showTable(data: BillingCodes[]) {
+    this._reports = [];
+    this._recData = 0;
+    this.showReport = false;
     if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      this._recData = this._reports[0].RowCount.toString();
-    } else {
-      this._reports = [];
-      this._recData = '0';
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
+      this._recData = this._reports[0].RowCount;
+      this.showReport = true;
     }
     this.showBillingCodeList = false;
-    this.showReport = true;
     this.changeCodeList = true;
     this.showSpinner = false;
   }

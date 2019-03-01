@@ -149,6 +149,7 @@ export class InvoicedataComponent implements OnInit {
 
   generateReport() {
     this.showSpinner = true;
+    this.showReport = false;
     let selectedValue = '';
     let start = '';
     let end = '';
@@ -179,12 +180,13 @@ export class InvoicedataComponent implements OnInit {
       .subscribe(
         (data) => {
           this._reports = [];
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
-            this.showInvoiceList = true;
+            this._recData = this._reports.length;
             this.showReport = true;
           }
-          this._recData = this._reports.length;
+          this.showInvoiceList = true;
           this.showSpinner = false;
         }
       );

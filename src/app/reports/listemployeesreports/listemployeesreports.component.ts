@@ -41,6 +41,7 @@ export class ListemployeesreportsComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  showReport: boolean;
 
   constructor(private timesysSvc: TimesystemService,
     private router: Router,
@@ -101,7 +102,6 @@ export class ListemployeesreportsComponent implements OnInit {
           }
           this.IsSecure = true;
           this.Initialisations();
-          this.getEmployeesForReport();
         } else {
           this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
@@ -171,9 +171,11 @@ export class ListemployeesreportsComponent implements OnInit {
     ];
     this.selectedColumns = this._defaultselected;
     this.showSpinner = false;
+    this.getEmployeesForReport();
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
     this._status = [];
     this._paid = [];
     this._Ipay = [];
@@ -200,6 +202,7 @@ export class ListemployeesreportsComponent implements OnInit {
     this.showSpinner = true;
     let _start = '';
     let _end = '';
+    this.showReport = false;
     if (this._startDate !== '' && this._startDate !== null) {
       _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
       this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
@@ -212,13 +215,15 @@ export class ListemployeesreportsComponent implements OnInit {
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
+          this._listEmployeesForReport = [];
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._listEmployeesForReport = data;
-            this._recData = data.length + ' matching employees';
-            this.showSpinner = false;
+            this._recData = data.length;
+
           }
-        }
-      );
+          this.showSpinner = false;
+        });
   }
 
   showHelp(file: string) {

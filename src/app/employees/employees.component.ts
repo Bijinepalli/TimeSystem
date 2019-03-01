@@ -50,7 +50,7 @@ export class EmployeesComponent implements OnInit {
   activeColumn = true;
 
   cols: any;
-  _recData: any;
+  _recData = 0;
 
   _popUpHeader = '';
   _terminateHeader = '';
@@ -121,6 +121,7 @@ export class EmployeesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   DisplayDateFormat = '';
+  showReport: boolean;
 
   /* #endregion */
 
@@ -205,7 +206,7 @@ export class EmployeesComponent implements OnInit {
     this.activeColumn = true;
 
     this.cols = {};
-    this._recData = '';
+    this._recData = 0;
 
     this._employeesPageNo = 0;
     this._employees = [];
@@ -234,6 +235,7 @@ export class EmployeesComponent implements OnInit {
     this.clientDialog = false;
     this.rateDialog = false;
     this.terminateDialog = false;
+    this.showReport = false;
 
     this._selectedEmployee = {};
     this._selectedEmployeeForAction = {};
@@ -343,6 +345,7 @@ export class EmployeesComponent implements OnInit {
   /* #region Get Calls */
   getEmployees() {
     this.showSpinner = true;
+    this.showReport = false;
     this.setCols();
     if (this.selectedType === 1) {
       this.activeColumn = false;
@@ -363,7 +366,7 @@ export class EmployeesComponent implements OnInit {
 
     this._employeesPageNo = 0;
     this._employees = [];
-    this._recData = 'No employees found';
+    this._recData = 0;
 
     const expirydays = this.commonSvc.getAppSettingsValue('PasswordExpiryDays');
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
@@ -372,12 +375,9 @@ export class EmployeesComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this._employeesPageNo = 0;
             this._employees = data;
-            this._recData = this._employees.length + ' matching employees';
-          } else {
-            this._employeesPageNo = 0;
-            this._employees = [];
-            this._recData = 'No employees found';
+            this._recData = this._employees.length;
           }
+          this.showReport = true;
           this.showSpinner = false;
         }
       );

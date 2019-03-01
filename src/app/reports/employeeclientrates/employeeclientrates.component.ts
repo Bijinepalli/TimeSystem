@@ -163,15 +163,14 @@ export class EmployeeclientratesComponent implements OnInit {
   }
 
   showTable(data: Invoice[]) {
+    this._reports = [];
+    this._recData = 0;
+    this.showReport = false;
     if (data !== undefined && data !== null) {
       this._reports = data;
       this._recData = this._reports.length;
-    } else {
-      this._reports = [];
-      this._recData = 0;
-      this.msgSvc.add({ severity: 'info', summary: 'Info Message', detail: 'No matching data for the selected criteria' });
+      this.showReport = true;
     }
-    this.showReport = true;
     this.showSpinner = false;
   }
 

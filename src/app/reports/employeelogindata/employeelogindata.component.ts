@@ -29,6 +29,7 @@ export class EmployeelogindataComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  showReport: boolean;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -145,6 +146,7 @@ export class EmployeelogindataComponent implements OnInit {
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
     ];
     this.showSpinner = true;
+    this.showReport = false;
     let _InActive = '';
     let _Salaried = '';
     if (this.selectedType !== '2') {
@@ -160,12 +162,14 @@ export class EmployeelogindataComponent implements OnInit {
       .subscribe(
         (data) => {
           this._listEmployeeLoginData = [];
+          this._listEmployeeLoginData = data;
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
-            this._listEmployeeLoginData = data;
-            this._recData = this._listEmployeeLoginData.length + ' matching employees';
-            this.showSpinner = false;
+            this._recData = data.length + ' matching employees';
+            this.showReport = true;
           }
         }
       );
+    this.showSpinner = false;
   }
 }
