@@ -43,6 +43,7 @@ export class HolidaysComponent implements OnInit {
   ParamSubscribe: any;
   DisplayDateFormat = '';
   showReport: boolean;
+  _sortArray: string[];
 
   constructor(
     private router: Router,
@@ -138,6 +139,7 @@ export class HolidaysComponent implements OnInit {
       { field: 'HolidayDate', header: 'Date', align: 'center', width: '100px' },
       { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
     ];
+    this._sortArray = ['CalendarYear', 'HolidayDateSearch', 'HolidayName'];
 
     const _date: Date = new Date();
     this.selectedYear = _date.getFullYear();

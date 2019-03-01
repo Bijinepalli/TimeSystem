@@ -53,6 +53,7 @@ export class TimesheetsComponent implements OnInit {
   _TimeStampFormat: any;
   _DisplayTimeStampFormat: any;
   showReport = false;
+  _sortArray: string[];
 
   @ViewChild('dt') dt: Table;
   @ViewChild('dtHours') dtHours: Table;
@@ -152,6 +153,7 @@ export class TimesheetsComponent implements OnInit {
       { field: 'Hours', header: 'Hours', align: 'right', width: '150px' },
       { field: 'ApprovalStatus', header: 'Approval Status', align: 'left', width: 'auto' },
     ];
+    this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours', 'ApprovalStatus'];
     this.showSpinner = false;
     this.getTimeSheets();
   }

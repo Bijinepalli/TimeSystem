@@ -36,15 +36,15 @@
       No matching data for the selected criteria
     </div>
   </div>
-  <div class="ui-g"  *ngIf="showReport && _recData > 0">
+  <div class="ui-g" *ngIf="showReport && _recData > 0">
     <p-table #dt [columns]="cols" [value]="_holidays" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
-      (sortFunction)="customSort($event)" [customSort]="true">
+      (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} holidays found</div>
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format"
+            <input type="text" pInputText size="50" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>

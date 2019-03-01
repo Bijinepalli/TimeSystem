@@ -27,6 +27,7 @@ export class HolidaysreportComponent implements OnInit {
   _DateFormat: any;
   _DisplayDateFormat: any;
   IsSecure = false;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -107,7 +108,9 @@ export class HolidaysreportComponent implements OnInit {
       { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
       { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
       { field: 'HolidayDate', header: 'Holiday Date', align: 'center', width: '150px' },
+      { field: 'HolidayDateSearch', header: 'Holiday Date Search', align: 'center', width: '50px' },
     ];
+    this._sortArray = ['CalendarYear', 'CompanyName', 'HolidayName', 'HolidayDateSearch'];
     this.showSpinner = false;
     this.getHolidayYears();
   }

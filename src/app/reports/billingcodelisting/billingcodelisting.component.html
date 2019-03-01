@@ -60,34 +60,29 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <ng-container *ngFor="let col of columns">
-            <th *ngIf="col.field!=='CreatedOnSearch'" [pSortableColumn]="col.field" [style.width]="col.width">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-          </ng-container>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
+          </th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <ng-container *ngFor="let col of columns">
-            <td *ngIf="col.field!=='CreatedOnSearch'" [style.width]="col.width" [style.text-align]="col.align">
-              <div *ngIf="col.header === 'Inactive'; else defaultColumn">
-                <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <div *ngIf="col.header === 'Inactive'; else defaultColumn">
+              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+            </div>
+            <ng-template #defaultColumn>
+              <div *ngIf="col.header === 'Created On'; else nondatecol">
+                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
               </div>
-              <ng-template #defaultColumn>
-                <div *ngIf="col.header === 'Created On'; else nondatecol">
-                  <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                </div>
-                <ng-template #nondatecol>
-                  {{rowData[col.field]}}
-                </ng-template>
+              <ng-template #nondatecol>
+                {{rowData[col.field]}}
               </ng-template>
-
-            </td>
-          </ng-container>
+            </ng-template>
+          </td>
         </tr>
       </ng-template>
     </p-table>

@@ -39,6 +39,7 @@ export class EmployeetimesheetsComponent implements OnInit {
   DisplayDateFormat = '';
   ParamSubscribe: any;
   IsSecure = false;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -147,6 +148,7 @@ export class EmployeetimesheetsComponent implements OnInit {
       { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: 'auto' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
     ];
+    this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours'];
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
   }
   getEmployees() {
@@ -199,6 +201,7 @@ export class EmployeetimesheetsComponent implements OnInit {
               this._recDataPending = Pending.length;
             }
           }
+          console.log(data);
           this.showReport = true;
           this.showSpinner = false;
           this.changeCodeList = true;

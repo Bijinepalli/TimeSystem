@@ -42,6 +42,7 @@ export class ListemployeesreportsComponent implements OnInit {
   IsSecure = false;
   _HasEdit = true;
   showReport: boolean;
+  _sortArray: string[];
 
   constructor(private timesysSvc: TimesystemService,
     private router: Router,
@@ -169,6 +170,8 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
+    // tslint:disable-next-line:max-line-length
+    this._sortArray = ['LastName', 'FirstName', 'NickName', 'PayRoleID', 'EmailAddress', 'LoginID', 'HireDateSearch', 'UserLevel', 'Inactive', 'Salaried', 'IPayEligible', 'SubmitsTime', 'CompanyHolidays'];
     this.selectedColumns = this._defaultselected;
     this.showSpinner = false;
     this.getEmployeesForReport();
@@ -202,19 +205,20 @@ export class ListemployeesreportsComponent implements OnInit {
     this.showSpinner = true;
     let _start = '';
     let _end = '';
-    this.showReport = false;
+    this.showReport = true;
     if (this._startDate !== '' && this._startDate !== null) {
       _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
-      this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+      // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     }
     if (this._endDate !== '' && this._endDate !== null) {
       _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-      this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+      // this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
     }
     this.timesysSvc.getEmployeesForReport(this._statusselected, this._Ipayselected, this._paidselected,
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
+          console.log(data);
           this._listEmployeesForReport = [];
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
@@ -225,7 +229,6 @@ export class ListemployeesreportsComponent implements OnInit {
           this.showSpinner = false;
         });
   }
-
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(
