@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { InvokeFunctionExpr } from '@angular/compiler';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-employeeclientrates',
   templateUrl: './employeeclientrates.component.html',
@@ -15,10 +16,11 @@ import { environment } from 'src/environments/environment';
   providers: [DatePipe]
 })
 export class EmployeeclientratesComponent implements OnInit {
-  _startDate = '';
-  _endDate = '';
-  _storeDate = '';
-  showAll = false;
+
+  _startDate: Date;
+  _endDate: Date;
+
+  _showAll = false;
   showReport = false;
   showSpinner = false;
   _invoice: Invoice;
@@ -32,7 +34,11 @@ export class EmployeeclientratesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
-  DisplayDateFormat = '';
+
+  _DisplayDateFormat = '';
+  _DateFormat = '';
+
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -45,6 +51,7 @@ export class EmployeeclientratesComponent implements OnInit {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
   }
+
   CheckActiveSession() {
     let sessionActive = false;
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
@@ -67,10 +74,10 @@ export class EmployeeclientratesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.IsSecure = false;
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
         this.CheckSecurity(SplitVals[SplitVals.length - 1]);
@@ -78,8 +85,6 @@ export class EmployeeclientratesComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.Initialisations();
-    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -102,19 +107,23 @@ export class EmployeeclientratesComponent implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-  }
-  ClearAllProperties() {
-
-    this._startDate = '';
-    this._endDate = '';
-    this.showAll = false;
-    this.showReport = false;
+    this._startDate = new Date(year, month - 1, 1);
     this.showSpinner = false;
+  }
+
+  ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
+    this._startDate = null;
+    this._endDate = null;
+    this._showAll = false;
+    this.showReport = false;
     this._invoice = null;
     this._billingCodesSpecial = null;
     this._reports = [];
@@ -122,39 +131,32 @@ export class EmployeeclientratesComponent implements OnInit {
     this.cols = [];
     this.visibleHelp = false;
     this.helpText = '';
+    this.showSpinner = false;
   }
 
   generateReport() {
     this.showSpinner = true;
+    this.showReport = false;
+    this.resetSort();
     this.buildCols();
-    this._billingCodesSpecial = new BillingCodesSpecial();
-    if (this.showAll === false) {
-      let _start = '';
-      let _end = '';
-      const date = Date.parse(this._startDate);
-      if (Number.isNaN(date)) {
+    let _start = '';
+    let _end = '';
+    if (this._showAll === false) {
+      if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
+        _start = this.datePipe.transform(this._startDate, this._DateFormat);
+      } else {
         const today = new Date();
         const month = today.getMonth();
         const year = today.getFullYear();
-        this._storeDate = new Date(year, month - 1, 1).toString();
-        console.log(this._storeDate);
-      } else {
-        this._storeDate = this._startDate;
+        _start = this.datePipe.transform(new Date(year, month - 1, 1), this._DateFormat);
       }
-      if (this._storeDate !== null && this._storeDate !== '') {
-        _start = this.datePipe.transform(this._storeDate, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(this._storeDate, 'MM-dd-yyyy');
+      if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
+        _end = this.datePipe.transform(this._endDate, this._DateFormat);
       }
-      if (this._endDate !== null && this._endDate !== '') {
-        _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
-      }
-      this._billingCodesSpecial.startDate = _start;
-      this._billingCodesSpecial.endDate = _end;
-    } else {
-      this._billingCodesSpecial.startDate = '';
-      this._billingCodesSpecial.endDate = '';
     }
+    this._billingCodesSpecial = new BillingCodesSpecial();
+    this._billingCodesSpecial.startDate = _start;
+    this._billingCodesSpecial.endDate = _end;
     this.timesysSvc.ListEmployeeClientRates(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);
@@ -169,8 +171,8 @@ export class EmployeeclientratesComponent implements OnInit {
     if (data !== undefined && data !== null) {
       this._reports = data;
       this._recData = this._reports.length;
-      this.showReport = true;
     }
+    this.showReport = true;
     this.showSpinner = false;
   }
 
@@ -200,5 +202,12 @@ export class EmployeeclientratesComponent implements OnInit {
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['EffectiveDate'], ['Rate', 'EmployeeID', 'ClientID']);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }
