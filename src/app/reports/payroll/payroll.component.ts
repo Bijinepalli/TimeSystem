@@ -78,6 +78,7 @@ export class PayrollComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -111,6 +112,7 @@ export class PayrollComponent implements OnInit {
     this.selectedPeriod = '';
     this.showBillingCodeList = false;
     this.changeCodeList = false;
+    this.showSpinner = false;
   }
 
   Initialisations() {

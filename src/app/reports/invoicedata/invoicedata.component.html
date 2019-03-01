@@ -1,7 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Invoice Data by Customer Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Invoice Data by Customer Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('InvoiceDataByCustomer.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -18,33 +17,30 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-4">
         <label class="label" style="padding:0px 10px;">Client BIlling Cycle:</label>
-        <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle"
-          pTooltip="Show clients with this billing cycle on the report" tooltipPosition="bottom"></p-selectButton>
+        <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle" pTooltip="Show clients with this billing cycle on the report"
+          tooltipPosition="bottom"></p-selectButton>
       </div>
       <div class="ui-g-12 ui-md-2">
         <label class="label" style="padding:0px 10px;">Invoice Date :</label>
         <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
-          pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="bottom"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
+          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter an invoice date. Defaults to current date."
+          tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
       <div class="ui-g-12 ui-md-5">
         <label class="label" style="padding:0px 10px;">Date From :</label>
         <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
-          pTooltip="Enter a starting date. Defaults to first day of the current month" tooltipPosition="bottom"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
+          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter a starting date. Defaults to first day of the current month"
+          tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
         <label class="label" style="padding:0px 10px;">to</label>
         <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
-          pTooltip="Enter the end date. Defaults to the last day of the current month." tooltipPosition="bottom"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
+          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter the end date. Defaults to the last day of the current month."
+          tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
     </div>
     <p-footer>
       <div style="text-align: right">
-        <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info"
-          label="Generate Report" (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
+        <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+          (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
       </div>
     </p-footer>
   </p-panel>
@@ -67,10 +63,10 @@
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-              <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning"
-                label="Start Over" (click)="startOver()"></button> &nbsp;
+            <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+              style="width:auto"> &nbsp;
+            <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning" label="Start Over"
+              (click)="startOver()"></button> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
         </div>
@@ -79,8 +75,8 @@
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+              ariaLabelAsc="Activate to sort in ascending order">
             </p-sortIcon>
           </th>
         </tr>
@@ -88,8 +84,7 @@
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
           <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            <div
-              *ngIf="(col.field === 'InvoiceDate' || col.field === 'StartDate' || col.field === 'EndDate'); else nondatecol">
+            <div *ngIf="(col.field === 'InvoiceDate' || col.field === 'StartDate' || col.field === 'EndDate'); else nondatecol">
               <label>{{rowData[col.field] | dateFormat: DisplayDateFormat}} </label>
               <!-- <label>{{rowData[col.field]}} </label> -->
             </div>

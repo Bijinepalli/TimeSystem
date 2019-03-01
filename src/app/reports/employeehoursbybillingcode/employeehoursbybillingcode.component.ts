@@ -87,13 +87,13 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
-        this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
           this.ClearAllProperties();
           this.IsSecure = true;
@@ -101,6 +101,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         } else {
           this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
+        this.showSpinner = false;
       });
   }
   ClearAllProperties() {

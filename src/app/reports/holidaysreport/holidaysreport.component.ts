@@ -95,6 +95,7 @@ export class HolidaysreportComponent implements OnInit {
     this.helpText = '';
     this.visibleHelp = false;
     this.showReport = false;
+    this.showSpinner = false;
   }
 
   Initialisations() {
@@ -117,15 +118,17 @@ export class HolidaysreportComponent implements OnInit {
     this.timesysSvc.getHolidayYears()
       .subscribe(
         (data) => {
-          console.log(data);
-          for (let i = 0; i < data.length; i++) {
-            this._years.push({ label: data[i].CalendarYear.toString(), value: data[i].CalendarYear.toString() });
+          if (data !== undefined && data !== null && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              this._years.push({ label: data[i].CalendarYear.toString(), value: data[i].CalendarYear.toString() });
+            }
+            const _date: Date = new Date();
+            this.selectedYear = _date.getFullYear();
+            this.getHolidays();
+          } else {
+            this.showSpinner = false;
           }
-          const _date: Date = new Date();
-          this.selectedYear = _date.getFullYear();
-          this.getHolidays();
-        }
-      );
+        });
   }
 
   getHolidays() {
@@ -133,19 +136,23 @@ export class HolidaysreportComponent implements OnInit {
     let year = '';
     if (this.selectedYear.toString() !== '0') {
       year = this.selectedYear.toString();
-    } else {
-      year = '';
     }
+    this.showReport = false;
+    this._holidayList = [];
+    this._recData = 0;
     this.timesysSvc.getHolidayList(year)
       .subscribe(
         (data) => {
-          console.log(data);
           this.showReport = false;
           this._holidayList = [];
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
-            this._holidayList = data;
-            this._recData = this._holidayList.length;
+            this._holidayList = [];
+            this._recData = 0;
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._holidayList = data;
+              this._recData = this._holidayList.length;
+            }
             this.showReport = true;
           }
           this.showSpinner = false;

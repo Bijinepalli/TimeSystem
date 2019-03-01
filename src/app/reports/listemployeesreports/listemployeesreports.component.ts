@@ -86,6 +86,7 @@ export class ListemployeesreportsComponent implements OnInit {
     });
     this.Initialisations();
     this.getEmployeesForReport();
+    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -169,10 +170,12 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
     this.selectedColumns = this._defaultselected;
+    this.showSpinner = false;
     this.getEmployeesForReport();
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
     this._status = [];
     this._paid = [];
     this._Ipay = [];
@@ -196,10 +199,10 @@ export class ListemployeesreportsComponent implements OnInit {
     this.showSpinner = false;
   }
   getEmployeesForReport() {
+    this.showSpinner = true;
     let _start = '';
     let _end = '';
     this.showReport = false;
-    this.showSpinner = true;
     if (this._startDate !== '' && this._startDate !== null) {
       _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
       this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
@@ -212,15 +215,15 @@ export class ListemployeesreportsComponent implements OnInit {
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
-          this._listEmployeesForReport = data;
+          this._listEmployeesForReport = [];
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
-            this._recData = data.length + ' matching employees';
-            this.showReport = true;
+            this._listEmployeesForReport = data;
+            this._recData = data.length;
+
           }
-        }
-      );
-    this.showSpinner = false;
+          this.showSpinner = false;
+        });
   }
 
   showHelp(file: string) {

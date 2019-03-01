@@ -79,6 +79,7 @@ export class EmployeeclientratesComponent implements OnInit {
       }
     });
     this.Initialisations();
+    this.showSpinner = false;
   }
   /* #endregion */
 

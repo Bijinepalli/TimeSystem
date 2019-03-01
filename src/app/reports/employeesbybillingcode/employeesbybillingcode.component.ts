@@ -92,7 +92,6 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
-        this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
           this.ClearAllProperties();
           this.IsSecure = true;
@@ -100,6 +99,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
         } else {
           this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
+        this.showSpinner = false;
       });
   }
   ClearAllProperties() {
@@ -227,6 +227,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     }
   }
   selectAll() {
+    this.showSpinner = true;
     this._selectcheckbox = [];
     for (let i = 0; i < this._displayCheckBoxes.length; i++) {
       this._selectcheckbox.push(this._displayCheckBoxes[i].value);
@@ -234,6 +235,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     if (this.allcheckbox === false) {
       this._selectcheckbox = [];
     }
+    this.showSpinner = false;
   }
   selectcheck() {
     if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
@@ -258,53 +260,36 @@ export class EmployeesbybillingcodeComponent implements OnInit {
         // tslint:disable-next-line:max-line-length
         this.timesysSvc.listAllClientItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            this.showReport = false;
-            this._reports = [];
-            this._recData = 0;
-            if (data !== undefined && data !== null && data.length > 0) {
-              this._reports = data;
-              this.showReport = true;
-            }
-            this._recData = this._reports.length;
-            this.showBillingCodeList = false;
-            this.changeCodeList = true;
-            this.showSpinner = false;
+            this.showTable(data);
           }
         );
       } else if (this.selectedBillingType === 1) {
         this.timesysSvc.listAllProjectDataForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            this.showReport = false;
-            this._reports = [];
-            this._recData = 0;
-            if (data !== undefined && data !== null && data.length > 0) {
-              this._reports = data;
-              this.showReport = true;
-            }
-            this._recData = this._reports.length;
-            this.showBillingCodeList = false;
-            this.changeCodeList = true;
-            this.showSpinner = false;
+            this.showTable(data);
           }
         );
       } else {
         this.timesysSvc.listAllBillingItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(
           (data) => {
-            this.showReport = false;
-            this._reports = [];
-            this._recData = 0;
-            if (data !== undefined && data !== null && data.length > 0) {
-              this._reports = data;
-              this.showReport = true;
-            }
-            this._recData = this._reports.length;
-            this.showBillingCodeList = false;
-            this.changeCodeList = true;
-            this.showSpinner = false;
+            this.showTable(data);
           }
         );
       }
     }
+  }
+  showTable(data: any) {
+    this.showReport = false;
+    this._reports = [];
+    this._recData = 0;
+    if (data !== undefined && data !== null && data.length > 0) {
+      this._reports = data;
+      this.showReport = true;
+    }
+    this._recData = this._reports.length;
+    this.showBillingCodeList = false;
+    this.changeCodeList = true;
+    this.showSpinner = false;
   }
   startOver() {
     this.showBillingCodeList = false;

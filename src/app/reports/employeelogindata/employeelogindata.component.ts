@@ -73,6 +73,7 @@ export class EmployeelogindataComponent implements OnInit {
       }
     });
     this.Initialisations();
+    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -106,6 +107,7 @@ export class EmployeelogindataComponent implements OnInit {
     this.selectedType = '0';
     this.selectedSalaryType = '2';
     this.getEmployeesForReport();
+    this.showSpinner = false;
   }
 
   ClearAllProperties() {

@@ -83,6 +83,7 @@ export class PendingtimesheetsComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -118,6 +119,7 @@ export class PendingtimesheetsComponent implements OnInit {
     this._selectedEmployees = new TimeSheet();
     this.visibleHelp = false;
     this.helpText = '';
+    this.showSpinner = false;
   }
   Initialisations() {
     this.cols = [

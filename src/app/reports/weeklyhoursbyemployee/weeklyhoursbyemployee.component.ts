@@ -33,8 +33,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   _billingCodesSpecial: BillingCodesSpecial;
   _recData = 0;
   cols: any;
-  _startDate = '';
-  _endDate = '';
+  _startDate: Date;
+  _endDate: Date;
   helpText: any;
   visibleHelp = false;
 
@@ -83,11 +83,12 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -124,14 +125,16 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this._billingCodesSpecial = new BillingCodesSpecial;
     this._recData = 0;
     this.cols = {};
-    this._startDate = '';
-    this._endDate = '';
+    this._startDate = null;
+    this._endDate = null;
     this.helpText = '';
     this.visibleHelp = false;
     this.errMsg = '';
+    this.showSpinner = false;
   }
 
   Initialisations() {
+    this.showSpinner = true;
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -160,8 +163,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._startDate = new Date(year, month - 1, 1);
+    this.showSpinner = false;
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -184,6 +187,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     );
   }
   selectAll() {
+    this.showSpinner = true;
     this._selectcheckbox = [];
     for (let i = 0; i < this._displayCheckBoxes.length; i++) {
       this._selectcheckbox.push(this._displayCheckBoxes[i].value);
@@ -191,6 +195,7 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     if (this.allcheckbox === false) {
       this._selectcheckbox = [];
     }
+    this.showSpinner = false;
   }
   selectcheck() {
     if (this._selectcheckbox.length === this._displayCheckBoxes.length) {
@@ -206,13 +211,12 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.selectedassignStatus = 0;
-    this.showSpinner = false;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    this._endDate = '';
+    this._startDate = new Date(year, month - 1, 1);
+    this._endDate = null;
+    this.showSpinner = false;
   }
   changeCodes() {
     this.changeCodeList = false;
@@ -239,17 +243,14 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       let _start = '';
       let _end = '';
 
-      if (this._startDate !== null && this._startDate !== '') {
+      if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
         _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
-      if (this._endDate !== null && this._endDate !== '') {
+      if (this._startDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
-      console.log(this._billingCodesSpecial);
       this.timesysSvc.ListWeekEndClientHoursByClientByEmployee(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
