@@ -107,7 +107,7 @@ export class BillingcodelistingComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
-    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -179,8 +179,7 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
-        { field: 'CreatedOnSearch', header: 'Created On DT', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
@@ -189,7 +188,7 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
       ];
     } else if (type === '2') {
@@ -197,7 +196,7 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
       ];
     }
     this._sortArray = ['Key', 'ClientName', 'Inactive', 'CreatedOnSearch', 'BillingCycle', 'CompanyName', 'ProjectName'];

@@ -52,6 +52,7 @@ export class TimesheetsComponent implements OnInit {
   _TimeStampFormat: any;
   _DisplayTimeStampFormat: any;
   showReport = false;
+  _sortArray: string[];
 
   constructor(
     private router: Router,
@@ -146,6 +147,7 @@ export class TimesheetsComponent implements OnInit {
       { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
       { field: 'ApprovalStatus', header: 'Approval Status', align: 'left', width: 'auto' },
     ];
+    this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours', 'ApprovalStatus'];
     this.showSpinner = false;
     this.getTimeSheets();
   }

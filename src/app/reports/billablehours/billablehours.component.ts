@@ -45,6 +45,7 @@ export class BillablehoursComponent implements OnInit {
   _DateFormat: any;
   _DisplayDateFormat: any;
   IsSecure = false;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -164,6 +165,7 @@ export class BillablehoursComponent implements OnInit {
       { field: 'FirstName', header: 'First Name', align: 'left', width: '130px' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
     ];
+    this._sortArray = ['Name', 'Key', 'Inactive', 'InactiveRel', 'LastName', 'FirstName', 'Hours', 'CalendarDateSearch'];
     this.selectedType = 0;
     this.selectedBillingType = 0;
     this.selectedassignStatus = 0;

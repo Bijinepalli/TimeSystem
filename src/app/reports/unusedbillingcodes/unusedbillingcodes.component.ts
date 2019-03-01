@@ -38,6 +38,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   showReport = false;
   ParamSubscribe: any;
   IsSecure = false;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -127,7 +128,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
-    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
     this.codeType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
@@ -144,8 +145,9 @@ export class UnusedbillingcodesComponent implements OnInit {
       { field: 'Key', header: 'Code', align: 'left', width: 'auto' },
       { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '108px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '150px' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
+    this._sortArray = ['Key', 'ProjectName', 'Inactive', 'CreatedOnSearch'];
     this.showSpinner = false;
     this.populateDateDrop();
   }

@@ -50,6 +50,7 @@ export class HoursbyemployeeComponent implements OnInit {
   _DateFormat: any;
   _DisplayDateFormat: any;
   IsSecure = false;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -191,6 +192,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this._startDate = new Date(year, month - 1, 1).toString();
     this._startDateSelect = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
     this.showSpinner = false;
+    this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'PeriodEndSearch'];
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -387,6 +389,7 @@ export class HoursbyemployeeComponent implements OnInit {
     if (this.showPeriodEndDetail) {
       this.cols.push({ field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '150px' });
     }
+    this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'PeriodEndSearch'];
   }
 
   startOver() {
@@ -401,7 +404,7 @@ export class HoursbyemployeeComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
+    // this._startDate = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
     this._endDate = '';
     this.showSpinner = false;
   }

@@ -122,6 +122,7 @@ export class EmployeesComponent implements OnInit {
   IsSecure = false;
   DisplayDateFormat = '';
   showReport: boolean;
+  _sortArray: string[];
 
   /* #endregion */
 
@@ -418,7 +419,8 @@ export class EmployeesComponent implements OnInit {
           { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       }
-    }
+    this._sortArray = ['Department', 'LastName', 'FirstName', 'Salaried', 'PasswordExpiresOnSearch', 'Inactive'];
+  }
   }
 
   getNonBillables(empId: number) {
