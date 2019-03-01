@@ -24,7 +24,7 @@ export class ClientsComponent implements OnInit {
   _clients: Clients[] = [];
   _clientsUsed: Clients[] = [];
   cols: any;
-  _recData: any;
+  _recData = 0;
 
   clientDialog = false;
   clientHdr = 'Add New Client';
@@ -49,6 +49,7 @@ export class ClientsComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  showReport: boolean;
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -121,7 +122,7 @@ export class ClientsComponent implements OnInit {
     this._clients = [];
     this._clientsUsed = [];
     this.cols = {};
-    this._recData = '';
+    this._recData = 0;
     this.clientDialog = false;
     this._frm = new FormGroup({});
     this._IsEdit = false;
@@ -206,10 +207,12 @@ export class ClientsComponent implements OnInit {
 
   getClients() {
     this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getClients()
       .subscribe(
         (data) => {
-          if (data !== undefined && data !== null) {
+          if (data !== undefined && data !== null && data.length > 0) {
             if (this.selectedType === 'Active') {
               this._clients = data.filter(P => P.Inactive === false);
             } else if (this.selectedType === 'Inactive') {
@@ -221,14 +224,16 @@ export class ClientsComponent implements OnInit {
             this._clients = [];
           }
           if (this._clients !== undefined && this._clients !== null && this._clients.length > 0) {
-            this._recData = this._clients.length + ' matching clients';
+            this._recData = this._clients.length;
             this.getUsedClients();
-          } else {
-            this._recData = 'No clients found';
           }
+          this.showReport = true;
+          this.showSpinner = false;
+          // else {
+          //   this._recData = 'No clients found';
+          // }
         }
       );
-    this.showSpinner = false;
   }
   getUsedClients() {
     this.timesysSvc.getUsedBillingCodes(this._billingCodes.Client)

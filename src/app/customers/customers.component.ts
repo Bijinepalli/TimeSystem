@@ -24,7 +24,7 @@ export class CustomersComponent implements OnInit {
   _customers: Customers[] = null;
   _customersUsed: Customers[] = null;
   cols: any;
-  _recData = '';
+  _recData = 0;
 
   customerDialog = false;
   customerHdr = 'Add Customer';
@@ -37,6 +37,7 @@ export class CustomersComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure = false;
+  showReport: boolean;
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -111,7 +112,7 @@ export class CustomersComponent implements OnInit {
     this._customers = null;
     this._customersUsed = null;
     this.cols = {};
-    this._recData = '';
+    this._recData = 0;
 
     this.customerDialog = false;
     this._frm = new FormGroup({});
@@ -156,10 +157,13 @@ export class CustomersComponent implements OnInit {
   // }
 
   getCustomers() {
+    this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getCustomers()
       .subscribe(
         (data) => {
-          if (data !== undefined && data !== null) {
+          if (data !== undefined && data !== null && data.length > 0) {
             if (this.selectedType === 'Active') {
               this._customers = data.filter(P => P.Inactive === false);
             } else if (this.selectedType === 'Inactive') {
@@ -171,13 +175,15 @@ export class CustomersComponent implements OnInit {
             this._customers = [];
           }
           if (this._customers !== null && this._customers.length > 0) {
-            this._recData = this._customers.length + ' matching customers';
-          } else {
-            this._recData = 'No customers found';
+            this._recData = this._customers.length;
           }
+          this.showReport = true;
+          this.showSpinner = false;
+          // else {
+          //   this._recData = 'No customers found';
+          // }
         }
       );
-      this.showSpinner = false;
   }
   clickButton(event: any) {
     if (this.selectedType === 'Both') {

@@ -26,7 +26,7 @@ export class ProjectsComponent implements OnInit {
   _bc: BillingCode = new BillingCode();
   _projects: Projects[] = [];
   _companies: DrpList[] = [];
-  _recData: string;
+  _recData = 0;
 
   _frm = new FormGroup({});
   _IsEdit = false;
@@ -38,6 +38,7 @@ export class ProjectsComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure: boolean;
+  showReport: boolean;
   _sortArray: string[];
 
   constructor(
@@ -134,7 +135,7 @@ export class ProjectsComponent implements OnInit {
     this._bc = new BillingCode();
     this._projects = [];
     this._companies = [];
-    this._recData = '';
+    this._recData = 0;
     this._frm = new FormGroup({});
     this._IsEdit = false;
     this._selectedProject = new Projects();
@@ -180,6 +181,8 @@ export class ProjectsComponent implements OnInit {
 
   getProjects() {
     this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getProjects(this._bc.Project)
       .subscribe(
         (data) => {
@@ -212,11 +215,13 @@ export class ProjectsComponent implements OnInit {
           }
 
           if (this._projects !== null && this._projects.length > 0) {
-            this._recData = this._projects.length + ' matching projects';
-          } else {
-            this._recData = 'No projects found';
+            this._recData = this._projects.length;
           }
+          this.showReport = true;
           this.showSpinner = false;
+          // else {
+          //   this._recData = 'No projects found';
+          // }
         }
       );
   }

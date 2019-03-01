@@ -12,6 +12,7 @@
     </div>
   </div>
 </div>
+<ng-container *ngIf="IsSecure">
 <div class="ui-g">
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
@@ -29,12 +30,17 @@
   </div>
 </p-panel>
 <div class="ui-g">&nbsp;</div>
-<div class="ui-g">
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    No matching data for the selected criteria
+  </div>
+</div>
+<div class="ui-g" *ngIf="showReport && _recData > 0">
   <p-table #dt [columns]="cols" [value]="_nonBillable" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
     (sortFunction)="customSort($event)" [customSort]="true"  [globalFilterFields]="_sortArray">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching non-billable items</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
@@ -144,6 +150,10 @@
     </div>
   </p-footer>
 </p-dialog>
+</ng-container>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <div [innerHtml]="helpText" class="helpDisplayClass"></div>
 </p-sidebar>

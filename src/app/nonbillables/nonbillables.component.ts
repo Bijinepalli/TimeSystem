@@ -26,7 +26,7 @@ export class NonbillablesComponent implements OnInit {
   _companies: DrpList[] = [];
   _nonBillable: NonBillables[] = [];
   cols: any;
-  _recData: string;
+  _recData = 0;
   _frm = new FormGroup({});
   _IsEdit = false;
   _selectedNonBillable: NonBillables;
@@ -36,6 +36,7 @@ export class NonbillablesComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure: boolean;
+  showReport: boolean;
   _sortArray: string[];
 
   constructor(
@@ -128,7 +129,7 @@ export class NonbillablesComponent implements OnInit {
     this._companies = [];
     this._nonBillable = [];
     this.cols = {};
-    this._recData = '';
+    this._recData = 0;
     this._frm = new FormGroup({});
     this._IsEdit = false;
     this._selectedNonBillable = new NonBillables();
@@ -172,6 +173,8 @@ export class NonbillablesComponent implements OnInit {
 
   getNonBillables() {
     this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getNonBillables(this._bc.NonBillable)
       .subscribe(
         (data) => {
@@ -205,11 +208,13 @@ export class NonbillablesComponent implements OnInit {
           }
 
           if (this._nonBillable !== null && this._nonBillable.length > 0) {
-            this._recData = this._nonBillable.length + ' matching non-billable items';
-          } else {
-            this._recData = 'No non-billable items found';
+            this._recData = this._nonBillable.length;
           }
+          this.showReport = true;
           this.showSpinner = false;
+          // else {
+          //   this._recData = 'No non-billable items found';
+          // }
         }
       );
   }

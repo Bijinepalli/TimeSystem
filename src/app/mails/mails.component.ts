@@ -16,7 +16,7 @@ import { DatePipe } from '@angular/common';
 export class MailsComponent implements OnInit {
 
   _lstEmails: Email[] = [];
-  _recData: any;
+  _recData = 0;
   cols: any;
 
   emailDialog = false;
@@ -38,6 +38,7 @@ export class MailsComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure: boolean;
+  showReport: boolean;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -115,7 +116,7 @@ export class MailsComponent implements OnInit {
   }
   ClearAllProperties() {
     this._lstEmails = [];
-    this._recData = '';
+    this._recData = 0;
     this.cols = {};
     this.emailDialog = false;
     this.emailHdr = 'Add Client';
@@ -135,16 +136,22 @@ export class MailsComponent implements OnInit {
   getEmails() {
     const _email: Email = {};
     _email.EmailType = '';
+    this.showSpinner = true;
+    this.showReport = false;
+    this._recData = 0;
     this.timesysSvc.getEmails(_email)
       .subscribe(
         (data) => {
-          if (data !== undefined && data !== null) {
+          if (data !== undefined && data !== null && data.length > 0) {
             this._lstEmails = data;
-            this._recData = data.length + ' email types';
-          } else {
-            this._lstEmails = [];
-            this._recData = 'No emails found';
+            this._recData = data.length;
           }
+          this.showReport = true;
+          this.showSpinner = false;
+          // else {
+          //   this._lstEmails = [];
+          //   this._recData = 'No emails found';
+          // }
         }
       );
     this.getEmailSignature();
