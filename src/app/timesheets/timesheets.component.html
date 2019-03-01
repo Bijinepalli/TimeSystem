@@ -53,6 +53,9 @@
             <th style="width: 8em">View/Edit</th>
             <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
               {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
+                ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
             </th>
             <th style="width: 5em">Delete</th>
           </tr>
@@ -68,7 +71,6 @@
             <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
               <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
                 <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                <!-- <label>{{rowData[col.field]}} </label> -->
               </div>
               <ng-template #nondatecol>
                 {{rowData[col.field]}}
@@ -155,15 +157,15 @@
 
       <div class="ui-g" *ngIf="HoursTable && _hoursData > 0">
         <p-scrollPanel [style]="{width: '100%', height: '550px'}" styleClass="custombar1">
-          <p-table #dt [columns]="hourscols" [value]="_hoursbytimesheetlist" [responsive]="false" dataKey="ID">
+          <p-table #dtHours [columns]="hourscols" [value]="_hoursbytimesheetlist" [responsive]="false" dataKey="ID">
             <ng-template pTemplate="caption">
               <div class="ui-g ui-g-nopad recordsBar">
                 <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_hoursData}} matching rows</div>
                 <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
                   <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
                   <input type="text" pInputText size="50" placeholder="Global Filter: For Date use (yyyy-mm-dd) format"
-                    (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-                  <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                    (input)="dtHours.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+                  <button type="button" pButton icon="fa fa-table" label="Export" (click)="dtHours.exportCSV()"></button>
                 </div>
               </div>
             </ng-template>
@@ -192,3 +194,11 @@
   </ng-container>
 
 </ng-container>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
+<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+  <p-scrollPanel [style]="{width: '100%', height: '800px'}">
+    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+  </p-scrollPanel>
+</p-sidebar>
