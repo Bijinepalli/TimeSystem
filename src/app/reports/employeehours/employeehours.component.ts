@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes, Emp
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-employeehours',
@@ -42,6 +43,7 @@ export class EmployeehoursComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  @ViewChild('dt') dt: Table;
 
   constructor(private timesysSvc: TimesystemService,
     private router: Router,
@@ -109,6 +111,7 @@ export class EmployeehoursComponent implements OnInit {
 
   Initialisations() {
     this.showSpinner = true;
+    this.resetSort();
     this.hoursType = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
@@ -128,13 +131,14 @@ export class EmployeehoursComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this.types = [];
     this.hoursType = [];
     this.selectedType = '0';
     this.selectedhoursType = '';
     this._startDate = '';
     this._endDate = '';
-    this.showSpinner = false;
     this._selectcheckbox = [];
     this._displayCheckBoxes = [];
     this._employee = [];
@@ -150,6 +154,7 @@ export class EmployeehoursComponent implements OnInit {
     this.helpText = '';
     this.visibleHelp = false;
     this.showTotals = false;
+    this.showSpinner = false;
   }
 
   showBillingCodes() {
@@ -219,6 +224,7 @@ export class EmployeehoursComponent implements OnInit {
   }
   generateReport() {
     this.showSpinner = true;
+    this.resetSort();
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
       this._billingCodesSpecial = new BillingCodesSpecial();
@@ -241,12 +247,11 @@ export class EmployeehoursComponent implements OnInit {
       }
       if (this._storeDate !== null && this._storeDate !== undefined) {
         _start = this.datePipe.transform(this._storeDate, 'yyyy-MM-dd');
-        this._startDate = this.datePipe.transform(this._storeDate, 'MM-dd-yyyy');
-
+        // this._startDate = this.datePipe.transform(this._storeDate, 'MM-dd-yyyy');
       }
       if (this._endDate !== null && this._endDate !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-        this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+        // this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
@@ -282,23 +287,27 @@ export class EmployeehoursComponent implements OnInit {
     ];
   }
   startOver() {
+    this.showSpinner = true;
+    this.resetSort();
     this.showBillingCodeList = false;
     this.changeCodeList = false;
     this.showReport = false;
     this._selectcheckbox = [];
     this.allcheckbox = false;
-    this.showSpinner = false;
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDate = '';
+    this.showSpinner = false;
   }
   changeCodes() {
+    this.showSpinner = true;
+    this.resetSort();
     this.changeCodeList = false;
     this.showReport = false;
     this.showBillingCodeList = true;
+    this.showSpinner = false;
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
@@ -313,6 +322,15 @@ export class EmployeehoursComponent implements OnInit {
       );
   }
   customSort(event: SortEvent) {
+    this.showSpinner = true;
     this.commonSvc.customSortByCols(event, [], ['TANDM', 'Project', 'NonBill']);
+    this.showSpinner = false;
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

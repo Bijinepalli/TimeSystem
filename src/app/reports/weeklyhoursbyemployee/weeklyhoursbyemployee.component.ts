@@ -42,6 +42,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _DisplayDateFormat: any;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -157,9 +158,9 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'WeekEnding', header: 'Week Ending', align: 'center', width: '150px' },
+      { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '150px' },
     ];
-
+    this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'WeekEndSearch'];
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
@@ -253,6 +254,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       this._billingCodesSpecial.endDate = _end;
       this.timesysSvc.ListWeekEndClientHoursByClientByEmployee(this._billingCodesSpecial).subscribe(
         (data) => {
+          console.log(data);
           this.showTable(data);
         }
       );
@@ -292,6 +294,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
         { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '100px' },
       ];
     }
+    this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'WeekEndSearch'];
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)

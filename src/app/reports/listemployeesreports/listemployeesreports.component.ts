@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,6 +8,7 @@ import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-listemployeesreports',
@@ -32,16 +33,21 @@ export class ListemployeesreportsComponent implements OnInit {
   _listEmployeesForReport: Employee[];
   cols: any;
   _recData: any;
-  _endDate: string;
-  _startDate: string;
+  _endDate: Date;
+  _startDate: Date;
   visibleHelp = false;
   helpText: any;
-  DisplayDateFormat = '';
+
+  _DateFormat = '';
+  _DisplayDateFormat = '';
+
   showSpinner = false;
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
   showReport: boolean;
+  @ViewChild('dt') dt: Table;
+  _sortArray: string[];
 
   constructor(private timesysSvc: TimesystemService,
     private router: Router,
@@ -77,6 +83,7 @@ export class ListemployeesreportsComponent implements OnInit {
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.IsSecure = false;
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
         this.CheckSecurity(SplitVals[SplitVals.length - 1]);
@@ -84,9 +91,6 @@ export class ListemployeesreportsComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.Initialisations();
-    this.getEmployeesForReport();
-    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -110,9 +114,11 @@ export class ListemployeesreportsComponent implements OnInit {
 
   Initialisations() {
     this.showSpinner = true;
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
-    this._startDate = '';
-    this._endDate = '';
+    this.resetSort();
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this._startDate = null;
+    this._endDate = null;
     this._status = [
       { label: 'Active', value: '0' },
       { label: 'InActive', value: '1' },
@@ -169,6 +175,8 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
+    // tslint:disable-next-line:max-line-length
+    this._sortArray = ['LastName', 'FirstName', 'NickName', 'PayRoleID', 'EmailAddress', 'LoginID', 'HireDateSearch', 'UserLevel', 'Inactive', 'Salaried', 'IPayEligible', 'SubmitsTime', 'CompanyHolidays'];
     this.selectedColumns = this._defaultselected;
     this.showSpinner = false;
     this.getEmployeesForReport();
@@ -176,6 +184,7 @@ export class ListemployeesreportsComponent implements OnInit {
 
   ClearAllProperties() {
     this.showSpinner = true;
+    this.resetSort();
     this._status = [];
     this._paid = [];
     this._Ipay = [];
@@ -192,40 +201,39 @@ export class ListemployeesreportsComponent implements OnInit {
     this._listEmployeesForReport = [];
     this.cols = {};
     this._recData = '';
-    this._startDate = '';
-    this._endDate = '';
+    this._startDate = null;
+    this._endDate = null;
     this.visibleHelp = false;
     this.helpText = '';
     this.showSpinner = false;
   }
   getEmployeesForReport() {
     this.showSpinner = true;
+    this.resetSort();
     let _start = '';
     let _end = '';
     this.showReport = false;
-    if (this._startDate !== '' && this._startDate !== null) {
-      _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
-      this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
+      _start = this.datePipe.transform(this._startDate, this._DateFormat);
     }
-    if (this._endDate !== '' && this._endDate !== null) {
-      _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-      this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+    if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
+      _end = this.datePipe.transform(this._endDate, this._DateFormat);
     }
     this.timesysSvc.getEmployeesForReport(this._statusselected, this._Ipayselected, this._paidselected,
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
+          console.log(data);
           this._listEmployeesForReport = [];
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._listEmployeesForReport = data;
             this._recData = data.length;
-
           }
+          this.showReport = true;
           this.showSpinner = false;
         });
   }
-
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(
@@ -241,6 +249,15 @@ export class ListemployeesreportsComponent implements OnInit {
 
   }
   customSort(event: SortEvent) {
+    this.showSpinner = true;
     this.commonSvc.customSortByCols(event, ['HireDate'], []);
+    this.showSpinner = false;
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

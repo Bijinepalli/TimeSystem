@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from '../service/common.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-timesheets',
@@ -52,6 +53,11 @@ export class TimesheetsComponent implements OnInit {
   _TimeStampFormat: any;
   _DisplayTimeStampFormat: any;
   showReport = false;
+  _sortArray: string[];
+
+  @ViewChild('dt') dt: Table;
+  @ViewChild('dtHours') dtHours: Table;
+
 
   constructor(
     private router: Router,
@@ -126,6 +132,7 @@ export class TimesheetsComponent implements OnInit {
     this._hoursData = 0;
     this._startDate = null;
     this._endDate = null;
+    this.resetSort();
     this.showSpinner = false;
   }
 
@@ -139,13 +146,14 @@ export class TimesheetsComponent implements OnInit {
 
     this.cols = [
       { field: 'PeriodEnd', header: 'Period End', align: 'center', width: 'auto' },
-      { field: 'Submitted', header: 'Submitted', align: 'center', width: 'auto' },
+      { field: 'Submitted', header: 'Submitted', align: 'center', width: '150px' },
       { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: 'auto' },
-      { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: 'auto' },
-      { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: 'auto' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
+      { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: '150px' },
+      { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: '150px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '150px' },
       { field: 'ApprovalStatus', header: 'Approval Status', align: 'left', width: 'auto' },
     ];
+    this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours', 'ApprovalStatus'];
     this.showSpinner = false;
     this.getTimeSheets();
   }
@@ -153,6 +161,7 @@ export class TimesheetsComponent implements OnInit {
     this.showSpinner = true;
     this._mainHeader = 'Your Time Sheets';
     this.showReport = false;
+    this.resetSort();
     const Mode = this.selectedValues ? '1' : '0';
     this.timesysSvc.getEmployeeTimeSheetList((sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')), Mode)
       .subscribe(
@@ -213,7 +222,6 @@ export class TimesheetsComponent implements OnInit {
     const datetoday = new Date();
     datetoday.setMonth(datetoday.getMonth() - 1);
     datetoday.setDate(1);
-    // this._startDate = this.datepipe.transform(datetoday, this._DisplayDateFormat);
     this._startDate = datetoday;
     this._endDate = null;
     this.showSpinner = false;
@@ -353,6 +361,7 @@ export class TimesheetsComponent implements OnInit {
   showHours() {
     this.showSpinner = true;
     this.HoursTable = false;
+    this.resetSort();
     this.hourscols = [
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
       { field: 'TANDM', header: 'T & M', align: 'center', width: '75px' },
@@ -402,6 +411,19 @@ export class TimesheetsComponent implements OnInit {
 
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['SubmitDate', 'PeriodEnd'], ['Hours']);
+  }
+
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+    if (this.dtHours !== undefined && this.dtHours !== null) {
+      this.dtHours.sortOrder = 0;
+      this.dtHours.sortField = '';
+      this.dtHours.reset();
+    }
   }
 
 }

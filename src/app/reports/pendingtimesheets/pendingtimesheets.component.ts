@@ -38,6 +38,8 @@ export class PendingtimesheetsComponent implements OnInit {
   helpText: string;
   ParamSubscribe: any;
   IsSecure = false;
+  _DisplayDateFormat: any;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -73,6 +75,7 @@ export class PendingtimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -128,6 +131,7 @@ export class PendingtimesheetsComponent implements OnInit {
       { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '200px' },
       { field: 'Status', header: 'Status', align: 'left', width: '200px' },
     ];
+    this._sortArray = ['LastName', 'FirstName', 'PeriodEndSearch', 'Status'];
     this.populateDateDrop();
     this.ccFinance = true;
   }

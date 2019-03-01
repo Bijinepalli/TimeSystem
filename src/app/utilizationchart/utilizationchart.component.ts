@@ -66,6 +66,7 @@ export class UtilizationchartComponent implements OnInit {
 
   chartplugins: any;
   chartoptions: any;
+  IsSecure: boolean;
 
   constructor(
     private router: Router,
@@ -77,11 +78,29 @@ export class UtilizationchartComponent implements OnInit {
   ) { }
 
 
-
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
   ngOnInit() {
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.IsSecure = false;
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
     this.ClearAllProperties();
+    this.IsSecure = true;
+    this.showSpinner = false;
     this.Initialisations();
-    this.GetMethods();
   }
 
   ClearAllProperties() {
@@ -188,7 +207,7 @@ export class UtilizationchartComponent implements OnInit {
 
     // this.ShowGraph = true;
     this.showSpinner = false;
-
+    this.GetMethods();
   }
 
   GetMethods() {
@@ -223,9 +242,12 @@ export class UtilizationchartComponent implements OnInit {
               // this.selectedEmp = this.employees.find(m => m.value.toString() ===
               //     sessionStorage.getItem(environment.buildType.toString() + '_' +'UserId').toString());
               this.selectedEmp = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString();
+              this.showSpinner = false;
               this.generateReport();
+            } else {
+              this.showSpinner = false;
             }
-            this.showSpinner = false;
+
           });
     }
   }
@@ -243,89 +265,89 @@ export class UtilizationchartComponent implements OnInit {
       this._startDate = this.datePipe.transform(new Date(+this.selectedyear, (+this.selectedMonth - 1), 1), 'yyyy-MM-dd');
       this._endDate = this.datePipe.transform(new Date(+this.selectedyear, +this.selectedMonth, 0), 'yyyy-MM-dd');
 
-      if (this._startDate > this._endDate) {
-        this.showSpinner = false;
-      } else {
-        this.timesysSvc.GetEmployeeUtilitizationReport(
-          this.selectedEmp,
-          '',
-          this._startDate,
-          this._endDate,
-          '8').subscribe(
-            (data) => {
-              if (data !== undefined && data !== null) {
-                this._UtilizationReportDetails = data;
+      // if (this._startDate > this._endDate) {
+      //   this.showSpinner = false;
+      // } else {
+      this.timesysSvc.GetEmployeeUtilitizationReport(
+        this.selectedEmp,
+        '',
+        this._startDate,
+        this._endDate,
+        '8').subscribe(
+          (data) => {
+            if (data !== undefined && data !== null) {
+              this._UtilizationReportDetails = data;
 
-                if (this._UtilizationReportDetails.WeekNumDetails !== undefined &&
-                  this._UtilizationReportDetails.WeekNumDetails !== null &&
-                  this._UtilizationReportDetails.WeekNumDetails.length > 0) {
-                  const labels = [];
+              if (this._UtilizationReportDetails.WeekNumDetails !== undefined &&
+                this._UtilizationReportDetails.WeekNumDetails !== null &&
+                this._UtilizationReportDetails.WeekNumDetails.length > 0) {
+                const labels = [];
+                for (let weekCnt = 0; weekCnt < this._UtilizationReportDetails.WeekNumDetails.length; weekCnt++) {
+                  labels.push([this._UtilizationReportDetails.WeekNumDetails[weekCnt].Startdate,
+                  this._UtilizationReportDetails.WeekNumDetails[weekCnt].Enddate]);
+                }
+                this.hoursByTeamChartData.labels = labels;
+
+                this.hoursByTeamChartData.datasets = [];
+                let UtilizationDataLabels = [];
+                // UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable', 'Utilization'];
+
+                if (this.selectedUtilizationType === 'Detail') {
+                  UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable'];
+                } else {
+                  UtilizationDataLabels = ['Utilization'];
+                }
+                for (let i = 0; i < UtilizationDataLabels.length; i++) {
+                  this.hoursByTeamChartData.datasets.push({
+                    label: UtilizationDataLabels[i],
+                    backgroundColor: '',
+                    borderColor: '',
+                    data: []
+                  });
+                  this.hoursByTeamChartData.datasets[i].backgroundColor = this.configureDefaultColours(i);
+                }
+
+                this.ShowGraph = true;
+                if (this.barChart !== undefined && this.barChart !== null) {
+                  this.barChart.refresh();
+                }
+
+                for (let i = 0; i < UtilizationDataLabels.length; i++) {
+                  this.hoursByTeamChartData.datasets[i].data = [];
                   for (let weekCnt = 0; weekCnt < this._UtilizationReportDetails.WeekNumDetails.length; weekCnt++) {
-                    labels.push([this._UtilizationReportDetails.WeekNumDetails[weekCnt].Startdate,
-                    this._UtilizationReportDetails.WeekNumDetails[weekCnt].Enddate]);
-                  }
-                  this.hoursByTeamChartData.labels = labels;
-
-                  this.hoursByTeamChartData.datasets = [];
-                  let UtilizationDataLabels = [];
-                  // UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable', 'Utilization'];
-
-                  if (this.selectedUtilizationType === 'Detail') {
-                    UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable'];
-                  } else {
-                    UtilizationDataLabels = ['Utilization'];
-                  }
-                  for (let i = 0; i < UtilizationDataLabels.length; i++) {
-                    this.hoursByTeamChartData.datasets.push({
-                      label: UtilizationDataLabels[i],
-                      backgroundColor: '',
-                      borderColor: '',
-                      data: []
-                    });
-                    this.hoursByTeamChartData.datasets[i].backgroundColor = this.configureDefaultColours(i);
-                  }
-
-                  this.ShowGraph = true;
-                  if (this.barChart !== undefined && this.barChart !== null) {
-                    this.barChart.refresh();
-                  }
-
-                  for (let i = 0; i < UtilizationDataLabels.length; i++) {
-                    this.hoursByTeamChartData.datasets[i].data = [];
-                    for (let weekCnt = 0; weekCnt < this._UtilizationReportDetails.WeekNumDetails.length; weekCnt++) {
-                      const WeekLevelEmpData = this._UtilizationReportDetails.EmployeeLevelDetails.filter(m =>
-                        (m.WeekNum === this._UtilizationReportDetails.WeekNumDetails[weekCnt].WeekNum));
-                      if (WeekLevelEmpData !== undefined && WeekLevelEmpData !== null && WeekLevelEmpData.length > 0) {
-                        switch (UtilizationDataLabels[i]) {
-                          case 'Weekday':
-                            this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Weekday);
-                            break;
-                          case 'Holiday':
-                            this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Holiday);
-                            break;
-                          case 'PTO':
-                            this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].PTO);
-                            break;
-                          case 'Billable':
-                            this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Billable);
-                            break;
-                          case 'Utilization':
-                            this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Utilization);
-                            break;
-                          default:
-                            break;
-                        }
+                    const WeekLevelEmpData = this._UtilizationReportDetails.EmployeeLevelDetails.filter(m =>
+                      (m.WeekNum === this._UtilizationReportDetails.WeekNumDetails[weekCnt].WeekNum));
+                    if (WeekLevelEmpData !== undefined && WeekLevelEmpData !== null && WeekLevelEmpData.length > 0) {
+                      switch (UtilizationDataLabels[i]) {
+                        case 'Weekday':
+                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Weekday);
+                          break;
+                        case 'Holiday':
+                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Holiday);
+                          break;
+                        case 'PTO':
+                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].PTO);
+                          break;
+                        case 'Billable':
+                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Billable);
+                          break;
+                        case 'Utilization':
+                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Utilization);
+                          break;
+                        default:
+                          break;
                       }
                     }
                   }
-                  if (this.barChart !== undefined && this.barChart !== null) {
-                    this.barChart.refresh();
-                  }
+                }
+                if (this.barChart !== undefined && this.barChart !== null) {
+                  this.barChart.refresh();
                 }
               }
-              this.showSpinner = false;
-            });
-      }
+            }
+            this.showSpinner = false;
+          });
+      // }
     }
   }
 
@@ -348,7 +370,6 @@ export class UtilizationchartComponent implements OnInit {
   startOver() {
     this.ClearAllProperties();
     this.Initialisations();
-    this.GetMethods();
   }
 
 }

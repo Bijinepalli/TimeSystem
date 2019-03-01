@@ -38,6 +38,7 @@ export class RevenuereportComponent implements OnInit {
   _DisplayDateFormat: any;
   ParamSubscribe: any;
   IsSecure = false;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -126,6 +127,7 @@ export class RevenuereportComponent implements OnInit {
       { field: 'PeriodEnd', header: 'Period End', align: 'left', width: '150px' },
       { field: 'Hours', header: 'T & M Hours', align: 'right', width: '140px' },
     ];
+    this._sortArray = ['Name', 'PeriodEndSearch', 'Hours'];
     this.addControls();
     this.showSpinner = false;
   }

@@ -37,6 +37,7 @@ export class NonbillablesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure: boolean;
   showReport: boolean;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -112,7 +113,7 @@ export class NonbillablesComponent implements OnInit {
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
-
+    this._sortArray = ['ProjectName', 'Key', 'CreatedOnSearch'];
     this.addControls();
     this.getNonBillables();
     this.getCompanies();
@@ -151,6 +152,7 @@ export class NonbillablesComponent implements OnInit {
         { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     }
+    this._sortArray = ['ProjectName', 'Key', 'Inactive', 'CreatedOnSearch'];
     this.getNonBillables();
   }
 
