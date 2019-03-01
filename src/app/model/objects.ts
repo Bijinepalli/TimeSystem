@@ -10,6 +10,7 @@ export class Holidays {
     CalendarYear?: number;
     InUse?: number;
     CompanyName?: string;
+    HolidayDateSearch?: string;
 }
 
 export class Companies {
@@ -25,6 +26,7 @@ export class CompanyHolidays {
     HolidayDate?: string;
     DisplayName?: string;
     CompanyId?: number;
+    HolidayDateSearch?: string;
 }
 
 export class Projects {
@@ -37,6 +39,7 @@ export class Projects {
     CanBeDeleted?: number;
     CompanyName?: string;
     ChargeType?: string;
+    CreatedOnSearch?: string;
 }
 
 export class NonBillables {
@@ -55,6 +58,7 @@ export class NonBillables {
     ID1?: number;
     ID2?: number;
     ChargeType?: string;
+    CreatedOnSearch?: string;
 }
 
 export class AppSettings {
@@ -106,6 +110,7 @@ export class Employee {
     HolidayID?: string;
     Name?: string;
     PasswordExpiresOn?: string;
+    PasswordExpiresOnSearch?: string;
 }
 
 export class LoginErrorMessage {
@@ -139,7 +144,7 @@ export class Clients {
     RateID?: number;
     ClientID?: number;
     RateMode?: string;
-    CreatedOnSearch?: Date;
+    CreatedOnSearch?: String;
 }
 export class MasterPages {
     ID?: number;
@@ -187,6 +192,9 @@ export class BillingCodes {
     color?: string;
     weight?: string;
     RowCount?: number;
+    PeriodEndSearch?: string;
+    WeekEndSearch?: string;
+    CalendarDateSearch?: string;
 }
 export class BillingCodesSpecial {
     value?: string;
@@ -265,6 +273,7 @@ export class TimeSheet {
     HasOutstandingTimesheets?: string;
     Mode?: string;
     RowNumber?: string;
+    PeriodEndSearch?: string;
 }
 export class TimeLine {
     Id?: number;
@@ -299,6 +308,8 @@ export class TimeSheetForEmplyoee {
     SemiMonthly?: string;
     Hours?: string;
     ApprovalStatus?: string;
+    PeriodEndSearch?: string;
+    SubmitDateSearch?: string;
 }
 export class TimePeriods {
     PresentPeriodEnd: string;
@@ -367,6 +378,10 @@ export class Invoice {
     Inactive?: boolean;
     EffectiveDate?: string;
     ClientID?: string;
+    InvoiceDateSearch?: string;
+    StartDateSearch?: string;
+    EndDateSearch?: string;
+    EffectiveDateSearch?: string;
 }
 
 export class MonthlyHours {

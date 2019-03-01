@@ -137,7 +137,11 @@ export class DashboardComponent implements OnInit {
                 let pends: string[] = [];
                 pends = [];
                 for (let cnt = 0; cnt < data.length; cnt++) {
-                  pends.push(data[cnt].PeriodEnd);
+                  if (data[cnt] !== undefined && data[cnt] !== null) {
+                    if (data[cnt].PeriodEnd !== undefined && data[cnt].PeriodEnd !== null && data[cnt].PeriodEnd.toString() !== '') {
+                      pends.push(this.datepipe.transform(data[cnt].PeriodEnd, this.DisplayDateFormat));
+                    }
+                  }
                 }
                 this.PendingTimesheetsNotification =
                   'Please make sure you save the hours (not necessarily submit) for the following time periods: '

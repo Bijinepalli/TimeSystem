@@ -39,6 +39,7 @@ export class EmployeeclientratesComponent implements OnInit {
   _DateFormat = '';
 
   @ViewChild('dt') dt: Table;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -186,6 +187,7 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'Rate', header: 'Rate', align: 'right', width: '85px' },
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
     ];
+    this._sortArray = ['LastName', 'FirstName', 'EmployeeID', 'ClientName', 'ClientID', 'Rate', 'EffectiveDateSearch'];
   }
 
   showHelp(file: string) {

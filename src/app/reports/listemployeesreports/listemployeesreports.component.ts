@@ -47,6 +47,7 @@ export class ListemployeesreportsComponent implements OnInit {
   _HasEdit = true;
   showReport: boolean;
   @ViewChild('dt') dt: Table;
+  _sortArray: string[];
 
   constructor(private timesysSvc: TimesystemService,
     private router: Router,
@@ -174,6 +175,8 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '75px' },
     ];
+    // tslint:disable-next-line:max-line-length
+    this._sortArray = ['LastName', 'FirstName', 'NickName', 'PayRoleID', 'EmailAddress', 'LoginID', 'HireDateSearch', 'UserLevel', 'Inactive', 'Salaried', 'IPayEligible', 'SubmitsTime', 'CompanyHolidays'];
     this.selectedColumns = this._defaultselected;
     this.showSpinner = false;
     this.getEmployeesForReport();
@@ -220,6 +223,7 @@ export class ListemployeesreportsComponent implements OnInit {
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
+          console.log(data);
           this._listEmployeesForReport = [];
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
@@ -230,7 +234,6 @@ export class ListemployeesreportsComponent implements OnInit {
           this.showSpinner = false;
         });
   }
-
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
       .subscribe(

@@ -36,6 +36,7 @@ export class InvoicedataComponent implements OnInit {
   IsSecure = false;
   _HasEdit = true;
   @ViewChild('dt') dt: Table;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -125,6 +126,8 @@ export class InvoicedataComponent implements OnInit {
       { field: 'ClientName', header: 'Description', align: 'left', width: 'auto' },
       { field: 'PONumber', header: 'PO #', align: 'right', width: '100px' },
     ];
+    // tslint:disable-next-line:max-line-length
+    this._sortArray = ['InvoiceDateSearch', 'DivisionNumber', 'CustomerNumber', 'ProductCode', 'Hours', 'Rate', 'Amount', 'StartDateSearch', 'EndDateSearch', 'ClientName', 'PONumber'];
     this._selectedBillingCycle = 'A';
 
     const dateNow = new Date();

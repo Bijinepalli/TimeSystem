@@ -38,6 +38,7 @@ export class ProjectsComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure: boolean;
+  _sortArray: string[];
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -117,6 +118,7 @@ export class ProjectsComponent implements OnInit {
       { field: 'Key', header: 'Code', align: 'left', width: '250px' },
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
+    this._sortArray = ['ProjectName', 'Key', 'CreatedOnSearch'];
     this.addControls();
     this.getProjects();
     this.getCompanies();
@@ -155,6 +157,7 @@ export class ProjectsComponent implements OnInit {
         { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
       ];
     }
+    this._sortArray = ['ProjectName', 'Key', 'Inactive', 'CreatedOnSearch'];
     this.getProjects();
   }
 
