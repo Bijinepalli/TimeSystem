@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectItem } from 'primeng/api';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms'
 import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-employeelogindata',
@@ -30,6 +31,7 @@ export class EmployeelogindataComponent implements OnInit {
   IsSecure = false;
   _HasEdit = true;
   showReport: boolean;
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -72,8 +74,6 @@ export class EmployeelogindataComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.Initialisations();
-    this.showSpinner = false;
   }
   /* #endregion */
 
@@ -94,6 +94,7 @@ export class EmployeelogindataComponent implements OnInit {
 
   Initialisations() {
     this.showSpinner = true;
+    this.resetSort();
     this.types = [
       { label: 'Active', value: '0' },
       { label: 'Inactive', value: '1' },
@@ -111,6 +112,8 @@ export class EmployeelogindataComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this.types = [];
     this.salaryTypes = [];
     this.selectedType = '0';
@@ -119,8 +122,8 @@ export class EmployeelogindataComponent implements OnInit {
     this._listEmployeeLoginData = [];
     this._recData = '';
     this.visibleHelp = false;
-    this.showSpinner = false;
     this.helpText = '';
+    this.showSpinner = false;
   }
 
   showHelp(file: string) {
@@ -136,6 +139,8 @@ export class EmployeelogindataComponent implements OnInit {
   }
 
   getEmployeesForReport() {
+    this.showSpinner = true;
+    this.resetSort();
     this.cols = [
       { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
@@ -145,7 +150,6 @@ export class EmployeelogindataComponent implements OnInit {
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '110px' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
     ];
-    this.showSpinner = true;
     this.showReport = false;
     let _InActive = '';
     let _Salaried = '';
@@ -171,5 +175,12 @@ export class EmployeelogindataComponent implements OnInit {
         }
       );
     this.showSpinner = false;
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

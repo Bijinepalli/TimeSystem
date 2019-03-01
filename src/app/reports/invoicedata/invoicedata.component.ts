@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/mo
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-invoicedata',
@@ -18,10 +19,9 @@ export class InvoicedataComponent implements OnInit {
 
   _billingCycle: SelectItem[];
   _selectedBillingCycle: string;
-  _invoiceDate: any;
-  _startDate: any;
-  _endDate: any;
-  showInvoiceList = false;
+  _invoiceDate: Date;
+  _startDate: Date;
+  _endDate: Date;
   showSpinner = false;
   showReport = false;
   _reports: any[] = [];
@@ -29,11 +29,13 @@ export class InvoicedataComponent implements OnInit {
   cols: any;
   visibleHelp: boolean;
   helpText: string;
-  DisplayDateFormat = '';
+  _DisplayDateFormat = '';
+  _DateFormat = '';
 
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
+  @ViewChild('dt') dt: Table;
   _sortArray: string[];
 
   constructor(
@@ -68,7 +70,6 @@ export class InvoicedataComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -79,7 +80,6 @@ export class InvoicedataComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.Initialisations();
   }
   /* #endregion */
 
@@ -103,6 +103,10 @@ export class InvoicedataComponent implements OnInit {
 
 
   Initialisations() {
+    this.showSpinner = true;
+    this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.resetSort();
     this._billingCycle = [
       { label: 'Weekly', value: 'W' },
       { label: 'Bi-Weekly', value: 'B' },
@@ -127,31 +131,32 @@ export class InvoicedataComponent implements OnInit {
     this._selectedBillingCycle = 'A';
 
     const dateNow = new Date();
-    const end = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0);
-    const start = new Date(dateNow.getFullYear(), dateNow.getMonth(), 1);
     this._invoiceDate = dateNow;
-    this._startDate = start;
-    this._endDate = end;
+    this._startDate = new Date(dateNow.getFullYear(), dateNow.getMonth(), 1);
+    this._endDate = new Date(dateNow.getFullYear(), dateNow.getMonth() + 1, 0);
+    this.showSpinner = false;
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this._billingCycle = [];
     this._selectedBillingCycle = '';
-    this._invoiceDate = '';
-    this._startDate = '';
-    this._endDate = '';
-    this.showInvoiceList = false;
-    this.showSpinner = false;
+    this._invoiceDate = null;
+    this._startDate = null;
+    this._endDate = null;
     this.showReport = false;
     this._reports = [];
     this._recData = 0;
     this.cols = {};
     this.visibleHelp = false;
     this.helpText = '';
+    this.showSpinner = false;
   }
 
   generateReport() {
     this.showSpinner = true;
+    this.resetSort();
     this.showReport = false;
     let selectedValue = '';
     let start = '';
@@ -162,18 +167,16 @@ export class InvoicedataComponent implements OnInit {
 
     const divisionId = this.commonSvc.getAppSettingsValue('EbixDivision');
     const productCode = this.commonSvc.getAppSettingsValue('EbixProductCode');
-    const DateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
-    const DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     if (this._invoiceDate !== undefined && this._invoiceDate !== null && this._invoiceDate.toString() !== '') {
-      invoicedate = this.datePipe.transform(this._invoiceDate.toString(), DisplayDateFormat);
+      invoicedate = this.datePipe.transform(this._invoiceDate.toString(), this._DisplayDateFormat);
     }
     if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
-      start = this.datePipe.transform(this._startDate.toString(), DisplayDateFormat);
-      formattedStart = this.datePipe.transform(this._startDate.toString(), DateFormat);
+      start = this.datePipe.transform(this._startDate.toString(), this._DisplayDateFormat);
+      formattedStart = this.datePipe.transform(this._startDate.toString(), this._DateFormat);
     }
     if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
-      end = this.datePipe.transform(this._endDate.toString(), DisplayDateFormat);
-      formattedEnd = this.datePipe.transform(this._endDate.toString(), DateFormat);
+      end = this.datePipe.transform(this._endDate.toString(), this._DisplayDateFormat);
+      formattedEnd = this.datePipe.transform(this._endDate.toString(), this._DateFormat);
     }
     if (!(this._selectedBillingCycle === 'A')) {
       selectedValue = this._selectedBillingCycle;
@@ -187,9 +190,8 @@ export class InvoicedataComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
             this._recData = this._reports.length;
-            this.showReport = true;
           }
-          this.showInvoiceList = true;
+          this.showReport = true;
           this.showSpinner = false;
         }
       );
@@ -197,7 +199,8 @@ export class InvoicedataComponent implements OnInit {
 
 
   startOver() {
-    this.showInvoiceList = false;
+    this.showSpinner = true;
+    this.resetSort();
     this.showReport = false;
     this.showSpinner = false;
   }
@@ -216,5 +219,12 @@ export class InvoicedataComponent implements OnInit {
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['InvoiceDate', 'StartDate', 'EndDate'], ['Hours', 'Rate', 'Amount']);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }
