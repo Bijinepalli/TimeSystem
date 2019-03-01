@@ -61,13 +61,7 @@ export class BillablehoursComponent implements OnInit {
   }
 
   @ViewChild('dt') dt: Table;
-  resetSort() {
-    if (this.dt !== undefined && this.dt !== null) {
-      this.dt.sortOrder = 0;
-      this.dt.sortField = '';
-      this.dt.reset();
-    }
-  }
+
   CheckActiveSession() {
     let sessionActive = false;
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
@@ -292,5 +286,12 @@ export class BillablehoursComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }
