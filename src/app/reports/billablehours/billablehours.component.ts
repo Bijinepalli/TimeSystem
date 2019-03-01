@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/mo
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-billablehours',
@@ -59,6 +60,14 @@ export class BillablehoursComponent implements OnInit {
     this.commonSvc.setAppSettings();
   }
 
+  @ViewChild('dt') dt: Table;
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
   CheckActiveSession() {
     let sessionActive = false;
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
@@ -135,9 +144,11 @@ export class BillablehoursComponent implements OnInit {
     this._codeType = '';
     this.helpText = '';
     this.visibleHelp = false;
+    this.resetSort();
   }
   Initialisations() {
     this.showSpinner = true;
+    this.resetSort();
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.types = [
@@ -262,11 +273,13 @@ export class BillablehoursComponent implements OnInit {
     this.showReport = false;
     this.selectedassignStatus = 0;
     this.showSpinner = false;
+    this.resetSort();
   }
   changeCodes() {
     this.changeCodeList = false;
     this.showReport = false;
     this.showBillingCodeList = true;
+    this.resetSort();
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)

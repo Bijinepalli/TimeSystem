@@ -18,19 +18,25 @@ export class ApprovaltimesheetsComponent implements OnInit {
 
   _approvals: TimeSheetForApproval[];
   cols: any;
-  DisplayDateFormat = '';
-  DisplayDateTimeFormat = '';
+  _DisplayDateFormat = '';
+  _DisplayDateTimeFormat = '';
 
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
-    private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe, private commonSvc: CommonService) {
-
-
+  constructor(
+    private timesysSvc: TimesystemService,
+    private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
+    private activatedRoute: ActivatedRoute,
+    private fb: FormBuilder,
+    private datePipe: DatePipe,
+    private decimal: DecimalPipe,
+    private commonSvc: CommonService
+  ) {
   }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
-    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     this.timesysSvc.getTimeSheetForApprovalGet(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')).subscribe(
       (data) => {
         this._approvals = data;

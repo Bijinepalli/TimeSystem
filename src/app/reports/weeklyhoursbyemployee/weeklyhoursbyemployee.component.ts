@@ -164,8 +164,8 @@ this.CheckSecurity(SplitVals[SplitVals.length - 1]);
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this.showSpinner = false;
+    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
   showBillingCodes() {
     this.showSpinner = true;

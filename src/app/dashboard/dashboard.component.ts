@@ -3,7 +3,8 @@ import { CommonService } from '../service/common.service';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { TimesystemService } from '../service/timesystem.service';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DatePipe } from '@angular/common';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -14,17 +15,25 @@ export class DashboardComponent implements OnInit {
   PendingTimesheetsNotification: string;
   showOutStandingTimesheets = false;
   showApprovalTimesheets = false;
+  showSpinner = false;
+  ParamSubscribe: any;
+  DisplayDateFormat: any;
+  IsSecure: boolean;
+  _HasEdit: boolean;
+
   constructor(
-    private msgSvc: MessageService,
+    private router: Router,
+    private route: ActivatedRoute,
     private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     private commonSvc: CommonService,
-    private router: Router,
+    public datepipe: DatePipe
   ) {
-    this.CheckActiveSessionAndPageAuthorization();
+    this.CheckActiveSession();
     this.commonSvc.setAppSettings();
   }
-  CheckActiveSessionAndPageAuthorization() {
+  CheckActiveSession() {
     let sessionActive = false;
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
       if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
@@ -34,24 +43,57 @@ export class DashboardComponent implements OnInit {
     }
 
     if (!sessionActive) {
-      this.router.navigate(['']);
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
     }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
   }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
+    this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+        const SplitVals = params['Id'].toString().split('@');
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+      }
+    });
+  }
+  /* #endregion */
+
+  /* #region Basic Methods */
+
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.ClearAllProperties();
+    this.IsSecure = true;
+    this.showSpinner = false;
     this.Initialisations();
-    this.CheckSecurity();
+  }
+
+  ClearAllProperties() {
+    this.showSpinner = true;
+    this.showOutStandingTimesheets = false;
+    this.showApprovalTimesheets = false;
+    this.PendingTimesheetsNotification = null;
+    this.showSpinner = false;
+  }
+
+  Initialisations() {
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this.CheckInternalSecurity();
     this.GetMethods();
   }
 
-
-
-
-  Initialisations() {
-
-  }
-
-  CheckSecurity() {
+  CheckInternalSecurity() {
+    this.showSpinner = true;
     if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== undefined &&
       sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== null &&
       sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime').toString() !== '' &&
@@ -70,13 +112,17 @@ export class DashboardComponent implements OnInit {
     } else {
       this.showApprovalTimesheets = true;
     }
+    this.showSpinner = false;
   }
 
   GetMethods() {
-    this.getIncompleteTimeSheets();
+    if (this.showOutStandingTimesheets) {
+      this.getIncompleteTimeSheets();
+    }
   }
 
   getIncompleteTimeSheets() {
+    this.showSpinner = true;
     this.PendingTimesheetsNotification = null;
     const TimeSheetIntimationCountDown = this.commonSvc.getAppSettingsValue('TimeSheetIntimationCountDown');
     if (TimeSheetIntimationCountDown !== '') {
@@ -97,6 +143,7 @@ export class DashboardComponent implements OnInit {
                   'Please make sure you save the hours (not necessarily submit) for the following time periods: '
                   + pends.join(', ') + ' to ensure proper month-end invoicing.';
               }
+              this.showSpinner = false;
             });
       }
     }
