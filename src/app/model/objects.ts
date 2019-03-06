@@ -220,12 +220,22 @@ export class BillingCodesSpecial {
 export class EmailOptions {
     EmailType?: string;
     From?: string;
+    CC?: string;
+    BCC?: string;
+    DisplayName?: string;
     To?: string;
     ReplyTo?: string;
     BodyParams?: string[];
+    Attachments?: any;
     SendAdmin?: boolean;
     SendOnlyAdmin?: boolean;
 }
+
+export class SendEmail {
+    EmailOptions?: EmailOptions;
+    EmailContent?: Email;
+}
+
 export class ForgotPasswordHistory {
     Id?: number;
     EmployeeID?: number;

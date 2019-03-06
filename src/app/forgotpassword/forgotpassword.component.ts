@@ -189,9 +189,9 @@ export class ForgotpasswordComponent implements OnInit {
     const BodyParams: string[] = [];
     BodyParams.push('pa55w0rd!!');
     _EmailOptions.BodyParams = BodyParams;
-    this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-      this.navigateTo('/login');
-    });
+    // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+    //   this.navigateTo('/login');
+    // });
   }
 
 }

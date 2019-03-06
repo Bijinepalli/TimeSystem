@@ -134,12 +134,10 @@ export class MailsComponent implements OnInit {
     this.showSpinner = false;
   }
   getEmails() {
-    const _email: Email = {};
-    _email.EmailType = '';
     this.showSpinner = true;
     this.showReport = false;
     this._recData = 0;
-    this.timesysSvc.getEmails(_email)
+    this.timesysSvc.getEmails('')
       .subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
