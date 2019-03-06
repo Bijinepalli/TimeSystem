@@ -142,9 +142,9 @@ export class TimesheetsComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
-    this._TimeStampFormat = this.commonSvc.getAppSettingsValue('	TimeStampFormat');
+    this._TimeStampFormat = this.commonSvc.getAppSettingsValue('TimeStampFormat');
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
-    this._DisplayTimeStampFormat = this.commonSvc.getAppSettingsValue('	DisplayTimeStampFormat');
+    this._DisplayTimeStampFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
 
     this.cols = [
       { field: 'PeriodEnd', header: 'Period End', align: 'center', width: 'auto' },

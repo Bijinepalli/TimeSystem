@@ -39,6 +39,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _sortArray: string[];
+  _DisplayDateTimeFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -128,7 +129,8 @@ export class UnusedbillingcodesComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
-    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
+    this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
     this.codeType = [
       { label: 'Client', value: 0 },
       { label: 'Project', value: 1 },
