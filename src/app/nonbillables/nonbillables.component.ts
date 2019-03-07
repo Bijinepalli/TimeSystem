@@ -21,7 +21,6 @@ export class NonbillablesComponent implements OnInit {
   nonBillableHdr: string;
   visibleHelp: boolean;
   helpText: string;
-  DisplayDateTimeFormat = '';
   _bc: BillingCode = new BillingCode();
   _companies: DrpList[] = [];
   _nonBillable: NonBillables[] = [];
@@ -38,6 +37,7 @@ export class NonbillablesComponent implements OnInit {
   IsSecure: boolean;
   showReport: boolean;
   _sortArray: string[];
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -100,7 +100,7 @@ export class NonbillablesComponent implements OnInit {
   }
 
   Initialisations() {
-    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._status = [
       { label: 'Active', value: '1' },
       { label: 'Inactive', value: '0' },

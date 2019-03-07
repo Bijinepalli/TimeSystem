@@ -1002,16 +1002,16 @@ export class EmployeesComponent implements OnInit {
               const BodyParams: string[] = [];
               BodyParams.push(this._selectedEmployee.Password);
               _EmailOptions.BodyParams = BodyParams;
-              this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-                this.msgSvc.add({
-                  key: 'saveSuccess', severity: 'success',
-                  summary: 'Info Message', detail: 'Employee saved successfully'
-                });
-                this.clearControlsEmployee();
-                this.getEmployees();
-                this.getSupervisors();
-                this.getDepartments();
-              });
+              // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+              //   this.msgSvc.add({
+              //     key: 'saveSuccess', severity: 'success',
+              //     summary: 'Info Message', detail: 'Employee saved successfully'
+              //   });
+              //   this.clearControlsEmployee();
+              //   this.getEmployees();
+              //   this.getSupervisors();
+              //   this.getDepartments();
+              // });
             }
           },
           (error) => {
@@ -1199,15 +1199,15 @@ export class EmployeesComponent implements OnInit {
     const BodyParams: string[] = [];
     BodyParams.push(NewPassword);
     _EmailOptions.BodyParams = BodyParams;
-    this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-      this.msgSvc.add({
-        key: 'saveSuccess',
-        severity: 'success',
-        summary: 'Info Message',
-        detail: 'Employee password reset successfully'
-      });
-      this.getEmployees();
-    });
+    // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+    //   this.msgSvc.add({
+    //     key: 'saveSuccess',
+    //     severity: 'success',
+    //     summary: 'Info Message',
+    //     detail: 'Employee password reset successfully'
+    //   });
+    //   this.getEmployees();
+    // });
   }
   /* #endregion */
 

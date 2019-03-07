@@ -21,7 +21,7 @@ export class ProjectsComponent implements OnInit {
   projectHdr: string;
   visibleHelp: boolean;
   helpText: string;
-  DisplayDateTimeFormat = '';
+  _DisplayDateTimeFormat = '';
   cols: any;
   _bc: BillingCode = new BillingCode();
   _projects: Projects[] = [];
@@ -40,6 +40,7 @@ export class ProjectsComponent implements OnInit {
   IsSecure: boolean;
   showReport: boolean;
   _sortArray: string[];
+  _DisplayDateFormat: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -75,6 +76,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.addControls();
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -106,7 +108,8 @@ export class ProjectsComponent implements OnInit {
 
 
   Initialisations() {
-    this.DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     this._status = [
       { label: 'Active', value: '1' },
       { label: 'Inactive', value: '0' },
@@ -120,7 +123,6 @@ export class ProjectsComponent implements OnInit {
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
     this._sortArray = ['ProjectName', 'Key', 'CreatedOnSearch'];
-    this.addControls();
     this.getProjects();
     this.getCompanies();
   }

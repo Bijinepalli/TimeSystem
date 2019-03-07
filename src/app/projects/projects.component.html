@@ -55,7 +55,7 @@
         <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to projectCode"
             ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
           </p-sortIcon>
         </th>
@@ -70,7 +70,7 @@
         </td>
         <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="(col.field === 'CreatedOn'); else nondatecol">
-            <label>{{rowData[col.field] | dateFormat: DisplayDateTimeFormat}} </label>
+            <label>{{rowData[col.field] |  dateFormat: _DisplayDateFormat}} </label>
             <!-- <label>{{rowData[col.field]}} </label> -->
           </div>
           <ng-template #nondatecol>

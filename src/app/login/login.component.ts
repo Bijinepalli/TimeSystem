@@ -246,16 +246,16 @@ export class LoginComponent implements OnInit {
                 BodyParams.push(WebsiteAddress + 'changepassword/' + forgotPasswordHistory.UniqueCode.toString());
                 BodyParams.push(LinkExpiryMin);
                 _EmailOptions.BodyParams = BodyParams;
-                this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-                  const Msg = 'Email is sent with a link to Change Password that will expire in ' + LinkExpiryMin + ' minutes.';
-                  this.msgSvc.add({
-                    key: 'alert',
-                    sticky: true,
-                    severity: 'info',
-                    summary: 'Mail Sent!',
-                    detail: Msg
-                  });
-                });
+                // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+                //   const Msg = 'Email is sent with a link to Change Password that will expire in ' + LinkExpiryMin + ' minutes.';
+                //   this.msgSvc.add({
+                //     key: 'alert',
+                //     sticky: true,
+                //     severity: 'info',
+                //     summary: 'Mail Sent!',
+                //     detail: Msg
+                //   });
+                // });
               }
             });
           }
