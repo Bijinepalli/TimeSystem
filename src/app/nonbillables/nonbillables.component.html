@@ -69,7 +69,7 @@
         </td>
         <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="(col.field === 'CreatedOn'); else nondatecol">
-            <label>{{rowData[col.field] | dateFormat: DisplayDateTimeFormat}} </label>
+            <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
             <!-- <label>{{rowData[col.field]}} </label> -->
           </div>
           <ng-template #nondatecol>

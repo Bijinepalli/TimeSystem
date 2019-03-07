@@ -6,7 +6,8 @@ import {
   Clients, NonBillables, MasterPages, LeftNavMenu, BillingCodes, BillingCodesSpecial, EmailOptions,
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
   TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours, HoursByTimesheet,
-  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport
+  BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport,
+  SendEmail
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -244,8 +245,8 @@ export class TimesystemService {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListAllBillingItemsForBillingCodesPost', body, httpOptions);
   }
-  sendMail(_EmailOptions: EmailOptions) {
-    const body = JSON.stringify(_EmailOptions);
+  sendMail(_SendEmail: SendEmail) {
+    const body = JSON.stringify(_SendEmail);
     return this.http.post<EmailOptions[]>(this.url + 'SendEmail', body, httpOptions);
 
   }
@@ -297,9 +298,9 @@ export class TimesystemService {
       .set('EmployeeId', employeeId);
     return this.http.get<TimeSheetForApproval[]>(this.url + 'GetTimeSheetApprovalsCheck', { params });
   }
-  getEmails(_email: Email) {
+  getEmails(EmailType: string) {
     const params = new HttpParams()
-      .set('EmailType', _email.EmailType);
+      .set('EmailType', EmailType);
     return this.http.get<Email[]>(this.url + 'Email_Get', { params });
   }
 

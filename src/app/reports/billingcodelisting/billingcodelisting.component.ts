@@ -35,6 +35,7 @@ export class BillingcodelistingComponent implements OnInit {
   _sortArray = [];
   @ViewChild('dt') dt: Table;
 
+  _DisplayDateTimeFormat: any;
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -111,7 +112,8 @@ export class BillingcodelistingComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
-    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
+    this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
     this.types = [
       { label: 'Active', value: 0 },
       { label: 'Inactive', value: 1 },
@@ -148,6 +150,7 @@ export class BillingcodelistingComponent implements OnInit {
       case '0':
         this.timesysSvc.listAllClientItems(mode).subscribe(
           (data) => {
+            console.log(data);
             this.showTable(data);
           });
         break;

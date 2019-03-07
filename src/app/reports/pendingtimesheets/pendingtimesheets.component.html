@@ -86,7 +86,7 @@
   </div>
   <div class="ui-g-12" style="border:solid 1px #d3d3d3" *ngIf="showReport && _recData > 0">
     <div class="ui-g-12 ui-md-2">
-      <button pButton label="Email Employees" (click)="emailEmployee()" [disabled]="true"></button>
+      <button pButton label="Email Employees" (click)="emailEmployee()" [disabled]="checkSelectedEmployees()"></button>
     </div>
     <div class="ui-g-12 ui-md-1" style="padding-top: 13px">
       <p-checkbox [(ngModel)]="byCob" binary="true"></p-checkbox> By COB

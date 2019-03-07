@@ -150,9 +150,9 @@ export class ChangepasswordComponent implements OnInit {
     const BodyParams: string[] = [];
     BodyParams.push(NewPassword);
     _EmailOptions.BodyParams = BodyParams;
-    this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-      this.navigateTo('/login');
-    });
+    // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
+    //   this.navigateTo('/login');
+    // });
   }
 
 }
