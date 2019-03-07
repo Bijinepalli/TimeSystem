@@ -241,7 +241,6 @@ export class EmployeehoursComponent implements OnInit {
         const month = today.getMonth();
         const year = today.getFullYear();
         this._storeDate = new Date(year, month - 1, 1).toString();
-        console.log(this._storeDate);
       } else {
         this._storeDate = this._startDate;
       }

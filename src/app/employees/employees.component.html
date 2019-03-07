@@ -285,9 +285,9 @@
         </div>
         <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
           <div style="height:5px"></div>
-          <label (mouseenter)="op2.show($event)" style="font-size:14px; color: blue"><b>{{SupEmpCnt}}</b> Employees are
+          <label (mouseenter)="opSup.show($event)" style="font-size:14px; color: blue"><b>{{SupEmpCnt}}</b> Employees are
             assigned</label>
-          <p-overlayPanel #op2 [showCloseIcon]="true" appendTo="body" *ngIf="SupEmployeeList">
+          <p-overlayPanel #opSup [showCloseIcon]="true" appendTo="body" *ngIf="SupEmployeeList">
             <p-table [columns]="SupEmpcols" [value]="SupEmployeeList" [style]="{width: '500px'}" [responsive]="false"
               dataKey="ID" [paginator]="true" [rows]="5">
               <ng-template pTemplate="header" let-columns>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -10,6 +10,7 @@ import { TimesheetsComponent } from 'src/app/timesheets/timesheets.component';
 import { parse } from 'querystring';
 import { DateFormats } from 'src/app/model/constants';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-pendingtimesheets',
@@ -40,6 +41,7 @@ export class PendingtimesheetsComponent implements OnInit {
   IsSecure = false;
   _DisplayDateFormat: any;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -105,6 +107,8 @@ export class PendingtimesheetsComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this.dates = [];
     this.dateFormat = '';
     this.periodEnd = '';
@@ -151,7 +155,6 @@ export class PendingtimesheetsComponent implements OnInit {
               this.dates.push({ label: data[i].FuturePeriodEnd, value: data[i].FuturePeriodEnd });
             }
           }
-          console.log(this.dates);
           this.selectedDate = data[0].PresentPeriodEnd.toString();
           this.showSpinner = false;
           this.getDatefortheperiod();
@@ -168,8 +171,8 @@ export class PendingtimesheetsComponent implements OnInit {
 
   getDatefortheperiod() {
     this.showSpinner = true;
+    this.resetSort();
     this._reports = [];
-    console.log(this.selectedDate);
     this.timesysSvc.getOutstandingTimesheetReport(this.selectedDate)
       .subscribe(
         (data) => {
@@ -179,7 +182,6 @@ export class PendingtimesheetsComponent implements OnInit {
             this._reports = data;
             this._recData = this._reports.length;
           }
-          console.log(this._reports);
           this.showReport = true;
           this.showSpinner = false;
         }
@@ -200,6 +202,13 @@ export class PendingtimesheetsComponent implements OnInit {
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd'], []);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 
 }
