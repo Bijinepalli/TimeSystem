@@ -290,7 +290,7 @@ export class TimesheetsComponent implements OnInit {
                           key: 'alert',
                           sticky: true,
                           severity: 'error',
-                          summary: '',
+                          summary: 'Error!',
                           detail: 'A timesheet already has been submitted for this period and waiting for approval.',
                         });
                         this.showSpinner = false;

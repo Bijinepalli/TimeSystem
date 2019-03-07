@@ -1,18 +1,18 @@
+<p-confirmDialog></p-confirmDialog>
 <p-toast [style]="{marginTop: '80px'}" position="bottom-right" key="saveSuccess"></p-toast>
-<p-toast position="center" key="alert" (onClose)="onReject()" styleClass="alertToast" [modal]="true" [baseZIndex]="5000" >
+<p-toast position="center" key="alert" (onClose)="onReject()" styleClass="alertToast" [modal]="true" [baseZIndex]="5000">
   <ng-template let-message pTemplate="message">
     <div class="ui-g ui-fluid ui-g-nopad">
       <div class="alertHeader">
         <div class="ui-g-12 ui-md-1" align="center">
-          <i class="pi pi-exclamation-triangle" style="font-size: 1.5em;margin:2px;"></i>
+          <i class="pi pi-exclamation-triangle" style="font-size: 1.9em;margin:2px;"></i>
         </div>
         <div class="ui-g-12 ui-md-10" align="left">
-          <h4 style="margin:5px;" [innerHTML]="message.detail | sanitizeHtmlString"></h4>
+          <h4 style="margin:5px;">{{message.summary}}</h4>
         </div>
       </div>
-
-      <div class="ui-g-12 ui-md-9" align="left" style="padding:0.8em">
-        <label style="margin:5px;">{{message.summary}}</label>
+      <div class="ui-g-12 ui-md-11" align="left" style="padding:0.8em">
+        <label [innerHTML]="message.detail | sanitizeHtmlString"></label>
       </div>
     </div>
     <hr>
@@ -23,24 +23,6 @@
       </div>
     </div>
   </ng-template>
-  <!-- <div class="ui-toast-message-content"><!--bindings={
-    "ng-reflect-ng-if": "true"
-  }-<a class="ui-toast-close-icon pi pi-times ng-tns-c4-23 ng-star-inserted" href="#" style=""></a><!--bindings={
-    "ng-reflect-ng-if": "false"
-  }-->
-  <!--bindings={
-    "ng-reflect-ng-template-outlet-context": "[object Object]",
-    "ng-reflect-ng-template-outlet": "[object Object]"
-  }<div _ngcontent-c5="" class="ui-g ui-fluid ui-g-nopad ng-star-inserted" style=""><div _ngcontent-c5="" class="ui-g" style="
-      width: 100%;
-      background-color: darksalmon;
-  "><div _ngcontent-c5="" align="center" class="ui-g-2 ui-md-1"><i _ngcontent-c5="" class="pi pi-exclamation-triangle" style="font-size: 1.5em;margin:2px;"></i></div><div _ngcontent-c5="" align="center" class="ui-g-12 ui-md-10" style="
-      text-align: left;
-  "><h4 _ngcontent-c5="" style="margin:5px;">Error Occurred</h4></div></div><div _ngcontent-c5="" align="left" class="ui-g-12 ui-md-9"><label _ngcontent-c5="" style="margin:5px;">Department already Exists.</label></div></div><div _ngcontent-c5="" class="ui-g ui-fluid ui-g-nopad ng-star-inserted" style=""><div _ngcontent-c5="" align="right" class="ui-g-3" style="
-  "><button _ngcontent-c5="" class="ui-button-secondary ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" label="OK" pbutton="" type="button" ng-reflect-label="OK"><span class="ui-button-text ui-clickable" style="
-      background: #007ad9;
-      color: #ffff;
-  ">OK</span></button></div></div></div> -->
 </p-toast>
 <div class="ui-g" id="header">
   <div class="ui-g-12 ui-md-6 ui-lg-6 topBar">

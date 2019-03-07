@@ -1056,7 +1056,7 @@ export class EmployeesComponent implements OnInit {
                 key: 'alert',
                 sticky: true,
                 severity: 'error',
-                summary: '',
+                summary: 'Error!',
                 detail: outputData.ErrorMessage
               });
             } else {

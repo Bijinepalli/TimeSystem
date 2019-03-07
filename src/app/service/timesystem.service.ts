@@ -7,7 +7,9 @@ import {
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
   TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours, HoursByTimesheet,
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport,
-  SendEmail
+  SendEmail,
+  DrpList,
+  DictionaryType
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -748,5 +750,16 @@ export class TimesystemService {
     const params = new HttpParams()
       .set('EmployeeId', EmployeeId.toString());
     return this.http.get<Employee[]>(this.url + 'GetPayrollForEmployee', { params });
+  }
+
+
+  PendingTimesheetEmail(recipientsToEmailJSON: string, byCloseOfBusiness: string, ccFinance: string, periodEndDate: string) {
+    const params = new HttpParams()
+      .set('recipientsToEmailJSON', recipientsToEmailJSON)
+      .set('byCloseOfBusiness', byCloseOfBusiness.toLowerCase())
+      .set('ccFinance', ccFinance.toLowerCase())
+      .set('periodEndDate', periodEndDate);
+
+    return this.http.get<DictionaryType[]>(this.url + 'PendingTimesheetEmail', { params });
   }
 }

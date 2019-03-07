@@ -3,6 +3,11 @@ export class DrpList {
     value?: string;
 }
 
+export class DictionaryType {
+    Key?: string;
+    Value?: string;
+}
+
 export class Holidays {
     Id?: number;
     HolidayName?: string;
