@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -6,6 +6,7 @@ import { SelectItem } from 'primeng/api';
 import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-employeesbybillingcode',
@@ -41,6 +42,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   IsSecure = false;
   _DateFormat: any;
   _DisplayDateFormat: any;
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -129,6 +131,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.showReport = false;
     this.visibleHelp = false;
     this.helpText = '';
+    this.resetSort();
   }
 
   Initialisations() {
@@ -290,6 +293,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.showBillingCodeList = false;
     this.changeCodeList = true;
     this.showSpinner = false;
+    this.resetSort();
   }
   startOver() {
     this.showBillingCodeList = false;
@@ -299,11 +303,13 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     this.allcheckbox = false;
     this.selectedassignStatus = 0;
     this.showSpinner = false;
+    this.resetSort();
   }
   changeCodes() {
     this.changeCodeList = false;
     this.showReport = false;
     this.showBillingCodeList = true;
+    this.resetSort();
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
@@ -319,5 +325,12 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, [], []);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

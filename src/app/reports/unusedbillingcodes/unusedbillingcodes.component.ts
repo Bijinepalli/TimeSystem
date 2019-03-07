@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { CommonService } from '../../service/common.service';
 import { SelectItem, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { NonBillables, TimePeriods } from '../../model/objects';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-unusedbillingcodes',
@@ -39,6 +40,7 @@ export class UnusedbillingcodesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -123,6 +125,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     this.visibleHelp = false;
     this.showSpinner = false;
     this.showReport = false;
+    this.resetSort();
   }
 
   Initialisations() {
@@ -197,6 +200,7 @@ export class UnusedbillingcodesComponent implements OnInit {
       );
     // Check for role and activate buttons only if role is admin
     this.IsAdmin = true;
+    this.resetSort();
   }
   deleteCodes() {
     this.showSpinner = true;
@@ -226,6 +230,7 @@ export class UnusedbillingcodesComponent implements OnInit {
       }
     });
     this.showSpinner = false;
+    this.resetSort();
   }
   setHeader() {
     this.showSpinner = true;
@@ -284,5 +289,11 @@ export class UnusedbillingcodesComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
   }
-
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
 }
