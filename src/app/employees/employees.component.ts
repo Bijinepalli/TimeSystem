@@ -992,16 +992,28 @@ export class EmployeesComponent implements OnInit {
                 detail: outputData.ErrorMessage
               });
             } else {
-              const _EmailOptions: EmailOptions = {};
-              _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
-              _EmailOptions.EmailType = 'Password Changed';
-              _EmailOptions.To = this._selectedEmployee.EmailAddress;
-              _EmailOptions.SendAdmin = false;
-              _EmailOptions.SendOnlyAdmin = false;
-              _EmailOptions.ReplyTo = '';
-              const BodyParams: string[] = [];
-              BodyParams.push(this._selectedEmployee.Password);
-              _EmailOptions.BodyParams = BodyParams;
+
+              this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
+              this.msgSvc.add({
+                key: 'saveSuccess', severity: 'success',
+                summary: 'Info Message', detail: 'Employee saved successfully'
+              });
+              this.clearControlsEmployee();
+              this.getEmployees();
+              this.getSupervisors();
+              this.getDepartments();
+              // const _EmailOptions: EmailOptions = {};
+              // _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
+              // _EmailOptions.EmailType = 'Password Changed';
+              // _EmailOptions.To = this._selectedEmployee.EmailAddress;
+              // _EmailOptions.SendAdmin = false;
+              // _EmailOptions.SendOnlyAdmin = false;
+              // _EmailOptions.ReplyTo = '';
+              // const BodyParams: string[] = [];
+              // BodyParams.push(this._selectedEmployee.Password);
+              // _EmailOptions.BodyParams = BodyParams;
+
+
               // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
               //   this.msgSvc.add({
               //     key: 'saveSuccess', severity: 'success',
