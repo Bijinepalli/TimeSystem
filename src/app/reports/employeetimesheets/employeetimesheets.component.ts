@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-employeetimesheets',
@@ -40,6 +41,8 @@ export class EmployeetimesheetsComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _sortArray: string[];
+
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -105,6 +108,8 @@ export class EmployeetimesheetsComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this.types = [];
     this.hoursType = [];
     this.selectedType = '0';
@@ -185,6 +190,7 @@ export class EmployeetimesheetsComponent implements OnInit {
   }
   generateReport() {
     this.showSpinner = true;
+    this.resetSort();
     const Mode = '0';
     this.selectedEmployeeName = this.codes.find(m => m.value === this.selectedCode).label.toString();
     this.timesysSvc.getEmployeeTimeSheetList(this.selectedCode.toString(), Mode)
@@ -201,7 +207,6 @@ export class EmployeetimesheetsComponent implements OnInit {
               this._recDataPending = Pending.length;
             }
           }
-          console.log(data);
           this.showReport = true;
           this.showSpinner = false;
           this.changeCodeList = true;
@@ -210,6 +215,7 @@ export class EmployeetimesheetsComponent implements OnInit {
       );
   }
   startOver() {
+    this.resetSort();
     this.showBillingCodeList = false;
     this.changeCodeList = false;
     this.showReport = false;
@@ -241,5 +247,12 @@ export class EmployeetimesheetsComponent implements OnInit {
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd', 'SubmitDate'], []);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

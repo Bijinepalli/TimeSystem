@@ -34,13 +34,6 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   IsSecure = false;
 
   @ViewChild('dt') dt: Table;
-  resetSort() {
-    if (this.dt !== undefined && this.dt !== null) {
-      this.dt.sortOrder = 0;
-      this.dt.sortField = '';
-      this.dt.reset();
-    }
-  }
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -102,10 +95,11 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this._startDate = '';
     this._endDate = '';
     this.showReport = false;
-    this.showSpinner = false;
     this._reports = [];
     this._recData = 0;
     this.cols = {};
@@ -114,6 +108,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     this.visibleHelp = false;
     this.showTotals = false;
     this.showTotalsonGenerate = false;
+    this.showSpinner = false;
   }
   Initialisations() {
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
@@ -126,8 +121,8 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     this._endDate = '';
   }
   generateReport() {
-    this.resetSort();
     this.showSpinner = true;
+    this.resetSort();
     this.buildCols();
     // if (this.showAll === false) {
     this._billingCodesSpecial = new BillingCodesSpecial();
@@ -200,5 +195,12 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, [], ['TANDM', 'Project', 'NonBill']);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }
