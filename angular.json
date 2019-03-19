@@ -32,7 +32,11 @@
             ],
             "scripts": [
               "./node_modules/chart.js/dist/Chart.js",
-              "./node_modules/tableexport/dist/js/tableexport.js"
+              "./node_modules/jquery/dist/jquery.min.js",
+              "./node_modules/js-xlsx/dist/xlsx.core.min.js",
+              "./node_modules/blobjs/Blob.min.js",
+              "./node_modules/file-saverjs/FileSaver.min.js",
+              "./node_modules/tableexport/dist/js/tableexport.min.js"
             ]
           },
           "configurations": {

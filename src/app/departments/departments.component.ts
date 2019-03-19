@@ -286,8 +286,8 @@ export class DepartmentsComponent implements OnInit {
               key: 'alert',
               sticky: true,
               severity: 'error',
-              summary: 'Department already Exists.',
-              detail: outputData.ErrorMessage
+              summary: 'Error!',
+              detail: outputData.ErrorMessage, // 'Department already Exists'
             });
           } else {
             this.msgSvc.add({

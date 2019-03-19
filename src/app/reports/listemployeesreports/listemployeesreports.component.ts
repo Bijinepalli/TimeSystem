@@ -223,7 +223,6 @@ export class ListemployeesreportsComponent implements OnInit {
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
         (data) => {
-          console.log(data);
           this._listEmployeesForReport = [];
           this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {

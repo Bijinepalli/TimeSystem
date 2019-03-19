@@ -141,15 +141,36 @@ export class ChangepasswordComponent implements OnInit {
 
   SendEmailChangePassword(NewPassword: string) {
     const _EmailOptions: EmailOptions = {};
-    _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
-    _EmailOptions.EmailType = 'Change Password';
-    _EmailOptions.To = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress');
-    _EmailOptions.SendAdmin = false;
-    _EmailOptions.SendOnlyAdmin = false;
-    _EmailOptions.ReplyTo = '';
+    // _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
+    // _EmailOptions.EmailType = 'Change Password';
+    // _EmailOptions.To = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress');
+    // _EmailOptions.SendAdmin = false;
+    // _EmailOptions.SendOnlyAdmin = false;
+    // _EmailOptions.ReplyTo = '';
     const BodyParams: string[] = [];
     BodyParams.push(NewPassword);
-    _EmailOptions.BodyParams = BodyParams;
+    // _EmailOptions.BodyParams = BodyParams;
+
+    this.timesysSvc.EmailByType(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress'),
+      BodyParams,
+      'Change Password'
+      , false.toString().toLowerCase()).
+      subscribe(dataEmail => {
+        if (dataEmail !== undefined && dataEmail !== null && dataEmail.length > 0) {
+          let Errors = '';
+          for (let cnt = 0; cnt < dataEmail.length; cnt++) {
+            Errors += dataEmail[cnt].Value + '<br>';
+          }
+          this.msgSvc.add({
+            key: 'alert',
+            sticky: true,
+            severity: 'error',
+            summary: 'Error!',
+            detail: Errors,
+          });
+        }
+      });
+
     // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
     //   this.navigateTo('/login');
     // });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -10,6 +10,7 @@ import { TimesheetsComponent } from 'src/app/timesheets/timesheets.component';
 import { parse } from 'querystring';
 import { DateFormats } from 'src/app/model/constants';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-pendingtimesheets',
@@ -40,6 +41,7 @@ export class PendingtimesheetsComponent implements OnInit {
   IsSecure = false;
   _DisplayDateFormat: any;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -75,10 +77,11 @@ export class PendingtimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.IsSecure = false;
+      this.showSpinner = false;
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
         this.CheckSecurity(SplitVals[SplitVals.length - 1]);
@@ -86,7 +89,6 @@ export class PendingtimesheetsComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
@@ -105,6 +107,8 @@ export class PendingtimesheetsComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
+    this.resetSort();
     this.dates = [];
     this.dateFormat = '';
     this.periodEnd = '';
@@ -125,6 +129,8 @@ export class PendingtimesheetsComponent implements OnInit {
     this.showSpinner = false;
   }
   Initialisations() {
+    this.showSpinner = true;
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.cols = [
       { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
@@ -132,8 +138,9 @@ export class PendingtimesheetsComponent implements OnInit {
       { field: 'Status', header: 'Status', align: 'left', width: '200px' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'PeriodEndSearch', 'Status'];
-    this.populateDateDrop();
     this.ccFinance = true;
+    this.showSpinner = false;
+    this.populateDateDrop();
   }
 
   //#region 'Populate Dropdown'
@@ -167,6 +174,7 @@ export class PendingtimesheetsComponent implements OnInit {
 
   getDatefortheperiod() {
     this.showSpinner = true;
+    this.resetSort();
     this._reports = [];
     this.timesysSvc.getOutstandingTimesheetReport(this.selectedDate)
       .subscribe(
@@ -198,6 +206,13 @@ export class PendingtimesheetsComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd'], []);
   }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
   checkSelectedEmployees() {
     if (this._selectedEmployees !== undefined && this._selectedEmployees !== null && this._selectedEmployees.length > 0) {
       return false;
@@ -205,103 +220,159 @@ export class PendingtimesheetsComponent implements OnInit {
     return true;
   }
 
+  DistinctFilter(value, index, self) {
+    return self.indexOf(value) === index;
+  }
+
   emailEmployee() {
-    console.log(this._selectedEmployees);
+    this.showSpinner = true;
     if (this._selectedEmployees !== undefined && this._selectedEmployees !== null && this._selectedEmployees.length > 0) {
+      const DistinctEmails = this._selectedEmployees.map(m => ({
+        EmailAddress: m.EmailAddress,
+        Name: m.LastName + ',' + m.FirstName
+      })).filter(
+        this.DistinctFilter);
 
-
-
-
-      let EmailType = this.byCob ? 'Time Sheets Due by Close of Business' : 'Time Sheets Due';
-      const From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
-      const DisplayName = this.commonSvc.getAppSettingsValue('FinanceEmailDisplayName');
-
-      this.timesysSvc.getEmails(EmailType).subscribe(data => {
-        if (data !== undefined && data !== null && data.length > 0) {
-          let emailContent: Email;
-          emailContent = {};
-          emailContent = data[0];
-          for (let cnt = 0; cnt < this._selectedEmployees.length; cnt++) {
-            let emailOptions: EmailOptions;
-            emailOptions = {};
-            // emailOptions.EmailType = EmailType;
-            emailOptions.From = From;
-            emailOptions.DisplayName = DisplayName;
-            emailOptions.To = this._selectedEmployees[cnt].EmailAddress.toString();
-
-            let _sendEmail: SendEmail;
-            _sendEmail = {};
-            _sendEmail.EmailOptions = emailOptions;
-            _sendEmail.EmailContent = emailContent;
-            console.log(_sendEmail);
-
-            this.timesysSvc.sendMail(_sendEmail).subscribe(dataSend => {
-              console.log(dataSend);
-              if (dataSend !== undefined && dataSend !== null && dataSend.toString() !== '') {
-                this.msgSvc.add({
-                  key: 'alert',
-                  sticky: true,
-                  severity: 'error',
-                  summary: 'Error!',
-                  detail: dataSend.toString(),
-                });
-              }
-            });
-          }
-        }
-      });
-      if (this.ccFinance) {
-        let emailOptions: EmailOptions;
-        emailOptions = {};
-        // emailOptions.EmailType = 'Employees With Unsubmitted Timesheets';
-        emailOptions.From = From;
-        emailOptions.DisplayName = DisplayName;
-        emailOptions.To = From;
-
-        const DistinctNames = this._selectedEmployees.map(m => m.LastName + ',' + m.FirstName).filter(
-          function (value, index, self) {
-            return self.indexOf(value) === index;
-          }).join('\r\n');
-
-        console.log(DistinctNames);
-
-        let bodyParams: string[];
-        bodyParams = [];
-        bodyParams.push(DistinctNames);
-        emailOptions.BodyParams = bodyParams;
-
-        EmailType = 'Employees With Unsubmitted Timesheets';
-        this.timesysSvc.getEmails(EmailType).subscribe(data => {
+      this.timesysSvc.PendingTimesheetEmail(
+        JSON.stringify(DistinctEmails).toString(),
+        this.byCob.toString().toLowerCase(),
+        this.ccFinance.toString().toLowerCase(),
+        this.selectedDate.toString()).
+        subscribe(data => {
           if (data !== undefined && data !== null && data.length > 0) {
-            let emailContent: Email;
-            emailContent = {};
-            emailContent = data[0];
+            let Errors: string;
+            Errors = '';
+            const DistinctErrors = data.map(m => m.Value).filter(
+              this.DistinctFilter);
+            for (let cnt = 0; cnt < DistinctErrors.length; cnt++) {
+              const Names = data.filter(m => m.Value === DistinctErrors[cnt]).map(m => m.Key).join('<br>');
+              Errors += DistinctErrors[cnt] + ' - <br><b>' + Names + '</b><br>';
+            }
 
-            emailContent.Subject += ' ' + this.selectedDate.toString();
-
-            let _sendEmail: SendEmail;
-            _sendEmail = {};
-            _sendEmail.EmailOptions = emailOptions;
-            _sendEmail.EmailContent = emailContent;
-            console.log(_sendEmail);
-
-            this.timesysSvc.sendMail(_sendEmail).subscribe(dataSend => {
-              console.log(dataSend);
-              if (dataSend !== undefined && dataSend !== null && dataSend.toString() !== '') {
-                this.msgSvc.add({
-                  key: 'alert',
-                  sticky: true,
-                  severity: 'error',
-                  summary: 'Error!',
-                  detail: dataSend.toString(),
-                });
-              }
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'error',
+              summary: 'Error!',
+              detail: Errors,
             });
           }
+          this.showSpinner = false;
         });
-      }
+    } else {
+      this.showSpinner = false;
     }
   }
+
+  // groupBy(xs, key) {
+  //   return xs.reduce(function (rv, x) {
+  //     (rv[x[key]] = rv[x[key]] || []).push(x);
+  //     return rv;
+  //   }, {});
+  // }
+
+  // emailEmployee() {
+  //   this.showSpinner = true;
+  //   if (this._selectedEmployees !== undefined && this._selectedEmployees !== null && this._selectedEmployees.length > 0) {
+
+  //     let EmailType = this.byCob ? 'Time Sheets Due by Close of Business' : 'Time Sheets Due';
+  //     const From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
+  //     const DisplayName = this.commonSvc.getAppSettingsValue('FinanceEmailDisplayName');
+  //     const DistinctEmails: string[] = this._selectedEmployees.map(m => m.EmailAddress).filter(
+  //       function (value, index, self) {
+  //         return self.indexOf(value) === index;
+  //       });
+
+  //     this.timesysSvc.getEmails(EmailType).subscribe(data => {
+  //       this.showSpinner = false;
+  //       if (data !== undefined && data !== null && data.length > 0) {
+
+
+  //         let emailContent: Email;
+  //         emailContent = {};
+  //         emailContent = data[0];
+
+
+
+  //         for (let cnt = 0; cnt < DistinctEmails.length; cnt++) {
+  //           let emailOptions: EmailOptions;
+  //           emailOptions = {};
+  //           // emailOptions.EmailType = EmailType;
+  //           emailOptions.From = From;
+  //           emailOptions.DisplayName = DisplayName;
+  //           emailOptions.To = DistinctEmails[cnt];
+
+  //           let _sendEmail: SendEmail;
+  //           _sendEmail = {};
+  //           _sendEmail.EmailOptions = emailOptions;
+  //           _sendEmail.EmailContent = emailContent;
+
+  //           this.timesysSvc.sendMail(_sendEmail).subscribe(dataSend => {
+  //             if (dataSend !== undefined && dataSend !== null && dataSend.toString() !== '') {
+  //               this.msgSvc.add({
+  //                 key: 'alert',
+  //                 sticky: true,
+  //                 severity: 'error',
+  //                 summary: 'Error!',
+  //                 detail: dataSend.toString(),
+  //               });
+  //             }
+  //           });
+  //         }
+  //       }
+
+
+  //     });
+  //     if (this.ccFinance) {
+  //       let emailOptions: EmailOptions;
+  //       emailOptions = {};
+  //       // emailOptions.EmailType = 'Employees With Unsubmitted Timesheets';
+  //       emailOptions.From = From;
+  //       emailOptions.DisplayName = DisplayName;
+  //       emailOptions.To = From;
+
+  //       const DistinctNames = this._selectedEmployees.map(m => m.LastName + ',' + m.FirstName).filter(
+  //         function (value, index, self) {
+  //           return self.indexOf(value) === index;
+  //         }).join('\r\n');
+
+  //       let bodyParams: string[];
+  //       bodyParams = [];
+  //       bodyParams.push(DistinctNames);
+  //       emailOptions.BodyParams = bodyParams;
+
+  //       EmailType = 'Employees With Unsubmitted Timesheets';
+  //       this.timesysSvc.getEmails(EmailType).subscribe(data => {
+  //         if (data !== undefined && data !== null && data.length > 0) {
+  //           let emailContent: Email;
+  //           emailContent = {};
+  //           emailContent = data[0];
+
+  //           emailContent.Subject += ' ' + this.selectedDate.toString();
+
+  //           let _sendEmail: SendEmail;
+  //           _sendEmail = {};
+  //           _sendEmail.EmailOptions = emailOptions;
+  //           _sendEmail.EmailContent = emailContent;
+
+  //           this.timesysSvc.sendMail(_sendEmail).subscribe(dataSend => {
+  //             if (dataSend !== undefined && dataSend !== null && dataSend.toString() !== '') {
+  //               this.msgSvc.add({
+  //                 key: 'alert',
+  //                 sticky: true,
+  //                 severity: 'error',
+  //                 summary: 'Error!',
+  //                 detail: dataSend.toString(),
+  //               });
+  //             }
+  //           });
+  //         }
+  //       });
+  //     }
+  //   } else {
+  //     this.showSpinner = false;
+  //   }
+  // }
 
   // onlyUnique(value, index, self) {
   //   return self.indexOf(value) === index;

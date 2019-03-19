@@ -7,7 +7,9 @@ import {
   ForgotPasswordHistory, EmployeePasswordHistory, AssignForEmployee, Invoice, TimeSheet, TimeSheetForEmplyoee,
   TimePeriods, TimeSheetBinding, TimeSheetForApproval, Email, NonBillablesTotalHours, HoursByTimesheet,
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport,
-  SendEmail
+  SendEmail,
+  DrpList,
+  DictionaryType
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -749,4 +751,56 @@ export class TimesystemService {
       .set('EmployeeId', EmployeeId.toString());
     return this.http.get<Employee[]>(this.url + 'GetPayrollForEmployee', { params });
   }
+
+
+  EmailByType(sendTo: string, bodyParams: string[], emailType: string, SendOnlyAdmin: string) {
+    console.log(bodyParams);
+    console.log(JSON.stringify(bodyParams));
+    const params = new HttpParams()
+      .set('sendTo', sendTo)
+      .set('bodyParams', JSON.stringify(bodyParams))
+      .set('emailType', emailType)
+      .set('SendOnlyAdmin', SendOnlyAdmin);
+
+    return this.http.get<DictionaryType[]>(this.url + 'EmailByType', { params });
+  }
+
+  PendingTimesheetEmail(recipientsToEmailJSON: string, byCloseOfBusiness: string, ccFinance: string, periodEndDate: string) {
+    const params = new HttpParams()
+      .set('recipientsToEmailJSON', recipientsToEmailJSON)
+      .set('byCloseOfBusiness', byCloseOfBusiness)
+      .set('ccFinance', ccFinance)
+      .set('periodEndDate', periodEndDate);
+
+    return this.http.get<DictionaryType[]>(this.url + 'PendingTimesheetEmail', { params });
+  }
+
+  EmailTimesheet(empLastName: string, empFirstName: string, empEmailAddress: string,
+    timesheetHTML: string, ToFinance: string, ToAddress: string,
+    isApproved: string, supLastName: string, supFirstName: string) {
+    const params = new HttpParams()
+      .set('empLastName', empLastName)
+      .set('empFirstName', empFirstName)
+      .set('empEmailAddress', empEmailAddress)
+      .set('timesheetHTML', timesheetHTML)
+      .set('ToFinance', ToFinance)
+      .set('ToAddress', ToAddress)
+      .set('isApproved', isApproved)
+      .set('supLastName', supLastName)
+      .set('supFirstName', supFirstName);
+
+    return this.http.get<DictionaryType[]>(this.url + 'EmailTimesheet', { params });
+  }
+
+  SendApproveOrRejectMailToEmployee(supEmail: string, period: string, empEmailAddress: string, status: string, timesheetHTML: string) {
+    const params = new HttpParams()
+      .set('supEmail', supEmail)
+      .set('period', period)
+      .set('empEmailAddress', empEmailAddress)
+      .set('status', status)
+      .set('timesheetHTML', timesheetHTML);
+    return this.http.get<DictionaryType[]>(this.url + 'SendApproveOrRejectMailToEmployee', { params });
+  }
+
+
 }

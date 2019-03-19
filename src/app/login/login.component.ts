@@ -32,6 +32,7 @@ export class LoginComponent implements OnInit {
   // Form Related Properties
 
   signInForm: FormGroup;
+  showSpinner = false;
 
   constructor(
     private router: Router,
@@ -54,10 +55,12 @@ export class LoginComponent implements OnInit {
   // Component Related Initialisations
 
   Initialisations() {
+    this.showSpinner = true;
     localStorage.clear();
     sessionStorage.clear();
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this.showSpinner = false;
     this.BuildFormControls();
   }
 
@@ -72,6 +75,7 @@ export class LoginComponent implements OnInit {
   }
 
   BuildFormControls() {
+    this.showSpinner = true;
     this.ByPassPassword = this.commonSvc.getAppSettingsValue('ByPassPassword');
     if (this.ByPassPassword !== '' && this.ByPassPassword === 'true') {
       this.signInForm = this.fb.group({
@@ -84,6 +88,7 @@ export class LoginComponent implements OnInit {
         password: ['pa55w0rd!!', [Validators.required]]
       });
     }
+    this.showSpinner = false;
   }
 
   get currentFormControls() {
@@ -110,9 +115,11 @@ export class LoginComponent implements OnInit {
 
   // Business Logic Methods
   validateUserName(key: string) {
+    this.showSpinner = true;
     this.timesysSvc.EmployeeValidateByLoginID(this.currentFormControls.username.value)
       .subscribe(
         (data) => {
+          this.showSpinner = false;
           if (data !== undefined && data !== null) {
             this.ValidateUserNameErrors = data;
             if (this.ValidateUserNameErrors.length > 0) {
@@ -140,12 +147,14 @@ export class LoginComponent implements OnInit {
   }
 
   validateCredentials() {
+    this.showSpinner = true;
     this.timesysSvc.EmployeeValidateByCredentials(
       this.commonSvc.getAppSettingsValue('LoginAttemptsLimit'),
       this.currentFormControls.username.value,
       this.currentFormControls.password.value)
       .subscribe(
         (data) => {
+          this.showSpinner = false;
           if (data !== undefined && data !== null) {
             this.ValidateCredentialsErrors = data;
             if (this.ValidateCredentialsErrors.length > 0) {
@@ -156,6 +165,33 @@ export class LoginComponent implements OnInit {
                 summary: 'Login Failed!',
                 detail: this.ValidateCredentialsErrors[0].ErrorMessage
               });
+
+              if (this.ValidateCredentialsErrors[0].ErrorMessage.toString().indexOf('The user name is locked') > -1) {
+                this.showSpinner = true;
+                this.timesysSvc.EmailByType('',
+                  [this.currentFormControls.username.value],
+                  'User Lock On Failed Login Attempts'
+                  , true.toString().toLowerCase()).
+                  subscribe(dataEmail => {
+                    this.showSpinner = false;
+                    if (dataEmail !== undefined && dataEmail !== null && dataEmail.length > 0) {
+                      let Errors = '';
+                      for (let cnt = 0; cnt < dataEmail.length; cnt++) {
+                        Errors += dataEmail[cnt].Value + '<br>';
+                      }
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'error',
+                        summary: 'Error!',
+                        detail: Errors,
+                      });
+                    } else {
+                      this.router.navigate(['/login']);
+                    }
+                  });
+              }
+
             } else {
               this.getEmployeeData('', this.currentFormControls.username.value, this.currentFormControls.password.value);
             }
@@ -165,9 +201,11 @@ export class LoginComponent implements OnInit {
   }
 
   getEmployeeData(EmployeeID: string, LoginID: string, Password: string) {
+    this.showSpinner = true;
     this.timesysSvc.getEmployee(EmployeeID, LoginID, Password)
       .subscribe(
         (data) => {
+          this.showSpinner = false;
           if (data !== undefined && data !== null && data.length > 0) {
             this.EmployeeData = data;
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserId', this.EmployeeData[0].ID.toString());
@@ -199,7 +237,9 @@ export class LoginComponent implements OnInit {
               let forgotPasswordHistory: ForgotPasswordHistory = {};
               forgotPasswordHistory.EmployeeID = +(this.EmployeeData[0].ID.toString());
               forgotPasswordHistory.EmailAddress = this.EmployeeData[0].EmailAddress.toString();
+              this.showSpinner = true;
               this.timesysSvc.InsertForgotPasswordHistory(forgotPasswordHistory).subscribe(dataForgot => {
+                this.showSpinner = false;
                 if (dataForgot !== null) {
                   forgotPasswordHistory = dataForgot;
                   this.navigateTo('/changepassword/' + forgotPasswordHistory.UniqueCode.toString(), {});
@@ -223,29 +263,65 @@ export class LoginComponent implements OnInit {
     const WebsiteAddress = this.commonSvc.getAppSettingsValue('WebsiteAddress');
     const FinanceEmailAddress = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
 
+    this.showSpinner = true;
     this.timesysSvc.getEmployee('', this.currentFormControls.username.value, '')
       .subscribe(
         (data) => {
+          this.showSpinner = false;
           if (data !== undefined && data !== null && data.length > 0) {
             this.EmployeeData = data;
 
             let forgotPasswordHistory: ForgotPasswordHistory = {};
             forgotPasswordHistory.EmployeeID = +(this.EmployeeData[0].ID.toString());
             forgotPasswordHistory.EmailAddress = this.EmployeeData[0].EmailAddress.toString();
+
+            this.showSpinner = true;
             this.timesysSvc.InsertForgotPasswordHistory(forgotPasswordHistory).subscribe(dataForgot => {
+              this.showSpinner = false;
               if (dataForgot !== null) {
                 forgotPasswordHistory = dataForgot;
-                const _EmailOptions: EmailOptions = {};
-                _EmailOptions.From = FinanceEmailAddress;
-                _EmailOptions.EmailType = 'Forgot Password';
-                _EmailOptions.To = this.EmployeeData[0].EmailAddress.toString();
-                _EmailOptions.SendAdmin = false;
-                _EmailOptions.SendOnlyAdmin = false;
-                _EmailOptions.ReplyTo = '';
+                // const _EmailOptions: EmailOptions = {};
+                // _EmailOptions.From = FinanceEmailAddress;
+                // _EmailOptions.EmailType = 'Forgot Password';
+                // _EmailOptions.To = this.EmployeeData[0].EmailAddress.toString();
+                // _EmailOptions.SendAdmin = false;
+                // _EmailOptions.SendOnlyAdmin = false;
+                // _EmailOptions.ReplyTo = '';
                 const BodyParams: string[] = [];
                 BodyParams.push(WebsiteAddress + 'changepassword/' + forgotPasswordHistory.UniqueCode.toString());
                 BodyParams.push(LinkExpiryMin);
-                _EmailOptions.BodyParams = BodyParams;
+                // _EmailOptions.BodyParams = BodyParams;
+
+                this.showSpinner = true;
+                this.timesysSvc.EmailByType(this.EmployeeData[0].EmailAddress.toString(),
+                  BodyParams,
+                  'Forgot Password'
+                  , false.toString().toLowerCase()).
+                  subscribe(dataEmail => {
+                    this.showSpinner = false;
+                    if (dataEmail !== undefined && dataEmail !== null && dataEmail.length > 0) {
+                      let Errors = '';
+                      for (let cnt = 0; cnt < dataEmail.length; cnt++) {
+                        Errors += dataEmail[cnt].Value + '<br>';
+                      }
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'error',
+                        summary: 'Error!',
+                        detail: Errors,
+                      });
+                    } else {
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'success',
+                        summary: 'Email sent',
+                        detail: 'Email has been sent to reset the password',
+                      });
+                    }
+                  });
+
                 // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
                 //   const Msg = 'Email is sent with a link to Change Password that will expire in ' + LinkExpiryMin + ' minutes.';
                 //   this.msgSvc.add({
