@@ -232,7 +232,6 @@ export class PendingtimesheetsComponent implements OnInit {
         Name: m.LastName + ',' + m.FirstName
       })).filter(
         this.DistinctFilter);
-
       this.timesysSvc.PendingTimesheetEmail(
         JSON.stringify(DistinctEmails).toString(),
         this.byCob.toString().toLowerCase(),
@@ -255,6 +254,11 @@ export class PendingtimesheetsComponent implements OnInit {
               severity: 'error',
               summary: 'Error!',
               detail: Errors,
+            });
+          } else {
+            this.msgSvc.add({
+              key: 'saveSuccess', severity: 'success',
+              summary: 'Info Message', detail: 'Email(s) sent successfully'
             });
           }
           this.showSpinner = false;
