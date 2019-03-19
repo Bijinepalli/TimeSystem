@@ -168,6 +168,14 @@ export class ChangepasswordComponent implements OnInit {
             summary: 'Error!',
             detail: Errors,
           });
+        } else {
+          this.msgSvc.add({
+            key: 'alert',
+            sticky: true,
+            severity: 'success',
+            summary: 'Email sent',
+            detail: 'Password changed successfully',
+          });
         }
       });
 

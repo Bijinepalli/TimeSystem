@@ -236,6 +236,13 @@ export class ForgotpasswordComponent implements OnInit {
               detail: Errors,
             });
           } else {
+            this.msgSvc.add({
+              key: 'alert',
+              sticky: true,
+              severity: 'success',
+              summary: 'Email sent',
+              detail: 'Password changed successfully',
+            });
             this.router.navigate(['/login']);
           }
         });
