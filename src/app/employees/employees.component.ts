@@ -663,7 +663,7 @@ export class EmployeesComponent implements OnInit {
   addControlsEmployee() {
     this._frmEmployee.addControl('frmLastName', new FormControl(null, Validators.required));
     this._frmEmployee.addControl('frmFirstName', new FormControl(null, Validators.required));
-    this._frmEmployee.addControl('frmNickName', new FormControl(null, null));
+    this._frmEmployee.addControl('frmNickName', new FormControl(null, Validators.required));
     this._frmEmployee.addControl('frmLoginID', new FormControl(null, null));
     this._frmEmployee.addControl('frmPayrollID', new FormControl(null, Validators.required));
     this._frmEmployee.addControl('frmEmailAddress', new FormControl(null, Validators.required));
@@ -933,7 +933,7 @@ export class EmployeesComponent implements OnInit {
       }
     }
     if (this.IsControlUndefined('frmSupervisor')) {
-      this._selectedEmployee.SupervisorId = null;
+      this._selectedEmployee.SupervisorId = -1;
     } else {
       this._selectedEmployee.SupervisorId = this._frmEmployee.controls['frmSupervisor'].value;
     }
@@ -947,9 +947,7 @@ export class EmployeesComponent implements OnInit {
     this._selectedEmployee.IsTimesheetVerficationNeeded = this.chkTimesheetVerification;
     this._selectedEmployee.Inactive = this.chkInactive;
     this._selectedEmployee.IsLocked = this.chkIsLocked;
-    if (this.errMsg === '') {
-      this.SaveEmployeeSPCall();
-    }
+    this._selectedDepartment = {};
     if (this._IsEditEmployee === false) {
       this._selectedDepartment.EmployeeId = -1;
     } else {
@@ -961,7 +959,7 @@ export class EmployeesComponent implements OnInit {
       this._selectedDepartment.Id = this._frmEmployee.controls['frmDepartment'].value;
     }
     if (this.errMsg === '') {
-      this.SaveDepartmentSPCall();
+      this.SaveEmployeeSPCall();
     }
   }
 
@@ -983,47 +981,38 @@ export class EmployeesComponent implements OnInit {
       this.timesysSvc.Employee_Insert(this._selectedEmployee)
         .subscribe(
           (outputData) => {
-            if (outputData !== null && outputData.ErrorMessage !== '') {
+            if (outputData !== undefined && outputData !== null) {
+              if (outputData.ErrorMessage.toString() !== '') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                if (outputData.ReturnVal.toString() !== '') {
+                  this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
+                  this._selectedDepartment.EmployeeId = +outputData.ReturnVal;
+                  this.SaveDepartmentSPCall();
+                } else {
+                  this.msgSvc.add({
+                    key: 'alert',
+                    sticky: true,
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: 'Error Occurred'
+                  });
+                }
+              }
+            } else {
               this.msgSvc.add({
                 key: 'alert',
                 sticky: true,
                 severity: 'error',
                 summary: 'Error!',
-                detail: outputData.ErrorMessage
+                detail: 'Error Occurred'
               });
-            } else {
-
-              this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
-              this.msgSvc.add({
-                key: 'saveSuccess', severity: 'success',
-                summary: 'Info Message', detail: 'Employee saved successfully'
-              });
-              this.clearControlsEmployee();
-              this.getEmployees();
-              this.getSupervisors();
-              this.getDepartments();
-              // const _EmailOptions: EmailOptions = {};
-              // _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
-              // _EmailOptions.EmailType = 'Password Changed';
-              // _EmailOptions.To = this._selectedEmployee.EmailAddress;
-              // _EmailOptions.SendAdmin = false;
-              // _EmailOptions.SendOnlyAdmin = false;
-              // _EmailOptions.ReplyTo = '';
-              // const BodyParams: string[] = [];
-              // BodyParams.push(this._selectedEmployee.Password);
-              // _EmailOptions.BodyParams = BodyParams;
-
-
-              // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-              //   this.msgSvc.add({
-              //     key: 'saveSuccess', severity: 'success',
-              //     summary: 'Info Message', detail: 'Employee saved successfully'
-              //   });
-              //   this.clearControlsEmployee();
-              //   this.getEmployees();
-              //   this.getSupervisors();
-              //   this.getDepartments();
-              // });
             }
           },
           (error) => {
@@ -1033,7 +1022,34 @@ export class EmployeesComponent implements OnInit {
       this.timesysSvc.Employee_Update(this._selectedEmployee)
         .subscribe(
           (outputData) => {
-            if (outputData !== null && outputData.ErrorMessage !== '') {
+            if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
+              this.msgSvc.add({
+                key: 'alert',
+                sticky: true,
+                severity: 'error',
+                summary: 'Error!',
+                detail: outputData.ErrorMessage
+              });
+            } else {
+              this.SaveDepartmentSPCall();
+            }
+          },
+          (error) => {
+            console.log(error);
+          });
+    }
+  }
+
+
+
+
+
+  SaveDepartmentSPCall() {
+    if (this._selectedDepartment.Id !== undefined && this._selectedDepartment.Id !== null && this._selectedDepartment.Id > 0) {
+      this.timesysSvc.employeeDepartment_Insert(this._selectedDepartment)
+        .subscribe(
+          (outputData) => {
+            if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
               this.msgSvc.add({
                 key: 'alert',
                 sticky: true,
@@ -1046,32 +1062,21 @@ export class EmployeesComponent implements OnInit {
                 key: 'saveSuccess', severity: 'success',
                 summary: 'Info Message', detail: 'Employee saved successfully'
               });
-              this.clearControlsEmployee();
-              this.getEmployees();
-              this.getSupervisors();
-              this.getDepartments();
-            }
-          },
-          (error) => {
-            console.log(error);
-          });
-    }
-  }
-
-  SaveDepartmentSPCall() {
-    if (this._selectedDepartment.Id !== undefined && this._selectedDepartment.Id !== null && this._selectedDepartment.Id > 0) {
-      this.timesysSvc.employeeDepartment_Insert(this._selectedDepartment)
-        .subscribe(
-          (outputData) => {
-            if (outputData !== null && outputData.ErrorMessage !== '') {
-              this.msgSvc.add({
-                key: 'alert',
-                sticky: true,
-                severity: 'error',
-                summary: 'Error!',
-                detail: outputData.ErrorMessage
-              });
-            } else {
+              if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString() ===
+                this._selectedEmployee.ID.toString()) {
+                this.confSvc.confirm({
+                  message: 'Do you want to see the changes in action right away by logging in again?',
+                  header: 'Confirmation',
+                  icon: 'pi pi-exclamation-triangle',
+                  accept: () => {
+                    /* do nothing */
+                    this.router.navigate(['']);
+                  },
+                  reject: () => {
+                    /* do nothing */
+                  }
+                });
+              }
               this.clearControlsEmployee();
               this.getEmployees();
               this.getSupervisors();
@@ -1201,17 +1206,8 @@ export class EmployeesComponent implements OnInit {
   }
 
   SendEmailChangePassword(EmailAddress: string, NewPassword: string) {
-    // const _EmailOptions: EmailOptions = {};
-    // _EmailOptions.From = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
-    // _EmailOptions.EmailType = 'Password Changed';
-    // _EmailOptions.To = EmailAddress;
-    // _EmailOptions.SendAdmin = false;
-    // _EmailOptions.SendOnlyAdmin = false;
-    // _EmailOptions.ReplyTo = '';
     const BodyParams: string[] = [];
     BodyParams.push(NewPassword);
-    // _EmailOptions.BodyParams = BodyParams;
-
     this.timesysSvc.EmailByType(EmailAddress,
       BodyParams,
       'Password Changed'
@@ -1231,16 +1227,6 @@ export class EmployeesComponent implements OnInit {
           });
         }
       });
-
-    // this.timesysSvc.sendMail(_EmailOptions).subscribe(_mailOptions => {
-    //   this.msgSvc.add({
-    //     key: 'saveSuccess',
-    //     severity: 'success',
-    //     summary: 'Info Message',
-    //     detail: 'Employee password reset successfully'
-    //   });
-    //   this.getEmployees();
-    // });
   }
   /* #endregion */
 

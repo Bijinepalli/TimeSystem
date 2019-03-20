@@ -114,12 +114,15 @@ export class Employee {
     BenchID?: string;
     HolidayID?: string;
     Name?: string;
+    Department?: string;
     PasswordExpiresOn?: string;
     PasswordExpiresOnSearch?: string;
+    HireDateSearch?: string;
 }
 
 export class LoginErrorMessage {
     ErrorMessage?: string;
+    ReturnVal?: string;
 }
 export class Customers {
     Id?: number;

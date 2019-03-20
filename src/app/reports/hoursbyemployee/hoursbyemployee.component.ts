@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -8,6 +8,7 @@ import { DatePipe } from '@angular/common';
 import { BillingCode } from 'src/app/model/constants';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-hoursbyemployee',
@@ -51,6 +52,7 @@ export class HoursbyemployeeComponent implements OnInit {
   _DisplayDateFormat: any;
   IsSecure = false;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -150,6 +152,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this.showReport = false;
     this.visibleHelp = false;
     this.helpText = '';
+    this.resetSort();
   }
 
   Initialisations() {
@@ -369,6 +372,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this.showBillingCodeList = false;
     this.changeCodeList = true;
     this.showSpinner = false;
+    this.resetSort();
   }
   buildCols() {
     if (this.selectedbreakOut.toString() === '0') {
@@ -407,6 +411,7 @@ export class HoursbyemployeeComponent implements OnInit {
     // this._startDate = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
     this._endDate = '';
     this.showSpinner = false;
+    this.resetSort();
   }
   changeCodes() {
     this.showSpinner = true;
@@ -414,6 +419,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this.showReport = false;
     this.showBillingCodeList = true;
     this.showSpinner = false;
+    this.resetSort();
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
@@ -431,5 +437,11 @@ export class HoursbyemployeeComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd'], ['Hours']);
   }
-
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
 }

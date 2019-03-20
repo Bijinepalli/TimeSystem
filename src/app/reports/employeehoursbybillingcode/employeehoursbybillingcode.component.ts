@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -7,6 +7,7 @@ import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes } fr
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-employeehoursbybillingcode',
@@ -42,6 +43,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   nowrap = 'nowrap';
   ParamSubscribe: any;
   IsSecure = false;
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -131,6 +133,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.visibleHelp = false;
     this.helpText = '';
     this.showTotals = false;
+    this.resetSort();
   }
 
   Initialisations() {
@@ -267,6 +270,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.showBillingCodeList = false;
     this.changeCodeList = true;
     this.showSpinner = false;
+    this.resetSort();
   }
   buildCols() {
     this.cols = [
@@ -298,9 +302,17 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.showSpinner = false;
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+    this.resetSort();
   }
 
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, [], ['TANDM', 'Project', 'NonBill']);
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

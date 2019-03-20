@@ -1,7 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Projects <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    Projects <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="showHelp('ProjectsSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -16,16 +15,15 @@
   <div class="ui-g-12 ui-md-10"></div>
   <div class="ui-g-12 ui-md-2" style="text-align: right">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new project to the project billable timesheet category"
-      tooltipPosition="bottom" class="ui-button-info" label="Add New Project" *ngIf="!_HasEdit"
-      (click)=addProject()></button>
+      tooltipPosition="bottom" class="ui-button-info" label="Add New Project" *ngIf="!_HasEdit" (click)=addProject()></button>
   </div>
 </div>
 <p-panel [toggleable]="true" header="Filter results by:">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12" style="text-align: left">
       <label class="label" style="padding:0px 10px;">Select:</label>
-      <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()"
-        pTooltip="Show projects that have this status" tooltipPosition="bottom"></p-selectButton>
+      <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()" pTooltip="Show projects that have this status"
+        tooltipPosition="bottom"></p-selectButton>
     </div>
   </div>
 </p-panel>
@@ -43,8 +41,8 @@
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching projects</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter"
-            (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
+            style="width:auto"> &nbsp;
           <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
         </div>
       </div>
@@ -54,8 +52,8 @@
         <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to projectCode"
-            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to projectCode" ariaLabelDesc="Activate to sort in descending order"
+            ariaLabelAsc="Activate to sort in ascending order">
           </p-sortIcon>
         </th>
         <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
@@ -69,7 +67,7 @@
         </td>
         <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
           <div *ngIf="(col.field === 'CreatedOn'); else nondatecol">
-            <label>{{rowData[col.field] |  dateFormat: _DisplayDateFormat}} </label>
+            <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
             <!-- <label>{{rowData[col.field]}} </label> -->
           </div>
           <ng-template #nondatecol>
@@ -83,23 +81,21 @@
 
         </td>
         <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon"
-            pTooltip="Delete this unused project" tooltipPosition="left" (click)="deleteProject(rowData)"></i>
+          <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused project"
+            tooltipPosition="left" (click)="deleteProject(rowData)"></i>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </div>
 
-<p-dialog [(visible)]="projectDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true"
-  [width]="500">
+<p-dialog [(visible)]="projectDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
   <p-header>
     {{projectHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
-      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
       (click)="showHelp('ProjectUpdate.htm')"></i>
   </p-header>
-  <form [formGroup]="_frm">
+  <form [formGroup]="_frm" *ngIf="_frm && _selectedProject">
     <div class="ui-g">
       <div class="ui-g-12" style="text-align:left" style="color:red;">
         * marked fields are required to save the data.
@@ -126,8 +122,7 @@
         <div class="ui-g-12 ui-md-12">
           Parent Company<br>
           <div style="height:5px"></div>
-          <p-dropdown appendTo="body" [options]="_companies" placeholder="Select Company"
-            formControlName="parentCompany"
+          <p-dropdown appendTo="body" [options]="_companies" placeholder="Select Company" formControlName="parentCompany"
             pToolTip="The company whose holiday schedule this project follows and changing this would affect existing timesheets."
             tooltipPosition="bottom" [style]="{'width':'99%'}"></p-dropdown>
         </div>
@@ -137,7 +132,8 @@
           <div style="height:5px"></div>
           <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
             pToolTip="Check to mark this project as inactive. It will not be allowed on new timesheets 
-          and will remove the associated hours from all unsubmitted timesheets." tooltipPosition="bottom"></p-checkbox>
+          and will remove the associated hours from all unsubmitted timesheets."
+            tooltipPosition="bottom"></p-checkbox>
         </div>
       </div>
       <div class="ui-g-12 ui-md-12" *ngIf="_IsEdit">
@@ -151,14 +147,17 @@
   <p-footer>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
-        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveProject()"
-          [disabled]="hasFormErrors()" pTooltip="Save the data for this project" tooltipPosition="bottom"></button>
+        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveProject()" [disabled]="hasFormErrors()"
+          pTooltip="Save the data for this project" tooltipPosition="bottom"></button>
         &nbsp;
         <button pButton label="Cancel" (click)="cancelProject()" class="ui-button-danger"></button>
       </div>
     </div>
   </p-footer>
 </p-dialog>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
   <div [innerHtml]="helpText" class="helpDisplayClass"></div>
 </p-sidebar>

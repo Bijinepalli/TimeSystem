@@ -754,8 +754,6 @@ export class TimesystemService {
 
 
   EmailByType(sendTo: string, bodyParams: string[], emailType: string, SendOnlyAdmin: string) {
-    console.log(bodyParams);
-    console.log(JSON.stringify(bodyParams));
     const params = new HttpParams()
       .set('sendTo', sendTo)
       .set('bodyParams', JSON.stringify(bodyParams))

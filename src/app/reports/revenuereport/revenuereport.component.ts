@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BillingCodes } from 'src/app/model/objects';
@@ -7,6 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SortEvent } from 'primeng/api';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-revenuereport',
@@ -39,6 +40,7 @@ export class RevenuereportComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -49,6 +51,13 @@ export class RevenuereportComponent implements OnInit {
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 
   CheckActiveSession() {
@@ -116,6 +125,7 @@ export class RevenuereportComponent implements OnInit {
 
     this._errorBlock = '';
     this._errorMessage = '';
+    this.resetSort();
   }
 
   Initialisations() {
@@ -172,6 +182,7 @@ export class RevenuereportComponent implements OnInit {
           }
           this.showSpinner = false;
         });
+        this.resetSort();
   }
 
   clearControls() {
@@ -180,12 +191,14 @@ export class RevenuereportComponent implements OnInit {
     this._revenueslist = [];
     this._recData = 0;
     this._revenuesPageNo = 0;
+    this.resetSort();
   }
 
   startOver() {
     this.showReport = false;
     this.clearControls();
     this.resetForm();
+    this.resetSort();
   }
 
   customSort(event: SortEvent) {

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { SelectItem, SortEvent } from 'primeng/api';
 import { Holidays } from '../../model/objects';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-holidaysreport',
@@ -28,6 +29,7 @@ export class HolidaysreportComponent implements OnInit {
   _DisplayDateFormat: any;
   IsSecure = false;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -97,6 +99,7 @@ export class HolidaysreportComponent implements OnInit {
     this.visibleHelp = false;
     this.showReport = false;
     this.showSpinner = false;
+    this.resetSort();
   }
 
   Initialisations() {
@@ -161,6 +164,7 @@ export class HolidaysreportComponent implements OnInit {
           this.showSpinner = false;
         }
       );
+      this.resetSort();
   }
   showHelp(file: string) {
     this.timesysSvc.getHelp(file)
@@ -178,5 +182,11 @@ export class HolidaysreportComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['HolidayDate'], ['CalendarYear']);
   }
-
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
 }

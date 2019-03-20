@@ -172,7 +172,7 @@
         <div class="ui-g-12 ui-md-2 ui-lg-2">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          Nick Name<br>
+          Nick Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Nick Name" formControlName="frmNickName"
             appendTo="body" pToolTip="The name the employee prefers to go by">
@@ -503,7 +503,6 @@
 
   <p-dialog [(visible)]="rateDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="1100"
     [closeOnEscape]="false" [closable]="false" blockScroll="true" class="dialogWidth">
-    <p-toast [style]="{marginTop: '80px'}" position="top-center" key="saveSuccess" [autoZIndex]="true"></p-toast>
     <p-header>
       Change {{_popUpHeader}}s to {{_employeeNameHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"

@@ -98,29 +98,6 @@ export class DepartmentsComponent implements OnInit {
   }
   /* #endregion */
 
-  ClearAllProperties() {
-    this.cols = {};
-    this._recData = 0;
-
-    this._departmentsPageNo = 0;
-    this._departmentList = [];
-    this._HasEdit = true;
-    this.showReport = false;
-  }
-
-  Initialisations() {
-    this.cols = [
-      { field: 'Name', header: 'Department Name', align: 'left', width: '250px' },
-      { field: 'Description', header: 'Description', align: 'left', width: 'auto' },
-      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: 'auto' },
-    ];
-    this.empcols = [
-      { field: 'Name', header: 'Employee Name', align: 'left', width: '150px' },
-      { field: 'EmailAddress', header: 'Email', align: 'left', width: 'auto' },
-    ];
-    this.AddFormControls();
-    this.GetMethods();
-  }
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
@@ -137,6 +114,34 @@ export class DepartmentsComponent implements OnInit {
           this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
         }
       });
+  }
+
+  ClearAllProperties() {
+    this.showSpinner = true;
+    this.cols = {};
+    this._recData = 0;
+
+    this._departmentsPageNo = 0;
+    this._departmentList = [];
+    this._HasEdit = true;
+    this.showReport = false;
+    this.showSpinner = false;
+  }
+
+  Initialisations() {
+    this.showSpinner = true;
+    this.cols = [
+      { field: 'Name', header: 'Department Name', align: 'left', width: '250px' },
+      { field: 'Description', header: 'Description', align: 'left', width: 'auto' },
+      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: 'auto' },
+    ];
+    this.empcols = [
+      { field: 'Name', header: 'Employee Name', align: 'left', width: '150px' },
+      { field: 'EmailAddress', header: 'Email', align: 'left', width: 'auto' },
+    ];
+    this.AddFormControls();
+    this.showSpinner = false;
+    this.GetMethods();
   }
 
   showHelp(file: string) {
@@ -278,16 +283,18 @@ export class DepartmentsComponent implements OnInit {
   }
 
   SaveDepartmentSPCall() {
+    this.showSpinner = true;
     this.timesysSvc.Department_InsertOrUpdate(this._selectedDepartment)
       .subscribe(
         (outputData) => {
-          if (outputData !== null && outputData.ErrorMessage !== '') {
+          this.showSpinner = false;
+          if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
               key: 'alert',
               sticky: true,
               severity: 'error',
               summary: 'Error!',
-              detail: outputData.ErrorMessage, // 'Department already Exists'
+              detail: outputData.ErrorMessage,
             });
           } else {
             this.msgSvc.add({
@@ -310,9 +317,11 @@ export class DepartmentsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         /* do nothing */
+        this.showSpinner = true;
         this.timesysSvc.Department_Delete(dataRow)
           .subscribe(
             (outputData) => {
+              this.showSpinner = false;
               if (outputData !== null && outputData.ErrorMessage !== '' && outputData.ErrorMessage !== '0') {
                 this.msgSvc.add({
                   key: 'alert',

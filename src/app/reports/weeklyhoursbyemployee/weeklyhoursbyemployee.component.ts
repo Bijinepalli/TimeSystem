@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -7,6 +7,7 @@ import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes } fr
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 @Component({
   selector: 'app-weeklyhoursbyemployee',
   templateUrl: './weeklyhoursbyemployee.component.html',
@@ -43,6 +44,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   IsSecure = false;
   _DisplayDateFormat: any;
   _sortArray: string[];
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -132,6 +134,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this.visibleHelp = false;
     this.errMsg = '';
     this.showSpinner = false;
+    this.resetSort();
   }
 
   Initialisations() {
@@ -218,11 +221,13 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this._startDate = new Date(year, month - 1, 1);
     this._endDate = null;
     this.showSpinner = false;
+    this.resetSort();
   }
   changeCodes() {
     this.changeCodeList = false;
     this.showReport = false;
     this.showBillingCodeList = true;
+    this.resetSort();
   }
 
   generateReport() {
@@ -275,6 +280,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this.showBillingCodeList = false;
     this.changeCodeList = true;
     this.showSpinner = false;
+    this.resetSort();
   }
   buildCols() {
     if (this.selectedbreakOut.toString() === '0') {
@@ -307,5 +313,12 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 }

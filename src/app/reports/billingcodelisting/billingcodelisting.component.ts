@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-billingcodelisting',
@@ -32,6 +33,8 @@ export class BillingcodelistingComponent implements OnInit {
   _DateFormat: any;
   _DisplayDateFormat: any;
   _sortArray = [];
+  @ViewChild('dt') dt: Table;
+
   _DisplayDateTimeFormat: any;
   constructor(
     private timesysSvc: TimesystemService,
@@ -103,6 +106,7 @@ export class BillingcodelistingComponent implements OnInit {
     this.showReport = false;
     this.visibleHelp = false;
     this.helpText = '';
+    this.resetSort();
   }
 
   Initialisations() {
@@ -173,6 +177,7 @@ export class BillingcodelistingComponent implements OnInit {
     }
     this._recData = this._reports.length;
     this.showSpinner = false;
+    this.resetSort();
   }
 
   setCols(type: string) {
@@ -220,6 +225,12 @@ export class BillingcodelistingComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
   }
-
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
+  }
 
 }

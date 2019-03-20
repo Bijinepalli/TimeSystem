@@ -7,6 +7,7 @@ import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-nonbillables',
@@ -40,17 +41,17 @@ export class NonbillablesComponent implements OnInit {
   _DisplayDateFormat: any;
 
   constructor(
-    private timesysSvc: TimesystemService,
     private router: Router,
-    private msgSvc: MessageService,
-    private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
     private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+    public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
   }
-
   CheckActiveSession() {
     let sessionActive = false;
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
@@ -73,6 +74,7 @@ export class NonbillablesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -83,6 +85,9 @@ export class NonbillablesComponent implements OnInit {
       }
     });
   }
+  /* #endregion */
+
+  /* #region Basic Methods */
 
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
@@ -91,6 +96,9 @@ export class NonbillablesComponent implements OnInit {
         this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
           this.ClearAllProperties();
+          if (data[0].HasEdit) {
+            this._HasEdit = false;
+          }
           this.IsSecure = true;
           this.Initialisations();
         } else {

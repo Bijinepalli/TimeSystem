@@ -21,10 +21,9 @@
     <ng-template pTemplate="content">
       <app-accessrights></app-accessrights>
     </ng-template>
-  </p-tabPanel>  
+  </p-tabPanel>
 </p-tabView>
 
 <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-  </p-sidebar>
-<p-toast></p-toast>
+  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+</p-sidebar>
