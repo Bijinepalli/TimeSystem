@@ -124,6 +124,7 @@ export class EmployeesComponent implements OnInit {
   showReport: boolean;
   _sortArray: string[];
   _sortArrayRates: string[];
+  _hiredatechange: string;
 
   /* #endregion */
 
@@ -723,6 +724,7 @@ export class EmployeesComponent implements OnInit {
     }
     if (data.HireDate !== undefined && data.HireDate !== null && data.HireDate.toString() !== '') {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.replace(new RegExp('-', 'g'), '/')));
+      this._hiredatechange = data.HireDate;
     } else {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date());
     }
@@ -862,6 +864,7 @@ export class EmployeesComponent implements OnInit {
 
   cancelEmployee() {
     this.clearControlsEmployee();
+    this.GetMethods();
   }
   saveEmployee() {
     this.errMsg = '';
@@ -977,24 +980,49 @@ export class EmployeesComponent implements OnInit {
   }
 
   SaveEmployeeSPCall() {
+    let errorMsg = '';
+    if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 8) {
+      errorMsg += 'Hours per day is not 8 hours. Is this correct?';
+    }
+    if (this.chkSalaried && this.chkIPayEligible) {
+      errorMsg += '<br>Salaried employee is not eligible for IPay.';
+    }
+    if (!this.chkSubmitsTime && !this.chkOfficer) {
+      errorMsg += '<br>Employee is not required to submit timesheets and is not an officer.';
+    }
     if (this._IsEditEmployee === false) {
-      this.timesysSvc.Employee_Insert(this._selectedEmployee)
-        .subscribe(
-          (outputData) => {
-            if (outputData !== undefined && outputData !== null) {
-              if (outputData.ErrorMessage.toString() !== '') {
-                this.msgSvc.add({
-                  key: 'alert',
-                  sticky: true,
-                  severity: 'error',
-                  summary: 'Error!',
-                  detail: outputData.ErrorMessage
-                });
-              } else {
-                if (outputData.ReturnVal.toString() !== '') {
-                  this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
-                  this._selectedDepartment.EmployeeId = +outputData.ReturnVal;
-                  this.SaveDepartmentSPCall();
+      this.confSvc.confirm({
+        message: errorMsg,
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.timesysSvc.Employee_Insert(this._selectedEmployee)
+            .subscribe(
+              (outputData) => {
+                if (outputData !== undefined && outputData !== null) {
+                  if (outputData.ErrorMessage.toString() !== '') {
+                    this.msgSvc.add({
+                      key: 'alert',
+                      sticky: true,
+                      severity: 'error',
+                      summary: 'Error!',
+                      detail: outputData.ErrorMessage
+                    });
+                  } else {
+                    if (outputData.ReturnVal.toString() !== '') {
+                      this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
+                      this._selectedDepartment.EmployeeId = +outputData.ReturnVal;
+                      this.SaveDepartmentSPCall();
+                    } else {
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'error',
+                        summary: 'Error!',
+                        detail: 'Error Occurred'
+                      });
+                    }
+                  }
                 } else {
                   this.msgSvc.add({
                     key: 'alert',
@@ -1004,39 +1032,48 @@ export class EmployeesComponent implements OnInit {
                     detail: 'Error Occurred'
                   });
                 }
-              }
-            } else {
-              this.msgSvc.add({
-                key: 'alert',
-                sticky: true,
-                severity: 'error',
-                summary: 'Error!',
-                detail: 'Error Occurred'
+              },
+              (error) => {
+                console.log(error);
               });
-            }
-          },
-          (error) => {
-            console.log(error);
-          });
+        },
+        reject: () => {
+          /* do nothing */
+        }
+      });
     } else {
-      this.timesysSvc.Employee_Update(this._selectedEmployee)
-        .subscribe(
-          (outputData) => {
-            if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
-              this.msgSvc.add({
-                key: 'alert',
-                sticky: true,
-                severity: 'error',
-                summary: 'Error!',
-                detail: outputData.ErrorMessage
+      if (this.datepipe.transform(this._frmEmployee.controls['frmHireDate'].value, 'yyyy-MM-dd') !== this._hiredatechange) {
+        errorMsg += '<br>Employee original hire date has changed. Is this correct?';
+      }
+      console.log(new Date(this._frmEmployee.controls['frmHireDate'].value), this._hiredatechange);
+      this.confSvc.confirm({
+        message: errorMsg,
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.timesysSvc.Employee_Update(this._selectedEmployee)
+            .subscribe(
+              (outputData) => {
+                if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
+                  this.msgSvc.add({
+                    key: 'alert',
+                    sticky: true,
+                    severity: 'error',
+                    summary: 'Error!',
+                    detail: outputData.ErrorMessage
+                  });
+                } else {
+                  this.SaveDepartmentSPCall();
+                }
+              },
+              (error) => {
+                console.log(error);
               });
-            } else {
-              this.SaveDepartmentSPCall();
-            }
-          },
-          (error) => {
-            console.log(error);
-          });
+        },
+        reject: () => {
+          /* do nothing */
+        }
+      });
     }
   }
 
