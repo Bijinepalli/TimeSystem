@@ -6,8 +6,9 @@ import { AbstractControl, ValidatorFn, Validators } from '@angular/forms';
 export class ValidatorHelper {
 
     static required(control: AbstractControl): { [key: string]: boolean } {
-        const v: string = control.value ? control.value : '';
-        return v.trim().length > 0 ? null : { 'required': true };
+        let v: string = control.value ? control.value : '';
+        v = v.toString().trim();
+        return v.length > 0 ? null : { 'required': true };
     }
 
 
