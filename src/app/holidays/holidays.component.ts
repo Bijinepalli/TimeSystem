@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, HostListener } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, HostListener, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Holidays } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
@@ -10,6 +10,7 @@ import { DatePipe } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-holidays',
@@ -45,6 +46,8 @@ export class HolidaysComponent implements OnInit {
   showReport: boolean;
   _sortArray: string[];
 
+  @ViewChild('dt') dt: Table;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -79,10 +82,10 @@ export class HolidaysComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
+      this.IsSecure = false;
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
         this.CheckSecurity(SplitVals[SplitVals.length - 1]);
@@ -114,11 +117,19 @@ export class HolidaysComponent implements OnInit {
   }
 
   ClearAllProperties() {
-
-
+    this.showSpinner = true;
+    this.resetSort();
+    this.showReport = false;
+    this._holidays = [];
+    this._recData = 0;
+    this._selectedHoliday = {};
+    this.resetForm();
+    this.showSpinner = false;
   }
 
   Initialisations() {
+    this.showSpinner = true;
+    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._dialogwidth = 830;
     this._years = [
       { label: '2010', value: '2010' },
@@ -143,19 +154,22 @@ export class HolidaysComponent implements OnInit {
 
     const _date: Date = new Date();
     this.selectedYear = _date.getFullYear();
-
-    this.getHolidays();
     this.addControls();
+    this.showSpinner = false;
+    this.getHolidays();
+
   }
   /* #endregion*/
 
   getHolidays() {
     this.showSpinner = true;
     this.showReport = false;
-    this._recData = 0;
+    this.resetSort();
     this.timesysSvc.getHolidays(this.selectedYear, this._yec.HolidayCode + this.selectedYear)
       .subscribe(
         (data) => {
+          this._holidays = [];
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._holidays = data;
             this._recData = data.length;
@@ -195,11 +209,20 @@ export class HolidaysComponent implements OnInit {
   }
 
   setDataToControls(data: Holidays) {
-    if (data === undefined) {
-      this._frm.controls['holidayDate'].setValue(new Date());
-    } else {
-      this._frm.controls['holidayName'].setValue(data.HolidayName);
-      this._frm.controls['holidayDate'].setValue(data.HolidayDate);
+    if (data !== undefined) {
+      if (!this.IsControlUndefined('holidayName')) {
+        if (data.HolidayName !== undefined && data.HolidayName !== null && data.HolidayName.toString() !== '') {
+          this._frm.controls['holidayName'].setValue(data.HolidayName);
+        }
+      }
+
+      if (!this.IsControlUndefined('holidayDate')) {
+        if (data.HolidayDate !== undefined && data.HolidayDate !== null && data.HolidayDate.toString() !== '') {
+          this._frm.controls['holidayDate'].setValue(new Date(data.HolidayDate));
+        } else {
+          this._frm.controls['holidayDate'].setValue(new Date());
+        }
+      }
     }
   }
 
@@ -212,6 +235,14 @@ export class HolidaysComponent implements OnInit {
     this._frm.markAsUntouched();
     this._frm.updateValueAndValidity();
     this._frm.reset();
+  }
+
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 
   clearControls() {
@@ -240,17 +271,47 @@ export class HolidaysComponent implements OnInit {
   }
 
   saveHoliday() {
+    this.showSpinner = true;
     if (this._IsEdit === false) {
       if (this._selectedHoliday === undefined || this._selectedHoliday === null) {
         this._selectedHoliday = {};
       }
       this._selectedHoliday.Id = -1;
     }
-    this._selectedHoliday.HolidayName = this._frm.controls['holidayName'].value.toString().trim();
-    this._selectedHoliday.HolidayDate = this.datepipe.transform(this._frm.controls['holidayDate'].value, 'yyyy/MM/dd');
-    this._selectedHoliday.CalendarYear = new Date(this._selectedHoliday.HolidayDate).getFullYear();
+    if (!this.IsControlUndefinedAndHasValue('holidayName')) {
+      this._selectedHoliday.HolidayName = this._frm.controls['holidayName'].value.toString().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('holidayDate')) {
+      this._selectedHoliday.HolidayDate = this.datepipe.transform(this._frm.controls['holidayDate'].value, 'yyyy/MM/dd');
+      this._selectedHoliday.CalendarYear = new Date(this._selectedHoliday.HolidayDate).getFullYear();
+    }
+    this.showSpinner = false;
     this.SaveHolidaySPCall();
   }
+
+  IsControlUndefined(ctrlName: string): boolean {
+    let IsUndefined = true;
+    if (this._frm.controls[ctrlName] !== undefined &&
+      this._frm.controls[ctrlName] !== null
+    ) {
+      IsUndefined = false;
+    }
+    return IsUndefined;
+  }
+
+  IsControlUndefinedAndHasValue(ctrlName: string): boolean {
+    let IsUndefined = true;
+    if (this._frm.controls[ctrlName] !== undefined &&
+      this._frm.controls[ctrlName] !== null &&
+      this._frm.controls[ctrlName].value !== undefined &&
+      this._frm.controls[ctrlName].value !== null &&
+      this._frm.controls[ctrlName].value.toString().trim() !== ''
+    ) {
+      IsUndefined = false;
+    }
+    return IsUndefined;
+  }
+
   deleteHoliday(data: Holidays) {
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + data.HolidayName + '?',
@@ -258,9 +319,11 @@ export class HolidaysComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         /* do nothing */
+        this.showSpinner = true;
         this.timesysSvc.Holiday_Delete(data)
           .subscribe(
             (outputData) => {
+              this.showSpinner = false;
               if (outputData !== null && outputData.ErrorMessage !== '') {
                 this.msgSvc.add({
                   key: 'alert',
@@ -288,9 +351,11 @@ export class HolidaysComponent implements OnInit {
   }
 
   SaveHolidaySPCall() {
+    this.showSpinner = true;
     this.timesysSvc.Holiday_InsertOrUpdate(this._selectedHoliday)
       .subscribe(
         (outputData) => {
+          this.showSpinner = false;
           if (outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
               key: 'alert',

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Projects, DrpList } from '../model/objects';
 import { BillingCode } from '../model/constants';
@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
+import { Table } from 'primeng/table';
 
 @Component({
   selector: 'app-projects',
@@ -41,6 +42,8 @@ export class ProjectsComponent implements OnInit {
   showReport: boolean;
   _sortArray: string[];
   _DisplayDateFormat: any;
+
+  @ViewChild('dt') dt: Table;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -76,7 +79,6 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.addControls();
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -108,6 +110,7 @@ export class ProjectsComponent implements OnInit {
 
 
   Initialisations() {
+    this.showSpinner = true;
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     this._status = [
@@ -123,10 +126,13 @@ export class ProjectsComponent implements OnInit {
       { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
     ];
     this._sortArray = ['ProjectName', 'Key', 'CreatedOnSearch'];
+    this.addControls();
+    this.showSpinner = false;
     this.getProjects();
     this.getCompanies();
   }
   ClearAllProperties() {
+    this.showSpinner = true;
     this._selectedStatus = '';
     this._status = [];
     this.projectDialog = false;
@@ -135,6 +141,7 @@ export class ProjectsComponent implements OnInit {
     this.helpText = '';
     this.cols = {};
     this._bc = new BillingCode();
+    this.resetSort();
     this._projects = [];
     this._companies = [];
     this._recData = 0;
@@ -146,6 +153,7 @@ export class ProjectsComponent implements OnInit {
     this._HasEdit = true;
   }
   changeStatus() {
+    this.showSpinner = true;
     if (this._selectedStatus === '2') {
       this.cols = [
         { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
@@ -161,6 +169,7 @@ export class ProjectsComponent implements OnInit {
       ];
     }
     this._sortArray = ['ProjectName', 'Key', 'Inactive', 'CreatedOnSearch'];
+    this.showSpinner = false;
     this.getProjects();
   }
 
@@ -184,10 +193,13 @@ export class ProjectsComponent implements OnInit {
   getProjects() {
     this.showSpinner = true;
     this.showReport = false;
+    this.resetSort();
     this._recData = 0;
     this.timesysSvc.getProjects(this._bc.Project)
       .subscribe(
         (data) => {
+          this._projects = [];
+          this._recData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             if (data[0] !== undefined && data[0] !== null && data[0].length > 0) {
               if (this._selectedStatus === '1') {
@@ -209,21 +221,13 @@ export class ProjectsComponent implements OnInit {
                   }
                 }
               }
-            } else {
-              this._projects = [];
             }
-          } else {
-            this._projects = [];
           }
 
-          if (this._projects !== null && this._projects.length > 0) {
-            this._recData = this._projects.length;
-          }
+          this._recData = this._projects.length;
+
           this.showReport = true;
           this.showSpinner = false;
-          // else {
-          //   this._recData = 'No projects found';
-          // }
         }
       );
   }
@@ -249,6 +253,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   addControls() {
+    this._frm = new FormGroup({});
     this._frm.addControl('projectName', new FormControl(null, Validators.required));
     this._frm.addControl('projectCode', new FormControl(null,
       [Validators.required,
@@ -260,12 +265,22 @@ export class ProjectsComponent implements OnInit {
   }
 
   setDataToControls(data: Projects) {
-    this._frm.controls['projectName'].setValue(data.ProjectName);
-    this._frm.controls['projectCode'].setValue(data.Key);
-    if (data.CompanyId !== undefined) {
-      this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
+    if (!this.IsControlUndefined('projectName')) {
+      if (data.ProjectName !== undefined && data.ProjectName !== null && data.ProjectName.toString() !== '') {
+        this._frm.controls['projectName'].setValue(data.ProjectName.toString());
+      }
     }
-    if (data.Inactive !== undefined) {
+    if (!this.IsControlUndefined('projectCode')) {
+      if (data.ProjectName !== undefined && data.ProjectName !== null && data.ProjectName.toString() !== '') {
+        this._frm.controls['projectCode'].setValue(data.Key.toString());
+      }
+    }
+    if (!this.IsControlUndefined('parentCompany')) {
+      if (data.ProjectName !== undefined && data.ProjectName !== null && data.ProjectName.toString() !== '') {
+        this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
+      }
+    }
+    if (data.Inactive !== undefined && data.Inactive !== null) {
       this.chkInactive = data.Inactive;
     } else {
       this.chkInactive = false;
@@ -281,6 +296,14 @@ export class ProjectsComponent implements OnInit {
     this._frm.markAsUntouched();
     this._frm.updateValueAndValidity();
     this._frm.reset();
+  }
+
+  resetSort() {
+    if (this.dt !== undefined && this.dt !== null) {
+      this.dt.sortOrder = 0;
+      this.dt.sortField = '';
+      this.dt.reset();
+    }
   }
 
   clearControls() {
@@ -310,27 +333,58 @@ export class ProjectsComponent implements OnInit {
   }
 
   saveProject() {
+    this.showSpinner = true;
     if (this._IsEdit === false) {
       if (this._selectedProject === undefined || this._selectedProject === null) {
         this._selectedProject = {};
       }
       this._selectedProject.Id = -1;
     }
-    this._selectedProject.ProjectName = this._frm.controls['projectName'].value.toString().trim();
-    this._selectedProject.Key = this._frm.controls['projectCode'].value.toString().toUpperCase().trim();
-    if (this._frm.controls['parentCompany'].value !== null && this._frm.controls['parentCompany'].value !== undefined) {
+    if (!this.IsControlUndefinedAndHasValue('projectName')) {
+      this._selectedProject.ProjectName = this._frm.controls['projectName'].value.toString().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('projectCode')) {
+      this._selectedProject.Key = this._frm.controls['projectCode'].value.toString().toUpperCase().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('parentCompany')) {
       this._selectedProject.CompanyId = this._frm.controls['parentCompany'].value.toString().trim();
     }
     this._selectedProject.Inactive = this.chkInactive;
     this._selectedProject.ChargeType = this._bc.Project;
+    this.showSpinner = false;
     this.SaveProjectSPCall();
   }
+
+  IsControlUndefined(ctrlName: string): boolean {
+    let IsUndefined = true;
+    if (this._frm.controls[ctrlName] !== undefined &&
+      this._frm.controls[ctrlName] !== null
+    ) {
+      IsUndefined = false;
+    }
+    return IsUndefined;
+  }
+
+  IsControlUndefinedAndHasValue(ctrlName: string): boolean {
+    let IsUndefined = true;
+    if (this._frm.controls[ctrlName] !== undefined &&
+      this._frm.controls[ctrlName] !== null &&
+      this._frm.controls[ctrlName].value !== undefined &&
+      this._frm.controls[ctrlName].value !== null &&
+      this._frm.controls[ctrlName].value.toString().trim() !== ''
+    ) {
+      IsUndefined = false;
+    }
+    return IsUndefined;
+  }
+
 
   SaveProjectSPCall() {
     this.showSpinner = true;
     this.timesysSvc.Project_InsertOrUpdate(this._selectedProject)
       .subscribe(
         (outputData) => {
+          this.showSpinner = false;
           if (outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
               key: 'alert',
@@ -348,10 +402,9 @@ export class ProjectsComponent implements OnInit {
         (error) => {
           console.log(error);
         });
-    this.showSpinner = false;
   }
   deleteProject(data: Projects) {
-    this.showSpinner = true;
+
     data.ChargeType = this._bc.Project;
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + data.ProjectName + '?',
@@ -359,9 +412,11 @@ export class ProjectsComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         /* do nothing */
+        this.showSpinner = true;
         this.timesysSvc.Project_Delete(data)
           .subscribe(
             (outputData) => {
+              this.showSpinner = false;
               if (outputData !== null && outputData.ErrorMessage !== '') {
                 this.msgSvc.add({
                   key: 'alert',
@@ -388,7 +443,6 @@ export class ProjectsComponent implements OnInit {
         /* do nothing */
       }
     });
-    this.showSpinner = false;
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['CreatedOn'], []);
