@@ -325,6 +325,9 @@ export class CompaniesComponent implements OnInit {
   }
 
   SaveCompanySPCall() {
+    if (this._slctHolidays !== null && this._slctHolidays.length === 0) {
+      this._slctHolidays.push({ CompanyId: this._slctedCompanyId });
+    }
     this.timesysSvc.Company_InsertOrUpdate(this._selectedCompany)
       .subscribe(
         (outputData) => {
