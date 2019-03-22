@@ -21,7 +21,7 @@
         class="ui-button-info" label="Add New Employee" *ngIf="!_HasEdit" (click)=addEmployee()></button>
     </div>
   </div>
-  <p-panel [toggleable]="true" header="Filter results by:">
+  <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g" style="height:50px;">
       <div class="ui-g-12 ui-md-6 ui-lg-3">
         <label class="label" style="padding:0px 10px;">Select:</label>
@@ -45,7 +45,7 @@
       [globalFilterFields]="_sortArray">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching employees</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} employees found</div>
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter"
@@ -285,11 +285,10 @@
         </div>
         <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
           <div style="height:5px"></div>
-          <label (mouseenter)="opSup.show($event)" style="font-size:14px; color: blue"><b>{{SupEmpCnt}}</b> Employees are
-            assigned</label>
-          <p-overlayPanel #opSup [showCloseIcon]="true" appendTo="body" *ngIf="SupEmployeeList">
-            <p-table [columns]="SupEmpcols" [value]="SupEmployeeList" [style]="{width: '500px'}" [responsive]="false"
-              dataKey="ID" [paginator]="true" [rows]="5">
+
+          <p-overlayPanel #opSup [showCloseIcon]="true" appendTo="body">
+            <p-table [columns]="SupEmpcols" [value]="SupEmployeeList" *ngIf="SupEmployeeList" [style]="{width: '500px'}"
+              [responsive]="false" dataKey="ID" [paginator]="true" [rows]="5">
               <ng-template pTemplate="header" let-columns>
                 <tr>
                   <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
@@ -309,6 +308,9 @@
               </ng-template>
             </p-table>
           </p-overlayPanel>
+          <label (mouseenter)="opSup.show($event)" style="font-size:14px; color: blue"><b>{{SupEmpCnt}}</b> Employees
+            are
+            assigned</label>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-6">
           <div style="height:5px"></div>
