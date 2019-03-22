@@ -1019,7 +1019,6 @@ export class EmployeesComponent implements OnInit {
         .subscribe(
           (outputData) => {
             if (outputData !== undefined && outputData !== null) {
-              console.log(outputData.ErrorMessage);
               if (outputData.ErrorMessage.toString() !== '') {
                 this.msgSvc.add({
                   key: 'alert',
@@ -1060,7 +1059,6 @@ export class EmployeesComponent implements OnInit {
       this.timesysSvc.Employee_Update(this._selectedEmployee)
         .subscribe(
           (outputData) => {
-            console.log(outputData.ErrorMessage);
             if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
               this.msgSvc.add({
                 key: 'alert',
