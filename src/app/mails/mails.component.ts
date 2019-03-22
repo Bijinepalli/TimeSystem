@@ -183,9 +183,19 @@ export class MailsComponent implements OnInit {
 
   editEmail(data: Email) {
     this._IsEdit = true;
-    this._selectedEmail = data;
+    this._selectedEmail = new Email();
+    this._selectedEmail.AddSignature = data.AddSignature;
+    this._selectedEmail.Body = data.Body;
+    this._selectedEmail.BodyIsTemplate = data.BodyIsTemplate;
+    this._selectedEmail.EmailType = data.EmailType;
+    this._selectedEmail.EmailTypeId = data.EmailTypeId;
+    this._selectedEmail.HighPriority = data.HighPriority;
+    this._selectedEmail.ID = data.ID;
+    this._selectedEmail.Signature = data.Signature;
+    this._selectedEmail.Subject = data.Subject;
+    this._selectedEmail.SubjectIsTemplate = data.SubjectIsTemplate;
     this.resetForm();
-    this.setDataToControls(data);
+    this.setDataToControls(this._selectedEmail);
     this.emailHdr = 'Edit Email';
     this.emailDialog = true;
   }

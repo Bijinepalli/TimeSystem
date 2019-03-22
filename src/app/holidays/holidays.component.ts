@@ -191,7 +191,14 @@ export class HolidaysComponent implements OnInit {
 
   editHoliday(data: Holidays) {
     this._IsEdit = true;
-    this._selectedHoliday = data;
+    this._selectedHoliday = new Holidays();
+    this._selectedHoliday.Id = data.Id;
+    this._selectedHoliday.CalendarYear = data.CalendarYear;
+    this._selectedHoliday.CompanyName = data.CompanyName;
+    this._selectedHoliday.HolidayDate = data.HolidayDate;
+    this._selectedHoliday.HolidayDateSearch = data.HolidayDateSearch;
+    this._selectedHoliday.HolidayName = data.HolidayName;
+    this._selectedHoliday.InUse = data.InUse;
     this.resetForm();
     this.setDataToControls(data);
     this.holidayHdr = 'Edit Holiday';

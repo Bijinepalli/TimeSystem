@@ -301,7 +301,18 @@ export class ClientsComponent implements OnInit {
 
   editClient(data: Clients) {
     this._IsEdit = true;
-    this._selectedClient = data;
+    this._selectedClient = new Clients();
+    this._selectedClient.Id = data.Id;
+    this._selectedClient.Key = data.Key;
+    this._selectedClient.ClientName = data.ClientName;
+    this._selectedClient.PONumber = data.PONumber;
+    this._selectedClient.BillingCycle = data.BillingCycle;
+    this._selectedClient.CustomerId = data.CustomerId;
+    this._selectedClient.CustomerName = data.CustomerName;
+    this._selectedClient.CompanyId = data.CompanyId;
+    this._selectedClient.Inactive = data.Inactive;
+    this._selectedClient.ChargeType = data.ChargeType;
+    this._selectedClient.CreatedOn = data.CreatedOn;
     this.chkInactive = false;
     this.resetForm();
     this.setDataToControls(data);

@@ -223,7 +223,13 @@ export class DepartmentsComponent implements OnInit {
 
   editDepartment(data: Departments) {
     this._IsEditDepartment = true;
-    this._selectedDepartment = data;
+    this._selectedDepartment = new Departments();
+    this._selectedDepartment.Id = data.Id;
+    this._selectedDepartment.Name = data.Name;
+    this._selectedDepartment.Status = data.Status;
+    this._selectedDepartment.EmployeeId = data.EmployeeId;
+    this._selectedDepartment.EmployeesCount = data.EmployeesCount;
+    this._selectedDepartment.Description = data.Description;
     this.resetFormDepartment();
     this.setDataToControlsEmployee(data);
     this.departmentHdr = 'Edit Department';

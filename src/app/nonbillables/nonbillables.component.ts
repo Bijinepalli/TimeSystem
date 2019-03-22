@@ -238,10 +238,14 @@ export class NonbillablesComponent implements OnInit {
 
   editNonBillable(data: NonBillables) {
     this._IsEdit = true;
-    this._selectedNonBillable = data;
+    this._selectedNonBillable = new NonBillables();
+    this._selectedNonBillable.ProjectName = data.ProjectName;
+    this._selectedNonBillable.Key = data.Key;
+    this._selectedNonBillable.Inactive = data.Inactive;
+    this._selectedNonBillable.CreatedOn = data.CreatedOn;
     this.chkInactive = false;
     this.resetForm();
-    this.setDataToControls(data);
+    this.setDataToControls(this._selectedNonBillable);
     this.nonBillableHdr = 'Edit Non-Billable Item';
     this.nonBillableDialog = true;
   }

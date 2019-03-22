@@ -215,9 +215,14 @@ export class CustomersComponent implements OnInit {
   editCustomer(data: Customers) {
     this._IsEdit = true;
     this.chkInactive = false;
-    this._selectedCustomer = data;
+    this._selectedCustomer = new Customers();
+    this._selectedCustomer.Id = data.Id;
+    this._selectedCustomer.CustomerName = data.CustomerName;
+    this._selectedCustomer.CustomerNumber = data.CustomerNumber;
+    this._selectedCustomer.InUse = data.InUse;
+    this._selectedCustomer.Inactive = data.Inactive;
     this.resetForm();
-    this.setDataToControls(data);
+    this.setDataToControls(this._selectedCustomer);
     this.customerHdr = 'Edit Customer';
     this.customerDialog = true;
   }

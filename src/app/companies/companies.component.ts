@@ -238,9 +238,13 @@ export class CompaniesComponent implements OnInit {
 
   editCompany(data: Companies) {
     this._IsEdit = true;
-    this._selectedCompany = data;
+    this._selectedCompany = new Companies();
+    this._selectedCompany.Id = data.Id;
+    this._selectedCompany.CompanyName = data.CompanyName;
+    this._selectedCompany.DefaultCompany = data.DefaultCompany;
+    this._selectedCompany.HolidaysInUse = data.HolidaysInUse;
     this.resetForm();
-    this.setDataToControls(data);
+    this.setDataToControls(this._selectedCompany);
     this.companyHdr = 'Edit Company';
     this.companyDialog = true;
   }
@@ -391,7 +395,6 @@ export class CompaniesComponent implements OnInit {
 
   changeHolidayYear() {
     this.clearControls();
-    this.getCompanyHolidays();
   }
 
   getCompanyHolidays() {
@@ -455,6 +458,7 @@ export class CompaniesComponent implements OnInit {
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
+    this.getCompanies();
   }
 
   SaveCompanyHolidaySPCall() {
