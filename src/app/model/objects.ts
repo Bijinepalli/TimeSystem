@@ -163,6 +163,7 @@ export class MasterPages {
     HasEdit?: number;
     Role?: string;
     PageId?: number;
+    Sections?: MasterPages[];
 }
 
 export class LeftNavMenu {
