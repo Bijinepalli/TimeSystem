@@ -441,6 +441,11 @@ export class TimesystemService {
     return this.http.post<LoginErrorMessage>(this.url + 'Client_Delete', body, httpOptions);
   }
 
+  Employee_Validate(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Validate', body, httpOptions);
+  }
+
   Employee_Insert(_inputData: Employee) {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'Employee_Insert', body, httpOptions);

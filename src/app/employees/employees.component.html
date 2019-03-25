@@ -518,7 +518,7 @@
     <div *ngIf="!_IsEditRate">
       <div class="ui-g-12" style="text-align:right">
         <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new rate" tooltipPosition="bottom"
-          class="ui-button-info" label="Add New Rate" (click)=addNewRate() *ngIf="!_HasEdit && _EditRates"></button>
+          class="ui-button-info" label="Add New Rate" (click)=addNewRate() *ngIf="!_HasEdit && !_EditRates"></button>
         <!-- <div *ngIf="_recRateData === 0" class="NoDataStrip NoDataMessage" style="margin: .5em 0px;width:100%;">
         No matching data for the selected criteria
       </div> -->
@@ -540,7 +540,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th style="width: 5em" *ngIf="!_HasEdit && _EditRates">Edit</th>
+              <th style="width: 5em" *ngIf="!_HasEdit && !_EditRates">Edit</th>
               <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
                 {{col.header}}
                 <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
@@ -548,12 +548,12 @@
                   ariaLabelAsc="Activate to sort in ascending order">
                 </p-sortIcon>
               </th>
-              <th style="width: 5em" *ngIf="!_HasEdit && _EditRates">Delete</th>
+              <th style="width: 5em" *ngIf="!_HasEdit && !_EditRates">Delete</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
             <tr [pSelectableRow]="rowData">
-              <td style="text-align: center" *ngIf="!_HasEdit && _EditRates">
+              <td style="text-align: center" *ngIf="!_HasEdit && !_EditRates">
                 <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate" tooltipPosition="bottom"
                   (click)="editRate(rowData)"></i>
               </td>
@@ -572,7 +572,7 @@
                   </ng-template>
                 </ng-template>
               </td>
-              <td style="text-align: center" *ngIf="!_HasEdit && _EditRates">
+              <td style="text-align: center" *ngIf="!_HasEdit && !_EditRates">
                 <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this rate" tooltipPosition="bottom"
                   (click)="deleteRate(rowData)"></i>
               </td>
@@ -640,7 +640,7 @@
     <p-footer>
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12" *ngIf="_IsEditRate; else cancelbutton">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit && _EditRates"
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit && !_EditRates"
             (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>

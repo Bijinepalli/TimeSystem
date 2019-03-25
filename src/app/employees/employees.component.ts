@@ -1079,17 +1079,35 @@ export class EmployeesComponent implements OnInit {
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
         accept: () => {
-          this.SaveEmployeeSPCall();
+          this.ValidateEmployee();
         },
         reject: () => {
         }
       });
     } else {
-      this.SaveEmployeeSPCall();
+      this.ValidateEmployee();
     }
   }
 
-
+  ValidateEmployee() {
+    this.timesysSvc.Employee_Validate(this._selectedEmployee)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== undefined && outputData !== null) {
+            if (outputData.ErrorMessage.toString() !== '') {
+              this.msgSvc.add({
+                key: 'alert',
+                sticky: true,
+                severity: 'error',
+                summary: 'Error!',
+                detail: outputData.ErrorMessage
+              });
+            } else {
+              this.SaveEmployeeSPCall();
+            }
+          }
+        });
+  }
 
   SaveEmployeeSPCall() {
     if (this._IsEditEmployee === false) {
