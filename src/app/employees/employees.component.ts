@@ -125,6 +125,17 @@ export class EmployeesComponent implements OnInit {
   _sortArray: string[];
   _sortArrayRates: string[];
   _hiredatechange: string;
+  _ShowClients: boolean;
+  _EditClients: boolean;
+  _ShowProjects: boolean;
+  _EditProjects: boolean;
+  _ShowNonBillables: boolean;
+  _EditNonBillables: boolean;
+  _ShowRates: boolean;
+  _EditRates: boolean;
+  _ShowTerminate: boolean;
+  _ShowReset: boolean;
+  _ShowUnlock: boolean;
 
   /* #endregion */
 
@@ -189,6 +200,62 @@ export class EmployeesComponent implements OnInit {
           this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
+            if (data[0].Sections !== undefined && data[0].Sections !== null
+              && data[0].Sections.length > 0) {
+              for (let j = 0; j < data[0].Sections.length; j++) {
+                switch (data[0].Sections[j].ModuleName) {
+                  case 'Clients':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowClients = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditClients = false;
+                      }
+                    }
+                    break;
+                  case 'Projects':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowProjects = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditProjects = false;
+                      }
+                    }
+                    break;
+                  case 'Non-Billables':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowNonBillables = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditNonBillables = false;
+                      }
+                    }
+                    break;
+                  case 'Rates':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowRates = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditRates = false;
+                      }
+                    }
+                    break;
+                  case 'Unlock Employee':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowUnlock = false;
+                    }
+                    break;
+                  case 'Terminate Employee':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowTerminate = false;
+                    }
+                    break;
+                  case 'Reset Password':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowReset = false;
+                    }
+                    break;
+                  default:
+                    break;
+                }
+              }
+            }
           }
           this.IsSecure = true;
           this.Initialisations();
@@ -284,6 +351,17 @@ export class EmployeesComponent implements OnInit {
     this._selectedDepartment = {};
 
     this._HasEdit = true;
+    this._ShowClients = true;
+    this._EditClients = true;
+    this._ShowProjects = true;
+    this._EditProjects = true;
+    this._ShowNonBillables = true;
+    this._EditNonBillables = true;
+    this._ShowRates = true;
+    this._EditRates = true;
+    this._ShowUnlock = true;
+    this._ShowTerminate = true;
+    this._ShowReset = true;
   }
 
   Initialisations() {
@@ -1076,10 +1154,6 @@ export class EmployeesComponent implements OnInit {
           });
     }
   }
-
-
-
-
 
   SaveDepartmentSPCall() {
     if (this._selectedDepartment.Id !== undefined && this._selectedDepartment.Id !== null && this._selectedDepartment.Id > 0) {

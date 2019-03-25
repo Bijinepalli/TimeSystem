@@ -56,25 +56,25 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th style="width: 5em" *ngIf="!_HasEdit">Unlock</th>
+          <th style="width: 5em" *ngIf="!_HasEdit && !_ShowUnlock">Unlock</th>
           <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
-          <th style="width: 7em" *ngIf="!_HasEdit">Terminate</th>
-          <th style="width: 10em" *ngIf="!_HasEdit && _userAdmin">Reset Password</th>
+          <th style="width: 7em" *ngIf="!_HasEdit && !_ShowTerminate">Terminate</th>
+          <th style="width: 10em" *ngIf="!_HasEdit && _userAdmin && !_ShowReset">Reset Password</th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
               ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
             </p-sortIcon>
           </th>
-          <th style="width: 5em">Clients</th>
-          <th style="width: 6em">Projects</th>
-          <th style="width: 8em">Non-Billable</th>
-          <th style="width: 5em">Rates</th>
+          <th style="width: 5em" *ngIf="!_ShowClients">Clients</th>
+          <th style="width: 6em" *ngIf="!_ShowProjects">Projects</th>
+          <th style="width: 8em" *ngIf="!_ShowNonBillables">Non-Billable</th>
+          <th style="width: 5em" *ngIf="!_ShowRates">Rates</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="text-align: center" *ngIf="!_HasEdit && !_ShowUnlock">
             <i *ngIf="rowData['IsLocked'] === 'True'" class="fa fa-lock fa-150x"
               pTooltip="Please click here to unlock the user" style="cursor:pointer;color:orange"
               tooltipPosition="bottom" (click)="unlockEmployee(rowData)"></i>
@@ -83,12 +83,12 @@
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Please click here to edit the employee"
               tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
           </td>
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="text-align: center" *ngIf="!_HasEdit && !_ShowTerminate">
             <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x deleteIcon"
               pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
               tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
           </td>
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="text-align: center" *ngIf="!_HasEdit && _userAdmin && !_ShowReset">
             <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x"
               pTooltip="Reset employee's password." style="cursor:pointer;color:blue" tooltipPosition="bottom"
               (click)="resetEmployeePassword(rowData)"></i>
@@ -107,24 +107,24 @@
               </div>
             </ng-template>
           </td>
-          <td style="text-align: center">
-            <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+          <td style="text-align: center" *ngIf="!_ShowClients">
+            <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
               class="fa fa-handshake-o fa-150x" pTooltip="Manage the clients assigned to this employee"
               style="cursor:pointer;color:orangered" tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
           </td>
-          <td style="text-align: center">
-            <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+          <td style="text-align: center" *ngIf="!_ShowProjects">
+            <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
               class="fa fa-wrench fa-150x" pTooltip="Manage the billable projects assigned to this employee"
               style="cursor:pointer;color:green" tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
           </td>
-          <td style="text-align: center">
-            <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+          <td style="text-align: center" *ngIf="!_ShowNonBillables">
+            <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
               class="fa fa-book fa-150x" pTooltip="Manage the non-billable items assigned to this employee"
               style="cursor:pointer;color:darkmagenta" tooltipPosition="bottom"
               (click)="manageNonBillables(rowData)"></i>
           </td>
-          <td style="text-align: center">
-            <i *ngIf="rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+          <td style="text-align: center" *ngIf="!_ShowRates">
+            <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
               class="fa fa-usd fa-150x" pTooltip="Manage the rate information assigned to this employee"
               style="cursor:pointer;color:navy" tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
           </td>
@@ -394,7 +394,8 @@
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
             targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
-            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()"
+            [disabled]="_EditNonBillables">
             <ng-template let-attr pTemplate="item">
               <div class="ui-helper-clearfix">
                 {{attr.ProjectName}}
@@ -409,8 +410,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()"
-              [disabled]="hasFormErrorsModal()"></button>
+            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit && !_EditNonBillables"
+              (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
           </div>
@@ -436,7 +437,8 @@
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
             targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
-            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()"
+            [disabled]="_EditProjects">
             <ng-template let-attr pTemplate="item">
               <div class="ui-helper-clearfix">
                 {{attr.ProjectName}}
@@ -451,8 +453,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()"
-              [disabled]="hasFormErrorsModal()"></button>
+            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit && !_EditProjects"
+              (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
           </div>
@@ -478,7 +480,8 @@
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
             targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
-            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()">
+            [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()"
+            [disabled]="_EditClients">
             <ng-template let-attr pTemplate="item">
               <div class="ui-helper-clearfix">
                 {{attr.ClientName}}
@@ -493,8 +496,8 @@
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12">
           <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveModal()"
-              [disabled]="hasFormErrorsModal()"></button>
+            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit && !_EditClients"
+              (click)="saveModal()" [disabled]="hasFormErrorsModal()"></button>
             &nbsp;
             <button pButton label="Cancel" (click)="cancelModal()" class="ui-button-danger"></button>
           </div>
@@ -515,7 +518,7 @@
     <div *ngIf="!_IsEditRate">
       <div class="ui-g-12" style="text-align:right">
         <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new rate" tooltipPosition="bottom"
-          class="ui-button-info" label="Add New Rate" (click)=addNewRate() *ngIf="!_HasEdit"></button>
+          class="ui-button-info" label="Add New Rate" (click)=addNewRate() *ngIf="!_HasEdit && _EditRates"></button>
         <!-- <div *ngIf="_recRateData === 0" class="NoDataStrip NoDataMessage" style="margin: .5em 0px;width:100%;">
         No matching data for the selected criteria
       </div> -->
@@ -537,7 +540,7 @@
           </ng-template>
           <ng-template pTemplate="header" let-columns>
             <tr>
-              <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
+              <th style="width: 5em" *ngIf="!_HasEdit && _EditRates">Edit</th>
               <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
                 {{col.header}}
                 <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
@@ -545,12 +548,12 @@
                   ariaLabelAsc="Activate to sort in ascending order">
                 </p-sortIcon>
               </th>
-              <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
+              <th style="width: 5em" *ngIf="!_HasEdit && _EditRates">Delete</th>
             </tr>
           </ng-template>
           <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
             <tr [pSelectableRow]="rowData">
-              <td style="text-align: center" *ngIf="!_HasEdit">
+              <td style="text-align: center" *ngIf="!_HasEdit && _EditRates">
                 <i class="fa fa-edit fa-150x editIcon" pTooltip="Change this rate" tooltipPosition="bottom"
                   (click)="editRate(rowData)"></i>
               </td>
@@ -569,7 +572,7 @@
                   </ng-template>
                 </ng-template>
               </td>
-              <td style="text-align: center" *ngIf="!_HasEdit">
+              <td style="text-align: center" *ngIf="!_HasEdit && _EditRates">
                 <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this rate" tooltipPosition="bottom"
                   (click)="deleteRate(rowData)"></i>
               </td>
@@ -637,8 +640,8 @@
     <p-footer>
       <div class="ui-g">
         <div class="ui-g-12 ui-md-12" *ngIf="_IsEditRate; else cancelbutton">
-          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveRateModal()"
-            [disabled]="hasFormErrorsRate()"></button>
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit && _EditRates"
+            (click)="saveRateModal()" [disabled]="hasFormErrorsRate()"></button>
           &nbsp;
           <button pButton label="Cancel" (click)="cancelRateModal()" class="ui-button-danger"></button>
         </div>
