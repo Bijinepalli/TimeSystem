@@ -153,6 +153,20 @@ export class Clients {
     CreatedOnSearch?: string;
     EffectiveDateSearch?: string;
 }
+
+export class Rates {
+    ID?: number;
+    EmployeeID?: number;
+    ClientID?: number;
+    CustomerID?: number;
+    ClientName?: string;
+    CustomerName?: string;
+    Rate?: string;
+    EffectiveDate?: string;
+    EffectiveDateSearch?: string;
+    Inactive?: boolean;
+}
+
 export class MasterPages {
     ID?: number;
     ModuleName?: string;

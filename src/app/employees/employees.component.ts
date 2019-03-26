@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
-  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments, Customers
+  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments, Customers, Rates
 } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -81,14 +81,14 @@ export class EmployeesComponent implements OnInit {
   _IsEditRate = false;
   _IsAddRate = false;
   _ratecols: any;
-  _rates: Invoice[] = [];
+  _rates: Rates[] = [];
   _recRateData: any;
   chkrateInactive = false;
   _employeeId = '';
   _rateId = '';
   _clients: SelectItem[] = [];
   _customerId: string;
-  _selectedRate: Clients;
+  _selectedRate: Rates;
   _ratePlaceholder = '';
 
   visibleHelp = false;
@@ -731,7 +731,8 @@ export class EmployeesComponent implements OnInit {
   }
   manageRates(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
-    this.populateTable(dataRow.ID);
+    this._employeeId = this._selectedEmployeeForAction.ID.toString();
+    this.populateTable();
     this._popUpHeader = 'Rate';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
     this.rateDialog = true;
@@ -1711,14 +1712,14 @@ export class EmployeesComponent implements OnInit {
       );
   }
 
-  editRate(dataRow: any) {
+  editRate(dataRow: Rates) {
     this.resetRateControls();
     this._IsEditRate = true;
     this._IsAddRate = false;
     this._ratePlaceholder = null;
     this._rateId = dataRow.ID.toString();
     this._clientId = dataRow.ClientID.toString();
-    this.timesysSvc.listClientforRateId(+dataRow.ID)
+    this.timesysSvc.listClientforRateId(+dataRow.ID.toString())
       .subscribe(
         (dataClients: Clients[] = []) => {
           this._clients = [];
@@ -1727,12 +1728,11 @@ export class EmployeesComponent implements OnInit {
               this._clients.push({ label: dataClients[i].ClientName, value: dataClients[i].Id });
             }
           }
-          this.timesysSvc.getRate(+dataRow.ID)
+          this.timesysSvc.getRate(+dataRow.ID.toString())
             .subscribe(
-              (data: Clients[] = []) => {
+              (data: Rates[] = []) => {
                 if (data !== undefined && data !== null && data.length > 0) {
-                  this._employeeId = data[0].EmployeeID.toString();
-                  this._frmRate.controls['frmClientName'].setValue(data[0].Id);
+                  this._frmRate.controls['frmClientName'].setValue(data[0].ClientID);
                   this.getCustomerForClient();
                   this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
                   if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
@@ -1745,11 +1745,48 @@ export class EmployeesComponent implements OnInit {
                   }
                 }
               });
-
-
         }
       );
+  }
 
+  deleteRate(dataRow: Rates) {
+    this.confSvc.confirm({
+      message: 'Are you sure you want to delete this rate?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        console.log(dataRow);
+        this.timesysSvc.DeleteRate(dataRow)
+          .subscribe(
+            (outputData) => {
+              this.showSpinner = false;
+              if (outputData !== null && outputData.ErrorMessage !== '' && outputData.ErrorMessage !== '0') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess',
+                  severity: 'success',
+                  summary: 'Info Message',
+                  detail: 'Rate deleted successfully'
+                });
+
+                this.populateTable();
+              }
+            },
+            (error) => {
+              console.log(error);
+            });
+      },
+      reject: () => {
+        /* do nothing */
+      }
+    });
   }
 
 
@@ -1781,10 +1818,9 @@ export class EmployeesComponent implements OnInit {
     this._clients = [];
   }
 
-  populateTable(empId: number) {
+  populateTable() {
     this._IsEditRate = false;
     this._IsAddRate = false;
-    this._employeeId = empId.toString();
     this._ratecols = [
       { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
@@ -1793,9 +1829,9 @@ export class EmployeesComponent implements OnInit {
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
     ];
     this._sortArrayRates = ['ClientName', 'CustomerName', 'EffectiveDateSearch', 'Rate', 'Inactive'];
-    this.timesysSvc.getEmployeeRates(empId)
+    this.timesysSvc.getEmployeeRates(+this._employeeId.toString())
       .subscribe(
-        (data: Invoice[] = []) => {
+        (data: Rates[] = []) => {
           this._rates = [];
           this._recRateData = 0;
           if (data !== undefined && data !== null && data.length > 0) {
@@ -1814,15 +1850,15 @@ export class EmployeesComponent implements OnInit {
     } else {
       this.rateDialog = false;
     }
-    this.populateTable(+this._employeeId.toString());
+    this.populateTable();
   }
 
   saveRateModal() {
     this._selectedRate = {};
-    this._selectedRate.RateID = +this._rateId;
+    this._selectedRate.ID = +this._rateId;
     this._selectedRate.EmployeeID = +this._employeeId.toString();
-    this._selectedRate.CustomerId = +this._customerId.toString();
-    this._selectedRate.Id = this._frmRate.controls['frmClientName'].value.toString();
+    this._selectedRate.CustomerID = +this._customerId.toString();
+    this._selectedRate.ClientID = this._frmRate.controls['frmClientName'].value.toString();
     // tslint:disable-next-line:max-line-length
     this._selectedRate.EffectiveDate = this.datepipe.transform(this._frmRate.controls['frmEffectiveDate'].value.toString().trim(), 'MM-dd-yyyy');
     this._selectedRate.Rate = this._frmRate.controls['frmRatetext'].value.toString().trim();
@@ -1861,7 +1897,7 @@ export class EmployeesComponent implements OnInit {
             this._IsAddRate = false;
             this._IsEditRate = false;
             this.resetRateControls();
-            this.populateTable(+this._employeeId.toString());
+            this.populateTable();
           }
         }
       );
