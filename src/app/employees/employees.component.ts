@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
-  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments
+  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments, Customers
 } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -1670,23 +1670,115 @@ export class EmployeesComponent implements OnInit {
   /* #endregion */
 
   /* #region Rates Modal Popup Related Functionality */
+
+
+
+
+  addControlsRate() {
+    this._frmRate.addControl('frmClientName', new FormControl(null, Validators.required));
+    this._frmRate.addControl('frmCustomerName', new FormControl(null, Validators.required));
+    this._frmRate.addControl('frmEffectiveDate', new FormControl(null, Validators.required));
+    this._frmRate.addControl('frmRatetext', new FormControl(null, Validators.required));
+    // Validators.pattern('^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$') Decimal Greater than 0 with 2 precision
+    this._frmRate.addControl('frmInactive', new FormControl(null, null));
+    this.chkrateInactive = false;
+  }
+
+  hasFormErrorsRate() {
+    return !this._frmRate.valid;
+  }
+
   addNewRate() {
     this._IsEditRate = true;
     this._IsAddRate = true;
     this.resetRateControls();
+    this._rateId = '';
     this._ratePlaceholder = 'Please select a Client Name';
-    this._frmRate.controls['frmCustomerName'].enable();
+    this._frmRate.controls['frmCustomerName'].disable();
+    this._frmRate.controls['frmEffectiveDate'].setValue(new Date());
     this.timesysSvc.getClientsAssignToEmployee(+this._employeeId)
       .subscribe(
-        (data: Clients[] = []) => {
-          let clients = [];
-          clients = data;
-          // this._clients = [{ label: clients[i].ClientName, value: clients[i].ID }];
-          for (let i = 0; i < clients.length; i++) {
-            this._clients.push({ label: clients[i].ClientName, value: clients[i].Id });
+        (dataClients: Clients[] = []) => {
+          this._clients = [];
+          if (dataClients !== undefined && dataClients !== null && dataClients.length > 0) {
+            for (let i = 0; i < dataClients.length; i++) {
+              this._clients.push({ label: dataClients[i].ClientName, value: dataClients[i].Id });
+            }
+            this._frmRate.controls['frmClientName'].setValue(this._clients[0].value);
+            this.getCustomerForClient();
           }
         }
       );
+  }
+
+  editRate(dataRow: any) {
+    this.resetRateControls();
+    this._IsEditRate = true;
+    this._IsAddRate = false;
+    this._ratePlaceholder = null;
+    this._rateId = dataRow.ID.toString();
+    this._clientId = dataRow.ClientID.toString();
+    this.timesysSvc.listClientforRateId(+dataRow.ID)
+      .subscribe(
+        (dataClients: Clients[] = []) => {
+          this._clients = [];
+          if (dataClients !== undefined && dataClients !== null && dataClients.length > 0) {
+            for (let i = 0; i < dataClients.length; i++) {
+              this._clients.push({ label: dataClients[i].ClientName, value: dataClients[i].Id });
+            }
+          }
+          this.timesysSvc.getRate(+dataRow.ID)
+            .subscribe(
+              (data: Clients[] = []) => {
+                if (data !== undefined && data !== null && data.length > 0) {
+                  this._employeeId = data[0].EmployeeID.toString();
+                  this._frmRate.controls['frmClientName'].setValue(data[0].Id);
+                  this.getCustomerForClient();
+                  this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
+                  if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
+                    this._frmRate.controls['frmEffectiveDate'].setValue(new Date(data[0].EffectiveDate.replace(new RegExp('-', 'g'), '/')));
+                  }
+                  if (data[0].Inactive !== undefined && data[0].Inactive !== null) {
+                    this.chkrateInactive = data[0].Inactive.toString().toLowerCase() === 'true' ? true : false;
+                  } else {
+                    this.chkrateInactive = false;
+                  }
+                }
+              });
+
+
+        }
+      );
+
+  }
+
+
+  getCustomerForClient() {
+    const ClientID = this._frmRate.controls['frmClientName'].value.toString();
+    this._customerId = '';
+    this._frmRate.controls['frmCustomerName'].enable();
+    this._frmRate.controls['frmCustomerName'].setValue('');
+    this._frmRate.controls['frmCustomerName'].disable();
+    this.timesysSvc.GetCustomerForClient(ClientID)
+      .subscribe(
+        (data: Customers[] = []) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._customerId = data[0].Id.toString();
+            this._frmRate.controls['frmCustomerName'].enable();
+            this._frmRate.controls['frmCustomerName'].setValue(data[0].CustomerName);
+            this._frmRate.controls['frmCustomerName'].disable();
+          }
+        }
+      );
+  }
+
+  resetRateControls() {
+    this._frmRate.markAsPristine();
+    this._frmRate.markAsUntouched();
+    this._frmRate.updateValueAndValidity();
+    this._frmRate.reset();
+    this.chkrateInactive = false;
+    this._clients = [];
   }
 
   populateTable(empId: number) {
@@ -1714,63 +1806,6 @@ export class EmployeesComponent implements OnInit {
       );
   }
 
-  addControlsRate() {
-    this._frmRate.addControl('frmClientName', new FormControl(null, null));
-    this._frmRate.addControl('frmCustomerName', new FormControl(null, null));
-    this._frmRate.addControl('frmEffectiveDate', new FormControl(null, null));
-    this._frmRate.addControl('frmRatetext', new FormControl(null, Validators.required));
-    this._frmRate.addControl('frmInactive', new FormControl(null, null));
-    this.chkrateInactive = false;
-  }
-
-  hasFormErrorsRate() {
-    return !this._frmRate.valid;
-  }
-
-  editRate(dataRow: any) {
-    this.resetRateControls();
-    this._IsEditRate = true;
-    this._IsAddRate = false;
-    this._ratePlaceholder = null;
-    this._rateId = dataRow.ID.toString();
-    this._clientId = dataRow.ClientID.toString();
-    this.timesysSvc.listClientforRateId(+dataRow.ID)
-      .subscribe(
-        (data: Clients[] = []) => {
-          let clients = [];
-          if (data !== undefined && data !== null && data.length > 0) {
-            clients = data;
-            for (let i = 0; i < clients.length; i++) {
-              this._clients.push({ label: clients[i].ClientName, value: clients[i].Id });
-            }
-          }
-        }
-      );
-    this.timesysSvc.getRate(+dataRow.ID)
-      .subscribe(
-        (data: Clients[] = []) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._employeeId = data[0].EmployeeID.toString();
-            this._customerId = data[0].CustomerId.toString();
-            this._frmRate.controls['frmClientName'].setValue(data[0].ClientName);
-            this._frmRate.controls['frmCustomerName'].setValue(data[0].CustomerName);
-            this._frmRate.controls['frmCustomerName'].disable();
-            this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
-
-            if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
-              this._frmRate.controls['frmEffectiveDate'].setValue(new Date(data[0].EffectiveDate.replace(new RegExp('-', 'g'), '/')));
-            }
-
-            if (data[0].Inactive !== undefined && data[0].Inactive !== null) {
-              this.chkrateInactive = data[0].Inactive.toString().toLowerCase() === 'true' ? true : false;
-            } else {
-              this.chkrateInactive = false;
-            }
-          }
-        });
-  }
-
-
   cancelRateModal() {
     this.resetRateControls();
     if (this._IsEditRate === true) {
@@ -1782,32 +1817,19 @@ export class EmployeesComponent implements OnInit {
     this.populateTable(+this._employeeId.toString());
   }
 
-  resetRateControls() {
-    this._frmRate.markAsPristine();
-    this._frmRate.markAsUntouched();
-    this._frmRate.updateValueAndValidity();
-    this._frmRate.reset();
-    this.chkrateInactive = false;
-    this._clients = [];
-  }
-
   saveRateModal() {
     this._selectedRate = {};
-    this._selectedRate.ClientName = this._frmRate.controls['frmClientName'].value.toString().trim();
-    this._selectedRate.CustomerName = this._frmRate.controls['frmCustomerName'].value.toString().toUpperCase().trim();
+    this._selectedRate.RateID = +this._rateId;
+    this._selectedRate.EmployeeID = +this._employeeId.toString();
     this._selectedRate.CustomerId = +this._customerId.toString();
+    this._selectedRate.Id = this._frmRate.controls['frmClientName'].value.toString();
     // tslint:disable-next-line:max-line-length
     this._selectedRate.EffectiveDate = this.datepipe.transform(this._frmRate.controls['frmEffectiveDate'].value.toString().trim(), 'MM-dd-yyyy');
     this._selectedRate.Rate = this._frmRate.controls['frmRatetext'].value.toString().trim();
-    this._selectedRate.EmployeeID = +this._employeeId.toString();
     this._selectedRate.Inactive = this.chkrateInactive;
-    this._selectedRate.RateID = +this._rateId;
-    this._selectedRate.Id = +this._clientId;
     if (this._IsAddRate === true) {
-      this._selectedRate.RateMode = 'A';
       this.saveRateSPCall();
     } else {
-      this._selectedRate.RateMode = 'E';
       this.confSvc.confirm({
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
@@ -1817,11 +1839,10 @@ export class EmployeesComponent implements OnInit {
         }
       });
     }
-
   }
 
   saveRateSPCall() {
-    this.timesysSvc.updateRate(this._selectedRate)
+    this.timesysSvc.InsertOrUpdateRate(this._selectedRate)
       .subscribe(
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {

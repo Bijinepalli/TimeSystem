@@ -506,9 +506,9 @@ export class TimesystemService {
       .set('RateID', RateID.toString() !== '0' ? RateID.toString() : '0');
     return this.http.get<Clients[]>(this.url + 'GetRate', { params });
   }
-  updateRate(_inputData: Clients) {
+  InsertOrUpdateRate(_inputData: Clients) {
     const body = JSON.stringify(_inputData);
-    return this.http.post<LoginErrorMessage>(this.url + 'UpdateRate', body, httpOptions);
+    return this.http.post<LoginErrorMessage>(this.url + 'InsertOrUpdateRate', body, httpOptions);
   }
   getEmployeeClientProjectNonBillableDetails(employeeId: string, periodEnd: string, periodStart: string) {
     const params = new HttpParams()
@@ -803,6 +803,13 @@ export class TimesystemService {
       .set('status', status)
       .set('timesheetHTML', timesheetHTML);
     return this.http.get<DictionaryType[]>(this.url + 'SendApproveOrRejectMailToEmployee', { params });
+  }
+
+
+  GetCustomerForClient(ClientID: string) {
+    const params = new HttpParams()
+      .set('ClientID', ClientID);
+    return this.http.get<Customers[]>(this.url + 'GetCustomerForClient', { params });
   }
 
 

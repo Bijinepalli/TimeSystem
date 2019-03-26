@@ -150,9 +150,8 @@ export class Clients {
     Rate?: string;
     EmployeeID?: number;
     RateID?: number;
-    ClientID?: number;
-    RateMode?: string;
-    CreatedOnSearch?: String;
+    CreatedOnSearch?: string;
+    EffectiveDateSearch?: string;
 }
 export class MasterPages {
     ID?: number;
