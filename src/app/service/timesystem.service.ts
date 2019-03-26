@@ -603,6 +603,10 @@ export class TimesystemService {
       .set('datesince', datesince);
     return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
   }
+  deleteUnusedBillingCodes(_inputData: NonBillables) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'DeleteUnusedBillingCodes', body, httpOptions);
+  }
   GetEmployeeHours(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'GetEmployeeHours', body, httpOptions);
