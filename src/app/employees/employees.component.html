@@ -596,43 +596,55 @@
           </div>
         </div>
         <div class="ui-g">
-          <div class="ui-g-4" style="text-align:right">
-            Client Name <span class="mandatoryStar">* </span>:
+          <div class="ui-g-12">
+            <div class="ui-g-4" style="text-align:right">
+              Client Name <span class="mandatoryStar">* </span>:
+            </div>
+            <div class="ui-g-6">
+              <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}"
+                formControlName="frmClientName" pToolTip="The client hours are charged to" [style]="{'width':'85%'}"
+                (onChange)="getCustomerForClient()">
+              </p-dropdown>
+            </div>
           </div>
-          <div class="ui-g-6">
-            <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}"
-              formControlName="frmClientName" pToolTip="The client hours are charged to" [style]="{'width':'85%'}">
-            </p-dropdown>
+          <div class="ui-g-12">
+            <div class="ui-g-4" style="text-align:right">
+              Customer Name <span class="mandatoryStar">* </span>:
+            </div>
+            <div class="ui-g-6">
+              <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
+                pToolTip="The customer to invoice this client" style="width:85%;">
+            </div>
           </div>
-          <div class="ui-g-4" style="text-align:right">
-            Customer Name <span class="mandatoryStar">* </span>:
+          <div class="ui-g-12">
+            <div class="ui-g-4" style="text-align:right">
+              Effective Date <span class="mandatoryStar">* </span>:
+            </div>
+            <div class="ui-g-6">
+              <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+                formControlName="frmEffectiveDate" appendTo="body"
+                pTooltip="The original date the employee started work">
+              </p-calendar>
+              (mm-dd-yyyy)
+            </div>
           </div>
-          <div class="ui-g-6">
-            <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
-              pToolTip="The customer to invoice this client">
+          <div class="ui-g-12">
+            <div class="ui-g-4" style="text-align:right">
+              Rate <span class="mandatoryStar">* </span>:
+            </div>
+            <div class="ui-g-6">
+              <input type="text" pInputText formControlName="frmRatetext"
+                pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
+            </div>
           </div>
-          <div class="ui-g-4" style="text-align:right">
-            Effective Date <span class="mandatoryStar">* </span>:
-          </div>
-          <div class="ui-g-6">
-            <p-calendar [showIcon]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
-              formControlName="frmEffectiveDate" appendTo="body" pTooltip="The original date the employee started work">
-            </p-calendar>
-            (mm-dd-yyyy)
-          </div>
-          <div class="ui-g-4" style="text-align:right">
-            Rate <span class="mandatoryStar">* </span>:
-          </div>
-          <div class="ui-g-6">
-            <input type="text" pInputText placeholder="Rate" formControlName="frmRatetext"
-              pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
-          </div>
-          <div class="ui-g-4">
-          </div>
-          <div class="ui-g-6">
-            <p-checkbox binary="true" [(ngModel)]="chkrateInactive" [ngModelOptions]="{standalone: true}">
-            </p-checkbox>
-            Inactive
+          <div class="ui-g-12" *ngIf="!_IsAddRate">
+            <div class="ui-g-4">
+            </div>
+            <div class="ui-g-6">
+              <p-checkbox binary="true" [(ngModel)]="chkrateInactive" [ngModelOptions]="{standalone: true}">
+              </p-checkbox>
+              Inactive
+            </div>
           </div>
         </div>
       </div>

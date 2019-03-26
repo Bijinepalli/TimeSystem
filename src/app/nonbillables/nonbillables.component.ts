@@ -239,6 +239,7 @@ export class NonbillablesComponent implements OnInit {
   editNonBillable(data: NonBillables) {
     this._IsEdit = true;
     this._selectedNonBillable = new NonBillables();
+    this._selectedNonBillable.Id = data.Id;
     this._selectedNonBillable.ProjectName = data.ProjectName;
     this._selectedNonBillable.Key = data.Key;
     this._selectedNonBillable.Inactive = data.Inactive;
@@ -321,6 +322,7 @@ export class NonbillablesComponent implements OnInit {
   }
   SaveNonBillableSPCall() {
     this.showSpinner = true;
+    console.log(this._selectedNonBillable);
     this.timesysSvc.NonBillable_InsertOrUpdate(this._selectedNonBillable)
       .subscribe(
         (outputData) => {
