@@ -18,10 +18,10 @@ import { Table } from 'primeng/table';
 export class EmployeehoursbybillingcodeComponent implements OnInit {
   billingCycle: SelectItem[];
   selectedbillingCycle: number;
-  _startDate: any;
+  _startDate: Date;
+  _endDate: Date;
   _startDateSelect = '';
   _endDateSelect = '';
-  _endDate: any;
   showSpinner = false;
   _selectcheckbox: SelectItem[] = [];
   _displayCheckBoxes: SelectItem[] = [];
@@ -113,10 +113,10 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._selectcheckbox = [];
     this._displayCheckBoxes = [];
     this.selectedbillingCycle = 3;
-    this._startDate = '';
+    this._startDate = null;
+    this._endDate = null;
     this._startDateSelect = '';
     this._endDateSelect = '';
-    this._endDate = '';
 
     this._clients = [];
     this._selectString = '';
@@ -205,19 +205,12 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     let _end = '';
     this._startDateSelect = '';
     this._endDateSelect = '';
-    let dateValid: any;
-    const dateCheck = new Date(this._startDate);
-    if (dateCheck.toString() === 'Invalid Date') {
-      dateValid = this._startDate;
-    } else {
-      dateValid = dateCheck;
-    }
 
-    if (this._startDate !== undefined && this._startDate !== null && this._startDate !== '') {
-      _start = this.datePipe.transform(dateValid, 'yyyy-MM-dd');
-      this._startDateSelect = this.datePipe.transform(dateValid, 'MM-dd-yyyy');
+    if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
+      _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+      this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     }
-    if (this._endDate !== undefined && this._endDate !== null && this._endDate !== '') {
+    if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
       _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
       this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
     }
@@ -300,8 +293,13 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.showSpinner = false;
+    const today = new Date();
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    this._startDate = new Date(year, month - 1, 1);
+    this._endDate = null;
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+    this._endDateSelect = '';
     this.resetSort();
   }
 

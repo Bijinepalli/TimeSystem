@@ -38,9 +38,10 @@ export class HoursbyemployeeComponent implements OnInit {
   allcheckbox = false;
   changeCodeList = false;
   showReport = false;
-  _startDate = '';
+  _startDate: Date;
+  _endDate: Date;
   _startDateSelect = '';
-  _endDate = '';
+  _endDateSelect = '';
   _billingCodesSpecial: BillingCodesSpecial;
   _reports: any[] = [];
   showPeriodEndDetail = false;
@@ -143,9 +144,10 @@ export class HoursbyemployeeComponent implements OnInit {
 
     this._reports = [];
     this.cols = {};
-    this._startDate = '';
+    this._startDate = null;
+    this._endDate = null;
     this._startDateSelect = '';
-    this._endDate = '';
+    this._endDateSelect = '';
     this.showPeriodEndDetail = false;
     this.showTotals = false;
     this._recData = 0;
@@ -192,8 +194,8 @@ export class HoursbyemployeeComponent implements OnInit {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    this._startDateSelect = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
+    this._startDate = new Date(year, month - 1, 1);
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this.showSpinner = false;
     this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'PeriodEndSearch'];
   }
@@ -276,13 +278,8 @@ export class HoursbyemployeeComponent implements OnInit {
   // }
   generateReport() {
     this.showSpinner = true;
-    let dateValid: any;
-    const dateCheck = new Date(this._startDateSelect);
-    if (dateCheck.toString() === 'Invalid Date') {
-      dateValid = this._startDate;
-    } else {
-      dateValid = dateCheck;
-    }
+    this._startDateSelect = '';
+    this._endDateSelect = '';
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
       this._billingCodesSpecial = new BillingCodesSpecial();
@@ -293,13 +290,15 @@ export class HoursbyemployeeComponent implements OnInit {
       let _start = '';
       let _end = '';
 
-      if (this._startDate !== null && this._startDate !== '') {
-        _start = this.datePipe.transform(dateValid, this._DateFormat);
-        this._startDate = this.datePipe.transform(dateValid, this._DisplayDateFormat);
+      if (this._startDate !== undefined && this._startDate !== null) {
+        _start = this.datePipe.transform(this._startDate, this._DateFormat);
+        // this._startDate = this.datePipe.transform(dateValid, this._DisplayDateFormat);
+        this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
-      if (this._endDate !== null && this._endDate !== '') {
+      if (this._endDate !== undefined && this._endDate !== null) {
         _end = this.datePipe.transform(this._endDate, this._DateFormat);
-        this._endDate = this.datePipe.transform(this._endDate, this._DisplayDateFormat);
+        // this._endDate = this.datePipe.transform(this._endDate, this._DisplayDateFormat);
+        this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
@@ -407,9 +406,10 @@ export class HoursbyemployeeComponent implements OnInit {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    // this._startDate = this.datePipe.transform(this._startDate, this._DisplayDateFormat);
-    this._endDate = '';
+    this._startDate = new Date(year, month - 1, 1);
+    this._endDate = null;
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._endDateSelect = '';
     this.showSpinner = false;
     this.resetSort();
   }
