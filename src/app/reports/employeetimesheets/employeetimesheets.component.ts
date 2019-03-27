@@ -37,12 +37,13 @@ export class EmployeetimesheetsComponent implements OnInit {
   visibleHelp: boolean;
   helpText: string;
   selectedEmployeeName: string;
-  DisplayDateFormat = '';
   ParamSubscribe: any;
   IsSecure = false;
   _sortArray: string[];
 
   @ViewChild('dt') dt: Table;
+  _DisplayDateFormat = '';
+  _DisplayTimeStampFormat = '';
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -133,6 +134,8 @@ export class EmployeetimesheetsComponent implements OnInit {
   }
 
   Initialisations() {
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
+    this._DisplayTimeStampFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
     this.hoursType = [
       { label: 'Salary', value: '1' },
       { label: 'Hourly', value: '0' },
@@ -154,7 +157,6 @@ export class EmployeetimesheetsComponent implements OnInit {
       { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
     ];
     this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours'];
-    this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
   }
   getEmployees() {
     this.showSpinner = true;

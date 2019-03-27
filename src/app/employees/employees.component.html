@@ -59,7 +59,7 @@
           <th style="width: 5em" *ngIf="!_HasEdit && !_ShowUnlock">Unlock</th>
           <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
           <th style="width: 7em" *ngIf="!_HasEdit && !_ShowTerminate">Terminate</th>
-          <th style="width: 10em" *ngIf="!_HasEdit && _userAdmin && !_ShowReset">Reset Password</th>
+          <th style="width: 10em" *ngIf="!_HasEdit && !_ShowReset">Reset Password</th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
@@ -88,7 +88,7 @@
               pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
               tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
           </td>
-          <td style="text-align: center" *ngIf="!_HasEdit && _userAdmin && !_ShowReset">
+          <td style="text-align: center" *ngIf="!_HasEdit && !_ShowReset">
             <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-refresh fa-150x"
               pTooltip="Reset employee's password." style="cursor:pointer;color:blue" tooltipPosition="bottom"
               (click)="resetEmployeePassword(rowData)"></i>

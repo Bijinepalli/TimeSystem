@@ -227,7 +227,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     let _keys = '';
     this.showSpinner = true;
     this.confSvc.confirm({
-      message: 'Are you sure you want to delete the selected item(s) ?',
+      message: 'Are you sure you want to delete the selected code(s) ?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {

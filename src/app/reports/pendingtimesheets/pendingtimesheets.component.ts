@@ -11,6 +11,7 @@ import { parse } from 'querystring';
 import { DateFormats } from 'src/app/model/constants';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { not } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-pendingtimesheets',
@@ -34,6 +35,8 @@ export class PendingtimesheetsComponent implements OnInit {
   byCob = false;
   ccFinance = false;
   _recData = 0;
+  _UnSubmittedCnt = 0;
+  _NotCreatedCnt = 0;
   _selectedEmployees: TimeSheet[];
   visibleHelp: boolean;
   helpText: string;
@@ -41,6 +44,7 @@ export class PendingtimesheetsComponent implements OnInit {
   IsSecure = false;
   _DisplayDateFormat: any;
   _sortArray: string[];
+
   @ViewChild('dt') dt: Table;
 
   constructor(
@@ -123,6 +127,8 @@ export class PendingtimesheetsComponent implements OnInit {
     this.byCob = false;
     this.ccFinance = false;
     this._recData = 0;
+    this._UnSubmittedCnt = 0;
+    this._NotCreatedCnt = 0;
     this._selectedEmployees = [];
     this.visibleHelp = false;
     this.helpText = '';
@@ -176,14 +182,27 @@ export class PendingtimesheetsComponent implements OnInit {
     this.showSpinner = true;
     this.resetSort();
     this._reports = [];
+    this._recData = 0;
+    this._UnSubmittedCnt = 0;
+    this._NotCreatedCnt = 0;
     this.timesysSvc.getOutstandingTimesheetReport(this.selectedDate)
       .subscribe(
         (data) => {
           this._reports = [];
           this._recData = 0;
+          this._UnSubmittedCnt = 0;
+          this._NotCreatedCnt = 0;
           if (data !== undefined && data !== null && data.length > 0) {
             this._reports = data;
-            this._recData = this._reports.length;
+            this._recData = data.length;
+            const NotCreated = data.filter(m => m.Status.toString() === 'Not Created');
+            if (NotCreated !== undefined && NotCreated !== null && NotCreated.length > 0) {
+              this._NotCreatedCnt = NotCreated.length;
+            }
+            const UnSubmitted = data.filter(m => m.Status.toString() === 'Not Submitted');
+            if (UnSubmitted !== undefined && UnSubmitted !== null && UnSubmitted.length > 0) {
+              this._UnSubmittedCnt = UnSubmitted.length;
+            }
           }
           this.showReport = true;
           this.showSpinner = false;

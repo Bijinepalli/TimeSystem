@@ -117,9 +117,11 @@
           <div *ngIf="col.header.indexOf('Date') == -1">
             {{rowData[col.field]}}
           </div> -->
-            <div *ngIf="(col.field === 'PeriodEnd' || col.field === 'SubmitDate'); else nondatecol">
-              <label>{{rowData[col.field] | dateFormat: DisplayDateFormat}} </label>
-              <!-- <label>{{rowData[col.field]}} </label> -->
+            <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
+              <label *ngIf="(col.field === 'SubmitDate')">{{rowData[col.field] | dateFormat: _DisplayTimeStampFormat}}
+              </label>
+              <label *ngIf="(col.field === 'PeriodEnd')">{{rowData[col.field] | dateFormat: _DisplayDateFormat}}
+              </label>
             </div>
             <ng-template #nondatecol>
               {{rowData[col.field]}}
