@@ -226,33 +226,31 @@ export class UnusedbillingcodesComponent implements OnInit {
   deleteCodes() {
     let _keys = '';
     this.showSpinner = true;
+    const deleteCodesList = new NonBillables();
+    switch (this._searchedCodeType.toString()) {
+      case '0':
+        deleteCodesList.ChargeType = 'Clients';
+        break;
+      case '1':
+        deleteCodesList.ChargeType = 'Projects';
+        break;
+      case '2':
+        deleteCodesList.ChargeType = 'NonBill';
+        break;
+    }
     this.confSvc.confirm({
-      message: 'Are you sure you want to delete the selected code(s) ?',
+      message: 'Are you sure you want to delete the selected ' + deleteCodesList.ChargeType + ' Code(s) ?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        const deleteCodesList = new NonBillables();
-        switch (this._searchedCodeType.toString()) {
-          case '0':
-            deleteCodesList.ChargeType = 'Clients';
-            break;
-          case '1':
-            deleteCodesList.ChargeType = 'Projects';
-            break;
-          case '2':
-            deleteCodesList.ChargeType = 'NonBill';
-            break;
-        }
         if (this._selectedCode.length === this._codeList.length) {
           _keys = null;
         } else {
-          console.log(this._selectedCode);
           for (let i = 0; i < this._selectedCode.length; i++) {
             _keys += ',' + this._selectedCode[i].Key;
           }
         }
         deleteCodesList.Key = _keys;
-        console.log(deleteCodesList);
         this.timesysSvc.deleteUnusedBillingCodes(deleteCodesList)
           .subscribe(
             (data) => {
@@ -269,7 +267,7 @@ export class UnusedbillingcodesComponent implements OnInit {
                   key: 'saveSuccess',
                   severity: 'success',
                   summary: 'Info Message',
-                  detail: deleteCodesList.ChargeType + ' deleted successfully'
+                  detail: deleteCodesList.ChargeType + ' Code(s) deleted successfully'
                 });
                 this.getReports();
               }
