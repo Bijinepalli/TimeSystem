@@ -30,7 +30,7 @@
       </div>
     </div>
   </div>
-  <div class="ui-g">
+  <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-3" style="text-align: left;">
       <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_EmployeeName}}
     </div>
@@ -370,7 +370,7 @@
       </div>
     </div>
   </div>
-  <div class="ui-g">
+  <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-12">
       <p-panel *ngIf="_showComments">
         <p-header>
@@ -406,5 +406,6 @@
       </p-panel>
     </div>
   </div>
-
+  <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}"
+    strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
 </form>
