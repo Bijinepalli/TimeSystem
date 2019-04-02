@@ -421,6 +421,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   GetMethods() {
+    console.log('oeeeee');
     this.getEmployees();
     this.getSupervisors();
     this.getDepartments();
@@ -626,7 +627,9 @@ export class EmployeesComponent implements OnInit {
         }
       );
   }
-
+  filterSupervisor(empData: Employee) {
+    this._Supervisors = this._Supervisors.filter(P => P.value.toString() !== empData.ID.toString());
+  }
   getSupervisors() {
 
     this.showSpinner = true;
@@ -962,10 +965,12 @@ export class EmployeesComponent implements OnInit {
     this.setDataToControlsEmployee(data);
     this.employeeHdr = 'Edit Employee';
     this.employeeDialog = true;
+    this.filterSupervisor(data);
   }
 
   cancelEmployee() {
     this.clearControlsEmployee();
+    console.log('cancel');
     this.GetMethods();
   }
   saveEmployee() {
