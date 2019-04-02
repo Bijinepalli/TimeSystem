@@ -257,6 +257,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
+      console.log(this._billingCodesSpecial);
       this.timesysSvc.ListWeekEndClientHoursByClientByEmployee(this._billingCodesSpecial).subscribe(
         (data) => {
           console.log(data);
