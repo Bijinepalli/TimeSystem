@@ -477,6 +477,7 @@ export class SowComponent implements OnInit {
     this.clearControls();
   }
   saveSOW() {
+    let errMsg = '';
     if (this._IsEdit === false) {
       if (this._selectedSOW === undefined || this._selectedSOW === null) {
         this._selectedSOW = {};
@@ -523,8 +524,24 @@ export class SowComponent implements OnInit {
     }
     if (!this.IsControlUndefinedAndHasValue('frmSOWFileName')) {
       this._selectedSOW.SOWFileName = this._frm.controls['frmSOWFileName'].value.toString().trim();
+    } else {
+      errMsg = 'No file selected. Do you wish to continue?';
     }
-    this.SaveSOWSPCall();
+    if (errMsg.trim() !== '') {
+      this.confSvc.confirm({
+        message: errMsg,
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.SaveSOWSPCall();
+        },
+        reject: () => {
+        }
+      });
+    } else {
+      this.SaveSOWSPCall();
+    }
+
   }
 
   SaveSOWSPCall() {
