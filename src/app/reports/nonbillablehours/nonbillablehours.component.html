@@ -27,7 +27,7 @@
         class="ui-button-warning" label="Change Report Groups" (click)=changeReportgroup()></button>
     </div>
   </div>
-  <p-panel [toggleable]="true" header="Filter results by:">
+  <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-5">
         <label class="label" style="padding:0px 10px;">Report Type:</label>
@@ -37,11 +37,11 @@
       <div class="ui-g-12 ui-md-3">
         <label class="label" style="padding:0px 10px;">Date From :</label>
         <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date"
-          tooltipPosition="bottom" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"
+          tooltipPosition="top" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"
           yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body" [inputStyle]="{'width':'100px'}"></p-calendar>
         <label class="label" style="padding:0px 10px;">to</label>
         <p-calendar [(ngModel)]="endDate" [readonlyInput]="true"
-          pTooltip="Enter the end date in the same year as the start date" tooltipPosition="bottom" showButtonBar="true"
+          pTooltip="Enter the end date in the same year as the start date" tooltipPosition="top" showButtonBar="true"
           [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>

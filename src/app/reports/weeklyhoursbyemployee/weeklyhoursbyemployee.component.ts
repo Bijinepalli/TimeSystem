@@ -36,6 +36,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   cols: any;
   _startDate: Date;
   _endDate: Date;
+  _startDateSelect = '';
+  _endDateSelect = '';
   helpText: any;
   visibleHelp = false;
 
@@ -130,6 +132,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this.cols = {};
     this._startDate = null;
     this._endDate = null;
+    this._startDateSelect = '';
+    this._endDateSelect = '';
     this.helpText = '';
     this.visibleHelp = false;
     this.errMsg = '';
@@ -169,6 +173,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1);
     this.showSpinner = false;
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
   }
   showBillingCodes() {
     this.showSpinner = true;
@@ -219,6 +224,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1);
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._endDateSelect = '';
     this._endDate = null;
     this.showSpinner = false;
     this.resetSort();
@@ -233,6 +240,8 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   generateReport() {
     this.showSpinner = true;
     this.errMsg = '';
+    this._startDateSelect = '';
+    this._endDateSelect = '';
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
       this._billingCodesSpecial = new BillingCodesSpecial();
@@ -251,9 +260,11 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
       if (this._startDate !== undefined && this._startDate !== null && this._startDate.toString() !== '') {
         _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+        this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
       if (this._startDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
+        this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;

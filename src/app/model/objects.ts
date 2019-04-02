@@ -140,6 +140,8 @@ export class Clients {
     CompanyName?: string;
     CustomerId?: number;
     CustomerName?: string;
+    SOWID?: number;
+    SOWName?: string;
     BillingCycle?: string;
     PONumber?: string;
     Inactive?: boolean;
@@ -150,10 +152,23 @@ export class Clients {
     Rate?: string;
     EmployeeID?: number;
     RateID?: number;
-    ClientID?: number;
-    RateMode?: string;
-    CreatedOnSearch?: String;
+    CreatedOnSearch?: string;
+    EffectiveDateSearch?: string;
 }
+
+export class Rates {
+    ID?: number;
+    EmployeeID?: number;
+    ClientID?: number;
+    CustomerID?: number;
+    ClientName?: string;
+    CustomerName?: string;
+    Rate?: string;
+    EffectiveDate?: string;
+    EffectiveDateSearch?: string;
+    Inactive?: boolean;
+}
+
 export class MasterPages {
     ID?: number;
     ModuleName?: string;
@@ -163,6 +178,7 @@ export class MasterPages {
     HasEdit?: number;
     Role?: string;
     PageId?: number;
+    Sections?: MasterPages[];
 }
 
 export class LeftNavMenu {
@@ -499,4 +515,30 @@ export class PayStub {
     FileName?: string;
     Date?: string;
     EmployeeName?: string;
+}
+
+
+export class SOW {
+    SOWID?: number;
+    CustomerID?: number;
+    CustomerName?: string;
+    Name?: string;
+    EffectiveDate?: string;
+    ExpirationDate?: string;
+    EffectiveDateSearch?: string;
+    ExpirationDateSearch?: string;
+    CurrencyType?: string;
+    TotalContractValue?: string;
+    InvoiceFrequency?: string;
+    Originate?: string;
+    OpportunityType?: string;
+    Status?: string;
+    SOWType?: string;
+    Notes?: string;
+    SOWFileName?: string;
+}
+
+export class FileSystem {
+    FileName?: string;
+    CreatedOn?: string;
 }

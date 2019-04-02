@@ -13,7 +13,7 @@
   </div>
 </div>
 <br>
-<p-panel [toggleable]="true" header="Filter results by:" *ngIf="showFilters">
+<p-panel [toggleable]="true" header="Filter" *ngIf="showFilters">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-3">
       <label class="label" style="padding:0px 10px;">Select Department:</label>
@@ -85,13 +85,13 @@
     Date Range From:
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
       pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
-      tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+      tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}" [maxDate]="_todayDate"></p-calendar>
     <!-- [disabledDays]="[1,2,3,4,5,6]" -->
     <label class="label" style="padding:0px 10px">to</label>
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
       pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
-      tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+      tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}" [minDate]="_startDate"></p-calendar>
     <!-- [disabledDays]="[0,1,2,3,4,5]" -->
     <!-- [maxDate]="_todayDate" -->

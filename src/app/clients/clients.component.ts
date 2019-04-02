@@ -38,6 +38,7 @@ export class ClientsComponent implements OnInit {
   _billingCycle: SelectItem[] = [];
   _customerNames: SelectItem[] = [];
   _companyNames: SelectItem[] = [];
+  _SOWs: SelectItem[] = [];
 
   _customers: Customers[] = [];
   _companies: Companies[] = [];
@@ -158,6 +159,7 @@ export class ClientsComponent implements OnInit {
       { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
       { field: 'Key', header: 'Code', align: 'left', width: '200px' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '350px' },
+      { field: 'SOWName', header: 'SOW Name' },
       { field: 'PONumber', header: 'PO#', align: 'left', width: '150px' },
     ];
 
@@ -191,6 +193,7 @@ export class ClientsComponent implements OnInit {
         { field: 'ClientName', header: 'Client Name' },
         { field: 'Key', header: 'Code' },
         { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'SOWName', header: 'SOW Name' },
         { field: 'PONumber', header: 'PO#' },
         { field: 'Inactive', header: 'Inactive' },
       ];
@@ -199,6 +202,7 @@ export class ClientsComponent implements OnInit {
         { field: 'ClientName', header: 'Client Name' },
         { field: 'Key', header: 'Code' },
         { field: 'CustomerName', header: 'Customer Name' },
+        { field: 'SOWName', header: 'SOW Name' },
         { field: 'PONumber', header: 'PO#' },
       ];
     }
@@ -236,6 +240,7 @@ export class ClientsComponent implements OnInit {
       );
   }
   getUsedClients() {
+    this.showSpinner = true;
     this.timesysSvc.getUsedBillingCodes(this._billingCodes.Client)
       .subscribe(
         (data) => {
@@ -250,11 +255,12 @@ export class ClientsComponent implements OnInit {
               }
             }
           }
+          this.showSpinner = false;
         }
       );
-    this.showSpinner = false;
   }
   getCustomers() {
+    this.showSpinner = true;
     this.timesysSvc.getCustomers()
       .subscribe(
         (data) => {
@@ -267,11 +273,12 @@ export class ClientsComponent implements OnInit {
             this._customers = [];
             this._customerNames = [];
           }
+          this.showSpinner = false;
         }
       );
-    this.showSpinner = false;
   }
   getCompanies() {
+    this.showSpinner = true;
     this.timesysSvc.getCompanies()
       .subscribe(
         (data) => {
@@ -284,9 +291,27 @@ export class ClientsComponent implements OnInit {
             this._companies = [];
             this._companyNames = [];
           }
+          this.showSpinner = false;
         }
       );
-    this.showSpinner = false;
+  }
+
+  getSOWByCustomerID() {
+    this.showSpinner = true;
+    this._SOWs = [];
+    this.timesysSvc.getSOWs(this._frm.controls['customerName'].value.toString())
+      .subscribe(
+        (data) => {
+          this._SOWs = [];
+          if (data !== undefined && data !== null && data.length > 0) {
+            for (let i = 0; i < data.length; i++) {
+              this._SOWs.push({ label: data[i].Name, value: data[i].SOWID });
+            }
+          }
+          this.showSpinner = false;
+        }
+      );
+
   }
 
   addClient() {
@@ -301,7 +326,18 @@ export class ClientsComponent implements OnInit {
 
   editClient(data: Clients) {
     this._IsEdit = true;
-    this._selectedClient = data;
+    this._selectedClient = new Clients();
+    this._selectedClient.Id = data.Id;
+    this._selectedClient.Key = data.Key;
+    this._selectedClient.ClientName = data.ClientName;
+    this._selectedClient.PONumber = data.PONumber;
+    this._selectedClient.BillingCycle = data.BillingCycle;
+    this._selectedClient.CustomerId = data.CustomerId;
+    this._selectedClient.CustomerName = data.CustomerName;
+    this._selectedClient.CompanyId = data.CompanyId;
+    this._selectedClient.Inactive = data.Inactive;
+    this._selectedClient.ChargeType = data.ChargeType;
+    this._selectedClient.CreatedOn = data.CreatedOn;
     this.chkInactive = false;
     this.resetForm();
     this.setDataToControls(data);
@@ -315,6 +351,7 @@ export class ClientsComponent implements OnInit {
     this._frm.addControl('billingCycle', new FormControl(null));
     this._frm.addControl('poNumber', new FormControl(null));
     this._frm.addControl('customerName', new FormControl(null));
+    this._frm.addControl('SOW', new FormControl(null));
     this._frm.addControl('parentCompany', new FormControl(null));
     this.chkInactive = false;
   }
@@ -330,6 +367,9 @@ export class ClientsComponent implements OnInit {
     }
     if (data.CustomerId !== undefined) {
       this._frm.controls['customerName'].setValue(data.CustomerId.toString());
+    }
+    if (data.CustomerId !== undefined) {
+      this._frm.controls['SOW'].setValue(data.SOWID.toString());
     }
     if (data.CompanyId !== undefined) {
       this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
@@ -393,6 +433,9 @@ export class ClientsComponent implements OnInit {
     }
     if (this._frm.controls['customerName'].value !== undefined && this._frm.controls['customerName'].value !== null) {
       this._selectedClient.CustomerId = this._frm.controls['customerName'].value.toString().trim();
+    }
+    if (this._frm.controls['SOW'].value !== undefined && this._frm.controls['SOW'].value !== null) {
+      this._selectedClient.SOWID = this._frm.controls['SOW'].value.toString().trim();
     }
     if (this._frm.controls['billingCycle'].value !== undefined && this._frm.controls['billingCycle'].value !== null) {
       this._selectedClient.BillingCycle = this._frm.controls['billingCycle'].value.toString().trim();

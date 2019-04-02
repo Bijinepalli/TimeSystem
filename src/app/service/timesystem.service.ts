@@ -9,13 +9,16 @@ import {
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport,
   SendEmail,
   DrpList,
-  DictionaryType
+  DictionaryType,
+  SOW,
+  FileSystem
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { CommaExpr } from '@angular/compiler';
 import { SelectItem } from 'primeng/api';
 import { environment } from '../../environments/environment';
+import { RatesComponent } from '../rates/rates.component';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -441,6 +444,11 @@ export class TimesystemService {
     return this.http.post<LoginErrorMessage>(this.url + 'Client_Delete', body, httpOptions);
   }
 
+  Employee_Validate(_inputData: Employee) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'Employee_Validate', body, httpOptions);
+  }
+
   Employee_Insert(_inputData: Employee) {
     const body = JSON.stringify(_inputData);
     return this.http.post<LoginErrorMessage>(this.url + 'Employee_Insert', body, httpOptions);
@@ -480,15 +488,17 @@ export class TimesystemService {
     const params = new HttpParams();
     return this.http.get<SelectItem[]>(this.url + 'Supervisor_Get', { params });
   }
+
+  getRate(RateID: number): any {
+    const params = new HttpParams()
+      .set('RateID', RateID.toString() !== '0' ? RateID.toString() : '0');
+    return this.http.get<Clients[]>(this.url + 'GetRate', { params });
+  }
+
   getEmployeeRates(EmployeeID: number): any {
     const params = new HttpParams()
       .set('EmployeeID', EmployeeID.toString() !== '0' ? EmployeeID.toString() : '0');
-    return this.http.get<Invoice[]>(this.url + 'GetEmployeeRates', { params });
-  }
-  getEmployeeforRates(EmployeeID: number): any {
-    const params = new HttpParams()
-      .set('EmployeeID', EmployeeID.toString() !== '0' ? EmployeeID.toString() : '0');
-    return this.http.get<Employee[]>(this.url + 'Rates_GetEmployee', { params });
+    return this.http.get<Clients[]>(this.url + 'GetEmployeeRates', { params });
   }
 
   listClientforRateId(RateID: number): any {
@@ -496,15 +506,17 @@ export class TimesystemService {
       .set('RateID', RateID.toString() !== '0' ? RateID.toString() : '0');
     return this.http.get<Clients[]>(this.url + 'ListClientForRateID', { params });
   }
-  getRate(RateID: number): any {
-    const params = new HttpParams()
-      .set('RateID', RateID.toString() !== '0' ? RateID.toString() : '0');
-    return this.http.get<Clients[]>(this.url + 'GetRate', { params });
-  }
-  updateRate(_inputData: Clients) {
+
+  InsertOrUpdateRate(_inputData: Clients) {
     const body = JSON.stringify(_inputData);
-    return this.http.post<LoginErrorMessage>(this.url + 'UpdateRate', body, httpOptions);
+    return this.http.post<LoginErrorMessage>(this.url + 'InsertOrUpdateRate', body, httpOptions);
   }
+
+  DeleteRate(_inputData: Clients): any {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'DeleteRate', body, httpOptions);
+  }
+
   getEmployeeClientProjectNonBillableDetails(employeeId: string, periodEnd: string, periodStart: string) {
     const params = new HttpParams()
       .set('EmployeeId', employeeId)
@@ -597,6 +609,10 @@ export class TimesystemService {
       .set('usagetype', usagetype)
       .set('datesince', datesince);
     return this.http.get<NonBillables[]>(this.url + 'GetUnusedBillingCodes', { params });
+  }
+  deleteUnusedBillingCodes(_inputData: NonBillables) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'DeleteUnusedBillingCodes', body, httpOptions);
   }
   GetEmployeeHours(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
@@ -800,5 +816,30 @@ export class TimesystemService {
     return this.http.get<DictionaryType[]>(this.url + 'SendApproveOrRejectMailToEmployee', { params });
   }
 
+
+  GetCustomerForClient(ClientID: string) {
+    const params = new HttpParams()
+      .set('ClientID', ClientID);
+    return this.http.get<Customers[]>(this.url + 'GetCustomerForClient', { params });
+  }
+
+  getSOWs(CustomerID: string) {
+    const params = new HttpParams()
+      .set('CustomerID', CustomerID);
+    return this.http.get<SOW[]>(this.url + 'GetSOWs', { params });
+  }
+  SOW_InsertOrUpdate(_inputData: SOW) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'SOW_InsertOrUpdate', body, httpOptions);
+  }
+
+  SOW_Delete(_inputData: SOW) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'SOW_Delete', body, httpOptions);
+  }
+
+  getFiles() {
+    return this.http.get<FileSystem[]>(this.url + 'GetFiles');
+  }
 
 }

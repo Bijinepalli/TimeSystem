@@ -43,6 +43,10 @@ export class UnusedbillingcodesComponent implements OnInit {
   @ViewChild('dt') dt: Table;
   _DisplayDateTimeFormat: any;
 
+  _searchedCodeType = '';
+  _searchedUsageType = '';
+  _searchedDate = '';
+
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -176,17 +180,32 @@ export class UnusedbillingcodesComponent implements OnInit {
                 value: this.datePipe.transform(dropdownValue, this._DisplayDateFormat)
               });
             }
+            this._searchedDate = this.selectedDate;
             this.getReports();
           }
           this.showSpinner = false;
         });
   }
-
+  generateReports() {
+    this._searchedCodeType = '';
+    this._searchedUsageType = '';
+    this.getReports();
+  }
   getReports() {
     this.showSpinner = true;
     this.setHeader();
     this.showReport = false;
-    this.timesysSvc.getUnusedBillingCodes(this.selectedCodeType.toString(), this.selectedUsageType.toString(), this.selectedDate.toString())
+    if (this._searchedCodeType === '') {
+      this._searchedCodeType = this.selectedCodeType.toString();
+    } else {
+      this.selectedCodeType = +this._searchedCodeType;
+    }
+    if (this._searchedUsageType === '') {
+      this._searchedUsageType = this.selectedUsageType.toString();
+    } else {
+      this.selectedUsageType = +this._searchedUsageType;
+    }
+    this.timesysSvc.getUnusedBillingCodes(this._searchedCodeType, this._searchedUsageType, this.selectedDate.toString())
       .subscribe(
         (data) => {
           this.showReport = false;
@@ -205,30 +224,57 @@ export class UnusedbillingcodesComponent implements OnInit {
     this.resetSort();
   }
   deleteCodes() {
+    let _keys = '';
     this.showSpinner = true;
+    const deleteCodesList = new NonBillables();
+    switch (this._searchedCodeType.toString()) {
+      case '0':
+        deleteCodesList.ChargeType = 'Clients';
+        break;
+      case '1':
+        deleteCodesList.ChargeType = 'Projects';
+        break;
+      case '2':
+        deleteCodesList.ChargeType = 'NonBill';
+        break;
+    }
     this.confSvc.confirm({
-      message: 'Are you sure you want to delete the selected item(s) ?',
+      message: 'Are you sure you want to delete the selected ' + deleteCodesList.ChargeType + ' Code(s) ?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         if (this._selectedCode.length === this._codeList.length) {
-          switch (this.selectedCodeType.toString()) {
-            case '0':
-              break;
-            case '1':
-              break;
-            case '2':
-              break;
-          }
+          _keys = null;
         } else {
           for (let i = 0; i < this._selectedCode.length; i++) {
-
+            _keys += ',' + this._selectedCode[i].Key;
           }
         }
+        deleteCodesList.Key = _keys;
+        this.timesysSvc.deleteUnusedBillingCodes(deleteCodesList)
+          .subscribe(
+            (data) => {
+              if (data !== null && data.ErrorMessage !== '') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: data.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess',
+                  severity: 'success',
+                  summary: 'Info Message',
+                  detail: deleteCodesList.ChargeType + ' Code(s) deleted successfully'
+                });
+                this.getReports();
+              }
+            });
       },
       reject: () => {
         this.populateDateDrop();
-        this.getReports();
       }
     });
     this.showSpinner = false;

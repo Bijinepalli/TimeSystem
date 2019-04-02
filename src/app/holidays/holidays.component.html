@@ -19,7 +19,7 @@
         label="Add New Holiday" *ngIf="!_HasEdit" (click)=addHoliday()></button>
     </div>
   </div>
-  <p-panel [toggleable]="true" header="Filter results by:">
+  <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
       <div class="ui-g-3 ui-md-3" style="text-align: left">
         <label class="label" style="padding:0px 10px;">Select Year:</label>
@@ -113,7 +113,7 @@
             Date <span class="mandatoryStar">* </span> (mm-dd-yyyy)<br>
             <div style="height:5px"></div>
             <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate"
-              appendTo="body" pTooltip="Select the date for the holiday" tooltipPosition="bottom"></p-calendar>
+              appendTo="body" pTooltip="Select the date for the holiday" tooltipPosition="top"></p-calendar>
           </div>
         </div>
       </div>

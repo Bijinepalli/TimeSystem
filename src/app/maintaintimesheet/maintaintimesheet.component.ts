@@ -15,6 +15,7 @@ import { InputTextModule, Dropdown } from 'primeng/primeng';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { DISABLED } from '@angular/forms/src/model';
 import { environment } from 'src/environments/environment';
+import { wrapIntoObservable } from '@angular/router/src/utils/collection';
 
 @Component({
   selector: 'app-maintaintimesheet',
@@ -83,7 +84,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _Resubmittal = 'No';
   _pageState = '';
   _ApprovalId = 0;
-
+  showSpinner = false;
   _peroidStartDate: Date = new Date('2018-11-01');
   _periodEnddate: Date = new Date('2018-11-15');
   _periodEndDateString = '';
@@ -683,7 +684,18 @@ export class MaintaintimesheetComponent implements OnInit {
       //   summary: '',
       //   detail: 'Hours Exceeded.',
       // });
-      this._errorMessage += 'Hours Exceeded.<br/>';
+      let section = '';
+      if (this._errorHourlyTANDMArray.length > 0) {
+        section += 'Daily hours in any single cell must be between 0 and 24, inclusive.(Section: Time & Materials)<br/>';
+      }
+      if (this._errorHourlyProjBillArray.length > 0) {
+        section += 'Daily hours in any single cell must be between 0 and 24, inclusive.(Section: Project Billable)<br/>';
+      }
+      if (this._errorHourlyNonBillArray.length > 0) {
+        section += 'Daily hours in any single cell must be between 0 and 24, inclusive.(Section: Non-Billable)<br/>';
+      }
+      // tslint:disable-next-line:max-line-length
+      this._errorMessage += section + 'You cannot enter more than 24 hours for a single day.<br/>';
       this._TotalValidationErrors++;
     }
   }
@@ -1175,6 +1187,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
   SaveSPCall(submitted: boolean, type: string) {
+    this.showSpinner = true;
     let timeSheetSubmit: TimeSheetSubmit;
     timeSheetSubmit = {};
     timeSheetSubmit.timeSheet = {};
@@ -1264,6 +1277,7 @@ export class MaintaintimesheetComponent implements OnInit {
                   this.defaultControlsToForm();
                   this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
                   this.getTimesheetTimeLineTimeCellDetails();
+                  this.showSpinner = false;
                 }
               },
               (error) => {
@@ -1338,6 +1352,7 @@ export class MaintaintimesheetComponent implements OnInit {
                 this.defaultControlsToForm();
                 this.getClientProjectCategoryDropDown(this._timesheetUserId);
                 this.getTimesheetTimeLineTimeCellDetails();
+                this.showSpinner = false;
               }
             },
             (error) => {

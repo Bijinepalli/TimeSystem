@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from './service/timesystem.service';
 import { CommonService } from './service/common.service';
+import { Validators } from '@angular/forms';
+import { ValidatorHelper } from './sharedpipes/validationhelper.validator';
 
 @Component({
   selector: 'app-root',
@@ -9,12 +11,13 @@ import { CommonService } from './service/common.service';
 })
 export class AppComponent implements OnInit {
   title = 'TimeSystem';
-  constructor( private commonSvc: CommonService) {
+  constructor(private commonSvc: CommonService) {
 
   }
 
   ngOnInit() {
-   // this.SetGlobalAppSettings();
+    Validators.required = ValidatorHelper.required;
+    // this.SetGlobalAppSettings();
   }
 
   // SetGlobalAppSettings() {

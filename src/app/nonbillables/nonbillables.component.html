@@ -19,7 +19,7 @@
       tooltipPosition="bottom" class="ui-button-info" label="Add New Non-Billable Item" *ngIf="!_HasEdit" (click)=addNonBillable()></button>
   </div>
 </div>
-<p-panel [toggleable]="true" header="Filter results by:">
+<p-panel [toggleable]="true" header="Filter">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-12" style="text-align: left">
       <label class="label" style="padding:0px 10px;">Select:</label>
@@ -39,7 +39,7 @@
     (sortFunction)="customSort($event)" [customSort]="true"  [globalFilterFields]="_sortArray">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching non-billable items</div>
+        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} non-billable items found</div>
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
           <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"

@@ -13,7 +13,7 @@
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-  <p-panel [toggleable]="true" header="Filter results by:">
+  <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
       <div class="ui-g-1 label">
         Status:
@@ -59,11 +59,11 @@
       <div class="ui-g-5">
         <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
-          tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
+          tooltipPosition="top" [inputStyle]="{'width':'100px'}"></p-calendar>
         <label class="label" style="padding:0px 10px">to</label>
         <p-calendar [readonlyInput]="true" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true"
           showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
-          tooltipPosition="bottom" [inputStyle]="{'width':'100px'}"></p-calendar>
+          tooltipPosition="top" [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
     </div>
     <p-footer>
@@ -94,7 +94,7 @@
           </p-multiSelect>
         </div>
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching employees</div>
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"

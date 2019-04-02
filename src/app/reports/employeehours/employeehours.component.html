@@ -15,7 +15,7 @@
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-<p-panel [toggleable]="true" header="Filter results by:" *ngIf="!showBillingCodeList && !changeCodeList">
+<p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
   <div class="ui-g">
     <div class="ui-g-12 ui-md-3">
       <label class="label" style="padding:0px 10px;">Select:</label>
@@ -36,7 +36,7 @@
 </p-panel>
 <div *ngIf="changeCodeList">
   <div class="ui-g">
-    Date From: {{_startDate}} to {{(_endDate!== null && _endDate!=='') ? (_endDate):'Latest'}}
+    Date From: {{_startDateSelect}} to {{(_endDateSelect!== null && _endDateSelect!=='') ? (_endDateSelect):'Latest'}}
     <!-- | date : 'dd-MM-yyyy' -->
   </div>
 </div>
@@ -71,12 +71,12 @@
     Date Range From:
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
       pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
-      tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+      tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
     <label class="label" style="padding:0px 10px">to</label>
     <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
       pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
-      tooltipPosition="bottom" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+      tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
       [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
   </div>
   <div class="ui-g-12 ui-md-2">

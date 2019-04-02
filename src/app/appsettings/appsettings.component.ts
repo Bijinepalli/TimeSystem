@@ -102,7 +102,7 @@ export class AppsettingsComponent implements OnInit {
       .subscribe(
         (data) => {
           this._appsettings = data;
-          this._recData = data.length + ' matching AppSettings';
+          this._recData = data.length + ' appSettings found';
           this.addformcontrols();
         }
       );

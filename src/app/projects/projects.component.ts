@@ -245,9 +245,15 @@ export class ProjectsComponent implements OnInit {
   editProject(data: Projects) {
     this._IsEdit = true;
     this.chkInactive = false;
-    this._selectedProject = data;
+    this._selectedProject = new Projects();
+    this._selectedProject.Id = data.Id;
+    this._selectedProject.ProjectName = data.ProjectName;
+    this._selectedProject.Key = data.Key;
+    this._selectedProject.CompanyId = data.CompanyId;
+    this._selectedProject.Inactive = data.Inactive;
+    this._selectedProject.CreatedOn = data.CreatedOn;
     this.resetForm();
-    this.setDataToControls(data);
+    this.setDataToControls(this._selectedProject);
     this.projectHdr = 'Edit Project';
     this.projectDialog = true;
   }

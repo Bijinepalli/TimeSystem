@@ -20,7 +20,6 @@ export class AccessrightsComponent implements OnInit {
   cols: any;
   _pages: MasterPages[] = [];
   _pagesbyroles: MasterPages[] = [];
-  _selectedPage: MasterPages;
   _roles: SelectItem[];
   selectedRole: SelectItem[];
   _disableEdit = true;
@@ -30,6 +29,8 @@ export class AccessrightsComponent implements OnInit {
 
   ParamSubscribe: any;
   IsSecure = false;
+
+  colsSections: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -114,6 +115,10 @@ export class AccessrightsComponent implements OnInit {
       { field: 'PageName', header: 'Page Name' },
       { field: 'HasEdit', header: 'Edit' },
     ];
+    this.colsSections = [
+      { field: 'ModuleName', header: 'Action/Section' },
+      { field: 'HasEdit', header: 'Edit' },
+    ];
     this.getPages();
   }
 
@@ -122,7 +127,6 @@ export class AccessrightsComponent implements OnInit {
     this.cols = {};
     this._pages = [];
     this._pagesbyroles = [];
-    this._selectedPage = new MasterPages();
     this._roles = [];
     this.selectedRole = [];
     this._disableEdit = true;
@@ -135,11 +139,23 @@ export class AccessrightsComponent implements OnInit {
     this.timesysSvc.getMasterPages()
       .subscribe(
         (data) => {
-          this._pages = data;
-          this._recData = data.length + ' matching pages';
-          for (let i = 0; i < this._pages.length; i++) {
-            this.pageFormgroup.addControl('chkPage_' + this._pages[i].ID, new FormControl({ value: null, disabled: true }, null));
-            this.pageFormgroup.addControl('editSwitch_' + this._pages[i].ID, new FormControl({ value: null, disabled: true }, null));
+          this._pages = [];
+          this._recData = '';
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._pages = data;
+            this._recData = data.length + ' pages found';
+            for (let i = 0; i < this._pages.length; i++) {
+              this.pageFormgroup.addControl('chkPage_' + this._pages[i].ID, new FormControl({ value: null, disabled: true }, null));
+              this.pageFormgroup.addControl('editSwitch_' + this._pages[i].ID, new FormControl({ value: null, disabled: true }, null));
+              if (this._pages[i].Sections !== undefined && this._pages[i].Sections !== null && this._pages[i].Sections.length > 0) {
+                for (let j = 0; j < this._pages[i].Sections.length; j++) {
+                  this.pageFormgroup.addControl('chkPageSection_' + this._pages[i].ID + '_' + this._pages[i].Sections[j].ID,
+                    new FormControl({ value: null, disabled: true }, null));
+                  this.pageFormgroup.addControl('editSwitchSection_' + this._pages[i].ID + '_' + this._pages[i].Sections[j].ID,
+                    new FormControl({ value: null, disabled: true }, null));
+                }
+              }
+            }
           }
         }
       );
@@ -159,6 +175,20 @@ export class AccessrightsComponent implements OnInit {
 
   }
 
+  toggleControlsSection(id: string, sectionId: string) {
+    let chk: boolean;
+    chk = this.pageFormgroup.get('chkPageSection_' + id + '_' + sectionId).value;
+    if (chk === true) {
+      this.pageFormgroup.controls['chkPageSection_' + id + '_' + sectionId].setValue(true);
+      this.pageFormgroup.controls['editSwitchSection_' + id + '_' + sectionId].enable();
+    } else {
+      this.pageFormgroup.controls['chkPageSection_' + id + '_' + sectionId].setValue(false);
+      this.pageFormgroup.controls['editSwitchSection_' + id + '_' + sectionId].setValue(false);
+      this.pageFormgroup.controls['editSwitchSection_' + id + '_' + sectionId].disable();
+    }
+
+  }
+
   onRoleChange(e) {
     this._showGrid = true;
     this.resetControls();
@@ -166,42 +196,70 @@ export class AccessrightsComponent implements OnInit {
   }
 
   savePages() {
-    const allSelections: MasterPages[] = [];
+    let allSelections: MasterPages[];
+    allSelections = [];
     for (let i = 0; i < this._pages.length; i++) {
-      this._selectedPage = new MasterPages;
+      let _selectedPage: MasterPages;
+      _selectedPage = {};
       const chk = this.pageFormgroup.get('chkPage_' + this._pages[i].ID).value;
       if (chk === true) {
-        this._selectedPage.Role = this.pageFormgroup.get('roleDrp').value;
-        this._selectedPage.PageId = this._pages[i].ID;
-        this._selectedPage.HasView = 1;
+        _selectedPage.Role = this.pageFormgroup.get('roleDrp').value;
+        _selectedPage.PageId = this._pages[i].ID;
+        _selectedPage.HasView = 1;
         if (this.pageFormgroup.controls['editSwitch_' + this._pages[i].ID].value === true) {
-          this._selectedPage.HasEdit = 1;
+          _selectedPage.HasEdit = 1;
         } else {
-          this._selectedPage.HasEdit = 0;
+          _selectedPage.HasEdit = 0;
         }
-        allSelections.push(this._selectedPage);
+        let lstSections: MasterPages[];
+        lstSections = [];
+        if (this._pages[i].Sections !== undefined && this._pages[i].Sections !== null && this._pages[i].Sections.length > 0) {
+          for (let j = 0; j < this._pages[i].Sections.length; j++) {
+            const chkSection = this.pageFormgroup.get('chkPageSection_' + this._pages[i].ID + '_' + this._pages[i].Sections[j].ID).value;
+            if (chkSection === true) {
+              let _selectedSection: MasterPages;
+              _selectedSection = {};
+              _selectedSection.Role = this.pageFormgroup.get('roleDrp').value;
+              _selectedSection.PageId = this._pages[i].ID;
+              _selectedSection.ID = this._pages[i].Sections[j].ID;
+              _selectedSection.HasView = 1;
+              if (this.pageFormgroup.controls['editSwitchSection_' + this._pages[i].ID + '_' + this._pages[i].Sections[j].ID].value
+                === true) {
+                _selectedSection.HasEdit = 1;
+              } else {
+                _selectedSection.HasEdit = 0;
+              }
+              lstSections.push(_selectedSection);
+            }
+          }
+        }
+        if (lstSections !== undefined && lstSections !== null && lstSections.length > 0) {
+          _selectedPage.Sections = lstSections;
+        }
+        allSelections.push(_selectedPage);
       }
     }
     this.timesysSvc.InsertAccessRights(allSelections)
       .subscribe(
         (data) => {
-          if (data != null && data[0].Role.toString() === this.pageFormgroup.get('roleDrp').value.toString()) {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Settings saved Successfully' });
             this.getPages();
-            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Saved Successfully' });
-
-            this.confSvc.confirm({
-              message: 'Do you want to see the changes in action right away by logging in again?',
-              header: 'Confirmation',
-              icon: 'pi pi-exclamation-triangle',
-              accept: () => {
-                /* do nothing */
-                this.router.navigate(['']);
-              },
-              reject: () => {
-                /* do nothing */
-              }
-            });
-
+            if (data[0].Role.toString() ===
+              sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString()) {
+              this.confSvc.confirm({
+                message: 'Do you want to see the changes in action right away by logging in again?',
+                header: 'Confirmation',
+                icon: 'pi pi-exclamation-triangle',
+                accept: () => {
+                  /* do nothing */
+                  this.router.navigate(['']);
+                },
+                reject: () => {
+                  /* do nothing */
+                }
+              });
+            }
           } else {
             this.msgSvc.add({ key: 'saveSuccess', severity: 'warn', summary: 'Info Message', detail: 'An Error Occurred' });
           }
@@ -210,25 +268,64 @@ export class AccessrightsComponent implements OnInit {
 
   resetControls() {
     for (let i = 0; i < this._pages.length; i++) {
-      this.pageFormgroup.controls['chkPage_' + this._pages[i].ID].enable();
-      this.pageFormgroup.controls['chkPage_' + this._pages[i].ID].setValue(false);
-      this.pageFormgroup.controls['editSwitch_' + this._pages[i].ID].disable();
-      this.pageFormgroup.controls['editSwitch_' + this._pages[i].ID].setValue(false);
+      const PageId = this._pages[i].ID;
+      this.pageFormgroup.controls['chkPage_' + PageId].enable();
+      this.pageFormgroup.controls['chkPage_' + PageId].setValue(false);
+      this.pageFormgroup.controls['editSwitch_' + PageId].disable();
+      this.pageFormgroup.controls['editSwitch_' + PageId].setValue(false);
+
+      if (this._pages[i].Sections !== undefined && this._pages[i].Sections !== null && this._pages[i].Sections.length > 0) {
+        for (let j = 0; j < this._pages[i].Sections.length; j++) {
+          const SectionId = this._pages[i].Sections[j].ID;
+          this.pageFormgroup.controls['chkPageSection_' + PageId + '_' + SectionId].enable();
+          this.pageFormgroup.controls['chkPageSection_' + PageId + '_' + SectionId].setValue(false);
+          this.pageFormgroup.controls['editSwitchSection_' + PageId + '_' + SectionId].disable();
+          this.pageFormgroup.controls['editSwitchSection_' + PageId + '_' + SectionId].setValue(false);
+        }
+      }
     }
   }
 
   getPagesbyRole(role: string) {
     this.timesysSvc.getPagesbyRoles(role, '0')
       .subscribe((data) => {
-        if (data != null) {
+        this._pagesbyroles = [];
+        if (data !== undefined && data !== null && data.length > 0) {
+
           this._pagesbyroles = data;
+
           for (let i = 0; i < this._pagesbyroles.length; i++) {
-            const id = this._pagesbyroles[i].PageId;
+
+            const PageId = this._pagesbyroles[i].PageId;
+
             if (this._pagesbyroles[i].HasView) {
-              this.pageFormgroup.controls['chkPage_' + id].setValue(true);
-              this.pageFormgroup.controls['editSwitch_' + id].enable();
-              if (this._pagesbyroles[i].HasEdit) {
-                this.pageFormgroup.controls['editSwitch_' + id].setValue(true);
+
+              if (this.pageFormgroup.controls['chkPage_' + PageId] !== undefined &&
+                this.pageFormgroup.controls['chkPage_' + PageId] !== null) {
+                this.pageFormgroup.controls['chkPage_' + PageId].setValue(true);
+                this.pageFormgroup.controls['editSwitch_' + PageId].enable();
+                if (this._pagesbyroles[i].HasEdit) {
+                  this.pageFormgroup.controls['editSwitch_' + PageId].setValue(true);
+                }
+
+                if (this._pagesbyroles[i].Sections !== undefined && this._pagesbyroles[i].Sections !== null
+                  && this._pagesbyroles[i].Sections.length > 0) {
+                  for (let j = 0; j < this._pagesbyroles[i].Sections.length; j++) {
+                    const SectionId = this._pagesbyroles[i].Sections[j].ID;
+                    if (this._pagesbyroles[i].Sections[j].HasView) {
+                      if (this.pageFormgroup.controls['chkPageSection_' + PageId + '_' + SectionId] !== undefined &&
+                        this.pageFormgroup.controls['chkPageSection_' + PageId + '_' + SectionId] !== null) {
+
+                        this.pageFormgroup.controls['chkPageSection_' + PageId + '_' + SectionId].setValue(true);
+                        this.pageFormgroup.controls['editSwitchSection_' + PageId + '_' + SectionId].enable();
+                        if (this._pagesbyroles[i].Sections[j].HasEdit) {
+                          this.pageFormgroup.controls['editSwitchSection_' + PageId + '_' + SectionId].setValue(true);
+                        }
+                      }
+                    }
+                  }
+                }
+
               }
             }
           }
@@ -239,6 +336,10 @@ export class AccessrightsComponent implements OnInit {
   cancelPages() {
     this.resetControls();
     this.getPagesbyRole(this.pageFormgroup.get('roleDrp').value);
+  }
+
+  getEditStatus(id) {
+    return this.pageFormgroup.controls['editSwitch_' + id].value;
   }
 
 }

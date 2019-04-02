@@ -20,8 +20,10 @@ export class EmployeehoursComponent implements OnInit {
   hoursType: SelectItem[];
   selectedType: string;
   selectedhoursType: string;
-  _startDate = '';
-  _endDate = '';
+  _startDate: Date;
+  _endDate: Date;
+  _startDateSelect = '';
+  _endDateSelect = '';
   _storeDate = '';
   showSpinner = false;
   _selectcheckbox: SelectItem[] = [];
@@ -125,8 +127,11 @@ export class EmployeehoursComponent implements OnInit {
     this.selectedType = '0';
     this.selectedhoursType = '';
     const today = new Date();
-    this._startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1).toString();
-    this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    const month = today.getMonth();
+    const year = today.getFullYear();
+    this._startDate = new Date(year, month - 1, 1);
+    // this._startDate = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this.showSpinner = false;
   }
 
@@ -137,8 +142,10 @@ export class EmployeehoursComponent implements OnInit {
     this.hoursType = [];
     this.selectedType = '0';
     this.selectedhoursType = '';
-    this._startDate = '';
-    this._endDate = '';
+    this._startDate = null;
+    this._endDate = null;
+    this._startDateSelect = '';
+    this._endDateSelect = '';
     this._selectcheckbox = [];
     this._displayCheckBoxes = [];
     this._employee = [];
@@ -235,22 +242,16 @@ export class EmployeehoursComponent implements OnInit {
       }
       let _start = '';
       let _end = '';
-      const date = Date.parse(this._startDate);
-      if (Number.isNaN(date)) {
-        const today = new Date();
-        const month = today.getMonth();
-        const year = today.getFullYear();
-        this._storeDate = new Date(year, month - 1, 1).toString();
-      } else {
-        this._storeDate = this._startDate;
+      this._startDateSelect = '';
+      this._endDateSelect = '';
+
+      if (this._startDate !== undefined && this._startDate !== null) {
+        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
+        this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
-      if (this._storeDate !== null && this._storeDate !== undefined) {
-        _start = this.datePipe.transform(this._storeDate, 'yyyy-MM-dd');
-        // this._startDate = this.datePipe.transform(this._storeDate, 'MM-dd-yyyy');
-      }
-      if (this._endDate !== null && this._endDate !== '') {
+      if (this._endDate !== undefined && this._endDate !== null) {
         _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
-        // this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
+        this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
@@ -296,8 +297,10 @@ export class EmployeehoursComponent implements OnInit {
     const today = new Date();
     const month = today.getMonth();
     const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1).toString();
-    this._endDate = '';
+    this._startDate = new Date(year, month - 1, 1);
+    this._endDate = null;
+    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this._endDateSelect = '';
     this.showSpinner = false;
   }
   changeCodes() {

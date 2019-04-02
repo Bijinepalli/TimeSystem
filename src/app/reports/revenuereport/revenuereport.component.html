@@ -23,16 +23,16 @@
 <br>
 <div *ngIf="!showReport">
   <form [formGroup]="_frm">
-    <p-panel [toggleable]="true" header="Filter results by:">
+    <p-panel [toggleable]="true" header="Filter">
       <div class="ui-g">
         <div class="ui-g-3">
           <label class="label" style="padding:0px 10px;">Date From:</label>
           <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
-            tooltipPosition="bottom" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true"
+            tooltipPosition="top" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true"
             yearRange="1900:2100" formControlName="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
           <label class="label" style="padding:0px 10px;">to</label>
           <p-calendar appendTo="body" [readonlyInput]="true" pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
-            tooltipPosition="bottom" formControlName="_endDateSelect" dateFormat="mm-dd-yy" [monthNavigator]="true"
+            tooltipPosition="top" formControlName="_endDateSelect" dateFormat="mm-dd-yy" [monthNavigator]="true"
             showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [inputStyle]="{'width':'100px'}">
           </p-calendar>
         </div>

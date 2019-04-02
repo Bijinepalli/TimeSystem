@@ -33,7 +33,7 @@ export class PayrollComponent implements OnInit {
   changeCodeList = false;
   ParamSubscribe: any;
   IsSecure = false;
-
+  _DisplayDateFormat = '';
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -116,6 +116,7 @@ export class PayrollComponent implements OnInit {
   }
 
   Initialisations() {
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.populateDateDrop();
     // this.dates.push({ label: 'Select Period End', value: '' });
     // this.selectedDate = '0';
@@ -132,7 +133,11 @@ export class PayrollComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             this.timesheet = data;
             for (let i = 0; i < PeriodEndReportPeriods; i++) {
-              this.dates.push({ label: this.timesheet[i].PeriodEndDate, value: this.timesheet[i].PeriodEnd });
+              this.dates.push({
+                label:
+                  this.datePipe.transform(this.timesheet[i].PeriodEndDate, this._DisplayDateFormat),
+                value: this.timesheet[i].PeriodEnd
+              });
             }
           }
           this.showSpinner = false;

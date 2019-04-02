@@ -1,6 +1,6 @@
 <p-confirmDialog></p-confirmDialog>
-<p-toast [style]="{marginTop: '80px'}" position="bottom-right" key="saveSuccess"></p-toast>
-<p-toast position="center" key="alert" (onClose)="onReject()" styleClass="alertToast" [modal]="true" [baseZIndex]="5000">
+<p-toast [style]="{marginTop: '80px'}" position="bottom-right" key="saveSuccess" appendTo="body"></p-toast>
+<p-toast position="center" key="alert" (onClose)="onReject()" styleClass="alertToast" [modal]="true" [baseZIndex]="5000" appendTo="body">
   <ng-template let-message pTemplate="message">
     <div class="ui-g ui-fluid ui-g-nopad">
       <div class="alertHeader">

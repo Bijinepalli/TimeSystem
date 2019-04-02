@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
-  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments
+  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments, Customers, Rates
 } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -81,14 +81,14 @@ export class EmployeesComponent implements OnInit {
   _IsEditRate = false;
   _IsAddRate = false;
   _ratecols: any;
-  _rates: Invoice[] = [];
+  _rates: Rates[] = [];
   _recRateData: any;
   chkrateInactive = false;
   _employeeId = '';
   _rateId = '';
   _clients: SelectItem[] = [];
   _customerId: string;
-  _selectedRate: Clients;
+  _selectedRate: Rates;
   _ratePlaceholder = '';
 
   visibleHelp = false;
@@ -124,6 +124,18 @@ export class EmployeesComponent implements OnInit {
   showReport: boolean;
   _sortArray: string[];
   _sortArrayRates: string[];
+  _hiredatechange: string;
+  _ShowClients: boolean;
+  _EditClients: boolean;
+  _ShowProjects: boolean;
+  _EditProjects: boolean;
+  _ShowNonBillables: boolean;
+  _EditNonBillables: boolean;
+  _ShowRates: boolean;
+  _EditRates: boolean;
+  _ShowTerminate: boolean;
+  _ShowReset: boolean;
+  _ShowUnlock: boolean;
 
   /* #endregion */
 
@@ -188,6 +200,62 @@ export class EmployeesComponent implements OnInit {
           this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
+            if (data[0].Sections !== undefined && data[0].Sections !== null
+              && data[0].Sections.length > 0) {
+              for (let j = 0; j < data[0].Sections.length; j++) {
+                switch (data[0].Sections[j].ModuleName) {
+                  case 'Clients':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowClients = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditClients = false;
+                      }
+                    }
+                    break;
+                  case 'Projects':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowProjects = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditProjects = false;
+                      }
+                    }
+                    break;
+                  case 'Non-Billables':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowNonBillables = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditNonBillables = false;
+                      }
+                    }
+                    break;
+                  case 'Rates':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowRates = false;
+                      if (data[0].Sections[j].HasEdit) {
+                        this._EditRates = false;
+                      }
+                    }
+                    break;
+                  case 'Unlock Employee':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowUnlock = false;
+                    }
+                    break;
+                  case 'Terminate Employee':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowTerminate = false;
+                    }
+                    break;
+                  case 'Reset Password':
+                    if (data[0].Sections[j].HasView) {
+                      this._ShowReset = false;
+                    }
+                    break;
+                  default:
+                    break;
+                }
+              }
+            }
           }
           this.IsSecure = true;
           this.Initialisations();
@@ -283,6 +351,17 @@ export class EmployeesComponent implements OnInit {
     this._selectedDepartment = {};
 
     this._HasEdit = true;
+    this._ShowClients = true;
+    this._EditClients = true;
+    this._ShowProjects = true;
+    this._EditProjects = true;
+    this._ShowNonBillables = true;
+    this._EditNonBillables = true;
+    this._ShowRates = true;
+    this._EditRates = true;
+    this._ShowUnlock = true;
+    this._ShowTerminate = true;
+    this._ShowReset = true;
   }
 
   Initialisations() {
@@ -652,7 +731,8 @@ export class EmployeesComponent implements OnInit {
   }
   manageRates(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
-    this.populateTable(dataRow.ID);
+    this._employeeId = this._selectedEmployeeForAction.ID.toString();
+    this.populateTable();
     this._popUpHeader = 'Rate';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
     this.rateDialog = true;
@@ -723,6 +803,7 @@ export class EmployeesComponent implements OnInit {
     }
     if (data.HireDate !== undefined && data.HireDate !== null && data.HireDate.toString() !== '') {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.replace(new RegExp('-', 'g'), '/')));
+      this._hiredatechange = data.HireDate;
     } else {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date());
     }
@@ -862,6 +943,7 @@ export class EmployeesComponent implements OnInit {
 
   cancelEmployee() {
     this.clearControlsEmployee();
+    this.GetMethods();
   }
   saveEmployee() {
     this.errMsg = '';
@@ -959,7 +1041,7 @@ export class EmployeesComponent implements OnInit {
       this._selectedDepartment.Id = this._frmEmployee.controls['frmDepartment'].value;
     }
     if (this.errMsg === '') {
-      this.SaveEmployeeSPCall();
+      this.checkWarnings();
     }
   }
 
@@ -974,6 +1056,58 @@ export class EmployeesComponent implements OnInit {
       IsUndefined = false;
     }
     return IsUndefined;
+  }
+
+  checkWarnings() {
+    let errorMsg = '';
+    if (this._frmEmployee.controls['frmHoursPerDay'].value.toString().trim() < 8) {
+      errorMsg += 'Hours per day is not 8 hours. Is this correct?<br>';
+    }
+    if (this.chkSalaried && !this.chkIPayEligible) {
+      errorMsg += 'Salaried employee is not eligible for IPay.<br>';
+    }
+    if (!this.chkSubmitsTime && !this.chkOfficer) {
+      errorMsg += 'Employee is not required to submit timesheets and is not an officer.<br>';
+    }
+    if (this._IsEditEmployee !== false) {
+      if (this.datepipe.transform(this._frmEmployee.controls['frmHireDate'].value, 'yyyy-MM-dd') !== this._hiredatechange) {
+        errorMsg += 'Employee original hire date has changed. Is this correct?<br>';
+      }
+    }
+    if (errorMsg.trim() !== '') {
+      this.confSvc.confirm({
+        message: errorMsg,
+        header: 'Confirmation',
+        icon: 'pi pi-exclamation-triangle',
+        accept: () => {
+          this.ValidateEmployee();
+        },
+        reject: () => {
+        }
+      });
+    } else {
+      this.ValidateEmployee();
+    }
+  }
+
+  ValidateEmployee() {
+    this.timesysSvc.Employee_Validate(this._selectedEmployee)
+      .subscribe(
+        (outputData) => {
+          if (outputData !== undefined && outputData !== null) {
+            if (outputData.ErrorMessage.toString() !== '') {
+              this.msgSvc.add({
+                key: 'alert',
+                sticky: true,
+                severity: 'error',
+                summary: 'Error!',
+                detail: outputData.ErrorMessage
+              });
+            } else {
+              this.SaveEmployeeSPCall();
+            }
+          }
+        });
   }
 
   SaveEmployeeSPCall() {
@@ -1039,10 +1173,6 @@ export class EmployeesComponent implements OnInit {
           });
     }
   }
-
-
-
-
 
   SaveDepartmentSPCall() {
     if (this._selectedDepartment.Id !== undefined && this._selectedDepartment.Id !== null && this._selectedDepartment.Id > 0) {
@@ -1541,55 +1671,16 @@ export class EmployeesComponent implements OnInit {
   /* #endregion */
 
   /* #region Rates Modal Popup Related Functionality */
-  addNewRate() {
-    this._IsEditRate = true;
-    this._IsAddRate = true;
-    this.resetRateControls();
-    this._ratePlaceholder = 'Please select a Client Name';
-    this._frmRate.controls['frmCustomerName'].enable();
-    this.timesysSvc.getClientsAssignToEmployee(+this._employeeId)
-      .subscribe(
-        (data: Clients[] = []) => {
-          let clients = [];
-          clients = data;
-          // this._clients = [{ label: clients[i].ClientName, value: clients[i].ID }];
-          for (let i = 0; i < clients.length; i++) {
-            this._clients.push({ label: clients[i].ClientName, value: clients[i].Id });
-          }
-        }
-      );
-  }
 
-  populateTable(empId: number) {
-    this._IsEditRate = false;
-    this._IsAddRate = false;
-    this._employeeId = empId.toString();
-    this._ratecols = [
-      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
-      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
-      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
-    ];
-    this._sortArrayRates = ['ClientName', 'CustomerName', 'EffectiveDateSearch', 'Rate', 'Inactive'];
-    this.timesysSvc.getEmployeeRates(empId)
-      .subscribe(
-        (data: Invoice[] = []) => {
-          this._rates = [];
-          this._recRateData = 0;
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._rates = data;
-            this._recRateData = this._rates.length;
-          }
-        }
-      );
-  }
+
+
 
   addControlsRate() {
-    this._frmRate.addControl('frmClientName', new FormControl(null, null));
-    this._frmRate.addControl('frmCustomerName', new FormControl(null, null));
-    this._frmRate.addControl('frmEffectiveDate', new FormControl(null, null));
+    this._frmRate.addControl('frmClientName', new FormControl(null, Validators.required));
+    this._frmRate.addControl('frmCustomerName', new FormControl(null, Validators.required));
+    this._frmRate.addControl('frmEffectiveDate', new FormControl(null, Validators.required));
     this._frmRate.addControl('frmRatetext', new FormControl(null, Validators.required));
+    // Validators.pattern('^\s*(?=.*[1-9])\d*(?:\.\d{1,2})?\s*$') Decimal Greater than 0 with 2 precision
     this._frmRate.addControl('frmInactive', new FormControl(null, null));
     this.chkrateInactive = false;
   }
@@ -1598,59 +1689,124 @@ export class EmployeesComponent implements OnInit {
     return !this._frmRate.valid;
   }
 
-  editRate(dataRow: any) {
+  addNewRate() {
+    this._IsEditRate = true;
+    this._IsAddRate = true;
+    this.resetRateControls();
+    this._rateId = '';
+    this._ratePlaceholder = 'Please select a Client Name';
+    this._frmRate.controls['frmCustomerName'].disable();
+    this._frmRate.controls['frmEffectiveDate'].setValue(new Date());
+    this.timesysSvc.getClientsAssignToEmployee(+this._employeeId)
+      .subscribe(
+        (dataClients: Clients[] = []) => {
+          this._clients = [];
+          if (dataClients !== undefined && dataClients !== null && dataClients.length > 0) {
+            for (let i = 0; i < dataClients.length; i++) {
+              this._clients.push({ label: dataClients[i].ClientName, value: dataClients[i].Id });
+            }
+            this._frmRate.controls['frmClientName'].setValue(this._clients[0].value);
+            this.getCustomerForClient();
+          }
+        }
+      );
+  }
+
+  editRate(dataRow: Rates) {
     this.resetRateControls();
     this._IsEditRate = true;
     this._IsAddRate = false;
     this._ratePlaceholder = null;
     this._rateId = dataRow.ID.toString();
     this._clientId = dataRow.ClientID.toString();
-    this.timesysSvc.listClientforRateId(+dataRow.ID)
+    this.timesysSvc.listClientforRateId(+dataRow.ID.toString())
       .subscribe(
-        (data: Clients[] = []) => {
-          let clients = [];
-          if (data !== undefined && data !== null && data.length > 0) {
-            clients = data;
-            for (let i = 0; i < clients.length; i++) {
-              this._clients.push({ label: clients[i].ClientName, value: clients[i].Id });
+        (dataClients: Clients[] = []) => {
+          this._clients = [];
+          if (dataClients !== undefined && dataClients !== null && dataClients.length > 0) {
+            for (let i = 0; i < dataClients.length; i++) {
+              this._clients.push({ label: dataClients[i].ClientName, value: dataClients[i].Id });
             }
           }
+          this.timesysSvc.getRate(+dataRow.ID.toString())
+            .subscribe(
+              (data: Rates[] = []) => {
+                if (data !== undefined && data !== null && data.length > 0) {
+                  this._frmRate.controls['frmClientName'].setValue(data[0].ClientID);
+                  this.getCustomerForClient();
+                  this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
+                  if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
+                    this._frmRate.controls['frmEffectiveDate'].setValue(new Date(data[0].EffectiveDate.replace(new RegExp('-', 'g'), '/')));
+                  }
+                  if (data[0].Inactive !== undefined && data[0].Inactive !== null) {
+                    this.chkrateInactive = data[0].Inactive.toString().toLowerCase() === 'true' ? true : false;
+                  } else {
+                    this.chkrateInactive = false;
+                  }
+                }
+              });
         }
       );
-    this.timesysSvc.getRate(+dataRow.ID)
-      .subscribe(
-        (data: Clients[] = []) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._employeeId = data[0].EmployeeID.toString();
-            this._customerId = data[0].CustomerId.toString();
-            this._frmRate.controls['frmClientName'].setValue(data[0].ClientName);
-            this._frmRate.controls['frmCustomerName'].setValue(data[0].CustomerName);
-            this._frmRate.controls['frmCustomerName'].disable();
-            this._frmRate.controls['frmRatetext'].setValue(data[0].Rate);
+  }
 
-            if (data[0].EffectiveDate !== undefined && data[0].EffectiveDate !== null && data[0].EffectiveDate.toString() !== '') {
-              this._frmRate.controls['frmEffectiveDate'].setValue(new Date(data[0].EffectiveDate.replace(new RegExp('-', 'g'), '/')));
-            }
+  deleteRate(dataRow: Rates) {
+    this.confSvc.confirm({
+      message: 'Are you sure you want to delete this rate?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        console.log(dataRow);
+        this.timesysSvc.DeleteRate(dataRow)
+          .subscribe(
+            (outputData) => {
+              this.showSpinner = false;
+              if (outputData !== null && outputData.ErrorMessage !== '' && outputData.ErrorMessage !== '0') {
+                this.msgSvc.add({
+                  key: 'alert',
+                  sticky: true,
+                  severity: 'error',
+                  summary: 'Error!',
+                  detail: outputData.ErrorMessage
+                });
+              } else {
+                this.msgSvc.add({
+                  key: 'saveSuccess',
+                  severity: 'success',
+                  summary: 'Info Message',
+                  detail: 'Rate deleted successfully'
+                });
 
-            if (data[0].Inactive !== undefined && data[0].Inactive !== null) {
-              this.chkrateInactive = data[0].Inactive.toString().toLowerCase() === 'true' ? true : false;
-            } else {
-              this.chkrateInactive = false;
-            }
-          }
-        });
+                this.populateTable();
+              }
+            },
+            (error) => {
+              console.log(error);
+            });
+      },
+      reject: () => {
+        /* do nothing */
+      }
+    });
   }
 
 
-  cancelRateModal() {
-    this.resetRateControls();
-    if (this._IsEditRate === true) {
-      this._IsEditRate = false;
-      this._IsAddRate = false;
-    } else {
-      this.rateDialog = false;
-    }
-    this.populateTable(+this._employeeId.toString());
+  getCustomerForClient() {
+    const ClientID = this._frmRate.controls['frmClientName'].value.toString();
+    this._customerId = '';
+    this._frmRate.controls['frmCustomerName'].enable();
+    this._frmRate.controls['frmCustomerName'].setValue('');
+    this._frmRate.controls['frmCustomerName'].disable();
+    this.timesysSvc.GetCustomerForClient(ClientID)
+      .subscribe(
+        (data: Customers[] = []) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._customerId = data[0].Id.toString();
+            this._frmRate.controls['frmCustomerName'].enable();
+            this._frmRate.controls['frmCustomerName'].setValue(data[0].CustomerName);
+            this._frmRate.controls['frmCustomerName'].disable();
+          }
+        }
+      );
   }
 
   resetRateControls() {
@@ -1662,23 +1818,54 @@ export class EmployeesComponent implements OnInit {
     this._clients = [];
   }
 
+  populateTable() {
+    this._IsEditRate = false;
+    this._IsAddRate = false;
+    this._ratecols = [
+      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+    ];
+    this._sortArrayRates = ['ClientName', 'CustomerName', 'EffectiveDateSearch', 'Rate', 'Inactive'];
+    this.timesysSvc.getEmployeeRates(+this._employeeId.toString())
+      .subscribe(
+        (data: Rates[] = []) => {
+          this._rates = [];
+          this._recRateData = 0;
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._rates = data;
+            this._recRateData = this._rates.length;
+          }
+        }
+      );
+  }
+
+  cancelRateModal() {
+    this.resetRateControls();
+    if (this._IsEditRate === true) {
+      this._IsEditRate = false;
+      this._IsAddRate = false;
+    } else {
+      this.rateDialog = false;
+    }
+    this.populateTable();
+  }
+
   saveRateModal() {
     this._selectedRate = {};
-    this._selectedRate.ClientName = this._frmRate.controls['frmClientName'].value.toString().trim();
-    this._selectedRate.CustomerName = this._frmRate.controls['frmCustomerName'].value.toString().toUpperCase().trim();
-    this._selectedRate.CustomerId = +this._customerId.toString();
+    this._selectedRate.ID = +this._rateId;
+    this._selectedRate.EmployeeID = +this._employeeId.toString();
+    this._selectedRate.CustomerID = +this._customerId.toString();
+    this._selectedRate.ClientID = this._frmRate.controls['frmClientName'].value.toString();
     // tslint:disable-next-line:max-line-length
     this._selectedRate.EffectiveDate = this.datepipe.transform(this._frmRate.controls['frmEffectiveDate'].value.toString().trim(), 'MM-dd-yyyy');
     this._selectedRate.Rate = this._frmRate.controls['frmRatetext'].value.toString().trim();
-    this._selectedRate.EmployeeID = +this._employeeId.toString();
     this._selectedRate.Inactive = this.chkrateInactive;
-    this._selectedRate.RateID = +this._rateId;
-    this._selectedRate.Id = +this._clientId;
     if (this._IsAddRate === true) {
-      this._selectedRate.RateMode = 'A';
       this.saveRateSPCall();
     } else {
-      this._selectedRate.RateMode = 'E';
       this.confSvc.confirm({
         header: 'Confirmation',
         icon: 'pi pi-exclamation-triangle',
@@ -1688,11 +1875,10 @@ export class EmployeesComponent implements OnInit {
         }
       });
     }
-
   }
 
   saveRateSPCall() {
-    this.timesysSvc.updateRate(this._selectedRate)
+    this.timesysSvc.InsertOrUpdateRate(this._selectedRate)
       .subscribe(
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {
@@ -1711,7 +1897,7 @@ export class EmployeesComponent implements OnInit {
             this._IsAddRate = false;
             this._IsEditRate = false;
             this.resetRateControls();
-            this.populateTable(+this._employeeId.toString());
+            this.populateTable();
           }
         }
       );
