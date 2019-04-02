@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Companies, CompanyHolidays } from '../model/objects';
 import { YearEndCodes, BillingCode } from '../model/constants';
@@ -7,6 +7,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { PickList } from 'primeng/primeng';
 
 @Component({
   selector: 'app-companies',
@@ -46,6 +47,8 @@ export class CompaniesComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   showReport: boolean;
+
+  @ViewChild('pcklHolidays') pcklHolidays: PickList;
 
   constructor(
     private router: Router,
@@ -274,10 +277,15 @@ export class CompaniesComponent implements OnInit {
     this._frm.reset();
   }
 
+
+
   clearControls() {
     this._IsEdit = false;
     this._selectedCompany = null;
     this.resetForm();
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
     this.companyHdr = 'Add New Company';
     this.companyDialog = false;
   }
@@ -398,6 +406,9 @@ export class CompaniesComponent implements OnInit {
   }
 
   getCompanyHolidays() {
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
@@ -416,6 +427,7 @@ export class CompaniesComponent implements OnInit {
               this._availableHolidays = data[1];
             }
           }
+          this.companyHolidayDialog = true;
         },
         (error) => {
           console.log(error);
@@ -425,9 +437,11 @@ export class CompaniesComponent implements OnInit {
   assignCompanyHolidays(companyData: Companies) {
     this._slctedCompanyId = companyData.Id;
     this.selectedYear = new Date().getFullYear();
-    this.getCompanyHolidays();
     this.companyHolidayHdr = 'Assign Holidays to ' + companyData.CompanyName;
-    this.companyHolidayDialog = true;
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
+    this.getCompanyHolidays();
   }
 
   saveCompanyHoliday() {
@@ -455,6 +469,7 @@ export class CompaniesComponent implements OnInit {
   clearCompanyHolidaysControls() {
     this.companyHolidayDialog = false;
     this._slctedCompanyId = null;
+    this.pcklHolidays.resetFilter();
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
@@ -462,6 +477,14 @@ export class CompaniesComponent implements OnInit {
   }
 
   SaveCompanyHolidaySPCall() {
+    if (this._slctHolidays !== undefined && this._slctHolidays !== null && this._slctHolidays.length > 0) {
+
+    } else {
+      let companyHolidays: CompanyHolidays;
+      companyHolidays = {};
+      companyHolidays.CompanyId = this._slctedCompanyId;
+      this._slctHolidays.push(companyHolidays);
+    }
     this.timesysSvc.CompanyHolidays_DeleteAndInsert(this._slctHolidays)
       .subscribe(
         (outputData) => {

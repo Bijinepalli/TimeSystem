@@ -389,7 +389,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_nonBillablesAssignToEmp" [source]="_nonBillablesNotAssignToEmp" filterBy="ProjectName"
+          <p-pickList #pcklNonBillable [target]="_nonBillablesAssignToEmp" [source]="_nonBillablesNotAssignToEmp" filterBy="ProjectName"
             sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
@@ -432,7 +432,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_projectsAssignToEmp" [source]="_projectsNotAssignToEmp" filterBy="ProjectName"
+          <p-pickList #pcklProject [target]="_projectsAssignToEmp" [source]="_projectsNotAssignToEmp" filterBy="ProjectName"
             sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
@@ -475,7 +475,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName"
+          <p-pickList #pcklClient [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName"
             sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"

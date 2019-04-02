@@ -98,7 +98,7 @@
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_slctHolidays" [source]="_availableHolidays" filterBy="HolidayName"
+          <p-pickList #pcklHolidays [target]="_slctHolidays" [source]="_availableHolidays" filterBy="HolidayName"
             sourceHeader="Unassigned Holidays" targetHeader="Assigned Holidays" [responsive]="true"
             [showSourceControls]="false" [showTargetControls]="false" sourceFilterPlaceholder="Search by HolidayName"
             targetFilterPlaceholder="Search by HolidayName" [sourceStyle]="{'height':'300px'}"
