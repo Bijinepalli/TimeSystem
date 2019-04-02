@@ -1247,10 +1247,7 @@ export class MaintaintimesheetComponent implements OnInit {
                   // });
                   this._errorMessage += outputData.ErrorMessage + '<br/>';
                 } else {
-                  this.msgSvc.add({
-                    key: 'saveSuccess', severity: 'success'
-                    , summary: 'Info Message', detail: 'Timesheet saved successfully'
-                  });
+
                   if (submitted) {
                     this._IsTimeSheetSubmittedJustNow = true;
                     // tslint:disable-next-line:max-line-length
@@ -1270,6 +1267,15 @@ export class MaintaintimesheetComponent implements OnInit {
                     } else {
                       this._submitMessage = 'Your timesheet has been submitted';
                     }
+                    this.msgSvc.add({
+                      key: 'saveSuccess', severity: 'success'
+                      , summary: 'Info Message', detail: 'Timesheet submitted successfully'
+                    });
+                  } else {
+                    this.msgSvc.add({
+                      key: 'saveSuccess', severity: 'success'
+                      , summary: 'Info Message', detail: 'Timesheet saved successfully'
+                    });
                   }
                   this.resetForm();
                   this.defaultControlsToForm();
@@ -1323,10 +1329,6 @@ export class MaintaintimesheetComponent implements OnInit {
                 // });
                 this._errorMessage += outputData.ErrorMessage + '<br/>';
               } else {
-                this.msgSvc.add({
-                  key: 'saveSuccess', severity: 'success'
-                  , summary: 'Info Message', detail: 'Timesheet saved successfully'
-                });
                 if (submitted) {
                   this._IsTimeSheetSubmittedJustNow = true;
                   // tslint:disable-next-line:max-line-length
@@ -1345,6 +1347,15 @@ export class MaintaintimesheetComponent implements OnInit {
                   } else {
                     this._submitMessage = 'Your timesheet has been submitted';
                   }
+                  this.msgSvc.add({
+                    key: 'saveSuccess', severity: 'success'
+                    , summary: 'Info Message', detail: 'Timesheet submitted successfully'
+                  });
+                } else {
+                  this.msgSvc.add({
+                    key: 'saveSuccess', severity: 'success'
+                    , summary: 'Info Message', detail: 'Timesheet saved successfully'
+                  });
                 }
                 this.resetForm();
                 this.defaultControlsToForm();
