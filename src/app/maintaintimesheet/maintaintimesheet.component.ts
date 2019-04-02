@@ -143,7 +143,6 @@ export class MaintaintimesheetComponent implements OnInit {
     this._peroidStartDate = null;
     this._periodEnddate = null;
     this._IsTimeSheetSubmitted = false;
-
     if (this._timesheetId > 0) {
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
@@ -285,7 +284,6 @@ export class MaintaintimesheetComponent implements OnInit {
           const txtHours = 'txttimeTandMHours_' + i + '_' + j;
           this.timeSheetForm.addControl(txtHours, new FormControl(this.decimal.transform(0, '1.2-2', null)));
           const DateArrayCell = this.datePipe.transform(this._DateArray[j], 'yyyy-MM-dd');
-
           // For Value Settings
           for (let k = 0; k < filterTimeCellEntries.length; k++) {
             const DateTimeCell = this.datePipe.transform(filterTimeCellEntries[k].CalendarDate, 'yyyy-MM-dd');
