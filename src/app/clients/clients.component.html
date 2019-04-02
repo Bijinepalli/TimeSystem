@@ -101,7 +101,7 @@
         </div>
       </div>
       <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Client Code <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
@@ -109,7 +109,7 @@
               appendTo="body" pToolTip="Unique client code that matches what's in the payroll system">
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Client Name <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
@@ -117,7 +117,7 @@
               appendTo="body" pToolTip="Unique client name that matches what's in the payroll system">
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Billing Cycle <br>
             <div style="height:5px"></div>
@@ -126,7 +126,7 @@
               [style]="{'width':'99%'}"></p-dropdown>
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             PO Number <br>
             <div style="height:5px"></div>
@@ -134,16 +134,24 @@
               appendTo="body" pToolTip="Purchase order number">
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Customer Number <br>
             <div style="height:5px"></div>
             <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer"
               formControlName="customerName" pToolTip="The customer to invoice for hours charged to this client."
+              [style]="{'width':'99%'}" (onChange)="getSOWByCustomerID()"></p-dropdown>
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            SOW <br>
+            <div style="height:5px"></div>
+            <p-dropdown appendTo="body" [options]="_SOWs" placeholder="Select SOW" formControlName="SOW"
               [style]="{'width':'99%'}"></p-dropdown>
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Parent Company <br>
             <div style="height:5px"></div>
@@ -153,7 +161,7 @@
               [style]="{'width':'99%'}"></p-dropdown>
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive"
@@ -161,7 +169,7 @@
           and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
           </div>
         </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             <div style="height:5px"></div>
             Created On: {{_selectedClient.CreatedOn}}

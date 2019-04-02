@@ -140,6 +140,8 @@ export class Clients {
     CompanyName?: string;
     CustomerId?: number;
     CustomerName?: string;
+    SOWID?: number;
+    SOWName?: string;
     BillingCycle?: string;
     PONumber?: string;
     Inactive?: boolean;
@@ -513,4 +515,30 @@ export class PayStub {
     FileName?: string;
     Date?: string;
     EmployeeName?: string;
+}
+
+
+export class SOW {
+    SOWID?: number;
+    CustomerID?: number;
+    CustomerName?: string;
+    Name?: string;
+    EffectiveDate?: string;
+    ExpirationDate?: string;
+    EffectiveDateSearch?: string;
+    ExpirationDateSearch?: string;
+    CurrencyType?: string;
+    TotalContractValue?: string;
+    InvoiceFrequency?: string;
+    Originate?: string;
+    OpportunityType?: string;
+    Status?: string;
+    SOWType?: string;
+    Notes?: string;
+    SOWFileName?: string;
+}
+
+export class FileSystem {
+    FileName?: string;
+    CreatedOn?: string;
 }

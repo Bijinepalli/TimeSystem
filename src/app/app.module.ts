@@ -102,6 +102,7 @@ import { UtilizationchartComponent } from './utilizationchart/utilizationchart.c
 import { EmployeetimesheetsComponent } from './reports/employeetimesheets/employeetimesheets.component';
 import { RollbillingcodesComponent } from './rollbillingcodes/rollbillingcodes.component';
 import { UnauthorizedaccessComponent } from './unauthorizedaccess/unauthorizedaccess.component';
+import { SowComponent } from './sow/sow.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -121,6 +122,7 @@ const appRoutes: Routes = [
       { path: 'nonbillables', component: NonbillablesComponent },
       { path: 'configuration', component: ConfigurationComponent },
       { path: 'employees', component: EmployeesComponent },
+      { path: 'sow', component: SowComponent },
       { path: 'addemployee', component: AddEmployeeComponent },
       { path: 'addemployee/:id', component: AddEmployeeComponent },
       { path: 'accessrights', component: AccessrightsComponent },
@@ -252,6 +254,7 @@ const appRoutes: Routes = [
     EmployeetimesheetsComponent,
     RollbillingcodesComponent,
     UnauthorizedaccessComponent,
+    SowComponent,
   ],
   imports: [
     BrowserAnimationsModule,
