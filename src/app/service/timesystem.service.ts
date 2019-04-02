@@ -9,7 +9,9 @@ import {
   BillingCodesPendingTimesheet, TimeLine, TimeCell, TimeLineAndTimeCell, TimeSheetSubmit, MonthlyHours, Departments, EmployeeUtilityReport,
   SendEmail,
   DrpList,
-  DictionaryType
+  DictionaryType,
+  SOW,
+  FileSystem
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -821,5 +823,23 @@ export class TimesystemService {
     return this.http.get<Customers[]>(this.url + 'GetCustomerForClient', { params });
   }
 
+  getSOWs(CustomerID: string) {
+    const params = new HttpParams()
+      .set('CustomerID', CustomerID);
+    return this.http.get<SOW[]>(this.url + 'GetSOWs', { params });
+  }
+  SOW_InsertOrUpdate(_inputData: SOW) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'SOW_InsertOrUpdate', body, httpOptions);
+  }
+
+  SOW_Delete(_inputData: SOW) {
+    const body = JSON.stringify(_inputData);
+    return this.http.post<LoginErrorMessage>(this.url + 'SOW_Delete', body, httpOptions);
+  }
+
+  getFiles() {
+    return this.http.get<FileSystem[]>(this.url + 'GetFiles');
+  }
 
 }
