@@ -78,8 +78,6 @@ export class OutstandingtimesheetsComponent implements OnInit {
     this.showSpinner = true;
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
-    console.log('this._DisplayDateTimeFormat');
-    console.log(this._DisplayDateTimeFormat);
     this.cols = [
       { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
       { field: 'ApprovalStatus', header: 'Status', align: 'left', width: 'auto' },
@@ -99,7 +97,6 @@ export class OutstandingtimesheetsComponent implements OnInit {
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._outStandings = data;
-            console.log(this._outStandings);
           }
           this.showSpinner = false;
         });

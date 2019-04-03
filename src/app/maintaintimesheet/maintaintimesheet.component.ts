@@ -815,8 +815,6 @@ export class MaintaintimesheetComponent implements OnInit {
           if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
             countError++;
             this._errorHourlyNonBillArray.push(i);
-            console.log(this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value);
-            console.log(+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8);
             if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8) {
               this._errorHourlyHolidayErrorCount++;
             }
