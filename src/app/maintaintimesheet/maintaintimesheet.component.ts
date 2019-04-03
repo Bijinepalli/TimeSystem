@@ -68,7 +68,8 @@ export class MaintaintimesheetComponent implements OnInit {
   _errorHourlyProjBillArray: number[] = [];
   _errorDailyNonBillArray: number[] = [];
   _errorHourlyNonBillArray: number[] = [];
-
+  _errorHourlyNonBillHolidayArray: number[] = [];
+  _errorHourlyHolidayErrorCount = 0;
   _TotalValidationErrors = 0;
   _IsTimeSheetSubmitted = false;
   _IsTimeSheetSubmittedJustNow = false;
@@ -692,6 +693,7 @@ export class MaintaintimesheetComponent implements OnInit {
       if (this._errorHourlyNonBillArray.length > 0) {
         section += 'Daily hours in any single cell must be between 0 and 24, inclusive.(Section: Non-Billable)<br/>';
       }
+
       // tslint:disable-next-line:max-line-length
       this._errorMessage += section + 'You cannot enter more than 24 hours for a single day.<br/>';
       this._TotalValidationErrors++;
@@ -804,6 +806,7 @@ export class MaintaintimesheetComponent implements OnInit {
   }
   getHolidayErrors(rowId) {
     let countError = 0;
+    this._errorHourlyHolidayErrorCount = 0;
     for (let i = 0; i < this._DateArray.length; i++) {
       const dateHoliday = this._holidays.find(P => P.HolidayDate === this._DateArray[i]);
       if (this._timeNONbill.length > 0) {
@@ -812,7 +815,15 @@ export class MaintaintimesheetComponent implements OnInit {
           if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 0) {
             countError++;
             this._errorHourlyNonBillArray.push(i);
+            console.log(this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value);
+            console.log(+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8);
+            if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8) {
+              this._errorHourlyHolidayErrorCount++;
+            }
           }
+        } else if (this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== ''
+          && + this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8) {
+          this._errorHourlyHolidayErrorCount++;
         }
       } else {
         if (dateHoliday === undefined
@@ -820,7 +831,13 @@ export class MaintaintimesheetComponent implements OnInit {
           if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
             countError++;
             this._errorHourlyNonBillArray.push(i);
+            if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 8) {
+              this._errorHourlyHolidayErrorCount++;
+            }
           }
+        } else if (this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== ''
+          && +this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 8) {
+          this._errorHourlyHolidayErrorCount++;
         }
       }
       // for (let j = 0; j < this._holidays.length; j++) {
@@ -846,6 +863,9 @@ export class MaintaintimesheetComponent implements OnInit {
     if (countError > 0) {
       // tslint:disable-next-line:max-line-length
       this._errorMessage += 'None of your clients or projects have holidays scheduled on the day(s) you charged holiday time.Please contact Finance. (Section: Non-Billable).<br>';
+    }
+    if (this._errorHourlyHolidayErrorCount > 0) {
+      this._errorMessage += 'You cannot enter more than 8 hours of holiday time per day. (Section: Non-Billable)<br/>';
     }
   }
   getHolidayNPTOErrors(HolidayNPtoRowIds: string) {

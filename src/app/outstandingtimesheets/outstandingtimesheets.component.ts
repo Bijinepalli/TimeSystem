@@ -78,6 +78,8 @@ export class OutstandingtimesheetsComponent implements OnInit {
     this.showSpinner = true;
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
+    console.log('this._DisplayDateTimeFormat');
+    console.log(this._DisplayDateTimeFormat);
     this.cols = [
       { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: 'auto' },
       { field: 'ApprovalStatus', header: 'Status', align: 'left', width: 'auto' },
@@ -97,23 +99,24 @@ export class OutstandingtimesheetsComponent implements OnInit {
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._outStandings = data;
+            console.log(this._outStandings);
           }
           this.showSpinner = false;
         });
   }
 
   editTimeSheet(timeSheet: TimeSheet) {
-    this.confSvc.confirm({
-      message: 'Do you want to edit the timesheet?',
-      accept: () => {
-        if (timeSheet.Id < 0) {
-          // sessionStorage.setItem(environment.buildType.toString() + '_' + 'PeriodEndDate', timeSheet.PeriodEnd);
-          this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
-        } else {
-          this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
-        }
-      }
-    });
+    // this.confSvc.confirm({
+    //   message: 'Do you want to edit the timesheet?',
+    //   accept: () => {
+    if (timeSheet.Id < 0) {
+      // sessionStorage.setItem(environment.buildType.toString() + '_' + 'PeriodEndDate', timeSheet.PeriodEnd);
+      this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
+    } else {
+      this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
+    }
+    // }
+    // });
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd', 'CreatedOn'], []);
