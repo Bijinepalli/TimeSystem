@@ -26,8 +26,6 @@ export class PayrollComponent implements OnInit {
   _recData = 0;
   cols: any;
   _timesheet: TimeSheet;
-  helpText: any;
-  visibleHelp = false;
   selectedPeriod: any;
   showBillingCodeList = false;
   changeCodeList = false;
@@ -107,8 +105,6 @@ export class PayrollComponent implements OnInit {
     this._recData = 0;
     this.cols = {};
     this._timesheet = new TimeSheet();
-    this.helpText = '';
-    this.visibleHelp = false;
     this.selectedPeriod = '';
     this.showBillingCodeList = false;
     this.changeCodeList = false;
@@ -191,18 +187,6 @@ export class PayrollComponent implements OnInit {
       { field: 'TotalHours', header: 'Total Hours', align: 'right', width: '110px' },
       { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '200px' }
     ];
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   startOver() {
     this.showBillingCodeList = false;

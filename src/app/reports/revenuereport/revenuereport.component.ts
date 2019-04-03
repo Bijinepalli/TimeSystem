@@ -28,9 +28,6 @@ export class RevenuereportComponent implements OnInit {
   showReport = false;
   showSpinner = false;
 
-  visibleHelp: boolean;
-  helpText: string;
-
   _errorBlock = '';
   _errorMessage = '';
 
@@ -119,9 +116,6 @@ export class RevenuereportComponent implements OnInit {
 
     this.showReport = false;
     this.showSpinner = false;
-
-    this.visibleHelp = false;
-    this.helpText = '';
 
     this._errorBlock = '';
     this._errorMessage = '';

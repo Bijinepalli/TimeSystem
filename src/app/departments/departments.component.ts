@@ -21,8 +21,6 @@ export class DepartmentsComponent implements OnInit {
 
   cols: any;
   _recData = 0;
-  visibleHelp = false;
-  helpText: string;
   _HasEdit = false;
 
   _departmentList: Departments[] = [];
@@ -142,19 +140,6 @@ export class DepartmentsComponent implements OnInit {
     this.AddFormControls();
     this.showSpinner = false;
     this.GetMethods();
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   AddFormControls() {

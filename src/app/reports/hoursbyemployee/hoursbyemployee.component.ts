@@ -46,8 +46,6 @@ export class HoursbyemployeeComponent implements OnInit {
   _reports: any[] = [];
   showPeriodEndDetail = false;
   showTotals = false;
-  helpText: any;
-  visibleHelp = false;
   ParamSubscribe: any;
   _DateFormat: any;
   _DisplayDateFormat: any;
@@ -152,8 +150,6 @@ export class HoursbyemployeeComponent implements OnInit {
     this.showTotals = false;
     this._recData = 0;
     this.showReport = false;
-    this.visibleHelp = false;
-    this.helpText = '';
     this.resetSort();
   }
 
@@ -420,18 +416,6 @@ export class HoursbyemployeeComponent implements OnInit {
     this.showBillingCodeList = true;
     this.showSpinner = false;
     this.resetSort();
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   customSort(event: SortEvent) {

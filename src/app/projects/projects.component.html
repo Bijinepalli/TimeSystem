@@ -1,14 +1,12 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Projects <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('ProjectsSelect.htm')"></i>
+      (click)="commonSvc.showHelp('ProjectsSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad">
-      <!-- <a (click)="showHelp('ProjectsSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
-    </div>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
 <div class="ui-g">
@@ -93,7 +91,7 @@
   <p-header>
     {{projectHdr}}
     <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-      (click)="showHelp('ProjectUpdate.htm')"></i>
+      (click)="commonSvc.showHelp('ProjectUpdate.htm')"></i>
   </p-header>
   <form [formGroup]="_frm" *ngIf="_frm && _selectedProject">
     <div class="ui-g">
@@ -158,6 +156,3 @@
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>

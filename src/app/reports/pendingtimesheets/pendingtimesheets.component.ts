@@ -38,8 +38,6 @@ export class PendingtimesheetsComponent implements OnInit {
   _UnSubmittedCnt = 0;
   _NotCreatedCnt = 0;
   _selectedEmployees: TimeSheet[];
-  visibleHelp: boolean;
-  helpText: string;
   ParamSubscribe: any;
   IsSecure = false;
   _DisplayDateFormat: any;
@@ -130,8 +128,6 @@ export class PendingtimesheetsComponent implements OnInit {
     this._UnSubmittedCnt = 0;
     this._NotCreatedCnt = 0;
     this._selectedEmployees = [];
-    this.visibleHelp = false;
-    this.helpText = '';
     this.showSpinner = false;
   }
   Initialisations() {
@@ -206,19 +202,6 @@ export class PendingtimesheetsComponent implements OnInit {
           }
           this.showReport = true;
           this.showSpinner = false;
-        }
-      );
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
   }

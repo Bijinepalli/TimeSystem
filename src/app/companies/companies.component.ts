@@ -16,8 +16,6 @@ import { PickList } from 'primeng/primeng';
 })
 export class CompaniesComponent implements OnInit {
   selectedYear: number;
-  visibleHelp: boolean;
-  helpText: string;
   _companies: Companies[] = [];
   _companyHours: Companies[] = [];
   _yec: YearEndCodes = new YearEndCodes();
@@ -116,8 +114,6 @@ export class CompaniesComponent implements OnInit {
 
   ClearAllProperties() {
     // this.selectedYear = null;
-    this.visibleHelp = false;
-    this.helpText = '';
     this._companies = [];
     this._companyHours = [];
     this._yec = new YearEndCodes();
@@ -289,22 +285,6 @@ export class CompaniesComponent implements OnInit {
     this.companyHdr = 'Add New Company';
     this.companyDialog = false;
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        },
-        (error) => {
-          console.log(error);
-        });
-  }
-
   sortTarget() {
     /**** Very very important code */
     this._slctHolidays = this._slctHolidays.sort(

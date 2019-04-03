@@ -35,9 +35,6 @@ export class ListemployeesreportsComponent implements OnInit {
   _recData: any;
   _endDate: Date;
   _startDate: Date;
-  visibleHelp = false;
-  helpText: any;
-
   _DateFormat = '';
   _DisplayDateFormat = '';
 
@@ -203,8 +200,6 @@ export class ListemployeesreportsComponent implements OnInit {
     this._recData = '';
     this._startDate = null;
     this._endDate = null;
-    this.visibleHelp = false;
-    this.helpText = '';
     this.showSpinner = false;
   }
   getEmployeesForReport() {
@@ -232,20 +227,6 @@ export class ListemployeesreportsComponent implements OnInit {
           this.showReport = true;
           this.showSpinner = false;
         });
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-
-        }
-      );
-
   }
   customSort(event: SortEvent) {
     this.showSpinner = true;

@@ -37,8 +37,6 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
   list1: any[];
   list2: any[];
   _popUpHeader = '';
-  visibleHelp: boolean;
-  helpText: string;
   ParamSubscribe: any;
   IsSecure = false;
 
@@ -125,8 +123,6 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
     this.list1 = [];
     this.list2 = [];
     this._popUpHeader = '';
-    this.visibleHelp = false;
-    this.helpText = '';
   }
 
   Initialisations() {
@@ -339,18 +335,5 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
     }
   }
   //#endregion
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
 
 }

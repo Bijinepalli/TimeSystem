@@ -40,8 +40,6 @@ export class BillablehoursComponent implements OnInit {
   endDate: Date;
   admin = false;
   _codeType: string;
-  helpText: any;
-  visibleHelp = false;
   ParamSubscribe: any;
   _DateFormat: any;
   _DisplayDateFormat: any;
@@ -137,8 +135,6 @@ export class BillablehoursComponent implements OnInit {
     this.endDate = null;
     this.admin = false;
     this._codeType = '';
-    this.helpText = '';
-    this.visibleHelp = false;
     this.resetSort();
   }
   Initialisations() {
@@ -276,18 +272,6 @@ export class BillablehoursComponent implements OnInit {
     this.showReport = false;
     this.showBillingCodeList = true;
     this.resetSort();
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   resetSort() {
     if (this.dt !== undefined && this.dt !== null) {

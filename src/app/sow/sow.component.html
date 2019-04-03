@@ -2,7 +2,7 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     SOW <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('SOWSelect.htm')"></i>
+      (click)="commonSvc.showHelp('SOWSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
@@ -86,7 +86,7 @@
       {{sowHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('SOWUpdate.htm')"></i>
+        (click)="commonSvc.showHelp('SOWUpdate.htm')"></i>
     </p-header>
     <form [formGroup]="_frm">
       <p-toast [style]="{marginTop: '80px'}" position="center" key="alertWarningPopup" appendTo="body"></p-toast>
@@ -244,7 +244,3 @@
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>

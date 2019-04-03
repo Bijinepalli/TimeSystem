@@ -2,14 +2,12 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Billing Code Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('ListBillingCodes.htm')"></i>
+      (click)="commonSvc.showHelp('ListBillingCodes.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad">
-      <!-- <a (click)="showHelp('ListBillingCodes.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
-    </div>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
 <br>
@@ -90,14 +88,3 @@
 </ng-container>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>
-<!-- <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
-  <div class="ui-g-12 ui-md-12 ui-lg-12">
-    <div class="ui-g-12 ui-md-12 ui-lg-12">
-      <button pButton label="Save" (click)="savePages()"></button>
-      &nbsp;
-      <button pButton label="Cancel" (click)="cancelPages()"></button>
-    </div>
-  </div> -->

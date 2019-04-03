@@ -23,9 +23,7 @@ export class EmployeelogindataComponent implements OnInit {
   _listEmployeeLoginData: Employee[];
   cols: any;
   _recData: any;
-  visibleHelp = false;
   showSpinner = false;
-  helpText: any;
 
   ParamSubscribe: any;
   IsSecure = false;
@@ -121,23 +119,8 @@ export class EmployeelogindataComponent implements OnInit {
     this.cols = {};
     this._listEmployeeLoginData = [];
     this._recData = '';
-    this.visibleHelp = false;
-    this.helpText = '';
     this.showSpinner = false;
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
-
   getEmployeesForReport() {
     this.showSpinner = true;
     this.resetSort();

@@ -22,9 +22,6 @@ export class SowComponent implements OnInit {
   IsSecure = false;
   _HasEdit = true;
 
-  visibleHelp: boolean;
-  helpText: string;
-
   showSpinner = false;
   showReport: boolean;
 
@@ -120,9 +117,6 @@ export class SowComponent implements OnInit {
   }
 
   ClearAllProperties() {
-    this.visibleHelp = false;
-    this.helpText = '';
-
     this._SOWs = null;
     this.cols = {};
     this._recData = 0;
@@ -463,19 +457,6 @@ export class SowComponent implements OnInit {
 
   clearSelectedFile() {
     this._frm.controls['frmSOWFileName'].setValue(null);
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   cancelSOW() {
