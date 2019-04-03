@@ -21,7 +21,7 @@ export class ConfigurationComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
 
   }

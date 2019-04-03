@@ -33,7 +33,7 @@ export class HolidaysreportComponent implements OnInit {
     private timesysSvc: TimesystemService,
     private router: Router,
     private route: ActivatedRoute,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();

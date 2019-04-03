@@ -44,7 +44,7 @@ export class RevenuereportComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();

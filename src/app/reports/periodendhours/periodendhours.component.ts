@@ -37,7 +37,7 @@ export class PeriodendhoursComponent implements OnInit {
     private route: ActivatedRoute,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datePipe: DatePipe
   ) {
     this.CheckActiveSession();

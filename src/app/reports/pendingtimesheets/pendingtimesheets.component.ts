@@ -51,7 +51,7 @@ export class PendingtimesheetsComponent implements OnInit {
     private route: ActivatedRoute,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datepipe: DatePipe
   ) {
     this.CheckActiveSession();

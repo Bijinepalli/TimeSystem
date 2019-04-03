@@ -16,7 +16,7 @@ export class RollbillingcodesComponent implements OnInit {
   _NonBillSelect = false;
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder, private commonSvc: CommonService) { }
+    private fb: FormBuilder, public commonSvc: CommonService) { }
 
   _showRoll = false;
   _action1 = '';

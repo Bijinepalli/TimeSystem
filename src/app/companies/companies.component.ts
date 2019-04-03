@@ -54,7 +54,7 @@ export class CompaniesComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();

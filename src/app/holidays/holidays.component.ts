@@ -50,7 +50,7 @@ export class HolidaysComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();

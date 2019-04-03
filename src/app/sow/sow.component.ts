@@ -59,7 +59,7 @@ export class SowComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datepipe: DatePipe,
   ) {
     this.CheckActiveSession();

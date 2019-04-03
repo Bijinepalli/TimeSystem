@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
 
   }

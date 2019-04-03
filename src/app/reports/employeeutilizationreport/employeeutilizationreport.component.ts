@@ -60,7 +60,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();

@@ -39,7 +39,7 @@ export class AccessrightsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     private fb: FormBuilder,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private route: ActivatedRoute,
   ) {
     this.CheckActiveSession();
