@@ -303,6 +303,14 @@ export class TimesheetsComponent implements OnInit {
                       }
                     } else {
                       this.showSpinner = false;
+                      this.showSpinner = false;
+                      this.confSvc.confirm({
+                        message: 'A timesheet already has been submitted for this period.' +
+                          'This will be a resubmittal. Do you want to continue?',
+                        accept: () => {
+                          this.resubmittal();
+                        }
+                      });
                     }
                   }
                 );
