@@ -5,6 +5,7 @@ import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { CommonService } from '../service/common.service';
 
 @Component({
   selector: 'app-add-employee',
@@ -12,11 +13,16 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   styleUrls: ['./add-employee.component.css']
 })
 export class AddEmployeeComponent implements OnInit {
-  visibleHelp: boolean;
-  helpText: string;
 
   // tslint:disable-next-line:max-line-length
-  constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService, private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute) { }
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private confSvc: ConfirmationService,
+    private msgSvc: MessageService,
+    private timesysSvc: TimesystemService,
+    private commonSvc: CommonService,
+  ) { }
   _frm = new FormGroup({});
   _securityLevel: SelectItem[];
   _securityLevelDefault: string;
@@ -35,7 +41,7 @@ export class AddEmployeeComponent implements OnInit {
     ];
     this._securityLevelDefault = 'E';
 
-    this.activatedRoute.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this._employeeId = params['id'] === undefined ? -1 : params['id'];
       this.getEmployees();
       if (this._employeeId !== -1) {
@@ -102,22 +108,6 @@ export class AddEmployeeComponent implements OnInit {
   hasFormErrors() {
     return !this._frm.valid;
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-
-        }
-      );
-
-  }
-
   resetForm() {
     this._frm.markAsPristine();
     this._frm.markAsUntouched();

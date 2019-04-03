@@ -33,8 +33,6 @@ export class UnusedbillingcodesComponent implements OnInit {
   _DisplayDateFormat: string;
   periodEnd: any;
   IsAdmin = false;
-  helpText: any;
-  visibleHelp = false;
   showSpinner = false;
   showReport = false;
   ParamSubscribe: any;
@@ -126,8 +124,6 @@ export class UnusedbillingcodesComponent implements OnInit {
     this._DisplayDateFormat = '';
     this.periodEnd = '';
     this.IsAdmin = false;
-    this.helpText = '';
-    this.visibleHelp = false;
     this.showSpinner = false;
     this.showReport = false;
     this.resetSort();
@@ -320,18 +316,6 @@ export class UnusedbillingcodesComponent implements OnInit {
       }
     }
     this.showSpinner = false;
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   customSort(event: SortEvent) {

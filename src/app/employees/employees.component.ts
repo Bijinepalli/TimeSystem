@@ -92,9 +92,6 @@ export class EmployeesComponent implements OnInit {
   _selectedRate: Rates;
   _ratePlaceholder = '';
 
-  visibleHelp = false;
-  helpText: string;
-
   chkSalaried = false;
   chkSubmitsTime = false;
   chkIPayEligible = false;
@@ -337,9 +334,6 @@ export class EmployeesComponent implements OnInit {
     this._selectedRate = {};
     this._ratePlaceholder = '';
 
-    this.visibleHelp = false;
-    this.helpText = '';
-
     this.chkSalaried = false;
     this.chkSubmitsTime = false;
     this.chkIPayEligible = false;
@@ -425,19 +419,6 @@ export class EmployeesComponent implements OnInit {
     this.getEmployees();
     this.getSupervisors();
     this.getDepartments();
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   /* #endregion */
 

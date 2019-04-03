@@ -20,7 +20,7 @@ export class Master2Component implements OnInit {
   @ViewChild('bigMenu2') bigMenu2: Menu;
   @ViewChild('smallMenu') smallMenu: Menu;
 
-  public visibleHelp = false;
+
   public show = false;
   BuildType = '';
 
@@ -39,7 +39,9 @@ export class Master2Component implements OnInit {
   EmployeeData: Employee[];
   passwordExpiry = '';
 
-  helpText: string;
+  visibleHelp = false;
+  helpText = '';
+
   loginTime: string;
 
   constructor(
@@ -348,16 +350,26 @@ export class Master2Component implements OnInit {
   }
 
   showHelp(file: string) {
+    this.visibleHelp = false;
     this.timesysSvc.getHelp(file)
       .subscribe(
         (data) => {
-          // this.helpText = data;
           this.visibleHelp = true;
           const parser = new DOMParser();
           const parsedHtml = parser.parseFromString(data, 'text/html');
           this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
+  }
+
+  getHelpStatus(): boolean {
+    if (this.commonSvc.ShowHelpFile) {
+      if (this.commonSvc.HelpFileName !== '') {
+        this.showHelp(this.commonSvc.HelpFileName);
+        this.commonSvc.clearHelp();
+      }
+    }
+    return false;
   }
 
   goto() {

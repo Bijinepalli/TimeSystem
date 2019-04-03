@@ -20,8 +20,6 @@ export class HolidaysreportComponent implements OnInit {
   _selectedHolidays: Holidays;
   _recData: any;
   cols: any;
-  helpText: any;
-  visibleHelp = false;
   showReport = false;
   showSpinner = false;
   ParamSubscribe: any;
@@ -95,8 +93,6 @@ export class HolidaysreportComponent implements OnInit {
     // this._selectedHolidays = new Holidays();
     this._recData = '';
     this.cols = {};
-    this.helpText = '';
-    this.visibleHelp = false;
     this.showReport = false;
     this.showSpinner = false;
     this.resetSort();
@@ -165,18 +161,6 @@ export class HolidaysreportComponent implements OnInit {
         }
       );
       this.resetSort();
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   customSort(event: SortEvent) {

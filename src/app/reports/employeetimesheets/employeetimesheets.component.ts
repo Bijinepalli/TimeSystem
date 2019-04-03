@@ -34,8 +34,6 @@ export class EmployeetimesheetsComponent implements OnInit {
   _timePeriods: TimeSheetBinding[];
   selectedValues: Boolean;
   selectedCode: string;
-  visibleHelp: boolean;
-  helpText: string;
   selectedEmployeeName: string;
   ParamSubscribe: any;
   IsSecure = false;
@@ -127,8 +125,6 @@ export class EmployeetimesheetsComponent implements OnInit {
     this._timeSheets = [];
     this._timePeriods = [];
     this.selectedCode = '';
-    this.visibleHelp = false;
-    this.helpText = '';
     this.selectedEmployeeName = '';
     this.showSpinner = false;
   }
@@ -233,19 +229,6 @@ export class EmployeetimesheetsComponent implements OnInit {
       routerLinkTimesheet += '/' + TimesheetDate;
     }
     this.router.navigate([routerLinkTimesheet], { skipLocationChange: true });
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd', 'SubmitDate'], []);

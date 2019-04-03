@@ -27,8 +27,6 @@ export class InvoicedataComponent implements OnInit {
   _reports: any[] = [];
   _recData = 0;
   cols: any;
-  visibleHelp: boolean;
-  helpText: string;
   _DisplayDateFormat = '';
   _DateFormat = '';
 
@@ -149,8 +147,6 @@ export class InvoicedataComponent implements OnInit {
     this._reports = [];
     this._recData = 0;
     this.cols = {};
-    this.visibleHelp = false;
-    this.helpText = '';
     this.showSpinner = false;
   }
 
@@ -203,19 +199,6 @@ export class InvoicedataComponent implements OnInit {
     this.resetSort();
     this.showReport = false;
     this.showSpinner = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['InvoiceDate', 'StartDate', 'EndDate'], ['Hours', 'Rate', 'Amount']);

@@ -21,8 +21,6 @@ export class PeriodendhoursComponent implements OnInit {
   selectedDate: string;
   timesheet: TimeSheet[] = [];
   showSpinner = false;
-  helpText: any;
-  visibleHelp = false;
   showReport = false;
   _reports: any[] = [];
   _recData = 0;
@@ -106,8 +104,6 @@ export class PeriodendhoursComponent implements OnInit {
     this._recData = 0;
     this.cols = {};
     this._timesheet = new TimeSheet();
-    this.helpText = '';
-    this.visibleHelp = false;
     this.showBillingCodeList = false;
     this.changeCodeList = false;
     this.showSpinner = false;
@@ -139,18 +135,6 @@ export class PeriodendhoursComponent implements OnInit {
             }
           }
           this.showSpinner = false;
-        }
-      );
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
         }
       );
   }

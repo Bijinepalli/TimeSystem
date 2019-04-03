@@ -25,9 +25,6 @@ export class MailsComponent implements OnInit {
   _selectedEmail: Email;
   _IsEdit = false;
 
-  visibleHelp: boolean;
-  helpText: string;
-
   chkIsHighPriority = false;
   chkIsSubjectTemplate = false;
   chkIsBodyTemplate = false;
@@ -129,8 +126,6 @@ export class MailsComponent implements OnInit {
     this._frmEmail = new FormGroup({});
     this._selectedEmail = new Email();
     this._IsEdit = false;
-    this.visibleHelp = false;
-    this.helpText = '';
     this.chkIsHighPriority = false;
     this.chkIsSubjectTemplate = false;
     this.chkIsBodyTemplate = false;
@@ -238,19 +233,6 @@ export class MailsComponent implements OnInit {
     this.resetForm();
     this.emailHdr = 'Add New Holiday';
     this.emailDialog = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   cancelEmail() {
