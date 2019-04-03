@@ -162,7 +162,7 @@ export class SowComponent implements OnInit {
       { field: 'Status', header: 'Status', align: 'left', width: 'auto' },
       { field: 'SOWType', header: 'SOW Type', align: 'left', width: 'auto' },
       { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
-      { field: 'SOWFileName', header: 'SOW File', align: 'left', width: 'auto' },
+      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: 'auto' },
     ];
     this._sortArray = [
       'Name', 'CustomerName',
@@ -410,6 +410,7 @@ export class SowComponent implements OnInit {
         this._previousSOWStatus = data.Status.toString();
         this._frm.controls['frmStatus'].setValue(data.Status);
       }
+      this.isRequiredFiles();
     }
     if (!this.IsControlUndefined('frmSOWType')) {
       if (data.SOWType !== undefined && data.SOWType !== null && data.SOWType.toString() !== '') {
@@ -458,6 +459,10 @@ export class SowComponent implements OnInit {
     this.resetForm();
     this.sowHdr = 'Add New SOW';
     this.sowDialog = false;
+  }
+
+  clearSelectedFile() {
+    this._frm.controls['frmSOWFileName'].setValue(null);
   }
 
   showHelp(file: string) {
@@ -518,6 +523,8 @@ export class SowComponent implements OnInit {
     }
     if (!this.IsControlUndefinedAndHasValue('frmNotes')) {
       this._selectedSOW.Notes = this._frm.controls['frmNotes'].value.toString().trim();
+    } else {
+      this._selectedSOW.Notes = '';
     }
     if (!this.IsControlUndefinedAndHasValue('frmInvoiceFrequency')) {
       this._selectedSOW.InvoiceFrequency = this._frm.controls['frmInvoiceFrequency'].value.toString().trim();
@@ -525,6 +532,7 @@ export class SowComponent implements OnInit {
     if (!this.IsControlUndefinedAndHasValue('frmSOWFileName')) {
       this._selectedSOW.SOWFileName = this._frm.controls['frmSOWFileName'].value.toString().trim();
     } else {
+      this._selectedSOW.SOWFileName = '';
       errMsg = 'No file selected. Do you wish to continue?';
     }
     if (errMsg.trim() !== '') {

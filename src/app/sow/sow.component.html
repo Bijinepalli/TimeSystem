@@ -61,7 +61,13 @@
               <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
             </div>
             <ng-template #nondatecol>
-              {{rowData[col.field]}}
+              <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
+                <i class="fa fa-file" pTooltip="{{rowData[col.field]}}" *ngIf="rowData[col.field]!==''"
+                  tooltipPosition="left"></i>
+              </div>
+              <ng-template #defaultcol>
+                {{rowData[col.field]}}
+              </ng-template>
             </ng-template>
           </td>
           <td style="text-align: center" *ngIf="!_HasEdit">
@@ -136,7 +142,7 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Total Contract Value<span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Total Contract Value"
+              <input type="text" pInputText style="width:100%;text-align: right;" placeholder="Total Contract Value"
                 formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event)">
             </div>
           </div>
@@ -203,7 +209,8 @@
                 {{SOWFile.value}}
               </ng-template>
               <p-footer>
-                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}}
+                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}} <i *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()"
+                  class="pi pi-times" style="color:red;float:right;"></i>
               </p-footer>
             </p-listbox>
           </div>
