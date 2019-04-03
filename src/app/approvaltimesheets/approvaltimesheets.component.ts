@@ -37,7 +37,7 @@ export class ApprovaltimesheetsComponent implements OnInit {
     private fb: FormBuilder,
     private datePipe: DatePipe,
     private decimal: DecimalPipe,
-    private commonSvc: CommonService
+    public commonSvc: CommonService
   ) {
   }
 

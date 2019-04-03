@@ -20,7 +20,7 @@ export class AccesssystemComponent implements OnInit {
     private confSvc: ConfirmationService,
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datePipe: DatePipe) {
     this.commonSvc.setAppSettings();
   }

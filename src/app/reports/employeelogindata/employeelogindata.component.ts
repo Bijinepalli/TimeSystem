@@ -36,7 +36,7 @@ export class EmployeelogindataComponent implements OnInit {
     private router: Router,
     private msgSvc: MessageService,
     private fb: FormBuilder,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private route: ActivatedRoute) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();

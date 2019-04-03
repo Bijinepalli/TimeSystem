@@ -51,7 +51,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private route: ActivatedRoute,
   ) {
     this.CheckActiveSession();

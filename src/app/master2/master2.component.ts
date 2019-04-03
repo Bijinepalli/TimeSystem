@@ -48,7 +48,7 @@ export class Master2Component implements OnInit {
     private router: Router,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datePipe: DatePipe,
   ) { }
 

@@ -48,7 +48,7 @@ export class ProjectsComponent implements OnInit {
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private route: ActivatedRoute,
   ) {
     this.CheckActiveSession();

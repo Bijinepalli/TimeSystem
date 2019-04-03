@@ -48,7 +48,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private route: ActivatedRoute,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
