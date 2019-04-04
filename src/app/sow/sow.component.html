@@ -40,7 +40,7 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
+          <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
@@ -63,7 +63,7 @@
             <ng-template #nondatecol>
               <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
                 <i class="fa fa-file" pTooltip="{{rowData[col.field]}}" *ngIf="rowData[col.field]!==''"
-                  tooltipPosition="left"></i>
+                  tooltipPosition="top"></i>
               </div>
               <ng-template #defaultcol>
                 {{rowData[col.field]}}
@@ -71,7 +71,7 @@
             </ng-template>
           </td>
           <td style="text-align: center" *ngIf="!_HasEdit">
-            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused SOW" tooltipPosition="left"
+            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this SOW" tooltipPosition="left"
               (click)="deleteSOW(rowData)"></i>
           </td>
         </tr>
@@ -102,8 +102,8 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Name <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Name" formControlName="frmName"
-                appendTo="body" pToolTip="SOW's name">
+              <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body"
+                pToolTip="SOW's name">
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Customer <span class="mandatoryStar">* </span><br>
@@ -123,7 +123,7 @@
                 [maxDate]="_frm.controls['frmExpirationDate'].value"></p-calendar>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-              Expiration Date (mm-dd-yyyy) <br>
+              Expiration Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
               <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
                 formControlName="frmExpirationDate" [inputStyle]="{'width':'90%'}"
@@ -142,8 +142,10 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Total Contract Value<span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%;text-align: right;" placeholder="Total Contract Value"
-                formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event)">
+              <input type="text" pInputText style="width:100%;text-align: right;"
+                formControlName="frmTotalContractValue"                
+                appendTo="body" (keypress)="numberOnly($event)">
+                <!-- [value]="_frm.get('frmTotalContractValue').value | currency:'USD':'symbol-narrow':'4.2-2'" -->
             </div>
           </div>
 
@@ -209,8 +211,9 @@
                 {{SOWFile.value}}
               </ng-template>
               <p-footer>
-                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}} <i *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()"
-                  class="pi pi-times" style="color:red;float:right;"></i>
+                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}} <i
+                  *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()" class="pi pi-times"
+                  style="color:red;float:right;"></i>
               </p-footer>
             </p-listbox>
           </div>
