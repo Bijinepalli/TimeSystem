@@ -69,7 +69,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _errorDailyNonBillArray: number[] = [];
   _errorHourlyNonBillArray: number[] = [];
   _errorHourlyNonBillHolidayArray: number[] = [];
-  _errorHourlyHolidayErrorCount = 0;
+  _errorHourlyNonBillHolidayArrayRow: number[] = [];
   _TotalValidationErrors = 0;
   _IsTimeSheetSubmitted = false;
   _IsTimeSheetSubmittedJustNow = false;
@@ -110,7 +110,6 @@ export class MaintaintimesheetComponent implements OnInit {
     });
     this.defaultControlsToForm();
     this.getTimesheetTimeLineTimeCellDetails();
-
   }
 
 
@@ -130,6 +129,7 @@ export class MaintaintimesheetComponent implements OnInit {
   }
 
   getTimesheetTimeLineTimeCellDetails() {
+    this._errorMessage = '';
     this._employee = [];
     this.showSpinner = true;
     this._timeSheetEntries = [];
@@ -821,7 +821,8 @@ export class MaintaintimesheetComponent implements OnInit {
   }
   getHolidayErrors(rowId) {
     let countError = 0;
-    this._errorHourlyHolidayErrorCount = 0;
+    this._errorHourlyNonBillHolidayArray = [];
+    this._errorHourlyNonBillHolidayArrayRow = [];
     for (let i = 0; i < this._DateArray.length; i++) {
       const dateHoliday = this._holidays.find(P => P.HolidayDate === this._DateArray[i]);
       if (this._timeNONbill.length > 0) {
@@ -831,12 +832,14 @@ export class MaintaintimesheetComponent implements OnInit {
             countError++;
             this._errorHourlyNonBillArray.push(i);
             if (+this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8) {
-              this._errorHourlyHolidayErrorCount++;
+              this._errorHourlyNonBillHolidayArray.push(i);
+              this._errorHourlyNonBillHolidayArrayRow.push(rowId);
             }
           }
         } else if (this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== ''
           && + this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value > 8) {
-          this._errorHourlyHolidayErrorCount++;
+          this._errorHourlyNonBillHolidayArray.push(i);
+          this._errorHourlyNonBillHolidayArrayRow.push(rowId);
         }
       } else {
         if (dateHoliday === undefined
@@ -845,12 +848,14 @@ export class MaintaintimesheetComponent implements OnInit {
             countError++;
             this._errorHourlyNonBillArray.push(i);
             if (+this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 8) {
-              this._errorHourlyHolidayErrorCount++;
+              this._errorHourlyNonBillHolidayArray.push(i);
+              this._errorHourlyNonBillHolidayArrayRow.push(rowId);
             }
           }
         } else if (this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== ''
           && +this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 8) {
-          this._errorHourlyHolidayErrorCount++;
+          this._errorHourlyNonBillHolidayArray.push(i);
+          this._errorHourlyNonBillHolidayArrayRow.push(rowId);
         }
       }
       // for (let j = 0; j < this._holidays.length; j++) {
@@ -877,9 +882,11 @@ export class MaintaintimesheetComponent implements OnInit {
       // tslint:disable-next-line:max-line-length
       this._errorMessage += 'None of your clients or projects have holidays scheduled on the day(s) you charged holiday time.Please contact Finance. (Section: Non-Billable).<br>';
     }
-    if (this._errorHourlyHolidayErrorCount > 0) {
+    if (this._errorHourlyNonBillHolidayArray.length > 0) {
       this._errorMessage += 'You cannot enter more than 8 hours of holiday time per day. (Section: Non-Billable)<br/>';
     }
+    console.log('Row');
+    console.log(this._errorHourlyNonBillHolidayArray, this._errorHourlyNonBillHolidayArrayRow);
   }
   getHolidayNPTOErrors(HolidayNPtoRowIds: string) {
     let countError = 0;
@@ -1041,8 +1048,8 @@ export class MaintaintimesheetComponent implements OnInit {
   }
   nonBillableValidations() {
     const yearEndCodes = new YearEndCodes();
+    let checkBothPTONHolidayExists = '';
     if (this._timeNONbill.length > 0) {
-      let checkBothPTONHolidayExists = '';
       for (let i = 0; i < this._timeNONbill.length; i++) {
         const drpVal = this.timeSheetForm.get('drpNONBill_' + i).value;
         const drptext = this.nonBillable.find(P => P.value === drpVal);
@@ -1054,17 +1061,24 @@ export class MaintaintimesheetComponent implements OnInit {
           checkBothPTONHolidayExists += i + ',';
         }
       }
-      const rowIds = checkBothPTONHolidayExists.split(',');
-      if (rowIds.length > 2) {
-        this.getHolidayNPTOErrors(checkBothPTONHolidayExists);
-      }
-    } else {
+      // const rowIds = checkBothPTONHolidayExists.split(',');
+      // if (rowIds.length > 2) {
+      //   this.getHolidayNPTOErrors(checkBothPTONHolidayExists);
+      // }
+    } {
       const drpVal = this.timeSheetForm.get('drpNonBillDefault').value;
       const drptext = this.nonBillable.find(P => P.value === drpVal);
       if (drptext.code === yearEndCodes.HolidayCode + this._peroidStartDate.getFullYear().toString()) {
-        const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
-        const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
-        this.getHolidayErrors(-1);
+        // const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
+        // const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
+        checkBothPTONHolidayExists += 0 + ',';
+      }
+      if (drptext.code === yearEndCodes.PTOCode + this._peroidStartDate.getFullYear().toString()) {
+        checkBothPTONHolidayExists += 1 + ',';
+      }
+      const rowIds = checkBothPTONHolidayExists.split(',');
+      if (rowIds.length > 2) {
+        this.getHolidayNPTOErrors(checkBothPTONHolidayExists);
       }
     }
   }
@@ -1557,6 +1571,8 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
   deleteByType(rowData: any) {
+    this._errorMessage = '';
+    this._errorBlock = '';
     this.confSvc.confirm({
       message: 'Are you sure want to delete this row?',
       header: 'Confirmation',

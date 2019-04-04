@@ -64,10 +64,12 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x editIcon"
-                pTooltip="Edit this TimeSheet" tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i>
-              <i *ngIf="rowData['Submitted'] === 'Yes'" class="fa fa-eye fa-150x viewIcon"
-                pTooltip="View this TimeSheet" tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
+              <i *ngIf="rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] !== 'Rejected'"
+                class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
+                (click)="editTimeSheet(rowData)"></i>
+              <i *ngIf="rowData['Submitted'] === 'Yes' || (rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] === 'Rejected')"
+                class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom"
+                (click)="viewTimeSheet(rowData)"></i>
             </td>
             <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
               <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
@@ -81,7 +83,7 @@
               </ng-template>
             </td>
             <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] !== 'Pending'"
+              <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] === ''"
                 class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this TimeSheet" tooltipPosition="left"
                 (click)="deleteTimeSheet(rowData)"></i>
             </td>

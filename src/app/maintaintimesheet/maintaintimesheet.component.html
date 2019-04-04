@@ -206,8 +206,9 @@
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtProjBillDailyTotals_{{c}}"
-              readonly="readonly" [style.background-color]="_errorDailyProjBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''"
-              type="text" pInputText pKeyFilter="num"
+              readonly="readonly"
+              [style.background-color]="_errorDailyProjBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''" type="text"
+              pInputText pKeyFilter="num"
               class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
@@ -249,7 +250,7 @@
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
               <input *ngFor="let _c of _DateArray;let c = index" type="text"
                 formControlName="txtNonBillHours_{{i}}_{{c}}"
-                [style.background-color]="_errorHourlyNonBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''"
+                [style.background-color]="(_errorHourlyNonBillArray.indexOf(c) >= 0 || (_errorHourlyNonBillHolidayArray.indexOf(c) >= 0 && _errorHourlyNonBillHolidayArrayRow.indexOf(i) >=0)) ? _txtErrorColor: ''"
                 (change)="hoursOnChange()" pInputText pKeyFilter="num"
                 class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
             </div>
@@ -274,8 +275,9 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" formControlName="txtNonBillHoursDefault_{{i}}"
               type="text" (change)="hoursOnChange()"
-              [style.background-color]="_errorHourlyNonBillArray.indexOf(i) >= 0 ? _txtErrorColor: ''" pInputText
-              pKeyFilter="num" class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
+              [style.background-color]="(_errorHourlyNonBillArray.indexOf(i) >= 0 || (_errorHourlyNonBillHolidayArray.indexOf(c) >= 0 && _errorHourlyNonBillHolidayArrayRow.indexOf(i) >=0)) ? _txtErrorColor: ''"
+              pInputText pKeyFilter="num"
+              class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
@@ -292,8 +294,9 @@
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtNonBillDailyTotals_{{c}}"
-              readonly="readonly" [style.background-color]="_errorDailyNonBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''"
-              type="text" pInputText pKeyFilter="num"
+              readonly="readonly"
+              [style.background-color]="_errorDailyNonBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''" type="text"
+              pInputText pKeyFilter="num"
               class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
@@ -333,8 +336,8 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" readonly="readonly"
               formControlName="txtDailyGrandTotal_{{i}}"
-              [style.background-color]="_errorDailyGrandArray.indexOf(i) >= 0 ? _txtErrorColor: ''" type="text" pInputText
-              pKeyFilter="num"
+              [style.background-color]="_errorDailyGrandArray.indexOf(i) >= 0 ? _txtErrorColor: ''" type="text"
+              pInputText pKeyFilter="num"
               class="{{ ((_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
             <!-- <div>
               <span [style.color]="_errorArray.indexOf(0) === 0 ? 'green': 'red'">100</span>
