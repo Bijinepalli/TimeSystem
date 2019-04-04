@@ -76,6 +76,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _showComments = false;
   _actualTimeSheetId = 0;
   _isTimesheetToAprrove = false;
+  _isTimesheetRejected = false;
   _isTimesheetApprovedOrRejected = false;
   _isTimesheetView = false;
   _submitMessage = '';
@@ -157,7 +158,7 @@ export class MaintaintimesheetComponent implements OnInit {
               this._timeSheetEntries = data[0];
               this._timeLineEntries = data[1];
               this._timeCellEntries = data[2];
-
+              this._isTimesheetRejected = data[0][0].ApprovalStatus === '3' ? true : false;
               this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
               this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
               this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
@@ -661,7 +662,7 @@ export class MaintaintimesheetComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.timeSheetForm.controls['txtWeeklyGrandTotal'].setValue(this.decimal.transform(grandWeeklyTotal, '1.2-2'));
 
-    if (this._IsTimeSheetSubmitted || this._isTimesheetView || this._isTimesheetToAprrove) {
+    if (this._IsTimeSheetSubmitted || this._isTimesheetView || this._isTimesheetToAprrove || this._isTimesheetRejected) {
       this.timeSheetForm.disable();
       // this.timeSheetForm.get('txtSuperComments').disable();
       // this.timeSheetForm.get('txtUserComments').disable();
