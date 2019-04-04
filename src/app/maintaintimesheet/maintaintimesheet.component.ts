@@ -92,6 +92,8 @@ export class MaintaintimesheetComponent implements OnInit {
   _holidays: Holidays[] = [];
   _timePeriodsOnLoad: TimePeriods[] = [];
   _timeSheetForApprovalsOnLoad: TimeSheetForApproval[] = [];
+  // _txtErrorColor = '#ffccd4'; // Error box background color
+  _txtErrorColor = ''; // Error box background color
   ngOnInit() {
     this._errorMessage = '';
     this._warningMessage = '';
@@ -108,6 +110,7 @@ export class MaintaintimesheetComponent implements OnInit {
     });
     this.defaultControlsToForm();
     this.getTimesheetTimeLineTimeCellDetails();
+
   }
 
 
@@ -128,7 +131,7 @@ export class MaintaintimesheetComponent implements OnInit {
 
   getTimesheetTimeLineTimeCellDetails() {
     this._employee = [];
-
+    this.showSpinner = true;
     this._timeSheetEntries = [];
     this._timeLineEntries = [];
     this._timeCellEntries = [];
@@ -148,26 +151,37 @@ export class MaintaintimesheetComponent implements OnInit {
       this.timesysSvc.getTimesheetTimeLineTimeCellDetails(this._timesheetId.toString()).subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
-            this._timesheetUserId = data[0][0].EmployeeId.toString();
-            this.getEmployeeDetails(data[0][0].EmployeeId.toString());
-            this._timeSheetEntries = data[0];
-            this._timeLineEntries = data[1];
-            this._timeCellEntries = data[2];
+            if (data[0].length > 0) {
+              this._timesheetUserId = data[0][0].EmployeeId.toString();
+              this.getEmployeeDetails(data[0][0].EmployeeId.toString());
+              this._timeSheetEntries = data[0];
+              this._timeLineEntries = data[1];
+              this._timeCellEntries = data[2];
 
-            this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
-            this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
-            this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
-            if (this._timeSheetEntries !== undefined && this._timeSheetEntries !== null && this._timeSheetEntries.length > 0) {
-              this._SubmittedOn = this._timeSheetEntries[0].SubmitDate !== '' ? (this._timeSheetEntries[0].SubmitDate) : 'N/A';
-              this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
-              if (this._timeSheetEntries[0].Submitted) {
-                this._IsTimeSheetSubmitted = true;
+              this._timeNONbill = this._timeLineEntries.filter(P => P.ChargeType === 'NONBILL');
+              this._timeProjBill = this._timeLineEntries.filter(P => P.ChargeType === 'PROJBILL');
+              this._timeTandM = this._timeLineEntries.filter(P => P.ChargeType === 'TANDM');
+              if (this._timeSheetEntries !== undefined && this._timeSheetEntries !== null && this._timeSheetEntries.length > 0) {
+                this._SubmittedOn = this._timeSheetEntries[0].SubmitDate !== '' ? (this._timeSheetEntries[0].SubmitDate) : 'N/A';
+                this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
+                if (this._timeSheetEntries[0].Submitted) {
+                  this._IsTimeSheetSubmitted = true;
+                }
+                this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
+                this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
+                // this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
+                this.getAllWantedDetailsOnLoad(this._timesheetUserId, this._timeSheetEntries[0].PeriodEnd);
               }
-              this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
-              this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
-              // this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
-              this.getAllWantedDetailsOnLoad(this._timesheetUserId, this._timeSheetEntries[0].PeriodEnd);
+            } else {
+              this.showSpinner = false;
+              this._errorMessage = 'Problem exists with this timesheet please contact administrator.<br/>';
             }
+          } else {
+            this.showSpinner = false;
+            this._errorMessage = 'Problem exists with this timesheet please contact administrator.<br/>';
+          }
+          if (this._errorMessage !== '') {
+            this._errorBlock = this._errorMessage;
           }
         });
     } else {
@@ -392,6 +406,7 @@ export class MaintaintimesheetComponent implements OnInit {
       alert(e.error);
     }
     this.setValues();
+    this.showSpinner = false;
   }
 
   resetForm() {
