@@ -87,8 +87,8 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                *ngIf="!(_IsTimeSheetSubmitted || _isTimesheetView || _isTimesheetRejected)" tooltipPosition="bottom"
-                (click)="deleteByType(_entry)"></i>
+                *ngIf="!(_IsTimeSheetSubmitted || _isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -109,8 +109,8 @@
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtTANDMWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected)" tooltipPosition="bottom"
-              (click)="saveByType(rowData,'TandM')"></i>
+              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+              tooltipPosition="bottom" (click)="saveByType(rowData,'TandM')"></i>
           </div>
         </div>
         <!-- End -->
@@ -173,8 +173,8 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected)" tooltipPosition="bottom"
-                (click)="deleteByType(_entry)"></i>
+                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -195,8 +195,8 @@
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtProjBillWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected)" tooltipPosition="bottom"
-              (click)="saveByType(rowData,'ProjBill')"></i>
+              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+              tooltipPosition="bottom" (click)="saveByType(rowData,'ProjBill')"></i>
           </div>
         </div>
         <!-- End -->
@@ -260,8 +260,8 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected)" tooltipPosition="bottom"
-                (click)="deleteByType(_entry)"></i>
+                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -283,8 +283,8 @@
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtNonBillWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected)" tooltipPosition="bottom"
-              (click)="saveByType(rowData,'NonBill')"></i>
+              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+              tooltipPosition="bottom" (click)="saveByType(rowData,'NonBill')"></i>
           </div>
         </div>
         <!-- End -->

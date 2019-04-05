@@ -111,6 +111,7 @@ export class MaintaintimesheetComponent implements OnInit {
     });
     this.defaultControlsToForm();
     this.getTimesheetTimeLineTimeCellDetails();
+    console.log(this._IsTimeSheetSubmitted, this._isTimesheetView, this._isTimesheetRejected);
   }
 
 
@@ -621,22 +622,9 @@ export class MaintaintimesheetComponent implements OnInit {
 
 
   hoursOnChange() {
-    this.setValues();
+    this.calculateHours();
   }
-  setValues() {
-    if (this.timeSheetForm.get('txtUserComments') !== undefined &&
-      this.timeSheetForm.get('txtUserComments') !== null &&
-      this._timeSheetEntries !== undefined &&
-      this._timeSheetEntries !== null &&
-      this._timeSheetEntries.length > 0
-    ) {
-      this.timeSheetForm.controls['txtUserComments'].setValue(this._timeSheetEntries[0].Comments);
-      this.timeSheetForm.controls['txtSuperComments'].setValue(this._timeSheetEntries[0].SupervisorComments);
-      if (this._timeSheetEntries[0].SupervisorComments !== undefined && this._timeSheetEntries[0].SupervisorComments !== '') {
-        this._isTimesheetApprovedOrRejected = true;
-        this.timeSheetForm.get('txtSuperComments').disable();
-      }
-    }
+  calculateHours() {
     this.TANDMTotalCalculation();
     this.ProjBillTotalCalculation();
     this.NonBillTotalCalculation();
@@ -662,6 +650,22 @@ export class MaintaintimesheetComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     this.timeSheetForm.controls['txtWeeklyGrandTotal'].setValue(this.decimal.transform(grandWeeklyTotal, '1.2-2'));
 
+  }
+  setValues() {
+    if (this.timeSheetForm.get('txtUserComments') !== undefined &&
+      this.timeSheetForm.get('txtUserComments') !== null &&
+      this._timeSheetEntries !== undefined &&
+      this._timeSheetEntries !== null &&
+      this._timeSheetEntries.length > 0
+    ) {
+      this.timeSheetForm.controls['txtUserComments'].setValue(this._timeSheetEntries[0].Comments);
+      this.timeSheetForm.controls['txtSuperComments'].setValue(this._timeSheetEntries[0].SupervisorComments);
+      if (this._timeSheetEntries[0].SupervisorComments !== undefined && this._timeSheetEntries[0].SupervisorComments !== '') {
+        this._isTimesheetApprovedOrRejected = true;
+        this.timeSheetForm.get('txtSuperComments').disable();
+      }
+    }
+    this.calculateHours();
     if (this._IsTimeSheetSubmitted || this._isTimesheetView || this._isTimesheetToAprrove || this._isTimesheetRejected) {
       this.timeSheetForm.disable();
       // this.timeSheetForm.get('txtSuperComments').disable();
@@ -1247,6 +1251,7 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       timeSheetSubmit.timeSheet.Comments = '';
     }
+    console.log(this.timeSheetForm.get('txtUserComments').value + '-test');
     timeSheetSubmit.timeSheet.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     // tslint:disable-next-line:max-line-length
     if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
@@ -1497,6 +1502,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
   Approve() {
+    this.showSpinner = true;
     const timeSheetApp = new TimeSheetForApproval();
     timeSheetApp.Id = this._ApprovalId;
     timeSheetApp.Status = 'A';
@@ -1512,14 +1518,14 @@ export class MaintaintimesheetComponent implements OnInit {
           this.timesysSvc.timeSheetApprovalStatusUpdate(timesheet)
             .subscribe(
               (inputTime) => {
+                this.showSpinner = false;
                 // tslint:disable-next-line:max-line-length
                 this.router.navigate(['/menu/dashboard/'], { queryParams: { Id: -1 }, skipLocationChange: true });
               });
         });
-
-
   }
   Reject() {
+    this.showSpinner = true;
     const timeSheetApp = new TimeSheetForApproval();
     timeSheetApp.Id = this._ApprovalId;
     timeSheetApp.Status = 'R';
@@ -1535,6 +1541,7 @@ export class MaintaintimesheetComponent implements OnInit {
           this.timesysSvc.timeSheetApprovalStatusUpdate(timesheet)
             .subscribe(
               (inputTime) => {
+                this.showSpinner = false;
                 // tslint:disable-next-line:max-line-length
                 this.router.navigate(['/menu/dashboard/'], { queryParams: { Id: -1 }, skipLocationChange: true });
               });
