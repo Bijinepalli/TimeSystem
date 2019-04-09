@@ -55,9 +55,9 @@
           <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
             <label (mouseenter)="showEmployees($event,rowData,op2)"
               style="font-size:14px; color: blue; cursor: pointer;"><b>{{rowData[col.field]}}</b></label>
-            <p-overlayPanel #op2 [showCloseIcon]="true" appendTo="body">
+            <p-overlayPanel #op2 [showCloseIcon]="true" [dismissable]="true" appendTo="body">
               <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
-                [first]="_deptEmployeePageNo" [style]="{width: '500px'}">
+                [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5">
                 <ng-template pTemplate="header" let-columns>
       <tr>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field">

@@ -224,13 +224,13 @@
           Hire Date (mm-dd-yyyy) <br>
           <div style="height:5px"></div>
           <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"></p-calendar>
+            formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"  [maxDate]="_frmEmployee.controls['frmStartDate'].value"></p-calendar>
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Start Date (mm-dd-yyyy) <br>
           <div style="height:5px"></div>
           <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"></p-calendar>
+            formControlName="frmStartDate" [inputStyle]="{'width':'90%'}" [minDate]="_frmEmployee.controls['frmHireDate'].value"></p-calendar>
         </div>
         <div class="ui-g-12 ui-md-2 ui-lg-2" *ngIf="lblTerminationDate">
           <div style="height:5px"></div>
@@ -285,7 +285,7 @@
         <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
           <div style="height:5px"></div>
 
-          <p-overlayPanel #opSup [showCloseIcon]="true" appendTo="body">
+          <p-overlayPanel #opSup [showCloseIcon]="true" [dismissable]="true" appendTo="body">
             <p-table [columns]="SupEmpcols" [value]="SupEmployeeList" *ngIf="SupEmployeeList" [style]="{width: '500px'}"
               [responsive]="false" dataKey="ID" [paginator]="true" [rows]="5">
               <ng-template pTemplate="header" let-columns>
