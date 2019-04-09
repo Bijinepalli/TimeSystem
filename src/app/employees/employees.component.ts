@@ -26,7 +26,7 @@ export class EmployeesComponent implements OnInit {
 
 
 
-
+  _DisplayDateFormat = '';
   _billingCodes: BillingCode;
   _yec: YearEndCodes = new YearEndCodes();
   types: SelectItem[];
@@ -376,6 +376,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   Initialisations() {
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.cols = [
       { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
