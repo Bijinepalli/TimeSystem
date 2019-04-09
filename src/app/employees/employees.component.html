@@ -263,7 +263,7 @@
             [(ngModel)]="chkCompanyHolidays" [ngModelOptions]="{standalone: true}"
             pToolTip="Check if this employee follows the VERTEX holiday schedule"></p-checkbox>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-6">
+        <div class="ui-g-12 ui-md-6 ui-lg-6" *ngIf="false">
           <div style="height:5px"></div>
           <p-checkbox appendTo="body" binary="true" label="Send Email Alert When Pay Stub is Available"
             [(ngModel)]="chkPayAvailableAlert" [ngModelOptions]="{standalone: true}"
