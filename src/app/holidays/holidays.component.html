@@ -104,7 +104,7 @@
             Holiday Name <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
             <input *ngIf="!_IsEdit || !(_IsEdit && (_selectedHoliday.InUse>0))" type="text" pInputText
-              style="width:100%" placeholder="Holiday Name" pTooltip="The display name for the holiday"
+              style="width:100%" maxlength="30" pattern="^[a-zA-Z0-9\040\047\055]*$" placeholder="Holiday Name" pTooltip="The display name for the holiday"
               tooltipPosition="bottom" formControlName="holidayName">
             <label *ngIf="(_IsEdit && (_selectedHoliday.InUse>0))"><b>{{_selectedHoliday.HolidayName}}</b></label>
           </div>

@@ -104,7 +104,7 @@
         <div class="ui-g-12 ui-md-12">
           Project Code <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Project Code" formControlName="projectCode"
+          <input type="text" maxlength="15" pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$" pInputText style="width:100%" placeholder="Project Code" formControlName="projectCode"
             pToolTip="Unique project code" tooltipPosition="bottom" appendTo="body">
         </div>
       </div>
@@ -112,7 +112,7 @@
         <div class="ui-g-12 ui-md-12">
           Project Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Project Name" formControlName="projectName"
+          <input type="text" maxlength="50" pInputText style="width:100%" placeholder="Project Name" formControlName="projectName"
             pToolTip="Unique project name" tooltipPosition="bottom">
         </div>
       </div>

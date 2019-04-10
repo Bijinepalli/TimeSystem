@@ -158,22 +158,23 @@
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Last Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Last Name" formControlName="frmLastName"
-            appendTo="body" pToolTip="Employee's last name">
+          <input type="text" maxlength="30" pattern="^[a-zA-Z\040\047\055\056]*$" pInputText style="width:100%"
+            placeholder="Last Name" formControlName="frmLastName" appendTo="body" pToolTip="Employee's last name">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           First Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="First Name" formControlName="frmFirstName"
-            appendTo="body" pToolTip="Employee's first name">
+          <input type="text" maxlength="25" pattern="^[a-zA-Z\040\047\055\056]*$" pInputText style="width:100%"
+            placeholder="First Name" formControlName="frmFirstName" appendTo="body" pToolTip="Employee's first name">
         </div>
         <div class="ui-g-12 ui-md-2 ui-lg-2">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Nick Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Nick Name" formControlName="frmNickName"
-            appendTo="body" pToolTip="The name the employee prefers to go by">
+          <input type="text" maxlength="25" pattern="^[a-zA-Z\040\047\055\056]*$" pInputText style="width:100%"
+            placeholder="Nick Name" formControlName="frmNickName" appendTo="body"
+            pToolTip="The name the employee prefers to go by">
         </div>
         <!-- <div class="ui-g-12 ui-md-5 ui-lg-5">
         Login ID<br>
@@ -185,19 +186,23 @@
           Payroll ID <span class="mandatoryStar">*</span><br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Payroll ID" formControlName="frmPayrollID"
-            appendTo="body" pToolTip="The employee's unique ID in the payroll system" pKeyFilter="int" minlength="4"
-            maxlength="4" size="4">
+            appendTo="body" pToolTip="The employee's unique ID in the payroll system" minlength="4"
+            maxlength="7">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Email Address <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Email Address" formControlName="frmEmailAddress"
-            appendTo="body" pToolTip="Employee's email address.">
+          <input type="text" maxlength="55"
+            pattern="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
+            pInputText style="width:100%" placeholder="Email Address" formControlName="frmEmailAddress" appendTo="body"
+            pToolTip="Employee's email address.">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Secondary Email Address<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Secondary Email Address"
+          <input type="text" maxlength="55"
+            pattern="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
+            pInputText style="width:100%" placeholder="Secondary Email Address"
             formControlName="frmSecondaryEmailAddress" appendTo="body" pToolTip="Employee's secondary email address.">
         </div>
         <div class="ui-g-12 ui-md-2 ui-lg-2"></div>
@@ -217,20 +222,23 @@
         <div class="ui-g-12 ui-md-2 ui-lg-2">
           Hours Per Day<br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Hours Per Day" formControlName="frmHoursPerDay"
-            appendTo="body" pToolTip="The number of hours the employee is expected to work per day" pKeyFilter="int">
+          <input type="text" maxlength="5" pInputText style="width:100%" placeholder="Hours Per Day"
+            formControlName="frmHoursPerDay" appendTo="body"
+            pToolTip="The number of hours the employee is expected to work per day" pKeyFilter="int">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Hire Date (mm-dd-yyyy) <br>
           <div style="height:5px"></div>
           <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"  [maxDate]="_frmEmployee.controls['frmStartDate'].value"></p-calendar>
+            formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"
+            [maxDate]="_frmEmployee.controls['frmStartDate'].value"></p-calendar>
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Start Date (mm-dd-yyyy) <br>
           <div style="height:5px"></div>
           <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="frmStartDate" [inputStyle]="{'width':'90%'}" [minDate]="_frmEmployee.controls['frmHireDate'].value"></p-calendar>
+            formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"
+            [minDate]="_frmEmployee.controls['frmHireDate'].value"></p-calendar>
         </div>
         <div class="ui-g-12 ui-md-2 ui-lg-2" *ngIf="lblTerminationDate">
           <div style="height:5px"></div>
@@ -633,7 +641,7 @@
               Rate <span class="mandatoryStar">* </span>:
             </div>
             <div class="ui-g-6">
-              <input type="text" pInputText formControlName="frmRatetext"
+              <input type="text" maxlength="6" pInputText formControlName="frmRatetext"
                 pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
             </div>
           </div>
