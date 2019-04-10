@@ -130,7 +130,7 @@
         <div class="ui-g-12 ui-md-12">
           <div style="height:5px"></div>
           <div pTooltip="Date this code was originally created" tooltipPosition="bottom">
-            Created On: {{_selectedNonBillable.CreatedOn}}
+            Created On: {{_selectedNonBillable.CreatedOn | dateFormat: _DisplayDateFormat}}
           </div>
         </div>
       </div>
