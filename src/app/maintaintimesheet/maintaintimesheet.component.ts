@@ -1040,6 +1040,7 @@ export class MaintaintimesheetComponent implements OnInit {
         }
       }
     }
+    console.log(weekEndTandMCountWarning);
     let weekDayErrors = '';
     if (weekEndTandMCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Time & Materials)<br/>';
