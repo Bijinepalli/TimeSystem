@@ -810,13 +810,13 @@ export class EmployeesComponent implements OnInit {
       this._frmEmployee.controls['frmSecurityLevel'].setValue('E');
     }
     if (data.HireDate !== undefined && data.HireDate !== null && data.HireDate.toString() !== '') {
-      this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.replace(new RegExp('-', 'g'), '/')));
+      this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.toString()));
       this._hiredatechange = data.HireDate;
     } else {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date());
     }
     if (data.StartDate !== undefined && data.StartDate !== null && data.StartDate.toString() !== '') {
-      this._frmEmployee.controls['frmStartDate'].setValue(new Date(data.StartDate.replace(new RegExp('-', 'g'), '/')));
+      this._frmEmployee.controls['frmStartDate'].setValue(new Date(data.StartDate.toString()));
     }
     if (data.HoursPerDay !== undefined && data.HoursPerDay !== null && data.HoursPerDay.toString() !== '') {
       this._frmEmployee.controls['frmHoursPerDay'].setValue(data.HoursPerDay);
@@ -1004,20 +1004,19 @@ export class EmployeesComponent implements OnInit {
         this.errMsg += 'Hours Per Day should be greater than 0 hours and less than 24 hours<br>';
       }
     }
-
     if (this.IsControlUndefined('frmHireDate')) {
       this._selectedEmployee.HireDate = '';
     } else {
       this._selectedEmployee.HireDate = this.datepipe.transform(
-        this._frmEmployee.controls['frmHireDate'].value.toString().trim().replace(new RegExp('-', 'g'), '/'),
-        'MM/dd/yyyy');
+        this._frmEmployee.controls['frmHireDate'].value.toString(),
+        'yyyy-MM-dd');
     }
     if (this.IsControlUndefined('frmStartDate')) {
       this._selectedEmployee.StartDate = '';
     } else {
       this._selectedEmployee.StartDate = this.datepipe.transform(
-        this._frmEmployee.controls['frmStartDate'].value.toString().trim().replace(new RegExp('-', 'g'), '/'),
-        'MM/dd/yyyy');
+        this._frmEmployee.controls['frmStartDate'].value.toString(),
+        'yyyy-MM-dd');
     }
     if (this._selectedEmployee.HireDate !== '' && this._selectedEmployee.StartDate !== '') {
       if (new Date(this._selectedEmployee.StartDate) < new Date(this._selectedEmployee.HireDate)) {
@@ -1278,7 +1277,7 @@ export class EmployeesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         // tslint:disable-next-line:max-line-length
-        this._selectedEmployeeForAction.TerminationDate = this.datepipe.transform(this._frmTerminateEmployee.controls['frmTerminateEmployeeDate'].value, 'MM-dd-yyyy').toString().trim();
+        this._selectedEmployeeForAction.TerminationDate = this.datepipe.transform(this._frmTerminateEmployee.controls['frmTerminateEmployeeDate'].value, 'yyyy-MM-dd').toString().trim();
         /* do nothing */
         this.timesysSvc.Employee_Terminate(this._selectedEmployeeForAction)
           .subscribe(

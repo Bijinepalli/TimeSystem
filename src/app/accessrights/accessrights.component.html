@@ -49,12 +49,12 @@
                       <i class="fa fa-gear fa-2x" style="float:right;color: #007ad9;margin-left: -2em;cursor:pointer;"
                         *ngIf="(rowData['PageName'] === 'Employees') && getEditStatus(rowData['ID'])"
                         (click)="opSup.show($event)"></i>
-                      <p-overlayPanel #opSup [showCloseIcon]="true" appendTo="body">
+                      <p-overlayPanel #opSup [showCloseIcon]="true" [dismissable]="true" appendTo="body">
 
                         <p-scrollPanel [style]="{height: '310px'}">
                           <p-table [columns]="colsSections" [value]="rowData.Sections"
                             [(selection)]="_selectedPagesSections" [style]="{width: '500px'}" [responsive]="false"
-                            dataKey="ID">
+                            dataKey="ID" [paginator]="true" [rows]="5">
                             <ng-template pTemplate="header" let-columns>
               <tr>
                 <th style="width:3em;"></th>

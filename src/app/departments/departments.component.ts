@@ -43,6 +43,8 @@ export class DepartmentsComponent implements OnInit {
   IsSecure: boolean;
   showReport: boolean;
 
+  previousOPs: any[] = [];
+
 
   /* #region Constructor */
   // tslint:disable-next-line:max-line-length
@@ -224,6 +226,16 @@ export class DepartmentsComponent implements OnInit {
   showEmployees(event, dataRow: Departments, overlaypanel: OverlayPanel) {
     this.deptEmployeeHdr = 'Employees associated with department';
     this._deptEmployeePageNo = 0;
+    if (this.previousOPs !== undefined && this.previousOPs !== null && this.previousOPs.length > 0) {
+      for (let cnt = 0; this.previousOPs.length > 0 && cnt < this.previousOPs.length; cnt++) {
+        if (this.previousOPs[cnt].overlaypanel !== undefined && this.previousOPs[cnt].overlaypanel !== null) {
+          this.previousOPs[cnt].overlaypanel.hide();
+        }
+        this.previousOPs.splice(cnt, 1);
+        cnt--;
+      }
+    }
+    this.previousOPs.push({ eveny: event, overlaypanel: overlaypanel });
     this.timesysSvc.departmentEmployee_Get(dataRow.Id.toString())
       .subscribe(
         (outputData) => {
