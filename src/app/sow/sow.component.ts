@@ -547,10 +547,12 @@ export class SowComponent implements OnInit {
 
   SaveSOWSPCall() {
     this.showSpinner = true;
+    console.log(this._selectedSOW);
     this.timesysSvc.SOW_InsertOrUpdate(this._selectedSOW)
       .subscribe(
         (outputData) => {
           this.showSpinner = false;
+          console.log(outputData);
           if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
               key: 'alert',
