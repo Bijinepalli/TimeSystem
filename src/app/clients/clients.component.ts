@@ -8,6 +8,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { DataTable } from 'primeng/primeng';
 
 @Component({
   selector: 'app-clients',
@@ -49,6 +50,8 @@ export class ClientsComponent implements OnInit {
   IsSecure = false;
   _HasEdit = true;
   showReport: boolean;
+  _OldCompanyID = '';
+  _DisplayDateFormat: any;
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -137,6 +140,7 @@ export class ClientsComponent implements OnInit {
 
   Initialisations() {
     this.showSpinner = true;
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.types = [
       { label: 'Active', value: 'Active' },
       { label: 'Inactive', value: 'Inactive' },
@@ -292,7 +296,7 @@ export class ClientsComponent implements OnInit {
       );
   }
 
-  getSOWByCustomerID() {
+  getSOWByCustomerID(SOWID: string) {
     this.showSpinner = true;
     this._SOWs = [];
     this.timesysSvc.getSOWs(this._frm.controls['customerName'].value.toString())
@@ -302,6 +306,9 @@ export class ClientsComponent implements OnInit {
           if (data !== undefined && data !== null && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
               this._SOWs.push({ label: data[i].Name, value: data[i].SOWID });
+            }
+            if (SOWID !== undefined && SOWID !== null && SOWID !== '') {
+              this._frm.controls['SOW'].setValue(SOWID.toString());
             }
           }
           this.showSpinner = false;
@@ -342,7 +349,7 @@ export class ClientsComponent implements OnInit {
   }
 
   addControls() {
-    this._frm.addControl('clientCode', new FormControl(null, Validators.required));
+    this._frm.addControl('clientCode', new FormControl(null, Validators.required)); // @"^[a-zA-Z0-9\040\047\046\055\056\057]*$"
     this._frm.addControl('clientName', new FormControl(null, Validators.required));
     this._frm.addControl('billingCycle', new FormControl(null));
     this._frm.addControl('poNumber', new FormControl(null));
@@ -353,24 +360,34 @@ export class ClientsComponent implements OnInit {
   }
 
   setDataToControls(data: Clients) {
-    this._frm.controls['clientCode'].setValue(data.Key);
-    this._frm.controls['clientName'].setValue(data.ClientName);
-    this._frm.controls['poNumber'].setValue(data.PONumber);
-    if (data.BillingCycle !== undefined) {
+    if (data.Key !== undefined && data.Key !== null) {
+      this._frm.controls['clientCode'].setValue(data.Key);
+    }
+    if (data.ClientName !== undefined && data.ClientName !== null) {
+      this._frm.controls['clientName'].setValue(data.ClientName);
+    }
+    if (data.PONumber !== undefined && data.PONumber !== null) {
+      this._frm.controls['poNumber'].setValue(data.PONumber);
+    }
+    if (data.BillingCycle !== undefined && data.BillingCycle !== null) {
       this._frm.controls['billingCycle'].setValue(data.BillingCycle);
     } else {
       this._frm.controls['billingCycle'].setValue('M');
     }
-    if (data.CustomerId !== undefined) {
+    if (data.CustomerId !== undefined && data.CustomerId !== null && data.CustomerId.toString() !== '-1') {
       this._frm.controls['customerName'].setValue(data.CustomerId.toString());
+      if (data.SOWID !== undefined && data.SOWID !== null) {
+        this.getSOWByCustomerID(data.SOWID.toString());
+      } else {
+        this.getSOWByCustomerID('');
+      }
     }
-    if (data.CustomerId !== undefined) {
-      this._frm.controls['SOW'].setValue(data.SOWID.toString());
-    }
-    if (data.CompanyId !== undefined) {
+    this._OldCompanyID = '';
+    if (data.CompanyId !== undefined && data.CompanyId !== null && data.CompanyId.toString() !== '-1') {
       this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
+      this._OldCompanyID = data.CompanyId.toString();
     }
-    if (data.Inactive !== undefined) {
+    if (data.Inactive !== undefined && data.Inactive !== null) {
       this.chkInactive = data.Inactive;
     } else {
       this.chkInactive = false;
@@ -408,26 +425,145 @@ export class ClientsComponent implements OnInit {
       }
       this._selectedClient.Id = -1;
     }
-    this._selectedClient.ClientName = this._frm.controls['clientName'].value.toString().trim();
-    this._selectedClient.Key = this._frm.controls['clientCode'].value.toString().toUpperCase().trim();
-    if (this._frm.controls['parentCompany'].value !== null && this._frm.controls['parentCompany'].value !== undefined) {
+    if (!this.IsControlUndefinedAndHasValue('clientName')) {
+      this._selectedClient.ClientName = this._frm.controls['clientName'].value.toString().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('clientCode')) {
+      this._selectedClient.Key = this._frm.controls['clientCode'].value.toString().toUpperCase().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('parentCompany')) {
       this._selectedClient.CompanyId = this._frm.controls['parentCompany'].value.toString().trim();
     }
-    if (this._frm.controls['customerName'].value !== undefined && this._frm.controls['customerName'].value !== null) {
+    if (!this.IsControlUndefinedAndHasValue('customerName')) {
       this._selectedClient.CustomerId = this._frm.controls['customerName'].value.toString().trim();
     }
-    if (this._frm.controls['SOW'].value !== undefined && this._frm.controls['SOW'].value !== null) {
+    if (!this.IsControlUndefinedAndHasValue('SOW')) {
       this._selectedClient.SOWID = this._frm.controls['SOW'].value.toString().trim();
     }
-    if (this._frm.controls['billingCycle'].value !== undefined && this._frm.controls['billingCycle'].value !== null) {
+    if (!this.IsControlUndefinedAndHasValue('billingCycle')) {
       this._selectedClient.BillingCycle = this._frm.controls['billingCycle'].value.toString().trim();
     }
-    if (this._frm.controls['poNumber'].value !== undefined && this._frm.controls['poNumber'].value !== null) {
+    if (!this.IsControlUndefinedAndHasValue('poNumber')) {
       this._selectedClient.PONumber = this._frm.controls['poNumber'].value.toString().trim();
     }
     this._selectedClient.Inactive = this.chkInactive;
     this._selectedClient.ChargeType = this._billingCodes.Client;
-    this.SaveClientSPCall();
+    this.checkWarnings();
+  }
+
+
+
+  checkWarnings() {
+    let errorMsg = '';
+    if (this.chkInactive) {
+      if (this._IsEdit) {
+        this.timesysSvc.IsBillingCodeUsedOnAnyPendingTimesheets(this._selectedClient.Id.toString(), this._billingCodes.Client)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== undefined && outputData !== null && outputData.length > 0) {
+                errorMsg += 'Inactivating this client will remove it and associated hours from all unsubmitted timesheets.<br>';
+              } else {
+                errorMsg += 'Client is marked as inactive. It will not appear on new timesheets.<br>';
+              }
+              if (errorMsg.trim() !== '') {
+                this.showConfirmation(errorMsg, 0);
+              } else {
+                this.CheckDBWarnings();
+              }
+            });
+      } else {
+        this.CheckDBWarnings();
+      }
+    } else {
+      if (this.IsControlUndefinedAndHasValue('parentCompany')) {
+        errorMsg += 'No company was selected. No holiday schedule will be assigned to this client.<br>';
+      }
+      if (this.IsControlUndefinedAndHasValue('customerName')) {
+        errorMsg += 'No customer to invoice was selected.<br>';
+      }
+      if (this.IsControlUndefinedAndHasValue('poNumber')) {
+        errorMsg += 'No purchase order number was entered.<br>';
+      }
+      if (errorMsg.trim() !== '') {
+        this.showConfirmation(errorMsg, 0);
+      } else {
+        this.CheckDBWarnings();
+      }
+    }
+  }
+
+
+  IsControlUndefinedAndHasValue(ctrlName: string): boolean {
+    let IsUndefined = true;
+    if (this._frm.controls[ctrlName] !== undefined &&
+      this._frm.controls[ctrlName] !== null &&
+      this._frm.controls[ctrlName].value !== undefined &&
+      this._frm.controls[ctrlName].value !== null &&
+      this._frm.controls[ctrlName].value.toString().trim() !== ''
+    ) {
+      IsUndefined = false;
+    }
+    return IsUndefined;
+  }
+
+
+  showConfirmation(errorMsg: string, mode: number) {
+    this.confSvc.confirm({
+      message: errorMsg + 'Do you want to continue?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (mode === 0) {
+          this.CheckDBWarnings();
+        } else {
+          this.SaveClientSPCall();
+        }
+      },
+      reject: () => {
+      }
+    });
+  }
+
+
+  CheckDBWarnings() {
+    let errorMsg = '';
+    if (this._IsEdit) {
+      if (this._OldCompanyID !== '' && !this.IsControlUndefinedAndHasValue('parentCompany')) {
+        this.timesysSvc.CompaniesHaveSameHolidays(this._OldCompanyID.toString(),
+          this._frm.controls['parentCompany'].value.toString().trim())
+          .subscribe(
+            (outputData) => {
+              this.timesysSvc.HolidayHoursChargedToCompany(this._OldCompanyID.toString())
+                .subscribe(
+                  (outputData1) => {
+                    if (outputData !== undefined && outputData !== null && outputData.length > 0) {
+                      errorMsg += 'The new company has different holidays which effects submitted timesheets. The company was reset.<br>';
+                      this._frm.controls['parentCompany'].setValue(this._OldCompanyID.toString());
+                    }
+                    // if (errorMsg.trim() === '' && outputData1 !== undefined && outputData1 !== null && outputData1.length > 0) {
+                    //   if (+outputData1[0].TotalHours > 0) {
+                    //     errorMsg += 'The old company have hours assigned to its holidays.<br>';
+                    //   }
+                    // }
+                    if (errorMsg.trim() !== '') {
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'warn',
+                        summary: 'Info Message',
+                        detail: errorMsg
+                      });
+                    } else {
+                      this.SaveClientSPCall();
+                    }
+                  });
+            });
+      } else {
+        this.SaveClientSPCall();
+      }
+    } else {
+      this.SaveClientSPCall();
+    }
   }
 
   SaveClientSPCall() {

@@ -261,21 +261,22 @@ export class SowComponent implements OnInit {
                 this._Customers = [];
                 if (data !== undefined && data !== null && data.length > 0) {
                   for (let i = 0; i < data.length; i++) {
-                    const Duplicate = this._SOWs.filter(m => m.SOWID !== SOWID
-                      && m.CustomerID.toString() === data[i].Id.toString());
-                    const Duplicate2 = this._SOWs.filter(m => m.SOWID !== SOWID &&
-                      ((m.EffectiveDate !== undefined && m.EffectiveDate !== null && m.EffectiveDate.toString() !== '' &&
-                        new Date(m.EffectiveDate) <= dtToday) && !(m.ExpirationDate !== undefined && m.ExpirationDate !== null) &&
-                        (m.ExpirationDate !== undefined && m.ExpirationDate !== null &&
-                          ((m.ExpirationDate.toString() === '') || (m.ExpirationDate.toString() !== ''
-                            && new Date(m.ExpirationDate) >= dtToday))))
-                      && m.CustomerID.toString() === data[i].Id.toString());
-                    // console.log(Duplicate);
-                    // console.log(Duplicate2);
-                    if (Duplicate !== undefined && Duplicate !== null && Duplicate.length > 0) {
-                    } else {
-                      this._Customers.push({ label: data[i].CustomerName.toString(), value: data[i].Id.toString() });
-                    }
+                    this._Customers.push({ label: data[i].CustomerName.toString(), value: data[i].Id.toString() });
+                    // const Duplicate = this._SOWs.filter(m => m.SOWID !== SOWID
+                    //   && m.CustomerID.toString() === data[i].Id.toString());
+                    // const Duplicate2 = this._SOWs.filter(m => m.SOWID !== SOWID &&
+                    //   ((m.EffectiveDate !== undefined && m.EffectiveDate !== null && m.EffectiveDate.toString() !== '' &&
+                    //     new Date(m.EffectiveDate) <= dtToday) && !(m.ExpirationDate !== undefined && m.ExpirationDate !== null) &&
+                    //     (m.ExpirationDate !== undefined && m.ExpirationDate !== null &&
+                    //       ((m.ExpirationDate.toString() === '') || (m.ExpirationDate.toString() !== ''
+                    //         && new Date(m.ExpirationDate) >= dtToday))))
+                    //   && m.CustomerID.toString() === data[i].Id.toString());
+                    // // console.log(Duplicate);
+                    // // console.log(Duplicate2);
+                    // if (Duplicate !== undefined && Duplicate !== null && Duplicate.length > 0) {
+                    // } else {
+                    //   this._Customers.push({ label: data[i].CustomerName.toString(), value: data[i].Id.toString() });
+                    // }
                   }
                 }
 
@@ -547,12 +548,10 @@ export class SowComponent implements OnInit {
 
   SaveSOWSPCall() {
     this.showSpinner = true;
-    console.log(this._selectedSOW);
     this.timesysSvc.SOW_InsertOrUpdate(this._selectedSOW)
       .subscribe(
         (outputData) => {
           this.showSpinner = false;
-          console.log(outputData);
           if (outputData !== undefined && outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
               key: 'alert',

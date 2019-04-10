@@ -847,4 +847,24 @@ export class TimesystemService {
     return this.http.get<FileSystem[]>(this.url + 'GetFiles');
   }
 
+  HolidayHoursChargedToCompany(CompanyID: string) {
+    const params = new HttpParams()
+      .set('CompanyID', CompanyID);
+    return this.http.get<TimeSheet[]>(this.url + 'HolidayHoursChargedToCompany', { params });
+  }
+
+  CompaniesHaveSameHolidays(OldCompanyID: string, NewCompanyID: string) {
+    const params = new HttpParams()
+      .set('OldCompanyID', OldCompanyID)
+      .set('NewCompanyID', NewCompanyID);
+    return this.http.get<TimeSheet[]>(this.url + 'CompaniesHaveSameHolidays', { params });
+  }
+
+  IsBillingCodeUsedOnAnyPendingTimesheets(ChargeID: string, ChargeType: string) {
+    const params = new HttpParams()
+      .set('ChargeID', ChargeID)
+      .set('ChargeType', ChargeType);
+    return this.http.get<TimeSheet[]>(this.url + 'IsBillingCodeUsedOnAnyPendingTimesheets', { params });
+  }
+
 }
