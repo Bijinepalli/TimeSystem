@@ -21,8 +21,6 @@ export class DepartmentsComponent implements OnInit {
 
   cols: any;
   _recData = 0;
-  visibleHelp = false;
-  helpText: string;
   _HasEdit = false;
 
   _departmentList: Departments[] = [];
@@ -45,6 +43,8 @@ export class DepartmentsComponent implements OnInit {
   IsSecure: boolean;
   showReport: boolean;
 
+  previousOPs: any[] = [];
+
 
   /* #region Constructor */
   // tslint:disable-next-line:max-line-length
@@ -54,7 +54,7 @@ export class DepartmentsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -144,19 +144,6 @@ export class DepartmentsComponent implements OnInit {
     this.GetMethods();
   }
 
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
-
   AddFormControls() {
     this.addControlsDepartment();
   }
@@ -239,6 +226,16 @@ export class DepartmentsComponent implements OnInit {
   showEmployees(event, dataRow: Departments, overlaypanel: OverlayPanel) {
     this.deptEmployeeHdr = 'Employees associated with department';
     this._deptEmployeePageNo = 0;
+    if (this.previousOPs !== undefined && this.previousOPs !== null && this.previousOPs.length > 0) {
+      for (let cnt = 0; this.previousOPs.length > 0 && cnt < this.previousOPs.length; cnt++) {
+        if (this.previousOPs[cnt].overlaypanel !== undefined && this.previousOPs[cnt].overlaypanel !== null) {
+          this.previousOPs[cnt].overlaypanel.hide();
+        }
+        this.previousOPs.splice(cnt, 1);
+        cnt--;
+      }
+    }
+    this.previousOPs.push({ eveny: event, overlaypanel: overlaypanel });
     this.timesysSvc.departmentEmployee_Get(dataRow.Id.toString())
       .subscribe(
         (outputData) => {

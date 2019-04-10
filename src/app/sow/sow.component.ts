@@ -9,11 +9,13 @@ import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { Table } from 'primeng/table';
+import { CurrencyConverterPipe } from '../sharedpipes/currencycoverter.pipe';
 
 @Component({
   selector: 'app-sow',
   templateUrl: './sow.component.html',
-  styleUrls: ['./sow.component.css']
+  styleUrls: ['./sow.component.css'],
+  providers: [CurrencyConverterPipe],
 })
 
 export class SowComponent implements OnInit {
@@ -21,9 +23,6 @@ export class SowComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
-
-  visibleHelp: boolean;
-  helpText: string;
 
   showSpinner = false;
   showReport: boolean;
@@ -62,8 +61,9 @@ export class SowComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datepipe: DatePipe,
+    private currencyConverter: CurrencyConverterPipe,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -120,9 +120,6 @@ export class SowComponent implements OnInit {
   }
 
   ClearAllProperties() {
-    this.visibleHelp = false;
-    this.helpText = '';
-
     this._SOWs = null;
     this.cols = {};
     this._recData = 0;
@@ -152,17 +149,17 @@ export class SowComponent implements OnInit {
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'left', width: 'auto' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'left', width: 'auto' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'left', width: 'auto' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '100px' },
+      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: '200px' },
       { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: 'auto' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: 'auto' },
-      { field: 'Status', header: 'Status', align: 'left', width: 'auto' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: 'auto' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: '100px' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '120px' },
+      { field: 'Status', header: 'Status', align: 'left', width: '150px' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '60px' },
       { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
-      { field: 'SOWFileName', header: 'SOW File', align: 'left', width: 'auto' },
+      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: 'auto' },
     ];
     this._sortArray = [
       'Name', 'CustomerName',
@@ -349,7 +346,7 @@ export class SowComponent implements OnInit {
     this._frm.addControl('frmName', new FormControl(null, Validators.required));
     this._frm.addControl('frmCustomer', new FormControl(null, Validators.required));
     this._frm.addControl('frmEffectiveDate', new FormControl(null, Validators.required));
-    this._frm.addControl('frmExpirationDate', new FormControl(null, null));
+    this._frm.addControl('frmExpirationDate', new FormControl(null, Validators.required));
     this._frm.addControl('frmCurrencyType', new FormControl('USD', Validators.required));
     this._frm.addControl('frmTotalContractValue', new FormControl(null, Validators.required));
     this._frm.addControl('frmOriginate', new FormControl(null, Validators.required));
@@ -359,6 +356,16 @@ export class SowComponent implements OnInit {
     this._frm.addControl('frmNotes', new FormControl(null, null));
     this._frm.addControl('frmInvoiceFrequency', new FormControl(null, Validators.required));
     this._frm.addControl('frmSOWFileName', new FormControl(null, Validators.required));
+    // this._frm.valueChanges.subscribe(frm => {
+    //   if (frm.frmTotalContractValue) {
+    //     console.log(this.currencyConverter.transform(frm.frmTotalContractValue));
+    //     this._frm.patchValue({
+    //       amount: this.currencyConverter.transform(frm.frmTotalContractValue)
+    //     }, {
+    //         emitEvent: false
+    //       });
+    //   }
+    // });
   }
 
   setDataToControls(data: SOW) {
@@ -410,10 +417,10 @@ export class SowComponent implements OnInit {
         this._previousSOWStatus = data.Status.toString();
         this._frm.controls['frmStatus'].setValue(data.Status);
       }
+      this.isRequiredFiles();
     }
     if (!this.IsControlUndefined('frmSOWType')) {
       if (data.SOWType !== undefined && data.SOWType !== null && data.SOWType.toString() !== '') {
-
         this._frm.controls['frmSOWType'].setValue(data.SOWType);
       }
     }
@@ -460,17 +467,8 @@ export class SowComponent implements OnInit {
     this.sowDialog = false;
   }
 
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
+  clearSelectedFile() {
+    this._frm.controls['frmSOWFileName'].setValue(null);
   }
 
   cancelSOW() {
@@ -518,6 +516,8 @@ export class SowComponent implements OnInit {
     }
     if (!this.IsControlUndefinedAndHasValue('frmNotes')) {
       this._selectedSOW.Notes = this._frm.controls['frmNotes'].value.toString().trim();
+    } else {
+      this._selectedSOW.Notes = '';
     }
     if (!this.IsControlUndefinedAndHasValue('frmInvoiceFrequency')) {
       this._selectedSOW.InvoiceFrequency = this._frm.controls['frmInvoiceFrequency'].value.toString().trim();
@@ -525,6 +525,7 @@ export class SowComponent implements OnInit {
     if (!this.IsControlUndefinedAndHasValue('frmSOWFileName')) {
       this._selectedSOW.SOWFileName = this._frm.controls['frmSOWFileName'].value.toString().trim();
     } else {
+      this._selectedSOW.SOWFileName = '';
       errMsg = 'No file selected. Do you wish to continue?';
     }
     if (errMsg.trim() !== '') {

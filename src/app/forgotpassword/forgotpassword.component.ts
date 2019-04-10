@@ -42,7 +42,7 @@ export class ForgotpasswordComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
 
   ) {
 
@@ -122,11 +122,11 @@ export class ForgotpasswordComponent implements OnInit {
       } else {
         this.IsValidLink = false;
         this.msgSvc.add({
-          key: 'alert',
+          key: 'Expired',
           sticky: true,
           severity: 'error',
           summary: 'Error!',
-          detail: 'Link Expired!'
+          detail: 'Link Expired. Click OK to go to Login Page and try regenerating the link using Forgot Password option.'
         });
       }
     });
@@ -143,11 +143,11 @@ export class ForgotpasswordComponent implements OnInit {
     if (this.signInForm.invalid && !this.IsValidLink) {
       if (!this.IsValidLink) {
         this.msgSvc.add({
-          key: 'alert',
+          key: 'Expired',
           sticky: true,
           severity: 'error',
           summary: 'Error!',
-          detail: 'Link Expired!'
+          detail: 'Link Expired. Click OK to go to Login Page and try regenerating the link using Forgot Password option.'
         });
       }
       return;

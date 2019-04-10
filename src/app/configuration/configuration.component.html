@@ -1,15 +1,15 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
-    Configuration Settings
-  </div>
-  <div class="ui-g-12 ui-md-2 ui-g-nopad">
-    <div class="ui-g-12 ui-md-6"></div>
-    <div class="ui-g-12 ui-md-4"></div>
-    <div class="ui-g-12 ui-md-2 helpClass ui-g-nopad">
-      <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a>
+    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+      Configuration Settings <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+        style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+        (click)="commonSvc.showHelp('')"></i>
+    </div>
+    <div class="ui-g-3 ui-md-2 ui-g-nopad">
+      <div class="ui-g-3 ui-md-6"></div>
+      <div class="ui-g-3 ui-md-4"></div>
+      <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
     </div>
   </div>
-</div>
 <br>
 <p-tabView>
   <p-tabPanel header="App Settings">
@@ -23,7 +23,3 @@
     </ng-template>
   </p-tabPanel>
 </p-tabView>
-
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>

@@ -7,6 +7,7 @@ import { DatePipe } from '@angular/common';
 
 import { TableExport } from 'tableexport';
 import { environment } from 'src/environments/environment';
+import { CommonService } from 'src/app/service/common.service';
 
 @Component({
   selector: 'app-employeeutilizationreport',
@@ -19,8 +20,6 @@ export class EmployeeutilizationreportComponent implements OnInit {
   _HasEdit = true;
 
   showSpinner = false;
-  helpText: any;
-  visibleHelp = false;
 
   _Departments: Departments[] = [];
   _selectedDepartment: Departments = null;
@@ -52,29 +51,69 @@ export class EmployeeutilizationreportComponent implements OnInit {
   ExportFilePath = '';
 
   @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
+  IsSecure: boolean;
 
   constructor(
+    private timesysSvc: TimesystemService,
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private timesysSvc: TimesystemService,
     private datePipe: DatePipe,
-  ) { }
+    public commonSvc: CommonService,
+  ) {
+    this.CheckActiveSession();
+    this.commonSvc.setAppSettings();
+  }
 
+  CheckActiveSession() {
+    let sessionActive = false;
+    if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
+        sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        sessionActive = true;
+      }
+    }
 
+    if (!sessionActive) {
+      this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
+    }
+  }
+  /* #endregion*/
+
+  /* #region Page Life Cycle Methods*/
+  // tslint:disable-next-line:use-life-cycle-interface
+  ngOnDestroy() {
+    this.ParamSubscribe.unsubscribe();
+  }
 
   ngOnInit() {
+    this.showSpinner = true;
+    this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
-      this.ClearAllProperties();
-      this.Initialisations();
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
         this.CheckSecurity(SplitVals[SplitVals.length - 1]);
-        this.GetMethods();
+      } else {
+        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+    this.showSpinner = false;
+  }
 
+  CheckSecurity(PageId: string) {
+    this.showSpinner = true;
+    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
+      .subscribe((data) => {
+        this.showSpinner = false;
+        if (data !== undefined && data !== null && data.length > 0) {
+          this.ClearAllProperties();
+          this.IsSecure = true;
+          this.Initialisations();
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Access Denied' } }); // Access Denied
+        }
+      });
   }
 
   ClearAllProperties() {
@@ -138,20 +177,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this._startDateVal = '';
     this._endDateVal = '';
     this.showSpinner = false;
-  }
-
-  CheckSecurity(PageId: string) {
-    this._HasEdit = true;
-
-    this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(),
-      PageId)
-      .subscribe((data) => {
-        if (data != null && data.length > 0) {
-          if (data[0].HasEdit) {
-            this._HasEdit = false;
-          }
-        }
-      });
+    this.GetMethods();
   }
 
   GetMethods() {
@@ -263,19 +289,6 @@ export class EmployeeutilizationreportComponent implements OnInit {
             });
       }
     }
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   getDisplayColors(i: number, border: number) {

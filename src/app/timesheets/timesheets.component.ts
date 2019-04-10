@@ -57,9 +57,6 @@ export class TimesheetsComponent implements OnInit {
 
   @ViewChild('dt') dt: Table;
   @ViewChild('dtHours') dtHours: Table;
-  visibleHelp: boolean;
-  helpText: string;
-
 
   constructor(
     private router: Router,
@@ -67,7 +64,7 @@ export class TimesheetsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -306,6 +303,14 @@ export class TimesheetsComponent implements OnInit {
                       }
                     } else {
                       this.showSpinner = false;
+                      this.showSpinner = false;
+                      this.confSvc.confirm({
+                        message: 'A timesheet already has been submitted for this period.' +
+                          'This will be a resubmittal. Do you want to continue?',
+                        accept: () => {
+                          this.resubmittal();
+                        }
+                      });
                     }
                   }
                 );
@@ -427,18 +432,4 @@ export class TimesheetsComponent implements OnInit {
       this.dtHours.reset();
     }
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
-
 }

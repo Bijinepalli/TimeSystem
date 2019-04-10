@@ -42,7 +42,7 @@ export class LoginComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
 
   }
@@ -316,8 +316,9 @@ export class LoginComponent implements OnInit {
                         key: 'alert',
                         sticky: true,
                         severity: 'success',
-                        summary: 'Email sent',
-                        detail: 'Email has been sent to reset the password',
+                        summary: 'Info',
+                        detail: 'Email is sent with a link to Change Password that will expire in '
+                          + LinkExpiryMin.toString() + ' minutes.',
                       });
                     }
                   });

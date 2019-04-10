@@ -2,7 +2,7 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     SOW <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('SOWSelect.htm')"></i>
+      (click)="commonSvc.showHelp('SOWSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
@@ -40,7 +40,7 @@
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
+          <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
@@ -61,11 +61,17 @@
               <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
             </div>
             <ng-template #nondatecol>
-              {{rowData[col.field]}}
+              <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
+                <i class="fa fa-file" pTooltip="{{rowData[col.field]}}" *ngIf="rowData[col.field]!==''"
+                  tooltipPosition="top"></i>
+              </div>
+              <ng-template #defaultcol>
+                {{rowData[col.field]}}
+              </ng-template>
             </ng-template>
           </td>
           <td style="text-align: center" *ngIf="!_HasEdit">
-            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused SOW" tooltipPosition="left"
+            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this SOW" tooltipPosition="left"
               (click)="deleteSOW(rowData)"></i>
           </td>
         </tr>
@@ -80,7 +86,7 @@
       {{sowHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('SOWUpdate.htm')"></i>
+        (click)="commonSvc.showHelp('SOWUpdate.htm')"></i>
     </p-header>
     <form [formGroup]="_frm">
       <p-toast [style]="{marginTop: '80px'}" position="center" key="alertWarningPopup" appendTo="body"></p-toast>
@@ -96,8 +102,8 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Name <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Name" formControlName="frmName"
-                appendTo="body" pToolTip="SOW's name">
+              <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body"
+                pToolTip="SOW's name">
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Customer <span class="mandatoryStar">* </span><br>
@@ -117,7 +123,7 @@
                 [maxDate]="_frm.controls['frmExpirationDate'].value"></p-calendar>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-              Expiration Date (mm-dd-yyyy) <br>
+              Expiration Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
               <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
                 formControlName="frmExpirationDate" [inputStyle]="{'width':'90%'}"
@@ -136,8 +142,10 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Total Contract Value<span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Total Contract Value"
-                formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event)">
+              <input type="text" pInputText style="width:100%;text-align: right;"
+                formControlName="frmTotalContractValue"                
+                appendTo="body" (keypress)="numberOnly($event)">
+                <!-- [value]="_frm.get('frmTotalContractValue').value | currency:'USD':'symbol-narrow':'4.2-2'" -->
             </div>
           </div>
 
@@ -203,7 +211,9 @@
                 {{SOWFile.value}}
               </ng-template>
               <p-footer>
-                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}}
+                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}} <i
+                  *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()" class="pi pi-times"
+                  style="color:red;float:right;"></i>
               </p-footer>
             </p-listbox>
           </div>
@@ -237,7 +247,3 @@
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Companies, CompanyHolidays } from '../model/objects';
 import { YearEndCodes, BillingCode } from '../model/constants';
@@ -7,6 +7,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { PickList } from 'primeng/primeng';
 
 @Component({
   selector: 'app-companies',
@@ -15,8 +16,6 @@ import { environment } from 'src/environments/environment';
 })
 export class CompaniesComponent implements OnInit {
   selectedYear: number;
-  visibleHelp: boolean;
-  helpText: string;
   _companies: Companies[] = [];
   _companyHours: Companies[] = [];
   _yec: YearEndCodes = new YearEndCodes();
@@ -47,13 +46,15 @@ export class CompaniesComponent implements OnInit {
   IsSecure = false;
   showReport: boolean;
 
+  @ViewChild('pcklHolidays') pcklHolidays: PickList;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -113,8 +114,6 @@ export class CompaniesComponent implements OnInit {
 
   ClearAllProperties() {
     // this.selectedYear = null;
-    this.visibleHelp = false;
-    this.helpText = '';
     this._companies = [];
     this._companyHours = [];
     this._yec = new YearEndCodes();
@@ -274,29 +273,18 @@ export class CompaniesComponent implements OnInit {
     this._frm.reset();
   }
 
+
+
   clearControls() {
     this._IsEdit = false;
     this._selectedCompany = null;
     this.resetForm();
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
     this.companyHdr = 'Add New Company';
     this.companyDialog = false;
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        },
-        (error) => {
-          console.log(error);
-        });
-  }
-
   sortTarget() {
     /**** Very very important code */
     this._slctHolidays = this._slctHolidays.sort(
@@ -398,6 +386,9 @@ export class CompaniesComponent implements OnInit {
   }
 
   getCompanyHolidays() {
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
@@ -416,6 +407,7 @@ export class CompaniesComponent implements OnInit {
               this._availableHolidays = data[1];
             }
           }
+          this.companyHolidayDialog = true;
         },
         (error) => {
           console.log(error);
@@ -425,9 +417,11 @@ export class CompaniesComponent implements OnInit {
   assignCompanyHolidays(companyData: Companies) {
     this._slctedCompanyId = companyData.Id;
     this.selectedYear = new Date().getFullYear();
-    this.getCompanyHolidays();
     this.companyHolidayHdr = 'Assign Holidays to ' + companyData.CompanyName;
-    this.companyHolidayDialog = true;
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
+    this.getCompanyHolidays();
   }
 
   saveCompanyHoliday() {
@@ -455,6 +449,7 @@ export class CompaniesComponent implements OnInit {
   clearCompanyHolidaysControls() {
     this.companyHolidayDialog = false;
     this._slctedCompanyId = null;
+    this.pcklHolidays.resetFilter();
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
@@ -462,6 +457,14 @@ export class CompaniesComponent implements OnInit {
   }
 
   SaveCompanyHolidaySPCall() {
+    if (this._slctHolidays !== undefined && this._slctHolidays !== null && this._slctHolidays.length > 0) {
+
+    } else {
+      let companyHolidays: CompanyHolidays;
+      companyHolidays = {};
+      companyHolidays.CompanyId = this._slctedCompanyId;
+      this._slctHolidays.push(companyHolidays);
+    }
     this.timesysSvc.CompanyHolidays_DeleteAndInsert(this._slctHolidays)
       .subscribe(
         (outputData) => {

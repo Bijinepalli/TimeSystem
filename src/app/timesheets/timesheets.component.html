@@ -1,7 +1,8 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     {{_mainHeader}} <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="commonSvc.showHelp('')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
@@ -13,7 +14,6 @@
 </div>
 
 <ng-container *ngIf="IsSecure">
-
   <ng-container *ngIf="!Hourschrg">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-8"></div>
@@ -64,10 +64,12 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No'" class="fa fa-edit fa-150x editIcon"
-                pTooltip="Edit this TimeSheet" tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i>
-              <i *ngIf="rowData['Submitted'] === 'Yes'" class="fa fa-eye fa-150x viewIcon"
-                pTooltip="View this TimeSheet" tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
+              <i *ngIf="rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] !== 'Rejected'"
+                class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
+                (click)="editTimeSheet(rowData)"></i>
+              <i *ngIf="rowData['Submitted'] === 'Yes' || (rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] === 'Rejected')"
+                class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom"
+                (click)="viewTimeSheet(rowData)"></i>
             </td>
             <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
               <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
@@ -81,7 +83,7 @@
               </ng-template>
             </td>
             <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] !== 'Pending'"
+              <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] === ''"
                 class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this TimeSheet" tooltipPosition="left"
                 (click)="deleteTimeSheet(rowData)"></i>
             </td>
@@ -204,8 +206,3 @@
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <p-scrollPanel [style]="{width: '100%', height: '800px'}">
-    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-  </p-scrollPanel>
-</p-sidebar>

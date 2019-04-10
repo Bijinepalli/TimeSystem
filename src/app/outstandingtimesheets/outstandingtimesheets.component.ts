@@ -37,7 +37,7 @@ export class OutstandingtimesheetsComponent implements OnInit {
     private fb: FormBuilder,
     private datePipe: DatePipe,
     private decimal: DecimalPipe,
-    private commonSvc: CommonService
+    public commonSvc: CommonService
   ) {
   }
 
@@ -103,17 +103,17 @@ export class OutstandingtimesheetsComponent implements OnInit {
   }
 
   editTimeSheet(timeSheet: TimeSheet) {
-    this.confSvc.confirm({
-      message: 'Do you want to edit the timesheet?',
-      accept: () => {
-        if (timeSheet.Id < 0) {
-          // sessionStorage.setItem(environment.buildType.toString() + '_' + 'PeriodEndDate', timeSheet.PeriodEnd);
-          this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
-        } else {
-          this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
-        }
-      }
-    });
+    // this.confSvc.confirm({
+    //   message: 'Do you want to edit the timesheet?',
+    //   accept: () => {
+    if (timeSheet.Id < 0) {
+      // sessionStorage.setItem(environment.buildType.toString() + '_' + 'PeriodEndDate', timeSheet.PeriodEnd);
+      this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id + '/' + timeSheet.PeriodEndDate], { skipLocationChange: true });
+    } else {
+      this.router.navigate(['/menu/maintaintimesheet/' + timeSheet.Id], { skipLocationChange: true });
+    }
+    // }
+    // });
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['PeriodEnd', 'CreatedOn'], []);

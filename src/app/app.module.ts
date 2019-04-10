@@ -41,6 +41,7 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 
 import { SanitizeHtmlPipe } from './sharedpipes/sanitizeHtmlString.pipe';
 import { DateTimeFormatPipe } from './sharedpipes/dateformat';
+import { CurrencyConverterPipe } from './sharedpipes/currencycoverter.pipe';
 
 import { TimesystemService } from './service/timesystem.service';
 import { AppComponent } from './app.component';
@@ -200,6 +201,7 @@ const appRoutes: Routes = [
     FielderrorsComponent,
     SanitizeHtmlPipe,
     DateTimeFormatPipe,
+    CurrencyConverterPipe,
     MasterComponent,
     DashboardComponent,
     Master2Component,

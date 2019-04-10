@@ -25,8 +25,6 @@ export class BillingcodelistingComponent implements OnInit {
   _recData: any;
   showReport = false;
   showSpinner = false;
-  visibleHelp: boolean;
-  helpText: string;
   ParamSubscribe: any;
   IsSecure = false;
 
@@ -41,7 +39,7 @@ export class BillingcodelistingComponent implements OnInit {
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private route: ActivatedRoute,
   ) {
     this.CheckActiveSession();
@@ -104,8 +102,6 @@ export class BillingcodelistingComponent implements OnInit {
     this.cols = {};
     this._recData = '';
     this.showReport = false;
-    this.visibleHelp = false;
-    this.helpText = '';
     this.resetSort();
   }
 
@@ -208,18 +204,6 @@ export class BillingcodelistingComponent implements OnInit {
       ];
     }
     this._sortArray = ['Key', 'ClientName', 'Inactive', 'CreatedOnSearch', 'BillingCycle', 'CompanyName', 'ProjectName'];
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   customSort(event: SortEvent) {

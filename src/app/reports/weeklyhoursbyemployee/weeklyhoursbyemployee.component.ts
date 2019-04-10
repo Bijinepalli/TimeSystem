@@ -38,8 +38,6 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   _endDate: Date;
   _startDateSelect = '';
   _endDateSelect = '';
-  helpText: any;
-  visibleHelp = false;
 
   errMsg: string;
   ParamSubscribe: any;
@@ -55,7 +53,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -134,8 +132,6 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this._endDate = null;
     this._startDateSelect = '';
     this._endDateSelect = '';
-    this.helpText = '';
-    this.visibleHelp = false;
     this.errMsg = '';
     this.showSpinner = false;
     this.resetSort();
@@ -313,18 +309,6 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       ];
     }
     this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'WeekEndSearch'];
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   resetSort() {
     if (this.dt !== undefined && this.dt !== null) {

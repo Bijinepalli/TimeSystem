@@ -15,8 +15,6 @@ import { environment } from 'src/environments/environment';
 })
 export class CustomersComponent implements OnInit {
 
-  visibleHelp: boolean;
-  helpText: string;
 
   types: SelectItem[];
   selectedType: string;
@@ -46,7 +44,7 @@ export class CustomersComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -103,8 +101,6 @@ export class CustomersComponent implements OnInit {
   }
 
   ClearAllProperties() {
-    this.visibleHelp = false;
-    this.helpText = '';
 
     this.types = [];
     this.selectedType = 'Active';
@@ -269,19 +265,6 @@ export class CustomersComponent implements OnInit {
     this.resetForm();
     this.customerHdr = 'Add New Customer';
     this.customerDialog = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   cancelCustomer() {

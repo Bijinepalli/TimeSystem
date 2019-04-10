@@ -8,8 +8,8 @@
         </th>
         <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
           {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
-            ariaLabelAsc="Activate to sort in ascending order">
+          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+            ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
           </p-sortIcon>
         </th>
       </tr>
@@ -17,10 +17,11 @@
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
         <td style="text-align: center">
-          <i class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom" (click)="editTimeSheet(rowData)"></i>
+          <i class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
+            (click)="editTimeSheet(rowData)"></i>
         </td>
         <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
-          <div *ngIf="(col.field === 'PeriodEnd' || col.field === 'CreatedOn'); else nondatecol">
+          <div *ngIf="(col.field === 'PeriodEnd' || col.field === 'TimeStamp'); else nondatecol">
             <div *ngIf="(col.field === 'PeriodEnd'); else nondatetimecol">
               <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
             </div>

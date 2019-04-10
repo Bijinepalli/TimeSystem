@@ -43,8 +43,6 @@ export class ClientsComponent implements OnInit {
   _customers: Customers[] = [];
   _companies: Companies[] = [];
 
-  visibleHelp: boolean;
-  helpText: string;
   showSpinner = false;
 
   ParamSubscribe: any;
@@ -59,7 +57,7 @@ export class ClientsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -134,8 +132,6 @@ export class ClientsComponent implements OnInit {
     this._companyNames = [];
     this._customers = [];
     this._companies = [];
-    this.visibleHelp = false;
-    this.helpText = '';
     this._HasEdit = true;
   }
 
@@ -400,20 +396,6 @@ export class ClientsComponent implements OnInit {
     this.clientHdr = 'Add New Client';
     this.clientDialog = false;
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
-
 
   cancelClient() {
     this.clearControls();

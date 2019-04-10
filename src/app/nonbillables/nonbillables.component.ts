@@ -20,8 +20,6 @@ export class NonbillablesComponent implements OnInit {
   _status: { label: string; value: string; }[];
   nonBillableDialog: boolean;
   nonBillableHdr: string;
-  visibleHelp: boolean;
-  helpText: string;
   _bc: BillingCode = new BillingCode();
   _companies: DrpList[] = [];
   _nonBillable: NonBillables[] = [];
@@ -46,7 +44,7 @@ export class NonbillablesComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -131,8 +129,6 @@ export class NonbillablesComponent implements OnInit {
     this._status = [];
     this.nonBillableDialog = false;
     this.nonBillableHdr = '';
-    this.visibleHelp = false;
-    this.helpText = '';
     this._bc = new BillingCode();
     this._companies = [];
     this._nonBillable = [];
@@ -288,19 +284,6 @@ export class NonbillablesComponent implements OnInit {
     this.resetForm();
     this.nonBillableHdr = 'Add New Non-Billable Item';
     this.nonBillableDialog = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   cancelNonBillable() {

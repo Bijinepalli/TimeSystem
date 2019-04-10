@@ -77,7 +77,7 @@
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
               <input *ngFor="let _c of _DateArray;let c = index" type="text"
                 formControlName="txttimeTandMHours_{{i}}_{{c}}"
-                [style.background-color]="_errorHourlyTANDMArray.indexOf(c) >= 0 ? '#ffccd4': ''"
+                [style.background-color]="_errorHourlyTANDMArray.indexOf(c) >= 0 ? _txtErrorColor: ''"
                 (change)="hoursOnChange()" pInputText pKeyFilter="num"
                 class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
             </div>
@@ -87,8 +87,8 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView)" tooltipPosition="bottom"
-                (click)="deleteByType(_entry)"></i>
+                *ngIf="!(_IsTimeSheetSubmitted || _isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -102,15 +102,15 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" formControlName="txttimeTandMHoursDefault_{{i}}"
               type="text" (change)="hoursOnChange()"
-              [style.background-color]="_errorHourlyTANDMArray.indexOf(i) >= 0 ? '#ffccd4': ''" pInputText
+              [style.background-color]="_errorHourlyTANDMArray.indexOf(i) >= 0 ? _txtErrorColor: ''" pInputText
               pKeyFilter="num" class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtTANDMWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView)" tooltipPosition="bottom"
-              (click)="saveByType(rowData,'TandM')"></i>
+              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+              tooltipPosition="bottom" (click)="saveByType(rowData,'TandM')"></i>
           </div>
         </div>
         <!-- End -->
@@ -120,7 +120,7 @@
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtTANDMDailyTotals_{{c}}"
-              readonly="readonly" [style.background-color]="_errorDailyTANDMArray.indexOf(c) >= 0 ? '#ffccd4': ''"
+              readonly="readonly" [style.background-color]="_errorDailyTANDMArray.indexOf(c) >= 0 ? _txtErrorColor: ''"
               type="text" pInputText pKeyFilter="num"
               class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay') + ' TotalsDisabled'}}" />
           </div>
@@ -163,7 +163,7 @@
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
               <input *ngFor="let _c of _DateArray;let c = index" type="text"
                 formControlName="txtProjBillHours_{{i}}_{{c}}"
-                [style.background-color]="_errorHourlyProjBillArray.indexOf(c) >= 0 ? '#ffccd4': ''"
+                [style.background-color]="_errorHourlyProjBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''"
                 (change)="hoursOnChange()" pInputText pKeyFilter="num"
                 class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
             </div>
@@ -173,8 +173,8 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView)" tooltipPosition="bottom"
-                (click)="deleteByType(_entry)"></i>
+                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -188,15 +188,15 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" formControlName="txtProjBillHoursDefault_{{i}}"
               type="text" (change)="hoursOnChange()"
-              [style.background-color]="_errorHourlyProjBillArray.indexOf(i) >= 0 ? '#ffccd4': ''" pInputText
+              [style.background-color]="_errorHourlyProjBillArray.indexOf(i) >= 0 ? _txtErrorColor: ''" pInputText
               pKeyFilter="num" class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtProjBillWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView)" tooltipPosition="bottom"
-              (click)="saveByType(rowData,'ProjBill')"></i>
+              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+              tooltipPosition="bottom" (click)="saveByType(rowData,'ProjBill')"></i>
           </div>
         </div>
         <!-- End -->
@@ -206,8 +206,9 @@
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtProjBillDailyTotals_{{c}}"
-              readonly="readonly" [style.background-color]="_errorDailyProjBillArray.indexOf(c) >= 0 ? '#ffccd4': ''"
-              type="text" pInputText pKeyFilter="num"
+              readonly="readonly"
+              [style.background-color]="_errorDailyProjBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''" type="text"
+              pInputText pKeyFilter="num"
               class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
@@ -249,7 +250,7 @@
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
               <input *ngFor="let _c of _DateArray;let c = index" type="text"
                 formControlName="txtNonBillHours_{{i}}_{{c}}"
-                [style.background-color]="_errorHourlyNonBillArray.indexOf(c) >= 0 ? '#ffccd4': ''"
+                [style.background-color]="(_errorHourlyNonBillArray.indexOf(c) >= 0 || (_errorHourlyNonBillHolidayArray.indexOf(c) >= 0 && _errorHourlyNonBillHolidayArrayRow.indexOf(i) >=0)) ? _txtErrorColor: ''"
                 (change)="hoursOnChange()" pInputText pKeyFilter="num"
                 class="{{ (_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay'}}" />
             </div>
@@ -259,8 +260,8 @@
               <!-- <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
                 tooltipPosition="bottom" (click)="editHoliday(rowData)"></i> -->
               <i class="fa fa-remove fa-150x" pTooltip="Delete Data" style="cursor:pointer;color:red"
-                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView)" tooltipPosition="bottom"
-                (click)="deleteByType(_entry)"></i>
+                *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+                tooltipPosition="bottom" (click)="deleteByType(_entry)"></i>
             </div>
           </div>
         </div>
@@ -274,15 +275,16 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" formControlName="txtNonBillHoursDefault_{{i}}"
               type="text" (change)="hoursOnChange()"
-              [style.background-color]="_errorHourlyNonBillArray.indexOf(i) >= 0 ? '#ffccd4': ''" pInputText
-              pKeyFilter="num" class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
+              [style.background-color]="(_errorHourlyNonBillArray.indexOf(i) >= 0 || (_errorHourlyNonBillHolidayArray.indexOf(c) >= 0 && _errorHourlyNonBillHolidayArrayRow.indexOf(i) >=0)) ? _txtErrorColor: ''"
+              pInputText pKeyFilter="num"
+              class="{{ (_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
             <input type="text" readonly="readonly" pInputText pKeyFilter="num"
               formControlName="txtNonBillWeeklyTotalDefault" class="weekTotals TotalsDisabled" />
             <i class="fa fa-save fa-150x" pTooltip="Save Data" style="cursor:pointer;color:green;margin-right:5px"
-              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView)" tooltipPosition="bottom"
-              (click)="saveByType(rowData,'NonBill')"></i>
+              *ngIf="!(this._IsTimeSheetSubmitted || this._isTimesheetView || _isTimesheetRejected || this._isTimesheetToAprrove)"
+              tooltipPosition="bottom" (click)="saveByType(rowData,'NonBill')"></i>
           </div>
         </div>
         <!-- End -->
@@ -292,8 +294,9 @@
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let c = index" formControlName="txtNonBillDailyTotals_{{c}}"
-              readonly="readonly" [style.background-color]="_errorDailyNonBillArray.indexOf(c) >= 0 ? '#ffccd4': ''"
-              type="text" pInputText pKeyFilter="num"
+              readonly="readonly"
+              [style.background-color]="_errorDailyNonBillArray.indexOf(c) >= 0 ? _txtErrorColor: ''" type="text"
+              pInputText pKeyFilter="num"
               class="{{ ((_weekArray[c] === 6 || _weekArray[c] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
           </div>
           <div class="ui-g-12 ui-md-1" style="padding:1px">
@@ -333,8 +336,8 @@
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" readonly="readonly"
               formControlName="txtDailyGrandTotal_{{i}}"
-              [style.background-color]="_errorDailyGrandArray.indexOf(i) >= 0 ? '#ffccd4': ''" type="text" pInputText
-              pKeyFilter="num"
+              [style.background-color]="_errorDailyGrandArray.indexOf(i) >= 0 ? _txtErrorColor: ''" type="text"
+              pInputText pKeyFilter="num"
               class="{{ ((_weekArray[i] === 6 || _weekArray[i] === 0) ? 'weekEnd' : 'weekDay')+' TotalsDisabled'}}" />
             <!-- <div>
               <span [style.color]="_errorArray.indexOf(0) === 0 ? 'green': 'red'">100</span>
@@ -378,7 +381,8 @@
         </p-header>
         <textarea pInputTextarea class="comments" formControlName="txtUserComments"></textarea>
 
-        <p-footer *ngIf="!_IsTimeSheetSubmitted && !this._isTimesheetView  && !this._isTimesheetToAprrove">
+        <p-footer
+          *ngIf="!_IsTimeSheetSubmitted && !_isTimesheetView  && !_isTimesheetToAprrove && !_isTimesheetRejected">
           <div class="ui-g">
             <div class="ui-g-12 ui-md-12" style="text-align: right">
               <button type="button" pButton label="Save" class="ui-button-info" (click)="Save()"></button>&nbsp;

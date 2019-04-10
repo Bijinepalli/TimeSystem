@@ -9,9 +9,25 @@ import { SortEvent } from 'primeng/api';
 })
 export class CommonService {
   GlobalAppSettings: AppSettings[] = [];
+  ShowHelpFile = false;
+  HelpFileName = '';
+  HelpPageId = '';
   constructor(
     private timesysSvc: TimesystemService,
   ) { }
+
+  showHelp(fileName: string) {
+    this.HelpFileName = fileName;
+    // this.HelpPageId = PageId;
+    this.ShowHelpFile = true;
+  }
+
+  clearHelp() {
+    this.HelpFileName = '';
+    this.HelpPageId = '';
+    this.ShowHelpFile = false;
+  }
+
 
   setAppSettings() {
     return new Promise((resolve, reject) => {

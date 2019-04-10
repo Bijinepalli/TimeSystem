@@ -2,14 +2,12 @@
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Employees <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('EmployeeSelect.htm')"></i>
+      (click)="commonSvc.showHelp('EmployeeSelect.htm')"></i>
   </div>
   <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
     <div class="ui-g-12 ui-md-6 ui-lg-6"></div>
     <div class="ui-g-12 ui-md-4 ui-lg-4"></div>
-    <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad">
-      <!-- <a (click)="showHelp('EmployeeSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
-    </div>
+    <div class="ui-g-12 ui-md-2 ui-lg-2 ui-g-nopad"></div>
   </div>
 </div>
 
@@ -140,7 +138,7 @@
       {{employeeHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('EmployeeUpdate.htm')"></i>
+        (click)="commonSvc.showHelp('EmployeeUpdate.htm')"></i>
     </p-header>
     <div class="ui-g">
       <div class="ui-g-12">
@@ -226,19 +224,20 @@
           Hire Date (mm-dd-yyyy) <br>
           <div style="height:5px"></div>
           <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"></p-calendar>
+            formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"  [maxDate]="_frmEmployee.controls['frmStartDate'].value"></p-calendar>
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
           Start Date (mm-dd-yyyy) <br>
           <div style="height:5px"></div>
           <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-            formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"></p-calendar>
+            formControlName="frmStartDate" [inputStyle]="{'width':'90%'}" [minDate]="_frmEmployee.controls['frmHireDate'].value"></p-calendar>
         </div>
         <div class="ui-g-12 ui-md-2 ui-lg-2" *ngIf="lblTerminationDate">
           <div style="height:5px"></div>
           Termination Date
           <div style="height:5px"></div>
-          <label appendTo="body" pToolTip="" tooltipPosition="bottom">{{lblTerminationDate}}</label>
+          <label appendTo="body" pToolTip=""
+            tooltipPosition="bottom">{{lblTerminationDate| dateFormat: _DisplayDateFormat}}</label>
         </div>
         <div class="ui-g-12 ui-md-6 ui-lg-6">
           <div style="height:5px"></div>
@@ -264,7 +263,7 @@
             [(ngModel)]="chkCompanyHolidays" [ngModelOptions]="{standalone: true}"
             pToolTip="Check if this employee follows the VERTEX holiday schedule"></p-checkbox>
         </div>
-        <div class="ui-g-12 ui-md-6 ui-lg-6">
+        <div class="ui-g-12 ui-md-6 ui-lg-6" *ngIf="false">
           <div style="height:5px"></div>
           <p-checkbox appendTo="body" binary="true" label="Send Email Alert When Pay Stub is Available"
             [(ngModel)]="chkPayAvailableAlert" [ngModelOptions]="{standalone: true}"
@@ -286,7 +285,7 @@
         <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
           <div style="height:5px"></div>
 
-          <p-overlayPanel #opSup [showCloseIcon]="true" appendTo="body">
+          <p-overlayPanel #opSup [showCloseIcon]="true" [dismissable]="true" appendTo="body">
             <p-table [columns]="SupEmpcols" [value]="SupEmployeeList" *ngIf="SupEmployeeList" [style]="{width: '500px'}"
               [responsive]="false" dataKey="ID" [paginator]="true" [rows]="5">
               <ng-template pTemplate="header" let-columns>
@@ -350,7 +349,8 @@
     <p-header>
       Terminate Employee
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
-        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle" (click)="showHelp('')"></i>
+        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+        (click)="commonSvc.showHelp('')"></i>
     </p-header>
     <form [formGroup]="_frmTerminateEmployee" *ngIf="_frmTerminateEmployee">
       <div class="ui-g">
@@ -383,15 +383,15 @@
       Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('AssignCompanyHolidays.htm')"></i>
+        (click)="commonSvc.showHelp('AssignCompanyHolidays.htm')"></i>
     </p-header>
 
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_nonBillablesAssignToEmp" [source]="_nonBillablesNotAssignToEmp" filterBy="ProjectName"
-            sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
-            [showSourceControls]="false" [showTargetControls]="false"
+          <p-pickList #pcklNonBillable [target]="_nonBillablesAssignToEmp" [source]="_nonBillablesNotAssignToEmp"
+            filterBy="ProjectName" sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s"
+            [responsive]="true" [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
             targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
             [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()"
@@ -426,15 +426,15 @@
       Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('AssignCompanyHolidays.htm')"></i>
+        (click)="commonSvc.showHelp('AssignCompanyHolidays.htm')"></i>
     </p-header>
 
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_projectsAssignToEmp" [source]="_projectsNotAssignToEmp" filterBy="ProjectName"
-            sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
-            [showSourceControls]="false" [showTargetControls]="false"
+          <p-pickList #pcklProject [target]="_projectsAssignToEmp" [source]="_projectsNotAssignToEmp"
+            filterBy="ProjectName" sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s"
+            [responsive]="true" [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
             targetFilterPlaceholder="Search by {{_popUpHeader}} Name" [sourceStyle]="{'height':'300px'}"
             [targetStyle]="{'height':'300px'}" (onMoveToTarget)="sortTarget()" (onMoveToSource)="sortSource()"
@@ -469,13 +469,13 @@
       Assign {{_popUpHeader}}s to {{_employeeNameHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('AssignCompanyHolidays.htm')"></i>
+        (click)="commonSvc.showHelp('AssignCompanyHolidays.htm')"></i>
     </p-header>
 
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
-          <p-pickList [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName"
+          <p-pickList #pcklClient [target]="_clientsAssignToEmp" [source]="_clientsNotAssignToEmp" filterBy="ClientName"
             sourceHeader="Unassigned {{_popUpHeader}}s" targetHeader="Assigned {{_popUpHeader}}s" [responsive]="true"
             [showSourceControls]="false" [showTargetControls]="false"
             sourceFilterPlaceholder="Search by {{_popUpHeader}} Name"
@@ -512,7 +512,7 @@
       Change {{_popUpHeader}}s to {{_employeeNameHdr}}
       <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
         style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('RateUpdate.htm')"></i>
+        (click)="commonSvc.showHelp('RateUpdate.htm')"></i>
     </p-header>
 
     <div *ngIf="!_IsEditRate">
@@ -669,9 +669,3 @@
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <p-scrollPanel [style]="{width: '100%', height: '800px'}">
-    <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-  </p-scrollPanel>
-</p-sidebar>

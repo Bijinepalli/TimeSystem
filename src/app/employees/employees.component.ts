@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
@@ -12,6 +12,7 @@ import { CommonService } from '../service/common.service';
 import { BillingCode, YearEndCodes } from '../model/constants';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { PickList } from 'primeng/primeng';
 
 @Component({
   selector: 'app-employees',
@@ -25,7 +26,7 @@ export class EmployeesComponent implements OnInit {
 
 
 
-
+  _DisplayDateFormat = '';
   _billingCodes: BillingCode;
   _yec: YearEndCodes = new YearEndCodes();
   types: SelectItem[];
@@ -91,9 +92,6 @@ export class EmployeesComponent implements OnInit {
   _selectedRate: Rates;
   _ratePlaceholder = '';
 
-  visibleHelp = false;
-  helpText: string;
-
   chkSalaried = false;
   chkSubmitsTime = false;
   chkIPayEligible = false;
@@ -137,6 +135,10 @@ export class EmployeesComponent implements OnInit {
   _ShowReset: boolean;
   _ShowUnlock: boolean;
 
+  @ViewChild('pcklNonBillable') pcklNonBillable: PickList;
+  @ViewChild('pcklProject') pcklProject: PickList;
+  @ViewChild('pcklClient') pcklClient: PickList;
+
   /* #endregion */
 
   /* #region Constructor */
@@ -147,7 +149,7 @@ export class EmployeesComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -332,9 +334,6 @@ export class EmployeesComponent implements OnInit {
     this._selectedRate = {};
     this._ratePlaceholder = '';
 
-    this.visibleHelp = false;
-    this.helpText = '';
-
     this.chkSalaried = false;
     this.chkSubmitsTime = false;
     this.chkIPayEligible = false;
@@ -362,9 +361,22 @@ export class EmployeesComponent implements OnInit {
     this._ShowUnlock = true;
     this._ShowTerminate = true;
     this._ShowReset = true;
+
+    if (this.pcklNonBillable !== undefined && this.pcklNonBillable !== null) {
+      this.pcklNonBillable.resetFilter();
+    }
+
+    if (this.pcklClient !== undefined && this.pcklClient !== null) {
+      this.pcklClient.resetFilter();
+    }
+
+    if (this.pcklProject !== undefined && this.pcklProject !== null) {
+      this.pcklProject.resetFilter();
+    }
   }
 
   Initialisations() {
+    this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.cols = [
       { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
@@ -404,22 +416,10 @@ export class EmployeesComponent implements OnInit {
   }
 
   GetMethods() {
+    console.log('oeeeee');
     this.getEmployees();
     this.getSupervisors();
     this.getDepartments();
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   /* #endregion */
 
@@ -506,6 +506,11 @@ export class EmployeesComponent implements OnInit {
   getNonBillables(empId: number) {
 
     this.showSpinner = true;
+
+    if (this.pcklNonBillable !== undefined && this.pcklNonBillable !== null) {
+      this.pcklNonBillable.resetFilter();
+    }
+
     this.timesysSvc.getEmployee(empId.toString(), '', '')
       .subscribe(
         (empdata) => {
@@ -549,61 +554,64 @@ export class EmployeesComponent implements OnInit {
   getProjects(empId: number) {
 
     this.showSpinner = true;
+
+    if (this.pcklProject !== undefined && this.pcklProject !== null) {
+      this.pcklProject.resetFilter();
+    }
+
     this.timesysSvc.getProjectsAssignToEmployee(empId)
       .subscribe(
-        (data) => {
-          this._projectsAssignToEmp = [];
-          this._projectsAssignToEmpSaved = [];
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._projectsAssignToEmp = this._projectsAssignToEmp.concat(data);
-            this._projectsAssignToEmpSaved = this._projectsAssignToEmpSaved.concat(data);
-          }
-
-          this.showSpinner = false;
-        }
-      );
-    this.timesysSvc.getProjectsNotAssignToEmployee(empId)
-      .subscribe(
-        (data) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._projectsNotAssignToEmp = data;
-          } else {
-            this._projectsNotAssignToEmp = [];
-          }
-
-          this.showSpinner = false;
+        (dataAssign) => {
+          this.timesysSvc.getProjectsNotAssignToEmployee(empId)
+            .subscribe(
+              (dataUnAssign) => {
+                this._projectsAssignToEmp = [];
+                this._projectsAssignToEmpSaved = [];
+                this._projectsNotAssignToEmp = [];
+                if (dataAssign !== undefined && dataAssign !== null && dataAssign.length > 0) {
+                  this._projectsAssignToEmp = this._projectsAssignToEmp.concat(dataAssign);
+                  this._projectsAssignToEmpSaved = this._projectsAssignToEmpSaved.concat(dataAssign);
+                }
+                if (dataUnAssign !== undefined && dataUnAssign !== null && dataUnAssign.length > 0) {
+                  this._projectsNotAssignToEmp = dataUnAssign;
+                }
+                this.showSpinner = false;
+              }
+            );
         }
       );
   }
 
   getClients(empId: number) {
-
     this.showSpinner = true;
+    if (this.pcklClient !== undefined && this.pcklClient !== null) {
+      this.pcklClient.resetFilter();
+    }
     this.timesysSvc.getClientsAssignToEmployee(empId)
       .subscribe(
-        (data) => {
-          this._clientsAssignToEmp = [];
-          this._clientsAssignToEmpSaved = [];
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._clientsAssignToEmp = this._clientsAssignToEmp.concat(data);
-            this._clientsAssignToEmpSaved = this._clientsAssignToEmpSaved.concat(data);
-          }
-        }
-      );
-    this.timesysSvc.getClientsNotAssignToEmployee(empId)
-      .subscribe(
-        (data) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._clientsNotAssignToEmp = data;
-          } else {
-            this._clientsNotAssignToEmp = [];
-          }
-
-          this.showSpinner = false;
+        (dataAssign) => {
+          this.timesysSvc.getClientsNotAssignToEmployee(empId)
+            .subscribe(
+              (dataUnAssign) => {
+                this._clientsAssignToEmp = [];
+                this._clientsAssignToEmpSaved = [];
+                this._clientsNotAssignToEmp = [];
+                if (dataAssign !== undefined && dataAssign !== null && dataAssign.length > 0) {
+                  this._clientsAssignToEmp = this._clientsAssignToEmp.concat(dataAssign);
+                  this._clientsAssignToEmpSaved = this._clientsAssignToEmpSaved.concat(dataAssign);
+                }
+                if (dataUnAssign !== undefined && dataUnAssign !== null && dataUnAssign.length > 0) {
+                  this._clientsNotAssignToEmp = dataUnAssign;
+                }
+                this.showSpinner = false;
+              }
+            );
         }
       );
   }
-
+  filterSupervisor(empData: Employee) {
+    this._Supervisors = this._Supervisors.filter(P => P.value.toString() !== empData.ID.toString());
+  }
   getSupervisors() {
 
     this.showSpinner = true;
@@ -802,13 +810,13 @@ export class EmployeesComponent implements OnInit {
       this._frmEmployee.controls['frmSecurityLevel'].setValue('E');
     }
     if (data.HireDate !== undefined && data.HireDate !== null && data.HireDate.toString() !== '') {
-      this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.replace(new RegExp('-', 'g'), '/')));
+      this._frmEmployee.controls['frmHireDate'].setValue(new Date(data.HireDate.toString()));
       this._hiredatechange = data.HireDate;
     } else {
       this._frmEmployee.controls['frmHireDate'].setValue(new Date());
     }
     if (data.StartDate !== undefined && data.StartDate !== null && data.StartDate.toString() !== '') {
-      this._frmEmployee.controls['frmStartDate'].setValue(new Date(data.StartDate.replace(new RegExp('-', 'g'), '/')));
+      this._frmEmployee.controls['frmStartDate'].setValue(new Date(data.StartDate.toString()));
     }
     if (data.HoursPerDay !== undefined && data.HoursPerDay !== null && data.HoursPerDay.toString() !== '') {
       this._frmEmployee.controls['frmHoursPerDay'].setValue(data.HoursPerDay);
@@ -939,10 +947,12 @@ export class EmployeesComponent implements OnInit {
     this.setDataToControlsEmployee(data);
     this.employeeHdr = 'Edit Employee';
     this.employeeDialog = true;
+    this.filterSupervisor(data);
   }
 
   cancelEmployee() {
     this.clearControlsEmployee();
+    console.log('cancel');
     this.GetMethods();
   }
   saveEmployee() {
@@ -994,20 +1004,19 @@ export class EmployeesComponent implements OnInit {
         this.errMsg += 'Hours Per Day should be greater than 0 hours and less than 24 hours<br>';
       }
     }
-
     if (this.IsControlUndefined('frmHireDate')) {
       this._selectedEmployee.HireDate = '';
     } else {
       this._selectedEmployee.HireDate = this.datepipe.transform(
-        this._frmEmployee.controls['frmHireDate'].value.toString().trim().replace(new RegExp('-', 'g'), '/'),
-        'MM/dd/yyyy');
+        this._frmEmployee.controls['frmHireDate'].value.toString(),
+        'yyyy-MM-dd');
     }
     if (this.IsControlUndefined('frmStartDate')) {
       this._selectedEmployee.StartDate = '';
     } else {
       this._selectedEmployee.StartDate = this.datepipe.transform(
-        this._frmEmployee.controls['frmStartDate'].value.toString().trim().replace(new RegExp('-', 'g'), '/'),
-        'MM/dd/yyyy');
+        this._frmEmployee.controls['frmStartDate'].value.toString(),
+        'yyyy-MM-dd');
     }
     if (this._selectedEmployee.HireDate !== '' && this._selectedEmployee.StartDate !== '') {
       if (new Date(this._selectedEmployee.StartDate) < new Date(this._selectedEmployee.HireDate)) {
@@ -1268,7 +1277,7 @@ export class EmployeesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         // tslint:disable-next-line:max-line-length
-        this._selectedEmployeeForAction.TerminationDate = this.datepipe.transform(this._frmTerminateEmployee.controls['frmTerminateEmployeeDate'].value, 'MM-dd-yyyy').toString().trim();
+        this._selectedEmployeeForAction.TerminationDate = this.datepipe.transform(this._frmTerminateEmployee.controls['frmTerminateEmployeeDate'].value, 'yyyy-MM-dd').toString().trim();
         /* do nothing */
         this.timesysSvc.Employee_Terminate(this._selectedEmployeeForAction)
           .subscribe(
@@ -1641,24 +1650,38 @@ export class EmployeesComponent implements OnInit {
 
   clearModalControls() {
     this._selectedEmployeeForAction = null;
+
+
+
+
+
     switch (this._popUpHeader) {
       case 'Non-Billable Item':
-        this.nonBillableDialog = false;
+        if (this.pcklNonBillable !== undefined && this.pcklNonBillable !== null) {
+          this.pcklNonBillable.resetFilter();
+        }
         this._nonBillablesAssignToEmp = [];
         this._nonBillablesAssignToEmpSaved = [];
         this._nonBillablesNotAssignToEmp = [];
+        this.nonBillableDialog = false;
         break;
       case 'Project':
-        this.projectDialog = false;
+        if (this.pcklProject !== undefined && this.pcklProject !== null) {
+          this.pcklProject.resetFilter();
+        }
         this._projectsAssignToEmp = [];
         this._projectsAssignToEmpSaved = [];
         this._projectsNotAssignToEmp = [];
+        this.projectDialog = false;
         break;
       case 'Client':
-        this.clientDialog = false;
+        if (this.pcklClient !== undefined && this.pcklClient !== null) {
+          this.pcklClient.resetFilter();
+        }
         this._clientsAssignToEmp = [];
         this._clientsAssignToEmpSaved = [];
         this._clientsNotAssignToEmp = [];
+        this.clientDialog = false;
         break;
       case 'Rate':
         this.rateDialog = false;

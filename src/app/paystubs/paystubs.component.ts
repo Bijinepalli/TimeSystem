@@ -27,8 +27,6 @@ export class PaystubsComponent implements OnInit {
   DisplayDateFormat: any;
   IsSecure: boolean;
   _HasEdit: boolean;
-  visibleHelp: boolean;
-  helpText: string;
 
   constructor(
     private router: Router,
@@ -36,7 +34,7 @@ export class PaystubsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -138,18 +136,4 @@ export class PaystubsComponent implements OnInit {
     }
     this.showToggleDisplay(showPayStubs);
   }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
-  }
-
 }

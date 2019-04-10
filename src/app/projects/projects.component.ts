@@ -20,8 +20,6 @@ export class ProjectsComponent implements OnInit {
   _status: { label: string; value: string; }[];
   projectDialog: boolean;
   projectHdr: string;
-  visibleHelp: boolean;
-  helpText: string;
   _DisplayDateTimeFormat = '';
   cols: any;
   _bc: BillingCode = new BillingCode();
@@ -50,7 +48,7 @@ export class ProjectsComponent implements OnInit {
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private route: ActivatedRoute,
   ) {
     this.CheckActiveSession();
@@ -137,8 +135,6 @@ export class ProjectsComponent implements OnInit {
     this._status = [];
     this.projectDialog = false;
     this.projectHdr = '';
-    this.visibleHelp = false;
-    this.helpText = '';
     this.cols = {};
     this._bc = new BillingCode();
     this.resetSort();
@@ -319,19 +315,6 @@ export class ProjectsComponent implements OnInit {
     this.resetForm();
     this.projectHdr = 'Add New Project';
     this.projectDialog = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   cancelProject() {

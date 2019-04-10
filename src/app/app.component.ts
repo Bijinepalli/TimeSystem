@@ -11,7 +11,7 @@ import { ValidatorHelper } from './sharedpipes/validationhelper.validator';
 })
 export class AppComponent implements OnInit {
   title = 'TimeSystem';
-  constructor(private commonSvc: CommonService) {
+  constructor(public commonSvc: CommonService) {
 
   }
 

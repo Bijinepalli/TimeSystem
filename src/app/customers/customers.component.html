@@ -1,141 +1,140 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Customers <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="showHelp('CustomerSelect.htm')"></i>
+    Customers <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="commonSvc.showHelp('CustomerSelect.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad">
-      <!-- <a (click)="showHelp('CustomerSelect.htm')" style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
-    </div>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
 <ng-container *ngIf="IsSecure">
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
-  <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
-    <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new customer to invoice" tooltipPosition="bottom" class="ui-button-info"
-      label="Add New Customer" *ngIf="!_HasEdit" (click)=addCustomer()></button>
-  </div>
-</div>
-<p-panel [toggleable]="true" header="Filter">
   <div class="ui-g">
-    <div class="ui-g-12 ui-md-12 ui-lg-12">
-      <label class="label" style="padding:0px 10px;">Select:</label>
-      <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)" pTooltip="Show customers that have this status"
-        tooltipPosition="bottom"></p-selectButton>
+    <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
+    <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+      <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new customer to invoice" tooltipPosition="bottom"
+        class="ui-button-info" label="Add New Customer" *ngIf="!_HasEdit" (click)=addCustomer()></button>
     </div>
   </div>
-</p-panel>
-<div class="ui-g">&nbsp;</div>
-<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-  <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
-    No matching data for the selected criteria
-  </div>
-</div>
-<div class="ui-g" *ngIf="showReport && _recData > 0">
-  <p-table #dt [columns]="cols" [value]="_customers" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
-    <ng-template pTemplate="caption">
-      <div class="ui-g ui-g-nopad recordsBar">
-        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} customers found</div>
-        <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-          <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp;
-          <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-        </div>
+  <p-panel [toggleable]="true" header="Filter">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <label class="label" style="padding:0px 10px;">Select:</label>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"
+          pTooltip="Show customers that have this status" tooltipPosition="bottom"></p-selectButton>
       </div>
-    </ng-template>
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
-        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-          {{col.header}}
-          <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
-        </th>
-        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-      <tr [pSelectableRow]="rowData">
-        <td style="text-align: center" *ngIf="!_HasEdit">
-          <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this customer" tooltipPosition="bottom"
-            (click)="editCustomer(rowData)"></i>
-        </td>
-        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-          <div *ngIf="col.header.indexOf('Inactive') >= 0">
-            {{rowData[col.field] === true ? 'Yes' : 'No'}}
+    </div>
+  </p-panel>
+  <div class="ui-g">&nbsp;</div>
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+      No matching data for the selected criteria
+    </div>
+  </div>
+  <div class="ui-g" *ngIf="showReport && _recData > 0">
+    <p-table #dt [columns]="cols" [value]="_customers" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} customers found</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="50" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
+          </th>
+          <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td style="text-align: center" *ngIf="!_HasEdit">
+            <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this customer"
+              tooltipPosition="bottom" (click)="editCustomer(rowData)"></i>
+          </td>
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <div *ngIf="col.header.indexOf('Inactive') >= 0">
+              {{rowData[col.field] === true ? 'Yes' : 'No'}}
+            </div>
 
-          <div *ngIf="col.header.indexOf('Inactive') == -1">
-            {{rowData[col.field]}}
-          </div>
-        </td>
-        <td style="text-align: center" *ngIf="!_HasEdit">
-          <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused customer"
-            tooltipPosition="left" (click)="deleteCustomer(rowData)"></i>
-        </td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+            <div *ngIf="col.header.indexOf('Inactive') == -1">
+              {{rowData[col.field]}}
+            </div>
+          </td>
+          <td style="text-align: center" *ngIf="!_HasEdit">
+            <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon"
+              pTooltip="Delete this unused customer" tooltipPosition="left" (click)="deleteCustomer(rowData)"></i>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 
 
-<p-dialog [(visible)]="customerDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" [width]="500">
-  <p-header>
-    {{customerHdr}}
-    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-      (click)="showHelp('CustomerUpdate.htm')"></i>
-  </p-header>
-  <form [formGroup]="_frm">
+  <p-dialog [(visible)]="customerDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true"
+    [width]="500">
+    <p-header>
+      {{customerHdr}}
+      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+        (click)="commonSvc.showHelp('CustomerUpdate.htm')"></i>
+    </p-header>
+    <form [formGroup]="_frm">
       <div class="ui-g">
-          <div class="ui-g-12" style="text-align:left" style="color:red;">
-            * marked fields are required to save the data.
+        <div class="ui-g-12" style="text-align:left" style="color:red;">
+          * marked fields are required to save the data.
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            Customer Name <span class="mandatoryStar">* </span><br>
+            <div style="height:5px"></div>
+            <input type="text" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName"
+              pTooltip="The display name for the customer" tooltipPosition="bottom">
           </div>
-      </div>
-    <div class="ui-g">
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Customer Name <span class="mandatoryStar">* </span><br>
-          <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName"
-            pTooltip="The display name for the customer" tooltipPosition="bottom">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            Customer Number <span class="mandatoryStar">* </span><br>
+            <div style="height:5px"></div>
+            <input type="text" pInputText style="width:100%" placeholder="Customer Number"
+              formControlName="customerNumber" pTooltip="The unique ID for the customer" tooltipPosition="bottom">
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            <div style="height:5px"></div>
+            <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
+              pTooltip="Check to mark this customer as inactive" tooltipPosition="bottom"></p-checkbox>
+          </div>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
+    </form>
+    <p-footer>
+      <div class="ui-g">
         <div class="ui-g-12 ui-md-12 ui-lg-12">
-          Customer Number <span class="mandatoryStar">* </span><br>
-          <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Customer Number" formControlName="customerNumber"
-            pTooltip="The unique ID for the customer" tooltipPosition="bottom">
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveCustomer()"
+            [disabled]="hasFormErrors()" pTooltip="Save the data for the customer" tooltipPosition="bottom"></button>
+          &nbsp;
+          <button pButton label="Cancel" (click)="cancelCustomer()" class="ui-button-danger"></button>
         </div>
       </div>
-      <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <div style="height:5px"></div>
-          <p-checkbox binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}"
-            pTooltip="Check to mark this customer as inactive" tooltipPosition="bottom"></p-checkbox>
-        </div>
-      </div>
-    </div>
-  </form>
-  <p-footer>
-    <div class="ui-g">
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveCustomer()" [disabled]="hasFormErrors()"
-          pTooltip="Save the data for the customer" tooltipPosition="bottom"></button>
-        &nbsp;
-        <button pButton label="Cancel" (click)="cancelCustomer()" class="ui-button-danger"></button>
-      </div>
-    </div>
-  </p-footer>
-</p-dialog>
+    </p-footer>
+  </p-dialog>
 </ng-container>
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
-
-<p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
-  <div [innerHtml]="helpText" class="helpDisplayClass"></div>
-</p-sidebar>

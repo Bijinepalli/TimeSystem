@@ -37,8 +37,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   _reports: any[] = [];
 
   _billingCodesSpecial: BillingCodesSpecial;
-  helpText: any;
-  visibleHelp = false;
   showTotals = false;
   nowrap = 'nowrap';
   ParamSubscribe: any;
@@ -52,7 +50,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -130,8 +128,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
 
     this._recData = 0;
     this.showReport = false;
-    this.visibleHelp = false;
-    this.helpText = '';
     this.showTotals = false;
     this.resetSort();
   }
@@ -273,18 +269,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       { field: 'Project', header: 'Project', align: 'right', width: '125px' },
       { field: 'NonBill', header: 'NonBillable', align: 'right', width: '150px' },
     ];
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   startOver() {
     this.showBillingCodeList = false;

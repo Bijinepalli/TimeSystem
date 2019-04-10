@@ -25,8 +25,6 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   _recData = 0;
   cols: any;
   _billingCodesSpecial: BillingCodesSpecial;
-  helpText: any;
-  visibleHelp = false;
   showTotals = false;
   showTotalsonGenerate = false;
   DisplayDateFormat = '';
@@ -40,7 +38,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     private route: ActivatedRoute,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     private datePipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -104,8 +102,6 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     this._recData = 0;
     this.cols = {};
     this._billingCodesSpecial = new BillingCodesSpecial();
-    this.helpText = '';
-    this.visibleHelp = false;
     this.showTotals = false;
     this.showTotalsonGenerate = false;
     this.showSpinner = false;
@@ -180,18 +176,6 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
       { field: 'Project', header: 'Project', align: 'right', width: '101px' },
       { field: 'NonBill', header: 'NonBillable', align: 'right', width: '133px' },
     ];
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, [], ['TANDM', 'Project', 'NonBill']);

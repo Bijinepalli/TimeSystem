@@ -1,6 +1,7 @@
 <p-confirmDialog></p-confirmDialog>
 <p-toast [style]="{marginTop: '80px'}" position="bottom-right" key="saveSuccess" appendTo="body"></p-toast>
-<p-toast position="center" key="alert" (onClose)="onReject()" styleClass="alertToast" [modal]="true" [baseZIndex]="5000" appendTo="body">
+<p-toast position="center" key="alert" (onClose)="onReject()" styleClass="alertToast" [modal]="true" [baseZIndex]="5000"
+  appendTo="body">
   <ng-template let-message pTemplate="message">
     <div class="ui-g ui-fluid ui-g-nopad">
       <div class="alertHeader">
@@ -19,7 +20,8 @@
     <div class="ui-g ui-fluid ui-g-nopad">
       <div class="ui-g-10"></div>
       <div class="ui-g-2" align="right">
-        <button type="button" pButton (click)="onReject()" label="OK" class="ui-button-secondary" style="border-color: #007ad9; background: #007ad9; color: #ffff;"></button>
+        <button type="button" pButton (click)="onReject()" label="OK" class="ui-button-secondary"
+          style="border-color: #007ad9; background: #007ad9; color: #ffff;"></button>
       </div>
     </div>
   </ng-template>
@@ -48,11 +50,12 @@
     </div>
     <div class="ui-g-6 ui-md-4 ui-lg-3" style="text-align:right;">
       &nbsp;<button pButton icon="fa fa-key fa-2x" pTooltip="{{passwordExpiry}} Click to Change Password."
-        tooltipPosition="right" (click)="changePasswordClick()" class="ui-button-raised {{changePasswordButtonClass}}"></button>&nbsp;
+        tooltipPosition="right" (click)="changePasswordClick()"
+        class="ui-button-raised {{changePasswordButtonClass}}"></button>&nbsp;
       &nbsp;<button pButton icon="fa fa-home fa-2x" pTooltip="Dashboard" tooltipPosition="right" (click)="navigateTo()"
         class="ui-button-raised"></button>&nbsp;
-      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="right" (click)="logout()" class="ui-button-raised ui-button-danger"
-        style="padding-right:0px"></button>&nbsp;&nbsp;
+      <button pButton icon="fa fa-sign-out fa-2x" pTooltip="Logout" tooltipPosition="right" (click)="logout()"
+        class="ui-button-raised ui-button-danger" style="padding-right:0px"></button>&nbsp;&nbsp;
     </div>
   </div>
 </div>
@@ -87,10 +90,17 @@
     [modal]="true">
     <p-header>
       Change Password
-      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="showHelp('HolidayUpdate.htm')"></i>
+      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+        (click)="commonSvc.showHelp('HolidayUpdate.htm')"></i>
     </p-header>
     <app-changepassword></app-changepassword>
   </p-dialog>
 
+  <button pButton label="Save" class="ui-button-success" *ngIf="getHelpStatus()"></button>
+  <p-sidebar [(visible)]="visibleHelp" position="right" [baseZIndex]="10000" styleClass="ui-sidebar-md sidebarHelp">
+    <p-scrollPanel [style]="{width: '100%', height: '800px'}">
+      <div [innerHtml]="helpText" class="helpDisplayClass"></div>
+    </p-scrollPanel>
+  </p-sidebar>
 </div>

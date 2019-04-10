@@ -28,9 +28,6 @@ export class EmployeeclientratesComponent implements OnInit {
   _reports: any[] = [];
   _recData = 0;
   cols: any;
-  visibleHelp: boolean;
-  helpText: string;
-
   ParamSubscribe: any;
   IsSecure = false;
   _HasEdit = true;
@@ -48,7 +45,7 @@ export class EmployeeclientratesComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
-    private commonSvc: CommonService) {
+    public commonSvc: CommonService) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
   }
@@ -130,8 +127,6 @@ export class EmployeeclientratesComponent implements OnInit {
     this._reports = [];
     this._recData = 0;
     this.cols = [];
-    this.visibleHelp = false;
-    this.helpText = '';
     this.showSpinner = false;
   }
 
@@ -188,19 +183,6 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'EmployeeID', 'ClientName', 'ClientID', 'Rate', 'EffectiveDateSearch'];
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['EffectiveDate'], ['Rate', 'EmployeeID', 'ClientID']);

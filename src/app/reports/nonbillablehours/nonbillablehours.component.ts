@@ -30,8 +30,6 @@ export class NonbillablehoursComponent implements OnInit {
   showReport = false;
   _recData = 0;
   rowdata: any;
-  helpText: any;
-  visibleHelp = false;
   selectedCode: any;
   showSpinner = false;
   dateFormat = this.commonSvc.getAppSettingsValue('DateFormat');
@@ -46,7 +44,7 @@ export class NonbillablehoursComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
-    private commonSvc: CommonService
+    public commonSvc: CommonService
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -113,8 +111,6 @@ export class NonbillablehoursComponent implements OnInit {
     this.showReport = false;
     this._recData = 0;
     this.rowdata = {};
-    this.helpText = '';
-    this.visibleHelp = false;
     this.errMsg = '';
   }
 
@@ -225,17 +221,5 @@ export class NonbillablehoursComponent implements OnInit {
         this._headerType = 'Custom';
         break;
     }
-  }
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 }

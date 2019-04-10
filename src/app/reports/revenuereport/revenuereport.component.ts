@@ -28,9 +28,6 @@ export class RevenuereportComponent implements OnInit {
   showReport = false;
   showSpinner = false;
 
-  visibleHelp: boolean;
-  helpText: string;
-
   _errorBlock = '';
   _errorMessage = '';
 
@@ -47,7 +44,7 @@ export class RevenuereportComponent implements OnInit {
     private router: Router,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -119,9 +116,6 @@ export class RevenuereportComponent implements OnInit {
 
     this.showReport = false;
     this.showSpinner = false;
-
-    this.visibleHelp = false;
-    this.helpText = '';
 
     this._errorBlock = '';
     this._errorMessage = '';

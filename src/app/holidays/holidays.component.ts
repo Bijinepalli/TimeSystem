@@ -26,14 +26,10 @@ export class HolidaysComponent implements OnInit {
   selectedYear: any;
   cols: any;
   _recData = 0;
-  _helpPage: any;
-  _sidebarHelp = false;
   _dialogwidth: number;
   holidayDialog = false;
   holidayHdr = 'Add Holiday';
   _frm = new FormGroup({});
-  helpText: any;
-  visibleHelp = false;
 
   _selectedHoliday: Holidays;
   _IsEdit = false;
@@ -54,7 +50,7 @@ export class HolidaysComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private commonSvc: CommonService,
+    public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -258,19 +254,6 @@ export class HolidaysComponent implements OnInit {
     this.resetForm();
     this.holidayHdr = 'Add New Holiday';
     this.holidayDialog = false;
-  }
-
-  showHelp(file: string) {
-    this.timesysSvc.getHelp(file)
-      .subscribe(
-        (data) => {
-          // this.helpText = data;
-          this.visibleHelp = true;
-          const parser = new DOMParser();
-          const parsedHtml = parser.parseFromString(data, 'text/html');
-          this.helpText = parsedHtml.getElementsByTagName('body')[0].innerHTML;
-        }
-      );
   }
 
   cancelHoliday() {
