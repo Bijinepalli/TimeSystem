@@ -922,6 +922,8 @@ export class MaintaintimesheetComponent implements OnInit {
       for (let j = 0; j < this._timeTandM.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
           const dateWeekend = new Date(this._DateArray[i]);
+          console.log(dateWeekend);
+          console.log(dateWeekend.getDay());
           if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
             if (this.timeSheetForm.get('txttimeTandMHours_' + j + '_' + i).value !== ''
               && +this.timeSheetForm.get('txttimeTandMHours_' + j + '_' + i).value > 0) {
@@ -938,6 +940,8 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       for (let i = 0; i < this._DateArray.length; i++) {
         const dateWeekend = new Date(this._DateArray[i]);
+        console.log(dateWeekend);
+        console.log(dateWeekend.getDay());
         if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
           if (this.timeSheetForm.get('txttimeTandMHoursDefault_' + i).value !== ''
             && +this.timeSheetForm.get('txttimeTandMHoursDefault_' + i).value > 0) {
@@ -959,6 +963,8 @@ export class MaintaintimesheetComponent implements OnInit {
       for (let j = 0; j < this._timeProjBill.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
           const dateWeekend = new Date(this._DateArray[i]);
+          console.log(dateWeekend);
+          console.log(dateWeekend.getDay());
           if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
             if (this.timeSheetForm.get('txtProjBillHours_' + j + '_' + i).value !== ''
               && +this.timeSheetForm.get('txtProjBillHours_' + j + '_' + i).value > 0) {
@@ -975,6 +981,8 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       for (let i = 0; i < this._DateArray.length; i++) {
         const dateWeekend = new Date(this._DateArray[i]);
+        console.log(dateWeekend);
+        console.log(dateWeekend.getDay());
         if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
           if (this.timeSheetForm.get('txtProjBillHoursDefault_' + i).value !== ''
             && +this.timeSheetForm.get('txtProjBillHoursDefault_' + i).value > 0) {
@@ -996,6 +1004,8 @@ export class MaintaintimesheetComponent implements OnInit {
       for (let j = 0; j < this._timeNONbill.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
           const dateWeekend = new Date(this._DateArray[i]);
+          console.log(dateWeekend);
+          console.log(dateWeekend.getDay());
           if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
             if (this.timeSheetForm.get('txtNonBillHours_' + j + '_' + i).value !== ''
               && +this.timeSheetForm.get('txtNonBillHours_' + j + '_' + i).value > 0) {
@@ -1012,6 +1022,8 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       for (let i = 0; i < this._DateArray.length; i++) {
         const dateWeekend = new Date(this._DateArray[i]);
+        console.log(dateWeekend);
+        console.log(dateWeekend.getDay());
         if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
           if (this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== ''
             && +this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
