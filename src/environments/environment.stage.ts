@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
-    accessSystemURL: 'http://172.16.16.217/AccessSystem/',
-    helpipaddress: 'http://172.16.16.217/TimeSystemHelpFiles/Help/',
-    url: 'http://172.16.16.217/TimeSystemService/',
+    accessSystemURL: 'https://172.16.6.109/AccessSystem/',
+    helpipaddress: 'https://172.16.6.109/ECTS/TimeSystem/Help/',
+    url: 'https://172.16.6.109/TimeSystemService/',
     buildType: 'UAT',
 };
