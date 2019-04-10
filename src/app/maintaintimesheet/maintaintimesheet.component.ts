@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewC
 import { TimesystemService } from '../service/timesystem.service';
 import {
   Holidays, Employee,
-  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit, TimeSheetForApproval
+  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit, TimeSheetForApproval, DateArray
 } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -93,6 +93,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _holidays: Holidays[] = [];
   _timePeriodsOnLoad: TimePeriods[] = [];
   _timeSheetForApprovalsOnLoad: TimeSheetForApproval[] = [];
+  _daysNDates: DateArray;
   // _txtErrorColor = '#ffccd4'; // Error box background color
   _txtErrorColor = ''; // Error box background color
   ngOnInit() {
@@ -239,24 +240,35 @@ export class MaintaintimesheetComponent implements OnInit {
     // });
   }
   getAllWantedDetailsOnLoad(timeSheetUserId: string, selectPeriodEndDate: string) {
-    this.timesysSvc.getAllWantedDetailsOnLoad(timeSheetUserId).subscribe(
+    this.timesysSvc.getAllWantedDetailsOnLoad(timeSheetUserId, selectPeriodEndDate).subscribe(
       (wholeData) => {
         this._timePeriodsOnLoad = wholeData[0];
         this._timeSheetForApprovalsOnLoad = wholeData[1];
         this._timeSheetUsersSupervisor = wholeData[2];
+        this._daysNDates = wholeData[3];
+        console.log(this._daysNDates);
         this.getPeriodDates(selectPeriodEndDate);
       });
   }
 
 
   getDateAndWeekArrays() {
-    this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
-    if (this._days > 0) {
-      for (let i = 0; i < this._days; i++) {
-        const dtNew = new Date(this._peroidStartDate.getFullYear(),
-          this._peroidStartDate.getMonth(),
-          this._peroidStartDate.getDate() + i);
-        this._DateArray.push(this.datePipe.transform(dtNew, 'yyyy-MM-dd'));
+    // this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
+    // if (this._days > 0) {
+    //   for (let i = 0; i < this._days; i++) {
+    //     const dtNew = new Date(this._peroidStartDate.getFullYear(),
+    //       this._peroidStartDate.getMonth(),
+    //       this._peroidStartDate.getDate() + i);
+    //     this._DateArray.push(this.datePipe.transform(dtNew, 'yyyy-MM-dd'));
+    //     this._weekArray.push(dtNew.getDay());
+    //   }
+    // }
+    this._days = this._daysNDates.NoOfDays;
+    const datesRound = this._daysNDates.Dates;
+    if (datesRound.length > 0) {
+      for (let i = 0; i < datesRound.length; i++) {
+        const dtNew = new Date(datesRound[i]);
+        this._DateArray = this._daysNDates.Dates;
         this._weekArray.push(dtNew.getDay());
       }
     }

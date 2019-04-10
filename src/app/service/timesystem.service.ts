@@ -11,7 +11,8 @@ import {
   DrpList,
   DictionaryType,
   SOW,
-  FileSystem
+  FileSystem,
+  DateArray
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -715,7 +716,7 @@ export class TimesystemService {
     const body = JSON.stringify(_timesheetId);
     return this.http.post<TimeSheet>(this.url + 'TimeSheetDelete', body, httpOptions);
   }
-  getAllWantedDetailsOnLoad(timeSheetemployeeId: string) {
+  getAllWantedDetailsOnLoad(timeSheetemployeeId: string, periodEnd: string) {
     const data1 = this.http.get<TimePeriods[]>(this.url + 'GetTimeSheetPeridos');
 
     let params = new HttpParams()
@@ -727,8 +728,12 @@ export class TimesystemService {
       .set('LoginID', '')
       .set('Password', '');
     const data3 = this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
-
-    return forkJoin([data1, data2, data3]);
+    console.log('Assam');
+    console.log(periodEnd);
+    params = new HttpParams()
+      .set('strPeriodEnd', periodEnd);
+    const data4 = this.http.get<DateArray>(this.url + 'GetNoOfDaysInBetweenPeriod', { params });
+    return forkJoin([data1, data2, data3, data4]);
   }
   getEmployeesNoTimesheetforInvoice(EmployeeId: string) {
     const params = new HttpParams()
