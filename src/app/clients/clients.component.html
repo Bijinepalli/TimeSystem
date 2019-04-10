@@ -104,18 +104,17 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Client Code <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <input type="text" maxlength="15" pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$" pInputText
-              style="width:100%" placeholder="Client Code" formControlName="clientCode" appendTo="body"
-              pToolTip="Unique client code that matches what's in the payroll system">
+            <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode"
+              appendTo="body" pToolTip="Unique client code that matches what's in the payroll system" maxlength="15"
+              pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$">
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Client Name <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <input type="text" maxlength="50" pInputText style="width:100%" placeholder="Client Name"
-              formControlName="clientName" appendTo="body"
-              pToolTip="Unique client name that matches what's in the payroll system">
+            <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName"
+              appendTo="body" pToolTip="Unique client name that matches what's in the payroll system" maxlength="50">
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
@@ -131,8 +130,8 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             PO Number <br>
             <div style="height:5px"></div>
-            <input type="text" maxlength="30" pInputText style="width:100%" placeholder="PO Number"
-              formControlName="poNumber" appendTo="body" pToolTip="Purchase order number">
+            <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber"
+              appendTo="body" pToolTip="Purchase order number" maxlength="30">
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
@@ -141,7 +140,7 @@
             <div style="height:5px"></div>
             <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer"
               formControlName="customerName" pToolTip="The customer to invoice for hours charged to this client."
-              [style]="{'width':'99%'}" (onChange)="getSOWByCustomerID()"></p-dropdown>
+              [style]="{'width':'99%'}" (onChange)="getSOWByCustomerID('')"></p-dropdown>
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
@@ -173,7 +172,7 @@
         <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             <div style="height:5px"></div>
-            Created On: {{_selectedClient.CreatedOn}}
+            Created On: {{_selectedClient.CreatedOn | dateFormat: _DisplayDateFormat}}
           </div>
         </div>
       </div>
