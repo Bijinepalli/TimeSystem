@@ -929,13 +929,18 @@ export class MaintaintimesheetComponent implements OnInit {
     let weekDayProjCountWarning = -1;
     let weekEndNonCountWarning = 0;
     let weekDayNonCountWarning = -1;
+    let weekDayCountInArray = 0;
+    for (let i = 0; i < this._DateArray.length; i++) {
+      const dateWeekend = new Date(this._DateArray[i]);
+      if (!(dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0)) {
+        weekDayCountInArray++;
+      }
+    }
     if (this._timeTandM !== null && this._timeTandM !== undefined && this._timeTandM.length > 0) {
       weekDayTandMCountWarning = 0;
       for (let j = 0; j < this._timeTandM.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
           const dateWeekend = new Date(this._DateArray[i]);
-          console.log(dateWeekend);
-          console.log(dateWeekend.getDay());
           if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
             if (this.timeSheetForm.get('txttimeTandMHours_' + j + '_' + i).value !== ''
               && +this.timeSheetForm.get('txttimeTandMHours_' + j + '_' + i).value > 0) {
@@ -952,8 +957,6 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       for (let i = 0; i < this._DateArray.length; i++) {
         const dateWeekend = new Date(this._DateArray[i]);
-        console.log(dateWeekend);
-        console.log(dateWeekend.getDay());
         if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
           if (this.timeSheetForm.get('txttimeTandMHoursDefault_' + i).value !== ''
             && +this.timeSheetForm.get('txttimeTandMHoursDefault_' + i).value > 0) {
@@ -975,8 +978,6 @@ export class MaintaintimesheetComponent implements OnInit {
       for (let j = 0; j < this._timeProjBill.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
           const dateWeekend = new Date(this._DateArray[i]);
-          console.log(dateWeekend);
-          console.log(dateWeekend.getDay());
           if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
             if (this.timeSheetForm.get('txtProjBillHours_' + j + '_' + i).value !== ''
               && +this.timeSheetForm.get('txtProjBillHours_' + j + '_' + i).value > 0) {
@@ -993,8 +994,6 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       for (let i = 0; i < this._DateArray.length; i++) {
         const dateWeekend = new Date(this._DateArray[i]);
-        console.log(dateWeekend);
-        console.log(dateWeekend.getDay());
         if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
           if (this.timeSheetForm.get('txtProjBillHoursDefault_' + i).value !== ''
             && +this.timeSheetForm.get('txtProjBillHoursDefault_' + i).value > 0) {
@@ -1016,8 +1015,6 @@ export class MaintaintimesheetComponent implements OnInit {
       for (let j = 0; j < this._timeNONbill.length; j++) {
         for (let i = 0; i < this._DateArray.length; i++) {
           const dateWeekend = new Date(this._DateArray[i]);
-          console.log(dateWeekend);
-          console.log(dateWeekend.getDay());
           if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
             if (this.timeSheetForm.get('txtNonBillHours_' + j + '_' + i).value !== ''
               && +this.timeSheetForm.get('txtNonBillHours_' + j + '_' + i).value > 0) {
@@ -1034,8 +1031,6 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       for (let i = 0; i < this._DateArray.length; i++) {
         const dateWeekend = new Date(this._DateArray[i]);
-        console.log(dateWeekend);
-        console.log(dateWeekend.getDay());
         if (dateWeekend.getDay() === 6 || dateWeekend.getDay() === 0) {
           if (this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value !== ''
             && +this.timeSheetForm.get('txtNonBillHoursDefault_' + i).value > 0) {
@@ -1057,22 +1052,23 @@ export class MaintaintimesheetComponent implements OnInit {
     if (weekEndTandMCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Time & Materials)<br/>';
     }
-    if (weekDayTandMCountWarning === 0) {
+    if (weekDayTandMCountWarning === 0 || (weekDayTandMCountWarning > 0 && weekDayTandMCountWarning !== weekDayCountInArray)) {
       weekDayErrors = 'There are weekdays with no hours entered. Is this correct?<br/>';
     }
     if (weekEndProjCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Project Billable)<br/>';
     }
-    if (weekDayProjCountWarning === 0) {
+    if (weekDayProjCountWarning === 0 || (weekDayProjCountWarning > 0 && weekDayProjCountWarning !== weekDayCountInArray)) {
       weekDayErrors = 'There are weekdays with no hours entered. Is this correct?<br/>';
     }
     if (weekEndNonCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Non-Billable)<br/>';
     }
-    if (weekDayNonCountWarning === 0) {
+    if (weekDayNonCountWarning === 0 || (weekDayNonCountWarning > 0 && weekDayProjCountWarning !== weekDayCountInArray)) {
       weekDayErrors = 'There are weekdays with no hours entered. Is this correct?<br/>';
     }
     if (weekDayErrors !== '') {
+      weekDayErrors += 'Are you sure you want to submit your timesheet? Please verify all your entries.';
       this._warningMessage += weekDayErrors;
     }
   }
