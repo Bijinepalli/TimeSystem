@@ -542,3 +542,7 @@ export class FileSystem {
     FileName?: string;
     CreatedOn?: string;
 }
+export class DateArray {
+    NoOfDays?: number;
+    Dates?: string[];
+}
