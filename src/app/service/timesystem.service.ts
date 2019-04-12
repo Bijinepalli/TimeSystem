@@ -866,5 +866,8 @@ export class TimesystemService {
       .set('ChargeType', ChargeType);
     return this.http.get<TimeSheet[]>(this.url + 'IsBillingCodeUsedOnAnyPendingTimesheets', { params });
   }
-
+  timesheetUpdate(_timesheetId: TimeSheet) {
+    const body = JSON.stringify(_timesheetId);
+    return this.http.post<TimeSheet>(this.url + 'TimeSheet_Update', body, httpOptions);
+  }
 }

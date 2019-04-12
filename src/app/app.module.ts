@@ -104,6 +104,7 @@ import { EmployeetimesheetsComponent } from './reports/employeetimesheets/employ
 import { RollbillingcodesComponent } from './rollbillingcodes/rollbillingcodes.component';
 import { UnauthorizedaccessComponent } from './unauthorizedaccess/unauthorizedaccess.component';
 import { SowComponent } from './sow/sow.component';
+import { MaintaintimesheethourlyComponent } from './maintaintimesheethourly/maintaintimesheethourly.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -155,6 +156,8 @@ const appRoutes: Routes = [
       { path: 'maintaintimesheet/:id', component: MaintaintimesheetComponent },
       { path: 'maintaintimesheet/:id/:periodEnd', component: MaintaintimesheetComponent },
       { path: 'maintaintimesheet/:id/:approvalId/:state', component: MaintaintimesheetComponent },
+      { path: 'maintaintimesheethourly/:id', component: MaintaintimesheethourlyComponent },
+      { path: 'maintaintimesheethourly/:id/:periodEnd', component: MaintaintimesheethourlyComponent },
       // { path: 'startnewsprint', component: StartnewsprintComponent },
       // { path: 'viewissue/:id/:sid/:mode', component: ViewissueComponent },
       // { path: 'searchissue/:id', component: SearchissueComponent },
@@ -257,6 +260,7 @@ const appRoutes: Routes = [
     RollbillingcodesComponent,
     UnauthorizedaccessComponent,
     SowComponent,
+    MaintaintimesheethourlyComponent,
   ],
   imports: [
     BrowserAnimationsModule,
