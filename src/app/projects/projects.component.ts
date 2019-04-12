@@ -40,6 +40,7 @@ export class ProjectsComponent implements OnInit {
   showReport: boolean;
   _sortArray: string[];
   _DisplayDateFormat: any;
+  _OldCompanyID = '';
 
   @ViewChild('dt') dt: Table;
 
@@ -277,6 +278,11 @@ export class ProjectsComponent implements OnInit {
         this._frm.controls['projectCode'].setValue(data.Key.toString());
       }
     }
+    this._OldCompanyID = '';
+    if (data.CompanyId !== undefined && data.CompanyId !== null && data.CompanyId.toString() !== '-1') {
+      this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
+      this._OldCompanyID = data.CompanyId.toString();
+    }
     if (!this.IsControlUndefined('parentCompany')) {
       if (data.ProjectName !== undefined && data.ProjectName !== null && data.ProjectName.toString() !== '') {
         this._frm.controls['parentCompany'].setValue(data.CompanyId.toString());
@@ -341,9 +347,99 @@ export class ProjectsComponent implements OnInit {
     this._selectedProject.Inactive = this.chkInactive;
     this._selectedProject.ChargeType = this._bc.Project;
     this.showSpinner = false;
-    this.SaveProjectSPCall();
+    this.checkWarnings();
+  }
+  checkWarnings() {
+    let errorMsg = '';
+    if (this.chkInactive) {
+      if (this._IsEdit) {
+        this.timesysSvc.IsBillingCodeUsedOnAnyPendingTimesheets(this._selectedProject.Id.toString(), this._bc.Project)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== undefined && outputData !== null && outputData.length > 0) {
+                errorMsg += 'Inactivating this project will remove it and associated hours from all unsubmitted timesheets.<br>';
+              } else {
+                errorMsg += 'Project is marked as inactive. It will not appear on new timesheets.<br>';
+              }
+              if (errorMsg.trim() !== '') {
+                this.showConfirmation(errorMsg, 0);
+              } else {
+                this.CheckDBWarnings();
+              }
+            });
+      } else {
+        this.CheckDBWarnings();
+      }
+    } else {
+      if (this.IsControlUndefinedAndHasValue('parentCompany')) {
+        errorMsg += 'No company was selected. No holiday schedule will be assigned to this client.<br>';
+      }
+      if (errorMsg.trim() !== '') {
+        this.showConfirmation(errorMsg, 0);
+      } else {
+        this.CheckDBWarnings();
+      }
+    }
   }
 
+  showConfirmation(errorMsg: string, mode: number) {
+    this.confSvc.confirm({
+      message: errorMsg + 'Do you want to continue?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (mode === 0) {
+          this.CheckDBWarnings();
+        } else {
+          this.SaveProjectSPCall();
+        }
+      },
+      reject: () => {
+      }
+    });
+  }
+
+
+  CheckDBWarnings() {
+    let errorMsg = '';
+    if (this._IsEdit) {
+      if (this._OldCompanyID !== '' && !this.IsControlUndefinedAndHasValue('parentCompany')) {
+        this.timesysSvc.CompaniesHaveSameHolidays(this._OldCompanyID.toString(),
+          this._frm.controls['parentCompany'].value.toString().trim())
+          .subscribe(
+            (outputData) => {
+              this.timesysSvc.HolidayHoursChargedToCompany(this._OldCompanyID.toString())
+                .subscribe(
+                  (outputData1) => {
+                    if (outputData !== undefined && outputData !== null && outputData.length > 0) {
+                      errorMsg += 'The new company has different holidays which effects submitted timesheets. The company was reset.<br>';
+                      this._frm.controls['parentCompany'].setValue(this._OldCompanyID.toString());
+                    }
+                    // if (errorMsg.trim() === '' && outputData1 !== undefined && outputData1 !== null && outputData1.length > 0) {
+                    //   if (+outputData1[0].TotalHours > 0) {
+                    //     errorMsg += 'The old company have hours assigned to its holidays.<br>';
+                    //   }
+                    // }
+                    if (errorMsg.trim() !== '') {
+                      this.msgSvc.add({
+                        key: 'alert',
+                        sticky: true,
+                        severity: 'warn',
+                        summary: 'Info Message',
+                        detail: errorMsg
+                      });
+                    } else {
+                      this.SaveProjectSPCall();
+                    }
+                  });
+            });
+      } else {
+        this.SaveProjectSPCall();
+      }
+    } else {
+      this.SaveProjectSPCall();
+    }
+  }
   IsControlUndefined(ctrlName: string): boolean {
     let IsUndefined = true;
     if (this._frm.controls[ctrlName] !== undefined &&

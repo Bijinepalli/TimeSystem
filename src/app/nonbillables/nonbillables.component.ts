@@ -37,6 +37,7 @@ export class NonbillablesComponent implements OnInit {
   showReport: boolean;
   _sortArray: string[];
   _DisplayDateFormat: any;
+  _OldCompanyID = '';
 
   constructor(
     private router: Router,
@@ -301,8 +302,85 @@ export class NonbillablesComponent implements OnInit {
     this._selectedNonBillable.Key = this._frm.controls['itemCode'].value.toString().toUpperCase().trim();
     this._selectedNonBillable.Inactive = this.chkInactive;
     this._selectedNonBillable.ChargeType = this._bc.NonBillable;
-    this.SaveNonBillableSPCall();
+    this.checkWarnings();
   }
+
+  checkWarnings() {
+    let errorMsg = '';
+    if (this.chkInactive) {
+      if (this._IsEdit) {
+        this.timesysSvc.IsBillingCodeUsedOnAnyPendingTimesheets(this._selectedNonBillable.Id.toString(), this._bc.NonBillable)
+          .subscribe(
+            (outputData) => {
+              if (outputData !== undefined && outputData !== null && outputData.length > 0) {
+                errorMsg += 'Inactivating this client will remove it and associated hours from all unsubmitted timesheets.<br>';
+              } else {
+                errorMsg += 'Client is marked as inactive. It will not appear on new timesheets.<br>';
+              }
+              if (errorMsg.trim() !== '') {
+                this.showConfirmation(errorMsg, 0);
+              } else {
+                this.CheckDBWarnings();
+              }
+            });
+      } else {
+        this.CheckDBWarnings();
+      }
+    } else {
+      // if (this.IsControlUndefinedAndHasValue('parentCompany')) {
+      //   errorMsg += 'No company was selected. No holiday schedule will be assigned to this client.<br>';
+      // }
+      // if (this.IsControlUndefinedAndHasValue('customerName')) {
+      //   errorMsg += 'No customer to invoice was selected.<br>';
+      // }
+      // if (this.IsControlUndefinedAndHasValue('poNumber')) {
+      //   errorMsg += 'No purchase order number was entered.<br>';
+      // }
+      if (errorMsg.trim() !== '') {
+        this.showConfirmation(errorMsg, 0);
+      } else {
+        this.CheckDBWarnings();
+      }
+    }
+  }
+
+
+  IsControlUndefinedAndHasValue(ctrlName: string): boolean {
+    let IsUndefined = true;
+    if (this._frm.controls[ctrlName] !== undefined &&
+      this._frm.controls[ctrlName] !== null &&
+      this._frm.controls[ctrlName].value !== undefined &&
+      this._frm.controls[ctrlName].value !== null &&
+      this._frm.controls[ctrlName].value.toString().trim() !== ''
+    ) {
+      IsUndefined = false;
+    }
+    return IsUndefined;
+  }
+
+
+  showConfirmation(errorMsg: string, mode: number) {
+    this.confSvc.confirm({
+      message: errorMsg + 'Do you want to continue?',
+      header: 'Confirmation',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        if (mode === 0) {
+          this.CheckDBWarnings();
+        } else {
+          this.SaveNonBillableSPCall();
+        }
+      },
+      reject: () => {
+      }
+    });
+  }
+
+
+  CheckDBWarnings() {
+      this.SaveNonBillableSPCall();
+  }
+
   SaveNonBillableSPCall() {
     this.showSpinner = true;
     console.log(this._selectedNonBillable);
