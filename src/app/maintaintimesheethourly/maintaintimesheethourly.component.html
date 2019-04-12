@@ -1,0 +1,79 @@
+<div *ngIf="_IsTimeSheetSubmittedJustNow" style="height: 300px;"></div>
+<div *ngIf="_IsTimeSheetSubmittedJustNow" class="ui-g ui-g-nopad warningBlock">
+  <div class="ui-g-12" style="text-align: center">
+    {{_submitMessage}}
+  </div>
+</div>
+<form [formGroup]="timeSheetForm" class="" *ngIf="!_IsTimeSheetSubmittedJustNow">
+
+  <div class="ui-g ui-g-nopad mainHeader">
+    <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
+      Maintain Time Sheet <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+        style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"></i>
+    </div>
+    <div class="ui-g-3 ui-md-2 ui-g-nopad">
+      <div class="ui-g-3 ui-md-6"></div>
+      <div class="ui-g-3 ui-md-4"></div>
+      <div class="ui-g-6 ui-md-2 ui-g-nopad">
+      </div>
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g-12 ui-g-nopad errorBox" style="text-align: center"
+        *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
+        See Error Summary Below
+      </div>
+      <div class="ui-g-12 ui-g-nopad warningBox" style="text-align: center"
+        *ngIf="_warningBlock !== undefined && _warningBlock !== null && _warningBlock !== ''">
+        See Warning Summary Below
+      </div>
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-md-3" style="text-align: left;">
+      <b>Employee Name:</b>&nbsp;&nbsp;&nbsp;{{_EmployeeName}}
+    </div>
+    <div class="ui-g-12 ui-md-3" style="text-align: left;">
+      <b>Period Ending:</b>&nbsp;&nbsp;&nbsp;{{_periodEndDateDisplay }}
+    </div>
+    <div class="ui-g-12 ui-md-3" style="text-align: left;">
+      <b>Submitted On:</b>&nbsp;&nbsp;&nbsp;
+      {{_SubmittedOn}}
+    </div>
+    <div class="ui-g-12 ui-md-3" style="text-align: left;">
+      <b>Resubmittal:</b>&nbsp;&nbsp;&nbsp;
+      {{_Resubmittal}}
+    </div>
+  </div>
+  <div class="ui-g">
+    <div class="ui-g-12">
+      <div class="ui-g-12 ui-g-nopad errorBlockHeader"
+        *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''">
+        Errors
+      </div>
+      <div class="ui-g-12 ui-g-nopad errorBlock"
+        *ngIf="_errorBlock !== undefined && _errorBlock !== null && _errorBlock !== ''"
+        [innerHTML]="_errorBlock | sanitizeHtmlString">
+      </div>
+    </div>
+  </div>
+  <div class="ui-g-12 ui-md-12">
+    <p-panel>
+      <p-header>
+        Comments
+      </p-header>
+      <textarea pInputTextarea class="comments" formControlName="txtUserComments"></textarea>
+
+      <p-footer>
+        <div class="ui-g">
+          <div class="ui-g-12 ui-md-12" style="text-align: right">
+            <button type="button" pButton label="Submit" class="ui-button-success" (click)="Submit()"></button>&nbsp;
+          </div>
+        </div>
+      </p-footer>
+
+    </p-panel>
+  </div>
+
+</form>

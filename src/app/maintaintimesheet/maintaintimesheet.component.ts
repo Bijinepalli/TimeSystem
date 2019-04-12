@@ -93,6 +93,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _holidays: Holidays[] = [];
   _timePeriodsOnLoad: TimePeriods[] = [];
   _timeSheetForApprovalsOnLoad: TimeSheetForApproval[] = [];
+  _isEmptyTimesheet = false;
   _daysNDates: DateArray;
   // _txtErrorColor = '#ffccd4'; // Error box background color
   _txtErrorColor = ''; // Error box background color
@@ -1067,6 +1068,10 @@ export class MaintaintimesheetComponent implements OnInit {
     if (weekDayNonCountWarning === 0 || (weekDayNonCountWarning > 0 && weekDayProjCountWarning !== weekDayCountInArray)) {
       weekDayErrors = 'There are weekdays with no hours entered. Is this correct?<br/>';
     }
+    if (weekDayTandMCountWarning === -1 && weekDayProjCountWarning === -1 && weekDayNonCountWarning === -1
+      && this.timeSheetForm.get('txtUserComments').value !== null && this.timeSheetForm.get('txtUserComments').value !== '') {
+      weekDayErrors = 'There are weekdays with no hours entered. Is this correct?<br/>';
+    }
     if (weekDayErrors !== '') {
       weekDayErrors += 'Are you sure you want to submit your timesheet? Please verify all your entries.';
       this._warningMessage += weekDayErrors;
@@ -1150,7 +1155,6 @@ export class MaintaintimesheetComponent implements OnInit {
       }
     }
     if (emptyCount === 0) {
-      this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
       return true;
     }
     return false;
@@ -1176,6 +1180,8 @@ export class MaintaintimesheetComponent implements OnInit {
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtUserComments').value !== null && this.timeSheetForm.get('txtUserComments').value !== '') {
             this.SaveSPCall(false, '');
+          } else {
+            this._errorMessage = 'You cannot save an empty timesheet without specifying the reason in the comment section';
           }
         } else {
           this.SaveSPCall(false, '');
@@ -1204,6 +1210,10 @@ export class MaintaintimesheetComponent implements OnInit {
       this.nonBillableValidations();
     }
     this.getWeekendHours();
+    emptyTimesheet = this.emptyTimesheetValidation();
+    if (emptyTimesheet && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
+      this._errorMessage = 'You cannot submit an empty timesheet to your supervisor';
+    }
     if (this._errorMessage !== '') {
       this._errorBlock = this._errorMessage;
     } else if (this._warningMessage !== '') {
@@ -1211,10 +1221,11 @@ export class MaintaintimesheetComponent implements OnInit {
       this.showConfirmSubmit = true;
     } else {
       if (this._TotalValidationErrors === 0) {
-        emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
           if (this.timeSheetForm.get('txtUserComments').value !== null && this.timeSheetForm.get('txtUserComments').value !== '') {
             this.SaveSPCall(true, '');
+          } else {
+            this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
           }
         } else {
           this.SaveSPCall(true, '');
@@ -1238,15 +1249,21 @@ export class MaintaintimesheetComponent implements OnInit {
     if (this._employee[0].CompanyHolidays) {
       this.nonBillableValidations();
     }
-    this.getWeekendHours();
+    // this.getWeekendHours();
     if (this._errorMessage !== '') {
       this._errorBlock = this._errorMessage;
     } else {
       if (this._TotalValidationErrors === 0) {
         emptyTimesheet = this.emptyTimesheetValidation();
         if (emptyTimesheet) {
-          if (this.timeSheetForm.get('txtUserComments').value !== null && this.timeSheetForm.get('txtUserComments').value !== '') {
-            this.SaveSPCall(true, '');
+          if (this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
+            this._errorMessage = 'You cannot submit an empty timesheet to your supervisor';
+          } else {
+            if (this.timeSheetForm.get('txtUserComments').value !== null && this.timeSheetForm.get('txtUserComments').value !== '') {
+              this.SaveSPCall(true, '');
+            } else {
+              this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
+            }
           }
         } else {
           this.SaveSPCall(true, '');
@@ -1335,7 +1352,7 @@ export class MaintaintimesheetComponent implements OnInit {
                         .subscribe(
                           (inputData) => {
                             // tslint:disable-next-line:max-line-length
-                            this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor:' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                            this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
                           });
                       // tslint:disable-next-line:max-line-length
                     } else {
@@ -1364,6 +1381,39 @@ export class MaintaintimesheetComponent implements OnInit {
           if (this._actualTimeSheetId.toString() === '-1') {
             sessionStorage.removeItem('PeriodEndDate');
             this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId], { skipLocationChange: true });
+          }
+        } else {
+          this.showSpinner = false;
+          if (submitted) {
+            if (this._warningMessage === '') {
+              this._IsTimeSheetSubmittedJustNow = true;
+              // tslint:disable-next-line:max-line-length
+              if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
+                const timeSheetApp = new TimeSheetForApproval();
+                timeSheetApp.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
+                timeSheetApp.SupervisorId = this._supervisor[0].ID;
+                timeSheetApp.TimesheetId = this._timesheetId;
+                timeSheetApp.PeriodEnd = this._periodEndDateDisplay;
+                this.timesysSvc.timeSheetPendingForApprovalInsert(timeSheetApp)
+                  .subscribe(
+                    (inputData) => {
+                      // tslint:disable-next-line:max-line-length
+                      this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                    });
+                // tslint:disable-next-line:max-line-length
+              } else {
+                this._submitMessage = 'Your timesheet has been submitted';
+              }
+              this.msgSvc.add({
+                key: 'saveSuccess', severity: 'success'
+                , summary: 'Info Message', detail: 'Timesheet submitted successfully'
+              });
+            }
+          } else {
+            this.msgSvc.add({
+              key: 'saveSuccess', severity: 'success'
+              , summary: 'Info Message', detail: 'Timesheet saved successfully'
+            });
           }
         }
       });
@@ -1416,7 +1466,7 @@ export class MaintaintimesheetComponent implements OnInit {
                       .subscribe(
                         (inputData) => {
                           // tslint:disable-next-line:max-line-length
-                          this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor:' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                          this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
                         });
                   } else {
                     this._submitMessage = 'Your timesheet has been submitted';
@@ -1441,6 +1491,42 @@ export class MaintaintimesheetComponent implements OnInit {
             (error) => {
               console.log(error);
             });
+      } else {
+        timeSheetSubmit.timeSheet.Id = this._timesheetId;
+        this.timesysSvc.timesheetUpdate(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
+          this.showSpinner = false;
+          if (submitted) {
+            if (this._warningMessage === '') {
+              this._IsTimeSheetSubmittedJustNow = true;
+              // tslint:disable-next-line:max-line-length
+              if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
+                const timeSheetApp = new TimeSheetForApproval();
+                timeSheetApp.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
+                timeSheetApp.SupervisorId = this._supervisor[0].ID;
+                timeSheetApp.TimesheetId = this._timesheetId;
+                timeSheetApp.PeriodEnd = this._periodEndDateDisplay;
+                this.timesysSvc.timeSheetPendingForApprovalInsert(timeSheetApp)
+                  .subscribe(
+                    (inputData) => {
+                      // tslint:disable-next-line:max-line-length
+                      this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
+                    });
+                // tslint:disable-next-line:max-line-length
+              } else {
+                this._submitMessage = 'Your timesheet has been submitted';
+              }
+              this.msgSvc.add({
+                key: 'saveSuccess', severity: 'success'
+                , summary: 'Info Message', detail: 'Timesheet submitted successfully'
+              });
+            }
+          } else {
+            this.msgSvc.add({
+              key: 'saveSuccess', severity: 'success'
+              , summary: 'Info Message', detail: 'Timesheet saved successfully'
+            });
+          }
+        });
       }
     }
 

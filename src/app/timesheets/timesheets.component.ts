@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet } from '../model/objects';
-import { YearEndCodes } from '../model/constants';
+// tslint:disable-next-line:max-line-length
+import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet, Employee } from '../model/objects';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -22,7 +22,8 @@ export class TimesheetsComponent implements OnInit {
   hourscols: any[];
   _recData = 0;
   _hoursData = 0;
-
+  _employeeId = 0;
+  _employee: Employee[];
   _timeSheets: TimeSheetForEmplyoee[];
   _timePeriods: TimeSheetBinding[];
 
@@ -54,7 +55,7 @@ export class TimesheetsComponent implements OnInit {
   _DisplayTimeStampFormat: any;
   showReport = false;
   _sortArray: string[];
-
+  _showEmptyTimesheet = true;
   @ViewChild('dt') dt: Table;
   @ViewChild('dtHours') dtHours: Table;
 
@@ -75,6 +76,8 @@ export class TimesheetsComponent implements OnInit {
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
       if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
         sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
+        this._employeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
+        this.getEmployeeDetails(this._employeeId.toString());
         sessionActive = true;
       }
     }
@@ -82,6 +85,24 @@ export class TimesheetsComponent implements OnInit {
     if (!sessionActive) {
       this.router.navigate(['/access'], { queryParams: { Message: 'Session Expired' } }); // Session Expired
     }
+  }
+  getEmployeeDetails(EmployeeId: string) {
+    this.timesysSvc.getEmployee(EmployeeId, '', '').subscribe(
+      (dataEmp) => {
+        if (dataEmp !== undefined && dataEmp !== null && dataEmp.length > 0) {
+          this._employee = dataEmp;
+          console.log(this._employee);
+          // tslint:disable-next-line:max-line-length
+          if (this._employee.length > 0 && this._employee[0].IsTimesheetVerficationNeeded && this._employee[0].Supervisor !== '' && this._employee[0].SupervisorId > 0) {
+            this._showEmptyTimesheet = false;
+          }
+          // if (this._employee[0].SupervisorId !== undefined && this._employee[0].SupervisorId > 0) {
+          //   this.timesysSvc.getEmployee(this._employee[0].SupervisorId.toString(), '', '').subscribe((superEmp: Employee) => {
+          //     this._supervisor = superEmp;
+          //   });
+          // }
+        }
+      });
   }
   /* #endregion*/
 
@@ -343,13 +364,17 @@ export class TimesheetsComponent implements OnInit {
               _selectedTimesheet = new TimeSheet();
               _selectedTimesheet.Id = this.selectTimePeriod.value;
               _selectedTimesheet.TimeStamp = this.datepipe.transform(new Date(), this._TimeStampFormat);
-              this.timesysSvc.timesheetCopyInsert(_selectedTimesheet).subscribe(
-                (data2) => {
-                  this.showSpinner = false;
-                  if (data2 !== undefined && data2 !== null) {
-                    this.navigateToTimesheet(data2, '');
-                  }
-                });
+              if (!this.emptyTimeSheet) {
+                this.timesysSvc.timesheetCopyInsert(_selectedTimesheet).subscribe(
+                  (data2) => {
+                    this.showSpinner = false;
+                    if (data2 !== undefined && data2 !== null) {
+                      this.navigateToTimesheet(data2, '');
+                    }
+                  });
+              } else {
+                this.navigateToTimesheet(_selectedTimesheet.Id, '');
+              }
             }
           });
     } else {
@@ -358,7 +383,12 @@ export class TimesheetsComponent implements OnInit {
   }
   navigateToTimesheet(TimesheetId, TimesheetDate) {
     this.timesheetDialog = false;
-    let routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;
+    let routerLinkTimesheet = '';
+    if (this.emptyTimeSheet) {
+      routerLinkTimesheet = '/menu/maintaintimesheethourly/' + TimesheetId;
+    } else {
+      routerLinkTimesheet = '/menu/maintaintimesheet/' + TimesheetId;
+    }
     if (TimesheetDate !== '') {
       routerLinkTimesheet += '/' + TimesheetDate;
     }
