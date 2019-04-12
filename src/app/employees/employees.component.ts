@@ -956,6 +956,8 @@ export class EmployeesComponent implements OnInit {
     this.GetMethods();
   }
   saveEmployee() {
+    const MAS90payrollIDExp = new RegExp('^[A-Z0-9]*$');
+    const payrollIDExp = new RegExp('^[0-9]{4,7}$');
     this.errMsg = '';
     if (this._IsEditEmployee === false) {
       if (this._selectedEmployee === undefined || this._selectedEmployee === null) {
@@ -984,10 +986,32 @@ export class EmployeesComponent implements OnInit {
     } else {
       this._selectedEmployee.LoginID = this._frmEmployee.controls['frmLoginID'].value.toString().trim();
     }
-    if (this.IsControlUndefined('frmPayrollID')) {
-      this._selectedEmployee.PayRoleID = '';
+    if (this.chkInactive) {
+      if (this.IsControlUndefined('frmPayrollID')) {
+        this._selectedEmployee.PayRoleID = '';
+      } else {
+        if ((this._frmEmployee.controls['frmPayrollID'].value.toString().length === 7 &&
+          MAS90payrollIDExp.test(this._frmEmployee.controls['frmPayrollID'].value.toString())) ||
+          (this._frmEmployee.controls['frmPayrollID'].value.toString().length === 4 &&
+          payrollIDExp.test(this._frmEmployee.controls['frmPayrollID'].value.toString()))) {
+          this._selectedEmployee.PayRoleID = this._frmEmployee.controls['frmPayrollID'].value.toString()
+            .trim().toUpperCase();
+        } else {
+          this.errMsg += 'Payroll ID must be a valid MAS 90 or MassPay ID<br>';
+        }
+      }
     } else {
-      this._selectedEmployee.PayRoleID = this._frmEmployee.controls['frmPayrollID'].value.toString().trim().toUpperCase();
+      if (this.IsControlUndefined('frmPayrollID')) {
+        this._selectedEmployee.PayRoleID = '';
+      } else {
+        if (this._frmEmployee.controls['frmPayrollID'].value.toString().length === 4 &&
+          payrollIDExp.test(this._frmEmployee.controls['frmPayrollID'].value.toString())) {
+          this._selectedEmployee.PayRoleID = this._frmEmployee.controls['frmPayrollID'].value.toString()
+            .trim().toUpperCase();
+        } else {
+          this.errMsg += 'Payroll ID must be 4 characters and contain only numbers<br>';
+        }
+      }
     }
     if (this.IsControlUndefined('frmSecurityLevel')) {
       this._selectedEmployee.UserLevel = 'E';
@@ -1020,7 +1044,7 @@ export class EmployeesComponent implements OnInit {
     }
     if (this._selectedEmployee.HireDate !== '' && this._selectedEmployee.StartDate !== '') {
       if (new Date(this._selectedEmployee.StartDate) < new Date(this._selectedEmployee.HireDate)) {
-        this.errMsg += 'Start Date can not be before than Hire Date<br>';
+        this.errMsg += 'Start Date cannot be before than Hire Date<br>';
       }
     }
     if (this.IsControlUndefined('frmSupervisor')) {
@@ -1100,6 +1124,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   ValidateEmployee() {
+    console.log(this._selectedEmployee);
     this.timesysSvc.Employee_Validate(this._selectedEmployee)
       .subscribe(
         (outputData) => {

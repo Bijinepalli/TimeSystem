@@ -102,16 +102,16 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Customer Name <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <input type="text" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName"
-              pTooltip="The display name for the customer" tooltipPosition="bottom">
+            <input type="text" maxlength="100" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName"
+              pTooltip="The display name for the customer" pattern="^[a-zA-Z0-9\040\047\055]*$" tooltipPosition="bottom">
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Customer Number <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <input type="text" pInputText style="width:100%" placeholder="Customer Number"
-              formControlName="customerNumber" pTooltip="The unique ID for the customer" tooltipPosition="bottom">
+            <input type="text" maxlength="7" pInputText style="width:100%" placeholder="Customer Number"
+              formControlName="customerNumber" pattern="^[0-9]{7}$" pTooltip="The unique ID for the customer" tooltipPosition="bottom">
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">

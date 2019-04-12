@@ -105,7 +105,7 @@
         <div class="ui-g-12 ui-md-12">
           Item Code <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode" pToolTip="Unique non-billable item code"
+          <input type="text" maxlength="15" pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$" pInputText style="width:100%" placeholder="Item Code" formControlName="itemCode" pToolTip="Unique non-billable item code"
             tooltipPosition="bottom">
         </div>
       </div>
@@ -113,7 +113,7 @@
         <div class="ui-g-12 ui-md-12">
           Item Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName" pToolTip="Unique non-billable item name"
+          <input type="text" maxlength="50" pInputText style="width:100%" placeholder="Item Name" formControlName="itemName" pToolTip="Unique non-billable item name"
             tooltipPosition="bottom">
         </div>
       </div>
