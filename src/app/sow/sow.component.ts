@@ -53,6 +53,7 @@ export class SowComponent implements OnInit {
   _previousSOWStatus = '';
   _selectedSOWStatus = '';
   _isFilesRequired = false;
+  _SOWFilesPath = '';
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -195,6 +196,7 @@ export class SowComponent implements OnInit {
     ];
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat');
+    this._SOWFilesPath = environment.SOWFiles;
     this.GetCalls();
     this.addControls();
   }

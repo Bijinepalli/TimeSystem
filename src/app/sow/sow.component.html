@@ -62,12 +62,14 @@
             </div>
             <ng-template #nondatecol>
               <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
-                <i class="fa fa-file" pTooltip="{{rowData[col.field]}}" *ngIf="rowData[col.field]!==''"
-                  tooltipPosition="top"></i>
+                <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank" class="HypExternal"
+                  title="{{rowData[col.field]}}">
+                  <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
+                </a>
               </div>
               <ng-template #defaultcol>
                 <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
-                    <label>{{rowData[col.field] | currency}} </label>
+                  <label>{{rowData[col.field] | currency}} </label>
                 </div>
                 <ng-template #othercol>
                   {{rowData[col.field]}}
