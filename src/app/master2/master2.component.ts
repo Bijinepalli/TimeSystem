@@ -380,4 +380,7 @@ export class Master2Component implements OnInit {
   onReject() {
     this.msgSvc.clear('alert');
   }
+  onRejectException() {
+    this.msgSvc.clear('exception');
+  }
 }
