@@ -28,6 +28,100 @@
     </div>
   </ng-template>
 </p-toast>
+
+<p-toast position="center" key="exception" (onClose)="onRejectException()" styleClass="error-toast"
+  [style]="{width:'700px'}" [modal]="true" [baseZIndex]="5000" appendTo="body">
+  <ng-template let-message pTemplate="message">
+    <div class="ui-fluid">
+      <div class="ui-g ui-g-nopad">
+        <div class="ui-g-12 alertHeader">
+          <div class="ui-g-12 ui-md-1" align="center">
+            <i class="pi pi-exclamation-triangle" style="font-size: 1.9em;margin:2px;"></i>
+          </div>
+          <div class="ui-g-12 ui-md-10" align="left">
+            <h4 style="margin:5px;">Time System Error</h4>
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-12" align="left" style="padding:0.8em;">
+          <p-scrollPanel [style]="{width: '100%', height: '300px'}" *ngIf="message.data && message.data.ErrorMessage">
+            <div>
+              Error Message:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.ErrorMessage | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Failed Method:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.MethodName | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Last Exception:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.ExceptionType | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Error Source:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.Source | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Stack Trace:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.StackTrace | sanitizeHtmlString"></label>
+            </div>
+          </p-scrollPanel>
+          <p-scrollPanel [style]="{width: '100%', height: '300px'}" *ngIf="message.data && message.data.InnerMessage">
+            <div>
+              Detailed Error Message:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.InnerMessage | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Failed Method:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.InnerMethodName | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Type of Exception:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.InnerExceptionType | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Error Source:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.InnerSource | sanitizeHtmlString"></label>
+            </div>
+            <div>
+              Detailed Stack Trace:
+            </div>
+            <div style="padding-left:10px;color:red;">
+              <label [innerHTML]="message.data.InnerStackTrace | sanitizeHtmlString"></label>
+            </div>
+          </p-scrollPanel>
+        </div>
+      </div>
+      <hr>
+      <div class="ui-g ui-g-nopad">
+        <div class="ui-g-4"></div>
+        <div class="ui-g-4">
+          <a href="{{message.data.NavigateUrl}}"> <button type="button" pButton (click)="onRejectException()"
+              label="Mail to Support" class="ui-button-raised ui-button-danger" icon="pi pi-envelope"></button></a>
+        </div>
+        <div class="ui-g-4"></div>
+      </div>
+    </div>
+  </ng-template>
+</p-toast>
+
 <div class="ui-g" id="header">
   <div class="ui-g-12 ui-md-6 ui-lg-6 topBar">
     <div class="ui-g-2 ui-md-2" id="minigutter">

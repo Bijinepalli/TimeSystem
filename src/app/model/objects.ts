@@ -123,6 +123,8 @@ export class Employee {
 export class LoginErrorMessage {
     ErrorMessage?: string;
     ReturnVal?: string;
+    Exception?: any;
+    ExceptionDetails?: ExceptionDetails;
 }
 export class Customers {
     Id?: number;
@@ -545,4 +547,19 @@ export class FileSystem {
 export class DateArray {
     NoOfDays?: number;
     Dates?: string[];
+}
+
+
+export class ExceptionDetails {
+    ErrorMessage?: string;
+    StackTrace?: string;
+    MethodName?: string;
+    Source?: string;
+    ExceptionType?: string;
+    InnerMessage?: string;
+    InnerStackTrace?: string;
+    InnerMethodName?: string;
+    InnerSource?: string;
+    InnerExceptionType?: string;
+    NavigateUrl?: string;
 }
