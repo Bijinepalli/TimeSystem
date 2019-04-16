@@ -153,6 +153,7 @@ export class MaintaintimesheethourlyComponent implements OnInit {
                 }
                 this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
                 this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
+                this.timeSheetForm.controls['txtUserComments'].setValue(this._timeSheetEntries[0].Comments);
                 // this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
               }
             } else {

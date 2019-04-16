@@ -93,6 +93,7 @@ export class MaintaintimesheetComponent implements OnInit {
   _holidays: Holidays[] = [];
   _timePeriodsOnLoad: TimePeriods[] = [];
   _timeSheetForApprovalsOnLoad: TimeSheetForApproval[] = [];
+  _isTimesheetPending = false;
   _isEmptyTimesheet = false;
   _daysNDates: DateArray;
   // _txtErrorColor = '#ffccd4'; // Error box background color
@@ -170,6 +171,11 @@ export class MaintaintimesheetComponent implements OnInit {
                 this._Resubmittal = this._timeSheetEntries[0].Resubmitted === true ? 'Yes' : 'No';
                 if (this._timeSheetEntries[0].Submitted) {
                   this._IsTimeSheetSubmitted = true;
+                }
+                console.log(this._timeSheetEntries[0].Id + '--TimesheetID');
+                console.log(this._timeSheetEntries[0].ApprovalStatus + '--ApprStatus');
+                if (this._timeSheetEntries[0].ApprovalStatus === '1') {
+                  this._isTimesheetPending = true;
                 }
                 this._periodEndDateString = this._timeSheetEntries[0].PeriodEnd;
                 this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
@@ -679,7 +685,9 @@ export class MaintaintimesheetComponent implements OnInit {
       }
     }
     this.calculateHours();
-    if (this._IsTimeSheetSubmitted || this._isTimesheetView || this._isTimesheetToAprrove || this._isTimesheetRejected) {
+    // if (this._IsTimeSheetSubmitted || this._isTimesheetView || this._isTimesheetToAprrove || this._isTimesheetRejected) {
+    // tslint:disable-next-line:max-line-length
+    if (this._IsTimeSheetSubmitted || this._isTimesheetView || this._isTimesheetToAprrove || this._isTimesheetRejected || this._isTimesheetPending) {
       this.timeSheetForm.disable();
       // this.timeSheetForm.get('txtSuperComments').disable();
       // this.timeSheetForm.get('txtUserComments').disable();
@@ -1294,7 +1302,9 @@ export class MaintaintimesheetComponent implements OnInit {
     // tslint:disable-next-line:max-line-length
     if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
       timeSheetSubmit.timeSheet.Submitted = false;
-      timeSheetSubmit.timeSheet.ApprovalStatus = '1';
+      if (submitted) {
+        timeSheetSubmit.timeSheet.ApprovalStatus = '1';
+      }
     } else {
       timeSheetSubmit.timeSheet.Submitted = submitted;
     }
