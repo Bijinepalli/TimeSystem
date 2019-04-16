@@ -79,30 +79,31 @@ export class MaintaintimesheethourlyComponent implements OnInit {
       this.timeSheetForm.get('txtUserComments').value.toString() !== ''
     ) {
       timeSheetSubmit.timeSheet.Comments = this.timeSheetForm.get('txtUserComments').value.toString();
+      timeSheetSubmit.timeSheet.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
+      // tslint:disable-next-line:max-line-length
+      if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
+        timeSheetSubmit.timeSheet.Submitted = false;
+        timeSheetSubmit.timeSheet.ApprovalStatus = '1';
+      } else {
+        timeSheetSubmit.timeSheet.Submitted = true;
+      }
+      if (this._timeSheetEntries.length > 0) {
+        console.log(this._timeSheetEntries[0]);
+        timeSheetSubmit.timeSheet.Resubmitted = this._timeSheetEntries[0].Resubmitted;
+        // this.timesysSvc.timesheetUpdate(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
+        //   this._IsTimeSheetSubmittedJustNow = true;
+        //   this._submitMessage = 'Your timesheet has been submitted';
+        // });
+      }
+      this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
+        this._IsTimeSheetSubmittedJustNow = true;
+        this._submitMessage = 'Your timesheet has been submitted';
+      });
     } else {
-      timeSheetSubmit.timeSheet.Comments = '';
+      this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
+      this._errorBlock = this._errorMessage;
     }
-    console.log(this.timeSheetForm.get('txtUserComments').value + '-test');
-    timeSheetSubmit.timeSheet.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
-    // tslint:disable-next-line:max-line-length
-    if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
-      timeSheetSubmit.timeSheet.Submitted = false;
-      timeSheetSubmit.timeSheet.ApprovalStatus = '1';
-    } else {
-      timeSheetSubmit.timeSheet.Submitted = true;
-    }
-    if (this._timeSheetEntries.length > 0) {
-      console.log(this._timeSheetEntries[0]);
-      timeSheetSubmit.timeSheet.Resubmitted = this._timeSheetEntries[0].Resubmitted;
-      // this.timesysSvc.timesheetUpdate(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
-      //   this._IsTimeSheetSubmittedJustNow = true;
-      //   this._submitMessage = 'Your timesheet has been submitted';
-      // });
-    }
-    this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
-      this._IsTimeSheetSubmittedJustNow = true;
-      this._submitMessage = 'Your timesheet has been submitted';
-    });
+
 
   }
   getEmployeeDetails(EmployeeId: string) {
