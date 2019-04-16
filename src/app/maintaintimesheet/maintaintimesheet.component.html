@@ -46,7 +46,12 @@
       {{_Resubmittal}}
     </div>
   </div>
-
+  <div class="ui-g" *ngIf="_timeSheetHTML && (+_timesheetId > 0)">
+    <div class="ui-g-12" align="right">
+      <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
+        (click)="exportClick()"></button>&nbsp;
+    </div>
+  </div>
   <div class="ui-g" *ngIf="_DateArray !== undefined && _DateArray !==null && _DateArray.length>0">
     <div class="ui-g-12 ui-md-12">
       <p-panel class="panelEmpBilling">
@@ -413,3 +418,5 @@
   <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}"
     strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
 </form>
+
+<div style="display: none;" *ngIf="_timeSheetHTML" [innerHTML]="_timeSheetHTML | sanitizeHtmlString" #dtTimesheet></div>

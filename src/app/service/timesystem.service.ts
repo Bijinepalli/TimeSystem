@@ -728,8 +728,6 @@ export class TimesystemService {
       .set('LoginID', '')
       .set('Password', '');
     const data3 = this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
-    console.log('Assam');
-    console.log(periodEnd);
     params = new HttpParams()
       .set('strPeriodEnd', periodEnd);
     const data4 = this.http.get<DateArray>(this.url + 'GetNoOfDaysInBetweenPeriod', { params });
@@ -753,18 +751,15 @@ export class TimesystemService {
   }
   timeSheetPendingForApprovalInsert(_timeSheetApp: TimeSheetForApproval) {
     const body = JSON.stringify(_timeSheetApp);
-    console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetPendingForApprovalInsert', body, httpOptions);
   }
 
   timeSheetPendingForApprovalUpdate(_timeSheetApp: TimeSheetForApproval) {
     const body = JSON.stringify(_timeSheetApp);
-    console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetPendingForApprovalUpdate', body, httpOptions);
   }
   timeSheetApprovalStatusUpdate(_timeSheet: TimeSheet) {
     const body = JSON.stringify(_timeSheet);
-    console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetApprovalStatusUpdate', body, httpOptions);
   }
   getEmployeePayroll(EmployeeId: string) {
@@ -870,4 +865,11 @@ export class TimesystemService {
     const body = JSON.stringify(_timesheetId);
     return this.http.post<TimeSheet>(this.url + 'TimeSheet_Update', body, httpOptions);
   }
+
+  TimesheetHTML(timeSheetId: string) {
+    const params = new HttpParams().set('strTimeSheetId', timeSheetId);
+    return this.http.get<string>(this.url + 'TimesheetHTML', { params });
+  }
+
+
 }
