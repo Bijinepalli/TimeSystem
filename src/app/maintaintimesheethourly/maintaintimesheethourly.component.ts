@@ -69,6 +69,7 @@ export class MaintaintimesheethourlyComponent implements OnInit {
     // this.getEmployeeDetails(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString());
   }
   Submit() {
+    this.showSpinner = true;
     let timeSheetSubmit: TimeSheetSubmit;
     timeSheetSubmit = {};
     timeSheetSubmit.timeSheet = {};
@@ -98,6 +99,7 @@ export class MaintaintimesheethourlyComponent implements OnInit {
       this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
         this._IsTimeSheetSubmittedJustNow = true;
         this._submitMessage = 'Your timesheet has been submitted';
+        this.showSpinner = false;
       });
     } else {
       this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
