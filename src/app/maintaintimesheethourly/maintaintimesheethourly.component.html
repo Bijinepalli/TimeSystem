@@ -1,5 +1,5 @@
 <div *ngIf="_IsTimeSheetSubmittedJustNow" style="height: 300px;"></div>
-<div *ngIf="_IsTimeSheetSubmittedJustNow" class="ui-g ui-g-nopad warningBlock">
+<div *ngIf="_IsTimeSheetSubmittedJustNow && _submitMessage !== ''" class="ui-g ui-g-nopad warningBlock">
   <div class="ui-g-12" style="text-align: center">
     {{_submitMessage}}
   </div>
