@@ -871,5 +871,19 @@ export class TimesystemService {
     return this.http.get<string>(this.url + 'TimesheetHTML', { params });
   }
 
+  GetClientsForCustomers(_Customers: string) {
+    const params = new HttpParams().set('Customers', _Customers);
+    return this.http.get<Clients[]>(this.url + 'GetClientsForCustomers', { params });
+  }
+
+  GetEmployeesForClients(_Clients: string, _PeriodEnd: string) {
+    const params = new HttpParams().set('Clients', _Clients).set('PeriodEnd', _PeriodEnd);
+    return this.http.get<Employee[]>(this.url + 'GetEmployeesForClients', { params });
+  }
+
+  GetTimesheetsForEmployees(_Employees: string, _PeriodEnd: string) {
+    const params = new HttpParams().set('Employees', _Employees).set('PeriodEnd', _PeriodEnd);
+    return this.http.get<Clients[]>(this.url + 'GetTimesheetsForEmployees', { params });
+  }
 
 }
