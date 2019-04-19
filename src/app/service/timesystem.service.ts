@@ -12,7 +12,8 @@ import {
   DictionaryType,
   SOW,
   FileSystem,
-  DateArray
+  DateArray,
+  PeriodEndWithKeys
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -871,19 +872,19 @@ export class TimesystemService {
     return this.http.get<string>(this.url + 'TimesheetHTML', { params });
   }
 
-  GetClientsForCustomers(_Customers: string) {
-    const params = new HttpParams().set('Customers', _Customers);
-    return this.http.get<Clients[]>(this.url + 'GetClientsForCustomers', { params });
+  GetClientsForCustomers(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<Clients[]>(this.url + 'GetClientsForCustomers', body, httpOptions);
   }
 
-  GetEmployeesForClients(_Clients: string, _PeriodEnd: string) {
-    const params = new HttpParams().set('Clients', _Clients).set('PeriodEnd', _PeriodEnd);
-    return this.http.get<Employee[]>(this.url + 'GetEmployeesForClients', { params });
+  GetEmployeesForClients(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<Employee[]>(this.url + 'GetEmployeesForClients', body, httpOptions);
   }
 
-  GetTimesheetsForEmployees(_Employees: string, _PeriodEnd: string) {
-    const params = new HttpParams().set('Employees', _Employees).set('PeriodEnd', _PeriodEnd);
-    return this.http.get<Clients[]>(this.url + 'GetTimesheetsForEmployees', { params });
+  GetTimesheetsForEmployees(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<Clients[]>(this.url + 'GetTimesheetsForEmployees', body, httpOptions);
   }
 
 }

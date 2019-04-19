@@ -563,3 +563,8 @@ export class ExceptionDetails {
     InnerExceptionType?: string;
     NavigateUrl?: string;
 }
+
+export class PeriodEndWithKeys {
+    PeriodEnd?: string;
+    Keys?: string[];
+}

@@ -5,7 +5,7 @@ import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
-import { TimeSheet } from 'src/app/model/objects';
+import { TimeSheet, PeriodEndWithKeys } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
 
 @Component({
@@ -112,10 +112,11 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.selectedClient = [];
     this._Employees = [];
     this.selectedEmployee = [];
-    this.showReport = false;
+
     this.showBillingCodeList = false;
     this.changeCodeList = false;
 
+    this._timeSheetHTML = '';
     this._recData = 0;
     this.showReport = false;
 
@@ -131,6 +132,12 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.showSpinner = true;
     this._periodEnds = [];
     this.selectedPeriodEnd = '';
+    this._customers = [];
+    this.selectedCustomer = [];
+    this._clients = [];
+    this.selectedClient = [];
+    this._Employees = [];
+    this.selectedEmployee = [];
     const PeriodEndReportPeriods = 48;    // GET VALUE FROM APPSETTINGS
     this.timesysSvc.getDatebyPeriod()
       .subscribe(
@@ -182,7 +189,9 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.selectedEmployee = [];
 
     if (this.selectedCustomer.length > 0) {
-      this.timesysSvc.GetClientsForCustomers(this.selectedCustomer.join())
+      const _PeriodEndWithKeys: PeriodEndWithKeys = {};
+      _PeriodEndWithKeys.Keys = this.selectedCustomer;
+      this.timesysSvc.GetClientsForCustomers(_PeriodEndWithKeys)
         .subscribe(
           (data) => {
             if (data !== undefined && data !== null && data.length > 0) {
@@ -204,7 +213,10 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this._Employees = [];
     this.selectedEmployee = [];
     if (this.selectedClient.length > 0 && this.selectedPeriodEnd !== '') {
-      this.timesysSvc.GetEmployeesForClients(this.selectedClient.join(), this.selectedPeriodEnd).subscribe(
+      const _PeriodEndWithKeys: PeriodEndWithKeys = {};
+      _PeriodEndWithKeys.Keys = this.selectedClient;
+      _PeriodEndWithKeys.PeriodEnd = this.selectedPeriodEnd;
+      this.timesysSvc.GetEmployeesForClients(_PeriodEndWithKeys).subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
@@ -224,6 +236,12 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.showBillingCodeList = false;
     this.changeCodeList = false;
     this.showReport = false;
+    this.selectedPeriodEnd = '';
+    this.selectedCustomer = [];
+    this.selectedClient = [];
+    this.selectedEmployee = [];
+    this._timeSheetHTML = '';
+    this.getPeriodEnds();
     this.showSpinner = false;
   }
 
@@ -238,41 +256,39 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
   generateReport() {
     this.showSpinner = true;
     this._timeSheetHTML = '';
+    this._recData = 0;
+    this.showReport = false;
     // Get TimesheetID for the selected period end and selected employees
     if (this.selectedEmployee.length > 0 && this.selectedPeriodEnd !== '') {
-      this.timesysSvc.GetTimesheetsForEmployees(this.selectedEmployee.join(), this.selectedPeriodEnd).subscribe(
+      const _PeriodEndWithKeys: PeriodEndWithKeys = {};
+      _PeriodEndWithKeys.Keys = this.selectedEmployee;
+      _PeriodEndWithKeys.PeriodEnd = this.selectedPeriodEnd;
+      this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
         (data) => {
           if (data !== undefined && data !== null && data.length > 0) {
             this._timeSheetHTML = '';
+            this._recData = data.length;
+            this.showReport = false;
             for (let i = 0; i < data.length; i++) {
               this.showSpinner = true;
               this.timesysSvc.TimesheetHTML(data[i].Id.toString()).subscribe(
                 (dataHTML) => {
                   if (dataHTML !== undefined && dataHTML !== null) {
                     this._timeSheetHTML += dataHTML;
+                  }
+                  if (i === (this._recData - 1)) {
                     this.showTable(this._timeSheetHTML);
                   }
-                  this.showSpinner = false;
                 });
             }
           }
-          this.showSpinner = false;
         }
       );
     }
   }
 
   showTable(data: string) {
-    // this._reports = [];
-    this._recData = 0;
-    this.showReport = false;
-    // if (data !== undefined && data !== null && data.length > 0) {
-    //   this._reports = data;
-    //   this._recData = this._reports[0].RowCount;
-    //   this.showReport = true;
-    // }
     if (data !== undefined && data !== null && data.toString() !== '') {
-      this._recData = 1;
       this.showReport = true;
     }
     this.showBillingCodeList = false;
