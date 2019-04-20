@@ -180,6 +180,7 @@ export class EmployeehoursComponent implements OnInit {
           }
           this._selectString = 'Employees (' + this._employee.length + ' matching codes found)';
           this.showBillingCodeList = true;
+          this.showTotals = true;
         }
         this.showSpinner = false;
       }
@@ -297,6 +298,7 @@ export class EmployeehoursComponent implements OnInit {
     this._endDate = null;
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDateSelect = '';
+    this.showTotals = false;
     this.showSpinner = false;
   }
   changeCodes() {
