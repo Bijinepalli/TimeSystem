@@ -244,8 +244,8 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.selectedEmployee = [];
     this._timeSheetHTML = '';
     this._timeSheetHTMLArr = [];
-    this.getPeriodEnds();
     this.showSpinner = false;
+    this.getPeriodEnds();
   }
 
   changeCodes() {
@@ -278,6 +278,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
       // 'Ramesh.Rao@Ebix.com'; // Logged in user email address
 
       if (mode === 0) {
+        this.showSpinner = true;
         this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
           (data) => {
             this._timeSheetHTMLArr = [];
@@ -296,6 +297,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
             }
           });
       } else {
+        this.showSpinner = true;
         this.timesysSvc.SendTimesheetMail(_PeriodEndWithKeys).subscribe(
           (dataEmail) => {
             this.showSpinner = false;
