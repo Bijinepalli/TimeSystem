@@ -567,4 +567,5 @@ export class ExceptionDetails {
 export class PeriodEndWithKeys {
     PeriodEnd?: string;
     Keys?: string[];
+    EmailAddress?: string;
 }

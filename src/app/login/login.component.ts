@@ -313,7 +313,7 @@ export class LoginComponent implements OnInit {
                       });
                     } else {
                       this.msgSvc.add({
-                        key: 'alert',
+                        key: 'saveSuccess',
                         sticky: true,
                         severity: 'success',
                         summary: 'Info',

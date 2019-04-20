@@ -884,7 +884,11 @@ export class TimesystemService {
 
   GetTimesheetsForEmployees(_PeriodEndWithKeys: PeriodEndWithKeys) {
     const body = JSON.stringify(_PeriodEndWithKeys);
-    return this.http.post<Clients[]>(this.url + 'GetTimesheetsForEmployees', body, httpOptions);
+    return this.http.post<string[]>(this.url + 'GetTimesheetsForEmployees', body, httpOptions);
+  }
+  SendTimesheetMail(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<DictionaryType[]>(this.url + 'SendTimesheetMail', body, httpOptions);
   }
 
 }

@@ -94,14 +94,16 @@
       <p-table #dt [responsive]="false" class="tablePadding">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-5 ui-g-nopad recordsFound">
+            <div class="ui-g-12 ui-md-4 ui-g-nopad recordsFound">
               {{_recData}} timesheets found
             </div>
-            <div class="ui-g-12 ui-md-7 ui-g-nopad" style="text-align: right;">
+            <div class="ui-g-12 ui-md-8 ui-g-nopad" style="text-align: right;">
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
                 class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
               <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
                 (click)="exportClick()"></button>&nbsp;
+              <button pButton pTooltip="Send Mail" tooltipPosition="bottom" icon="fa fa-envelope" label="Send Mail"
+                (click)="sendTimesheetMail()"></button>&nbsp;
             </div>
           </div>
         </ng-template>

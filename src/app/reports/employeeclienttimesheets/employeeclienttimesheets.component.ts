@@ -38,6 +38,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
   _recData = 0;
 
   _timeSheetHTML = '';
+  _timeSheetHTMLArr: string[] = [];
   @ViewChild('dtTimesheet') dtTimesheet: ElementRef;
 
   constructor(
@@ -117,6 +118,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.changeCodeList = false;
 
     this._timeSheetHTML = '';
+    this._timeSheetHTMLArr = [];
     this._recData = 0;
     this.showReport = false;
 
@@ -241,6 +243,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
     this.selectedClient = [];
     this.selectedEmployee = [];
     this._timeSheetHTML = '';
+    this._timeSheetHTMLArr = [];
     this.getPeriodEnds();
     this.showSpinner = false;
   }
@@ -254,37 +257,75 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
   }
 
   generateReport() {
+    this.GetTimesheets(0);
+  }
+
+
+  GetTimesheets(mode: number) {
     this.showSpinner = true;
-    this._timeSheetHTML = '';
-    this._recData = 0;
-    this.showReport = false;
+    if (mode === 0) {
+      this._timeSheetHTMLArr = [];
+      this._timeSheetHTML = '';
+      this._recData = 0;
+      this.showReport = false;
+    }
     // Get TimesheetID for the selected period end and selected employees
     if (this.selectedEmployee.length > 0 && this.selectedPeriodEnd !== '') {
       const _PeriodEndWithKeys: PeriodEndWithKeys = {};
       _PeriodEndWithKeys.Keys = this.selectedEmployee;
       _PeriodEndWithKeys.PeriodEnd = this.selectedPeriodEnd;
-      this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
-        (data) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._timeSheetHTML = '';
-            this._recData = data.length;
-            this.showReport = false;
-            for (let i = 0; i < data.length; i++) {
-              this.showSpinner = true;
-              this.timesysSvc.TimesheetHTML(data[i].Id.toString()).subscribe(
-                (dataHTML) => {
-                  if (dataHTML !== undefined && dataHTML !== null) {
-                    this._timeSheetHTML += dataHTML;
-                  }
-                  if (i === (this._recData - 1)) {
-                    this.showTable(this._timeSheetHTML);
-                  }
-                });
+      _PeriodEndWithKeys.EmailAddress = 'Ramesh.Rao@Ebix.com'; // Logged in user email address
+
+      if (mode === 0) {
+        this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
+          (data) => {
+            this._timeSheetHTMLArr = [];
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._timeSheetHTMLArr = data;
+              this._timeSheetHTML = '';
+              this._recData = data.length;
+              this.showReport = false;
+              for (let i = 0; i < data.length; i++) {
+                this.showSpinner = true;
+                this._timeSheetHTML += data[i].toString();
+                if (i === (this._recData - 1)) {
+                  this.showTable(this._timeSheetHTML);
+                }
+              }
             }
-          }
-        }
-      );
+          });
+      } else {
+        this.timesysSvc.SendTimesheetMail(_PeriodEndWithKeys).subscribe(
+          (dataEmail) => {
+            this.showSpinner = false;
+            if (dataEmail !== undefined && dataEmail !== null && dataEmail.length > 0) {
+              let Errors = '';
+              for (let cnt = 0; cnt < dataEmail.length; cnt++) {
+                Errors += dataEmail[cnt].Value + '<br>';
+              }
+              this.msgSvc.add({
+                key: 'alert',
+                sticky: true,
+                severity: 'error',
+                summary: 'Error!',
+                detail: Errors,
+              });
+            } else {
+              this.msgSvc.add({
+                key: 'saveSuccess',
+                sticky: true,
+                severity: 'success',
+                summary: 'Info',
+                detail: 'Email sent',
+              });
+            }
+          });
+      }
     }
+  }
+
+  sendTimesheetMail() {
+    this.GetTimesheets(1);
   }
 
   showTable(data: string) {
