@@ -274,7 +274,8 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
       const _PeriodEndWithKeys: PeriodEndWithKeys = {};
       _PeriodEndWithKeys.Keys = this.selectedEmployee;
       _PeriodEndWithKeys.PeriodEnd = this.selectedPeriodEnd;
-      _PeriodEndWithKeys.EmailAddress = 'Ramesh.Rao@Ebix.com'; // Logged in user email address
+      _PeriodEndWithKeys.EmailAddress = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress');
+      // 'Ramesh.Rao@Ebix.com'; // Logged in user email address
 
       if (mode === 0) {
         this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
