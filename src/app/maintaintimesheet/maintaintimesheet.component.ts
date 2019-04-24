@@ -1394,21 +1394,22 @@ export class MaintaintimesheetComponent implements OnInit {
                       key: 'saveSuccess', severity: 'success'
                       , summary: 'Info Message', detail: 'Timesheet saved successfully'
                     });
+                    this.resetForm();
+                    this.defaultControlsToForm();
+                    this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
+                    this.getTimesheetTimeLineTimeCellDetails();
                   }
-                  this.resetForm();
-                  this.defaultControlsToForm();
-                  this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
-                  this.getTimesheetTimeLineTimeCellDetails();
+
                   this.showSpinner = false;
                 }
               },
               (error) => {
                 console.log(error);
               });
-          if (this._actualTimeSheetId.toString() === '-1') {
-            sessionStorage.removeItem('PeriodEndDate');
-            this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId], { skipLocationChange: true });
-          }
+          // if (this._actualTimeSheetId.toString() === '-1') {
+          //   sessionStorage.removeItem('PeriodEndDate');
+          //   this.router.navigate(['/menu/maintaintimesheet/' + this._timesheetId], { skipLocationChange: true });
+          // }
         } else {
           this.showSpinner = false;
           if (submitted) {
@@ -1429,7 +1430,10 @@ export class MaintaintimesheetComponent implements OnInit {
                     });
                 // tslint:disable-next-line:max-line-length
               } else {
-                this._submitMessage = 'Your timesheet has been submitted';
+                this.timesysSvc.SendEmptyTimesheetToFinance(this._timesheetId.toString()).subscribe(
+                  (outputData) => {
+                    this._submitMessage = 'Your timesheet has been submitted';
+                  });
               }
               this.msgSvc.add({
                 key: 'saveSuccess', severity: 'success'
@@ -1507,11 +1511,12 @@ export class MaintaintimesheetComponent implements OnInit {
                     key: 'saveSuccess', severity: 'success'
                     , summary: 'Info Message', detail: 'Timesheet saved successfully'
                   });
+                  this.resetForm();
+                  this.defaultControlsToForm();
+                  this.getClientProjectCategoryDropDown(this._timesheetUserId);
+                  this.getTimesheetTimeLineTimeCellDetails();
                 }
-                this.resetForm();
-                this.defaultControlsToForm();
-                this.getClientProjectCategoryDropDown(this._timesheetUserId);
-                this.getTimesheetTimeLineTimeCellDetails();
+
                 this.showSpinner = false;
               }
             },
