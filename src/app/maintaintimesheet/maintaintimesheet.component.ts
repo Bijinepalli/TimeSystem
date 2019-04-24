@@ -123,7 +123,7 @@ export class MaintaintimesheetComponent implements OnInit {
     // console.log(this._IsTimeSheetSubmitted, this._isTimesheetView, this._isTimesheetRejected);
   }
 
-
+  // This method is used to get Employee Details
   getEmployeeDetails(EmployeeId: string) {
     this.timesysSvc.getEmployee(EmployeeId, '', '').subscribe(
       (dataEmp) => {
@@ -139,6 +139,7 @@ export class MaintaintimesheetComponent implements OnInit {
       });
   }
 
+  // This method is used to get Timesheet Details
   getTimesheetTimeLineTimeCellDetails() {
     this._errorMessage = '';
     this._employee = [];
@@ -220,7 +221,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
 
-
+  // This method is used to transform date format
   getNewStartDateVal(dtNew: string): Date {
     const dtDBFormat = this.datePipe.transform(dtNew, 'yyyy-MM-dd');
     const dtVals = dtDBFormat.split('-');
@@ -228,12 +229,16 @@ export class MaintaintimesheetComponent implements OnInit {
     newDate.setDate(newDate.getDate() + 1);
     return newDate;
   }
+
+  // This method is used to transform date format
   getNewEndDateVal(dtNew: string): Date {
     const dtDBFormat = this.datePipe.transform(dtNew, 'yyyy-MM-dd');
     const dtVals = dtDBFormat.split('-');
     const newDate = new Date(+dtVals[0], +dtVals[1] - 1, +dtVals[2]);
     return newDate;
   }
+
+  // This method is used to get PeriodEnd and PeriodStart Dates
   getPeriodDates(selectPeriodEndDate: string) {
     // this.timesysSvc.getTimeSheetPeridos().subscribe(
     //   (data1) => {
@@ -263,6 +268,8 @@ export class MaintaintimesheetComponent implements OnInit {
     }
     // });
   }
+
+  // This method is used to get All data at a time which we wanted to use in this page - because of async functionality
   getAllWantedDetailsOnLoad(timeSheetUserId: string, selectPeriodEndDate: string) {
     this.timesysSvc.getAllWantedDetailsOnLoad(timeSheetUserId, selectPeriodEndDate).subscribe(
       (wholeData) => {
@@ -275,7 +282,7 @@ export class MaintaintimesheetComponent implements OnInit {
       });
   }
 
-
+  // This method is used to get date and week arrays to display
   getDateAndWeekArrays() {
     // this._days = this.calculateDate(this._peroidStartDate, this._periodEnddate);
     // if (this._days > 0) {
@@ -298,6 +305,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
 
+  // This method is used to add static controls to form
   defaultControlsToForm() {
     /* Total Weeks */
     this.timeSheetForm = new FormGroup({});
@@ -321,7 +329,7 @@ export class MaintaintimesheetComponent implements OnInit {
     this.timeSheetForm.addControl('txtSuperComments', new FormControl('', null));
   }
 
-
+  // This method is used to add dynamic controls to form
   addFormControls() {
     let i = 0;
     try {
@@ -447,20 +455,23 @@ export class MaintaintimesheetComponent implements OnInit {
     this.showSpinner = false;
   }
 
+  // This method is used to reset the whole form to default
   resetForm() {
     this.timeSheetForm.markAsPristine();
     this.timeSheetForm.markAsUntouched();
     this.timeSheetForm.updateValueAndValidity();
     this.timeSheetForm.reset();
   }
-  private calculateDate(date1, date2) {
-    // our custom function with two parameters, each for a selected date
-    const diffc = date1.getTime() - date2.getTime();
-    // getTime() function used to convert a date into milliseconds. This is needed in order to perform calculations.
-    const days = Math.round(Math.abs(diffc / (1000 * 60 * 60 * 24)));
-    // this is the actual equation that calculates the number of days.
-    return days + 1;
-  }
+  // private calculateDate(date1, date2) {
+  //   // our custom function with two parameters, each for a selected date
+  //   const diffc = date1.getTime() - date2.getTime();
+  //   // getTime() function used to convert a date into milliseconds. This is needed in order to perform calculations.
+  //   const days = Math.round(Math.abs(diffc / (1000 * 60 * 60 * 24)));
+  //   // this is the actual equation that calculates the number of days.
+  //   return days + 1;
+  // }
+
+  // This method is used to fill all dropdowns with data
   getClientProjectCategoryDropDown(timeSheetUserId: string) {
     const cStartDate = this.datePipe.transform(this._peroidStartDate.toString(), 'yyyy-MM-dd');
     const cEndDate = this.datePipe.transform(this._periodEnddate.toString(), 'yyyy-MM-dd');
@@ -499,6 +510,8 @@ export class MaintaintimesheetComponent implements OnInit {
         }
       });
   }
+
+  // This method is used to calculate client, daily and weekly hours
   TANDMTotalCalculation() {
     /* TANDM Daily Total Calculation */
     this._errorDailyTANDMArray = [];
@@ -551,6 +564,8 @@ export class MaintaintimesheetComponent implements OnInit {
     AllWeeksTANDMHoursTotal += +this.timeSheetForm.get('txtTANDMWeeklyTotalDefault').value;
     this.timeSheetForm.controls['txtTANDMTotalWeeks'].setValue(this.decimal.transform(AllWeeksTANDMHoursTotal, '1.2-2'));
   }
+
+  // This method is used to calculate project, daily and weekly hours
   ProjBillTotalCalculation() {
     /* ProjBill Daily Total Calculation */
     this._errorDailyProjBillArray = [];
@@ -603,6 +618,8 @@ export class MaintaintimesheetComponent implements OnInit {
     AllWeeksProjBillHoursTotal += +this.timeSheetForm.get('txtProjBillWeeklyTotalDefault').value;
     this.timeSheetForm.controls['txtProjBillTotalWeeks'].setValue(this.decimal.transform(AllWeeksProjBillHoursTotal, '1.2-2'));
   }
+
+  // This method is used to calculate Non Billable, daily and weekly hours
   NonBillTotalCalculation() {
     /* NonBill Daily Total Calculation */
     this._errorDailyNonBillArray = [];
@@ -656,10 +673,12 @@ export class MaintaintimesheetComponent implements OnInit {
     this.timeSheetForm.controls['txtNonBillTotalWeeks'].setValue(this.decimal.transform(AllWeeksNonBillHoursTotal, '1.2-2'));
   }
 
-
+  // This method is used to calculate total daily and weekly hours on blur event
   hoursOnChange() {
     this.calculateHours();
   }
+
+  // This method is used to calculate total daily and weekly hours
   calculateHours() {
     this.TANDMTotalCalculation();
     this.ProjBillTotalCalculation();
@@ -687,6 +706,8 @@ export class MaintaintimesheetComponent implements OnInit {
     this.timeSheetForm.controls['txtWeeklyGrandTotal'].setValue(this.decimal.transform(grandWeeklyTotal, '1.2-2'));
 
   }
+
+  // This method is used to set values on loading the timesheet
   setValues() {
     if (this.timeSheetForm.get('txtUserComments') !== undefined &&
       this.timeSheetForm.get('txtUserComments') !== null &&
@@ -716,9 +737,13 @@ export class MaintaintimesheetComponent implements OnInit {
       superComments.enable();
     }
   }
+
+  // This method is used to get all formcontrols, we can set or get values from this
   get f() {
     return this.timeSheetForm.controls;
   }
+
+  // This method is used as a validator in html
   hourRangeValidator(control: AbstractControl): { [key: string]: boolean } | null {
     if (control.value !== undefined && (isNaN(control.value) || control.value < 18 || control.value > 45)) {
       return { 'ageRange': true };
@@ -726,6 +751,7 @@ export class MaintaintimesheetComponent implements OnInit {
     return null;
   }
 
+  // This method is used for validating the hour textboxes
   TotalHoursExceedValidation() {
     if (this._errorDailyGrandArray.length > 0 ||
       this._errorDailyNonBillArray.length > 0 ||
@@ -758,6 +784,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
 
+  // This method is used for validating the hour textboxes
   // tslint:disable-next-line:max-line-length
   DataMissingValidations(drpId: string, txtId: string, drpDefaultId: string, txtDefaultId: string, ChargeType: string, timeItems: any, mode: number) {
     const drpError = [];
@@ -842,6 +869,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
   }
 
+  // This method is used as onchange event for dropdowns to call validation methods
   drpChange(event: any) {
     this._TotalValidationErrors = 0;
     this.DataMissingValidations('drpTandM_', 'txtTANDMWeeklyTotals_',
@@ -852,6 +880,7 @@ export class MaintaintimesheetComponent implements OnInit {
       'drpNonBillDefault', 'txtNonBillWeeklyTotalDefault', 'Non Billable ', this._timeNONbill, 0);
   }
 
+  // This method is used in save button click event to check all validations
   saveClickValidations() {
     this._TotalValidationErrors = 0;
     this.TotalHoursExceedValidation();
