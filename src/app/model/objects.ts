@@ -538,6 +538,7 @@ export class SOW {
     SOWType?: string;
     Notes?: string;
     SOWFileName?: string;
+    Hours?: string;
 }
 
 export class FileSystem {
