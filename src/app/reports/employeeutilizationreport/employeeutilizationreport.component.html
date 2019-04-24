@@ -17,12 +17,12 @@
       <div class="ui-g-12 ui-md-3">
         <label class="label" style="padding:0px 10px;">Select Department:</label>
         <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name"
-          pTooltip="Employee's Department" tooltipPosition="bottom" [style]="{'width':'300px;'}"></p-dropdown>
+          pTooltip="Employee's Department" tooltipPosition="right" [style]="{'width':'300px;'}"></p-dropdown>
       </div>
       <div class="ui-g-12 ui-md-3">
         <label class="label" style="padding:0px 10px;">Select:</label>
-        <p-selectButton [options]="types" pTooltip="Show employees that have this status" tooltipPosition="bottom"
-          [(ngModel)]="selectedType"></p-selectButton>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+        <!-- pTooltip="Show employees that have this status" tooltipPosition="bottom" -->
       </div>
     </div>
     <p-footer>
