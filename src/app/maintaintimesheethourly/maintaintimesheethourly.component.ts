@@ -106,6 +106,7 @@ export class MaintaintimesheethourlyComponent implements OnInit {
           });
       });
     } else {
+      this.showSpinner = false;
       this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
       this._errorBlock = this._errorMessage;
     }
