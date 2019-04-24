@@ -890,5 +890,9 @@ export class TimesystemService {
     const body = JSON.stringify(_PeriodEndWithKeys);
     return this.http.post<DictionaryType[]>(this.url + 'SendTimesheetMail', body, httpOptions);
   }
-
+  SendEmptyTimesheetToFinance(strTimeSheetId: string) {
+    const params = new HttpParams()
+      .set('strTimeSheetId', strTimeSheetId.toString());
+    return this.http.get<Departments[]>(this.url + 'SendEmptyTimesheetToFinance', { params });
+  }
 }
