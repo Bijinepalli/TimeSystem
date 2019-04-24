@@ -1,10 +1,10 @@
 <div *ngIf="_IsTimeSheetSubmittedJustNow" style="height: 300px;"></div>
-<div *ngIf="_IsTimeSheetSubmittedJustNow" class="ui-g ui-g-nopad warningBlock">
+<div *ngIf="_IsTimeSheetSubmittedJustNow && _submitMessage !== ''" class="ui-g ui-g-nopad warningBlock">
   <div class="ui-g-12" style="text-align: center">
     {{_submitMessage}}
   </div>
 </div>
-<form [formGroup]="timeSheetForm" class="">
+<form [formGroup]="timeSheetForm" class="" *ngIf="!_IsTimeSheetSubmittedJustNow">
 
   <div class="ui-g ui-g-nopad mainHeader">
     <div class="ui-g-9 ui-md-10 ui-g-nopad" style="padding-top: 5px;padding-left:10px">
@@ -75,5 +75,6 @@
 
     </p-panel>
   </div>
-
+  <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}"
+  strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
 </form>

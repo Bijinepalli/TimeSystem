@@ -302,7 +302,8 @@ export class TimesheetsComponent implements OnInit {
                     if (data1 !== undefined && data1 !== null && data1.length > 0) {
                       this._timesheetApproval = data1.filter(P =>
                         P.PeriodEnd === this._timesheetsTimePeriod[0].PeriodEnd
-                        && P.Status === 'P');
+                        && P.Status === 'P' && this._employee.length > 0 && this._employee[0].SupervisorId > 0);
+                      // tslint:disable-next-line:max-line-length
                       if (this._timesheetApproval !== undefined && this._timesheetApproval !== null && this._timesheetApproval.length > 0) {
                         this.msgSvc.add({
                           key: 'alert',

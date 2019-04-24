@@ -539,6 +539,7 @@ export class SOW {
     SOWType?: string;
     Notes?: string;
     SOWFileName?: string;
+    Hours?: string;
 }
 
 export class FileSystem {
@@ -563,4 +564,10 @@ export class ExceptionDetails {
     InnerSource?: string;
     InnerExceptionType?: string;
     NavigateUrl?: string;
+}
+
+export class PeriodEndWithKeys {
+    PeriodEnd?: string;
+    Keys?: string[];
+    EmailAddress?: string;
 }

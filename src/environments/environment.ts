@@ -7,7 +7,7 @@ export const environment = {
   accessSystemURL: 'http://172.16.36.32/AccessSystem/',
   helpipaddress: 'http://172.16.32.67/ECTS/TimeSystem/Help/',
   url: 'http://localhost/TimeSystemService/',
-  SOWFiles: 'http://localhost/SOWFiles/',
+  SOWFiles: 'http://172.16.32.67/SOWFiles/',
   buildType: 'Dev',
 };
 

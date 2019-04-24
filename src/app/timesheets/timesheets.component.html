@@ -64,10 +64,10 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] !== 'Rejected'"
+              <i *ngIf="rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] === ''"
                 class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
                 (click)="editTimeSheet(rowData)"></i>
-              <i *ngIf="rowData['Submitted'] === 'Yes' || (rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] === 'Rejected')"
+              <i *ngIf="rowData['Submitted'] === 'Yes' || (rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] !== '')"
                 class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom"
                 (click)="viewTimeSheet(rowData)"></i>
             </td>

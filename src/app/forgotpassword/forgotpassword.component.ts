@@ -237,7 +237,7 @@ export class ForgotpasswordComponent implements OnInit {
             });
           } else {
             this.msgSvc.add({
-              key: 'alert',
+              key: 'saveSuccess',
               sticky: true,
               severity: 'success',
               summary: 'Email sent',

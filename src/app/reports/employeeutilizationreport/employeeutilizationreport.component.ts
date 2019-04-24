@@ -316,7 +316,6 @@ export class EmployeeutilizationreportComponent implements OnInit {
     exHeader += '"Employee Utilization Report"' + '\n';
     exHeader += '"Department",' + '"' + this._selectedDepartment.Name + '",' + '\n';
     exHeader += '"Date Range From",' + '"' + this._startDateVal + ' to ' + this._endDateVal + '"' + '\n';
-
     this.ExportCSV(sheetName, exHeader, this.dtUtilizationReport.nativeElement);
 
     // let csv = this.dtUtilizationReport.nativeElement.innerText;
@@ -362,17 +361,20 @@ export class EmployeeutilizationreportComponent implements OnInit {
       RTL: false,
       sheetname: 'EmployeeUtilizationReport',
     });
-
-    const objCSV = tblExport.getExportData()['tableexport-1'].csv;
-    tblExport.export2file(
-      '\n' +
-      exHeader +
-      '\n' + '\n' +
-      objCSV.data +
-      '\n' + '\n' +
-      exFooter,
-      objCSV.mimeType,
-      objCSV.filename,
-      objCSV.fileExtension);
+    const key = this.dtUtilizationReport.nativeElement.attributes['tableexport-key'] ?
+      this.dtUtilizationReport.nativeElement.attributes['tableexport-key'].value : 'tableexport-1';
+    if (tblExport.getExportData()[key] !== undefined && tblExport.getExportData()[key] !== null) {
+      const objCSV = tblExport.getExportData()[key].csv;
+      tblExport.export2file(
+        '\n' +
+        exHeader +
+        '\n' + '\n' +
+        objCSV.data +
+        '\n' + '\n' +
+        exFooter,
+        objCSV.mimeType,
+        objCSV.filename,
+        objCSV.fileExtension);
+    }
   }
 }

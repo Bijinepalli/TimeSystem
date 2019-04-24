@@ -153,8 +153,9 @@ export class SowComponent implements OnInit {
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
       { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
       { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '100px' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: '200px' },
+      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: '180px' },
       { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: 'auto' },
       { field: 'Originate', header: 'Originate', align: 'left', width: '100px' },
       { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '120px' },
       { field: 'Status', header: 'Status', align: 'left', width: '150px' },
@@ -166,7 +167,7 @@ export class SowComponent implements OnInit {
       'Name', 'CustomerName',
       'EffectiveDateSearch', 'ExpirationDateSearch',
       'CurrencyType', 'TotalContractValue',
-      'InvoiceFrequency', 'Originate',
+      'InvoiceFrequency', 'Hours', 'Originate',
       'OpportunityType', 'Status',
       'SOWType', 'Notes', 'SOWFileName'
     ];
@@ -354,6 +355,7 @@ export class SowComponent implements OnInit {
     this._frm.addControl('frmTotalContractValue', new FormControl(null, Validators.required));
     this._frm.addControl('frmOriginate', new FormControl(null, Validators.required));
     this._frm.addControl('frmOpportunityType', new FormControl(null, Validators.required));
+    this._frm.addControl('frmHours', new FormControl(null, Validators.required));
     this._frm.addControl('frmStatus', new FormControl(null, Validators.required));
     this._frm.addControl('frmSOWType', new FormControl(null, Validators.required));
     this._frm.addControl('frmNotes', new FormControl(null, null));
@@ -407,6 +409,11 @@ export class SowComponent implements OnInit {
     if (!this.IsControlUndefined('frmOriginate')) {
       if (data.Originate !== undefined && data.Originate !== null && data.Originate.toString() !== '') {
         this._frm.controls['frmOriginate'].setValue(data.Originate);
+      }
+    }
+    if (!this.IsControlUndefined('frmHours')) {
+      if (data.Hours !== undefined && data.Hours !== null && data.Hours.toString() !== '') {
+        this._frm.controls['frmHours'].setValue(data.Hours);
       }
     }
     if (!this.IsControlUndefined('frmOpportunityType')) {
@@ -507,6 +514,9 @@ export class SowComponent implements OnInit {
     }
     if (!this.IsControlUndefinedAndHasValue('frmOriginate')) {
       this._selectedSOW.Originate = this._frm.controls['frmOriginate'].value.toString().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('frmHours')) {
+      this._selectedSOW.Hours = this._frm.controls['frmHours'].value.toString().trim();
     }
     if (!this.IsControlUndefinedAndHasValue('frmOpportunityType')) {
       this._selectedSOW.OpportunityType = this._frm.controls['frmOpportunityType'].value.toString().trim();
@@ -636,10 +646,10 @@ export class SowComponent implements OnInit {
     return IsUndefined;
   }
 
-  numberOnly(event): boolean {
+  numberOnly(event, ctrlName): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
     if (charCode === 46) {
-      if (this._frm.controls['frmTotalContractValue'].value.toString().trim().indexOf('.') === -1) {
+      if (this._frm.controls[ctrlName].value.toString().trim().indexOf('.') === -1) {
         return true;
       } else {
         return false;
@@ -652,6 +662,6 @@ export class SowComponent implements OnInit {
     }
   }
   customSort(event: SortEvent) {
-    this.commonSvc.customSortByCols(event, ['EffectiveDate', 'ExpirationDate'], ['TotalContractValue']);
+    this.commonSvc.customSortByCols(event, ['EffectiveDate', 'ExpirationDate'], ['TotalContractValue', 'Hours']);
   }
 }

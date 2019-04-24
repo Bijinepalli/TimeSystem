@@ -12,7 +12,8 @@ import {
   DictionaryType,
   SOW,
   FileSystem,
-  DateArray
+  DateArray,
+  PeriodEndWithKeys
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -728,8 +729,6 @@ export class TimesystemService {
       .set('LoginID', '')
       .set('Password', '');
     const data3 = this.http.get<Employee[]>(this.url + 'GetEmployee', { params });
-    console.log('Assam');
-    console.log(periodEnd);
     params = new HttpParams()
       .set('strPeriodEnd', periodEnd);
     const data4 = this.http.get<DateArray>(this.url + 'GetNoOfDaysInBetweenPeriod', { params });
@@ -753,18 +752,15 @@ export class TimesystemService {
   }
   timeSheetPendingForApprovalInsert(_timeSheetApp: TimeSheetForApproval) {
     const body = JSON.stringify(_timeSheetApp);
-    console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetPendingForApprovalInsert', body, httpOptions);
   }
 
   timeSheetPendingForApprovalUpdate(_timeSheetApp: TimeSheetForApproval) {
     const body = JSON.stringify(_timeSheetApp);
-    console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetPendingForApprovalUpdate', body, httpOptions);
   }
   timeSheetApprovalStatusUpdate(_timeSheet: TimeSheet) {
     const body = JSON.stringify(_timeSheet);
-    console.log(body);
     return this.http.post<TimeSheetForApproval>(this.url + 'TimeSheetApprovalStatusUpdate', body, httpOptions);
   }
   getEmployeePayroll(EmployeeId: string) {
@@ -869,5 +865,34 @@ export class TimesystemService {
   timesheetUpdate(_timesheetId: TimeSheet) {
     const body = JSON.stringify(_timesheetId);
     return this.http.post<TimeSheet>(this.url + 'TimeSheet_Update', body, httpOptions);
+  }
+
+  TimesheetHTML(timeSheetId: string) {
+    const params = new HttpParams().set('strTimeSheetId', timeSheetId);
+    return this.http.get<string>(this.url + 'TimesheetHTML', { params });
+  }
+
+  GetClientsForCustomers(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<Clients[]>(this.url + 'GetClientsForCustomers', body, httpOptions);
+  }
+
+  GetEmployeesForClients(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<Employee[]>(this.url + 'GetEmployeesForClients', body, httpOptions);
+  }
+
+  GetTimesheetsForEmployees(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<string[]>(this.url + 'GetTimesheetsForEmployees', body, httpOptions);
+  }
+  SendTimesheetMail(_PeriodEndWithKeys: PeriodEndWithKeys) {
+    const body = JSON.stringify(_PeriodEndWithKeys);
+    return this.http.post<DictionaryType[]>(this.url + 'SendTimesheetMail', body, httpOptions);
+  }
+  SendEmptyTimesheetToFinance(strTimeSheetId: string) {
+    const params = new HttpParams()
+      .set('strTimeSheetId', strTimeSheetId.toString());
+    return this.http.get<Departments[]>(this.url + 'SendEmptyTimesheetToFinance', { params });
   }
 }
