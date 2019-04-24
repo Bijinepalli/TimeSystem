@@ -97,9 +97,13 @@ export class MaintaintimesheethourlyComponent implements OnInit {
         // });
       }
       this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
-        this._IsTimeSheetSubmittedJustNow = true;
-        this._submitMessage = 'Your timesheet has been submitted';
-        this.showSpinner = false;
+        this._timesheetId = +dataNew;
+        this.timesysSvc.SendEmptyTimesheetToFinance(this._timesheetId.toString()).subscribe(
+          (outputData) => {
+            this._IsTimeSheetSubmittedJustNow = true;
+            this._submitMessage = 'Your timesheet has been submitted';
+            this.showSpinner = false;
+          });
       });
     } else {
       this._errorMessage = 'You cannot submit an empty timesheet without specifying the reason in the comment section';
@@ -157,8 +161,8 @@ export class MaintaintimesheethourlyComponent implements OnInit {
                 this._periodEndDateDisplay = this.datePipe.transform(this._timeSheetEntries[0].PeriodEnd, 'MM-dd-yyyy');
                 this.timeSheetForm.controls['txtUserComments'].setValue(this._timeSheetEntries[0].Comments);
                 // this.getPeriodDates(this._timeSheetEntries[0].PeriodEnd);
-              this.showSpinner = false;
-            }
+                this.showSpinner = false;
+              }
             } else {
               this.showSpinner = false;
               this._errorMessage = 'Problem exists with this timesheet please contact administrator.<br/>';
@@ -172,6 +176,7 @@ export class MaintaintimesheethourlyComponent implements OnInit {
           }
         });
     } else {
+      this.showSpinner = false;
       this.getEmployeeDetails(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString());
     }
   }
