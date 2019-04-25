@@ -582,6 +582,16 @@ export class SOWDetails {
     Hours?: string;
 }
 
+export class SOWAnalysis {
+    UtilizedHours?: string;
+    RemainingHours?: string;
+    UtilizationPercent?: string;
+    TimeTaken?: string;
+    TimeRemaining?: string;
+    ExpectedDays?: string;
+    Probability?: string;
+}
+
 
 
 export class SOWUtilizationReport {
@@ -590,4 +600,5 @@ export class SOWUtilizationReport {
     lstClients?: SOWDetails[];
     lstEmployees?: SOWDetails[];
     lstDetails?: SOWDetails[];
+    lstSOWAnalysis?: SOWAnalysis[];
 }

@@ -6,7 +6,7 @@ import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
 import { Table } from 'primeng/table';
-import { SOWUtilizationReport, SOWDetails, SOW } from 'src/app/model/objects';
+import { SOWUtilizationReport, SOWDetails, SOW, SOWAnalysis } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
 import { DatePipe } from '@angular/common';
 @Component({
@@ -22,6 +22,7 @@ export class SowutilizationreportComponent implements OnInit {
   _recData = 0;
   showReport = false;
   showSpinner = false;
+
   ParamSubscribe: any;
   IsSecure = false;
 
@@ -30,11 +31,19 @@ export class SowutilizationreportComponent implements OnInit {
   _sortArray = [];
   @ViewChild('dt') dt: Table;
   @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
+  @ViewChild('barChart') barChart;
+  DEFAULT_COLORS = ['#36A2EB', '#22AA99', '#AAAA11', '#3366CC', '#DC3912', '#FF9900', '#109618', '#990099',
+    '#3B3EAC', '#0099C6', '#DD4477', '#66AA00', '#B82E2E',
+    '#316395', '#994499', '#6633CC',
+    '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'];
 
 
   _DisplayDateTimeFormat: any;
   _SOWs: SelectItem[] = [];
   _selectedSOW: string;
+
+  _Types: SelectItem[] = [];
+  _selectedType: string;
 
 
   lstSOW?: SOW[] = [];
@@ -42,7 +51,27 @@ export class SowutilizationreportComponent implements OnInit {
   lstClients?: SOWDetails[] = [];
   lstEmployees?: SOWDetails[] = [];
   lstDetails?: SOWDetails[] = [];
+  lstSOWAnalysis?: SOWAnalysis[];
+
   _SOWFilesPath: string;
+
+  graphDialog = false;
+
+  ShowGraph = false;
+  hoursByTeamChartData = {
+    labels: [],
+    datasets: [
+      {
+        label: '',
+        backgroundColor: '',
+        borderColor: '',
+        data: [],
+      },
+    ]
+  };
+
+  chartplugins: any;
+  chartoptions: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -112,9 +141,19 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstClients = [];
     this.lstEmployees = [];
     this.lstDetails = [];
+    this.lstSOWAnalysis = [];
     this.cols = {};
     this._recData = 0;
     this.showReport = false;
+
+    this._Types = [];
+    this._selectedType = null;
+
+    this.hoursByTeamChartData = { labels: [], datasets: [] };
+    this.ShowGraph = false;
+    this.chartoptions = [];
+    this.chartplugins = [];
+
     this.resetSort();
   }
 
@@ -130,6 +169,7 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstClients = [];
     this.lstEmployees = [];
     this.lstDetails = [];
+    this.lstSOWAnalysis = [];
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
@@ -148,6 +188,45 @@ export class SowutilizationreportComponent implements OnInit {
     ];
 
     this._SOWFilesPath = environment.SOWFiles;
+
+    this._Types = [
+      { label: 'Mothly Totals', value: '0' },
+      { label: 'Employee Totals', value: '1' },
+      { label: 'Mothly Employee Totals', value: '2' },
+      // { label: 'Employee Mothly Totals', value: '3' }
+    ];
+    this._selectedType = '0';
+
+    this.chartoptions = {
+      // title: {
+      //   display: true,
+      //   text: 'Hours in Office ',
+      //   fontSize: 16
+      // },
+      legend: {
+        position: 'bottom'
+      },
+      showTooltips: true,
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      },
+    };
+
+    this.hoursByTeamChartData = { labels: [], datasets: [] };
+    this.chartplugins = [{
+      beforeInit: function (chart) {
+        chart.data.labels.forEach(function (e, i, a) {
+          if (/\n/.test(e)) {
+            a[i] = e.split(/\n/);
+          }
+        });
+      }
+    }];
+
     this.getSOWs();
   }
 
@@ -180,6 +259,7 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstClients = [];
     this.lstEmployees = [];
     this.lstDetails = [];
+    this.lstSOWAnalysis = [];
     this.timesysSvc.GetSOWUtilizationReport(this._selectedSOW.toString()).subscribe((data) => {
       this.showTable(data);
     });
@@ -190,15 +270,32 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstClients = [];
     this.lstEmployees = [];
     this.lstDetails = [];
+    this.lstSOWAnalysis = [];
     if (data !== undefined && data !== null) {
       this.lstSOW = data.lstSOW;
       this.lstMonths = data.lstMonths;
       this.lstClients = data.lstClients;
       this.lstEmployees = data.lstEmployees;
       this.lstDetails = data.lstDetails;
+      this.lstSOWAnalysis = data.lstSOWAnalysis;
+
+      // let lstAnalysis: SOWAnalysis[];
+      // lstAnalysis = [];
+      // let analysis: SOWAnalysis;
+      // analysis = {};
+      // analysis.UtilizedHours = '10';
+      // analysis.RemainingHours = '20';
+      // analysis.TimeTaken = '2';
+      // analysis.TimeRemaining = '-4';
+      // analysis.UtilizationPercent = '33.33';
+      // analysis.ExpectedDays = '5';
+      // analysis.Probability = '-80';
+      // lstAnalysis.push(analysis);
+      // this.lstSOWAnalysis = lstAnalysis;
       this.showReport = true;
     }
     this._recData = this.lstDetails.length;
+    // this.BuildGraph();
     this.showSpinner = false;
     this.resetSort();
   }
@@ -210,6 +307,7 @@ export class SowutilizationreportComponent implements OnInit {
       // 'border-bottom': (border === 1) ? '1px solid #b3b3b3' : '0px',
       'background-color': displayColors[(i % displayColors.length)]
     };
+    // return { 'border': '0px', };
   }
 
   getHours(Year, Month, ClientID, EmployeeID): string {
@@ -224,7 +322,12 @@ export class SowutilizationreportComponent implements OnInit {
         hours += (+(hourDetail[cnt].Hours));
       }
     }
-    return hours.toString();
+    return hours.toString() + '.00';
+  }
+
+  startOver() {
+    this.ClearAllProperties();
+    this.Initialisations();
   }
 
   customSort(event: SortEvent) {
@@ -281,6 +384,117 @@ export class SowutilizationreportComponent implements OnInit {
         objCSV.filename,
         objCSV.fileExtension);
     }
+  }
+
+
+  BuildGraph() {
+
+    this.ShowGraph = false;
+    this.hoursByTeamChartData = { labels: [], datasets: [] };
+
+
+    const labels = [];
+    if (this._selectedType === '0' || this._selectedType === '2') {
+      for (let weekCnt = 0; weekCnt < this.lstMonths.length; weekCnt++) {
+        labels.push(this.datePipe.transform(this.lstMonths[weekCnt].Year + '-' + this.lstMonths[weekCnt].Month + '-01', 'MMM, yyyy'));
+      }
+    } else {
+      for (let weekCnt = 0; weekCnt < this.lstEmployees.length; weekCnt++) {
+        labels.push(this.lstEmployees[weekCnt].EmployeeName);
+      }
+    }
+
+
+    this.hoursByTeamChartData.labels = labels;
+
+    this.hoursByTeamChartData.datasets = [];
+    if (this._selectedType === '0' || this._selectedType === '1') {
+      this.hoursByTeamChartData.datasets.push({
+        label: this.lstSOW[0].Name,
+        backgroundColor: '',
+        borderColor: '',
+        data: []
+      });
+      this.hoursByTeamChartData.datasets[0].backgroundColor = this.configureDefaultColours(0);
+    } else {
+      if (this._selectedType === '2') {
+        for (let i = 0; i < this.lstEmployees.length; i++) {
+          this.hoursByTeamChartData.datasets.push({
+            label: this.lstEmployees[i].EmployeeName,
+            backgroundColor: '',
+            borderColor: '',
+            data: []
+          });
+          this.hoursByTeamChartData.datasets[i].backgroundColor = this.configureDefaultColours(i);
+        }
+      } else {
+        for (let i = 0; i < this.lstMonths.length; i++) {
+          this.hoursByTeamChartData.datasets.push({
+            label: this.datePipe.transform(this.lstMonths[i].Year + '-' + this.lstMonths[i].Month + '-01', 'MMM, yyyy'),
+            backgroundColor: '',
+            borderColor: '',
+            data: []
+          });
+          this.hoursByTeamChartData.datasets[i].backgroundColor = this.configureDefaultColours(i);
+        }
+      }
+    }
+
+    this.ShowGraph = true;
+    if (this.barChart !== undefined && this.barChart !== null) {
+      this.barChart.refresh();
+    }
+
+    for (let cnt = 0; cnt < this.hoursByTeamChartData.datasets.length; cnt++) {
+
+      this.hoursByTeamChartData.datasets[cnt].data = [];
+
+      if (this._selectedType === '0' || this._selectedType === '2') {
+        for (let weekCnt = 0; weekCnt < this.lstMonths.length; weekCnt++) {
+          if (this._selectedType === '0') {
+            this.hoursByTeamChartData.datasets[cnt].data.push(
+              this.getHours(this.lstMonths[weekCnt].Year, this.lstMonths[weekCnt].Month, 0, 0));
+          } else {
+            this.hoursByTeamChartData.datasets[cnt].data.push(
+              this.getHours(this.lstMonths[weekCnt].Year, this.lstMonths[weekCnt].Month, 0, this.lstEmployees[cnt].EmployeeID));
+          }
+        }
+      } else {
+        if (this._selectedType === '1') {
+          for (let weekCnt = 0; weekCnt < this.lstEmployees.length; weekCnt++) {
+            this.hoursByTeamChartData.datasets[cnt].data.push(
+              this.getHours(0, 0, 0, this.lstEmployees[weekCnt].EmployeeID));
+          }
+        } else {
+          for (let weekCnt = 0; weekCnt < this.lstMonths.length; weekCnt++) {
+            this.hoursByTeamChartData.datasets[cnt].data.push(
+              this.getHours(this.lstMonths[weekCnt].Year, this.lstMonths[weekCnt].Month, 0, 0));
+          }
+        }
+      }
+    }
+
+
+    if (this.barChart !== undefined && this.barChart !== null) {
+      this.barChart.refresh();
+    }
+
+  }
+
+  configureDefaultColours(dataV: number): string {
+    const customColours = [];
+    if (1 === 1) {
+      return this.DEFAULT_COLORS[dataV];
+    }
+  }
+
+  changeType() {
+    this.BuildGraph();
+  }
+
+  ShowGraphDialog() {
+    this.graphDialog = true;
+    this.BuildGraph();
   }
 
 }
