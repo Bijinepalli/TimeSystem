@@ -570,3 +570,24 @@ export class PeriodEndWithKeys {
     Keys?: string[];
     EmailAddress?: string;
 }
+
+
+export class SOWDetails {
+    Month?: number;
+    Year?: number;
+    ClientID?: number;
+    EmployeeID?: number;
+    ClientName?: string;
+    EmployeeName?: string;
+    Hours?: string;
+}
+
+
+
+export class SOWUtilizationReport {
+    lstSOW?: SOW[];
+    lstMonths?: SOWDetails[];
+    lstClients?: SOWDetails[];
+    lstEmployees?: SOWDetails[];
+    lstDetails?: SOWDetails[];
+}

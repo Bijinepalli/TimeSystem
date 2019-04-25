@@ -13,7 +13,8 @@ import {
   SOW,
   FileSystem,
   DateArray,
-  PeriodEndWithKeys
+  PeriodEndWithKeys,
+  SOWUtilizationReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -889,6 +890,12 @@ export class TimesystemService {
   SendTimesheetMail(_PeriodEndWithKeys: PeriodEndWithKeys) {
     const body = JSON.stringify(_PeriodEndWithKeys);
     return this.http.post<DictionaryType[]>(this.url + 'SendTimesheetMail', body, httpOptions);
+  }
+
+  GetSOWUtilizationReport(SOWID: string) {
+    const params = new HttpParams()
+      .set('SOWID', SOWID);
+    return this.http.get<SOWUtilizationReport>(this.url + 'GetSOWUtilizationReport', { params });
   }
 
 }
