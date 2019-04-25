@@ -174,7 +174,8 @@
                 <th>Client</th>
                 <th>Employee</th>
                 <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
-                  <th [ngStyle]="getDisplayColors(i,1)">
+                  <th [ngStyle]="getDisplayColors(i,1)" style="cursor:pointer;"
+                    (click)="openReport(weekNumDetails.Month,weekNumDetails.Year)">
                     {{ (weekNumDetails.Year +'-'+ weekNumDetails.Month+'-01' | dateFormat: 'MMM, yyyy') }}
                   </th>
                 </ng-container>
@@ -192,7 +193,8 @@
                       {{employee.EmployeeName}}
                     </td>
                     <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
-                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)" style="cursor:pointer;"
+                        (click)="openReportForUSer(weekNumDetails.Month,weekNumDetails.Year,employee.EmployeeID,employee.EmployeeName)">
                         {{ getHours(weekNumDetails.Year,weekNumDetails.Month,client.ClientID,employee.EmployeeID) }}
                       </td>
                     </ng-container>
@@ -219,33 +221,30 @@
         </div>
       </p-scrollPanel>
     </div>
-    <p-dialog [(visible)]="graphDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" [width]="500">
+    <p-dialog [(visible)]="graphDialog" [responsive]="true" showEffect="fade" [modal]="true" width="700" minHeigh="600">
       <p-header>
         Graphical Representation
       </p-header>
-      <div class="ui-g">
-        <div class="ui-g-12">
-          <div class="ui-g-12 ui-md-12">
-            <div class="ui-g">
-              <div class="ui-g-12">
-                <label class="label" style="padding:0px 10px;">Select Type:</label>
-                <p-dropdown [options]="_Types" placeholder="Select Type" [(ngModel)]="_selectedType"
-                  [style]="{'width':'200px'}" (onChange)="changeType()">
-                </p-dropdown>
-              </div>
-            </div>
-            <div class="ui-g" *ngIf="ShowGraph">
-              <div class="ui-g-12 ui-md-12 ui-lg-12"
-                *ngIf="(hoursByTeamChartData !== undefined && hoursByTeamChartData !== null)">
-                <p-chart type="bar" [data]="hoursByTeamChartData" [options]="chartoptions" [plugins]="chartplugins"
-                  #barChart></p-chart>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div style="width:100%;">
+        <label class="label" style="padding:0px 10px;">Select Type:</label>
+        <p-dropdown [options]="_Types" placeholder="Select Type" [(ngModel)]="_selectedType" [style]="{'width':'200px'}"
+          (onChange)="changeType()">
+        </p-dropdown>
       </div>
+      <ng-container *ngIf="ShowGraph">
+        <div style="width:100%;" *ngIf="(hoursByTeamChartData !== undefined && hoursByTeamChartData !== null)">
+          <p-chart type="bar" [data]="hoursByTeamChartData" [options]="chartoptions" [plugins]="chartplugins" #barChart>
+          </p-chart>
+        </div>
+      </ng-container>
     </p-dialog>
   </div>
 </ng-container>
+<p-dialog [header]="_title" [(visible)]="hoursDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200"
+  minHeigh="600">
+  <app-sowmonthlyutilizationreport *ngIf="hoursDialog" [_somId]="_selectedSOW" [_month]="_month" [_year]="_year"
+    [_empid]="_empId">
+  </app-sowmonthlyutilizationreport>
+</p-dialog>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>

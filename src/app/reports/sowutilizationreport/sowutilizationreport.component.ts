@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -14,18 +14,17 @@ import { DatePipe } from '@angular/common';
   templateUrl: './sowutilizationreport.component.html',
   styleUrls: ['./sowutilizationreport.component.css']
 })
+
 export class SowutilizationreportComponent implements OnInit {
-
-  // _reports: SOWUtilizationReport;
   cols: any;
-
+  _title = '';
   _recData = 0;
   showReport = false;
   showSpinner = false;
 
   ParamSubscribe: any;
   IsSecure = false;
-
+  hoursDialog = false;
   _DateFormat: any;
   _DisplayDateFormat: any;
   _sortArray = [];
@@ -37,6 +36,9 @@ export class SowutilizationreportComponent implements OnInit {
     '#316395', '#994499', '#6633CC',
     '#E67300', '#8B0707', '#329262', '#5574A6', '#3B3EAC'];
 
+  _month: string;
+  _year: string;
+  _empId: string;
 
   _DisplayDateTimeFormat: any;
   _SOWs: SelectItem[] = [];
@@ -117,7 +119,6 @@ export class SowutilizationreportComponent implements OnInit {
     });
     this.showSpinner = false;
   }
-
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
@@ -249,7 +250,6 @@ export class SowutilizationreportComponent implements OnInit {
       );
   }
 
-
   generateReport() {
     this.showSpinner = true;
     this.showReport = false;
@@ -264,6 +264,7 @@ export class SowutilizationreportComponent implements OnInit {
       this.showTable(data);
     });
   }
+
   showTable(data: SOWUtilizationReport) {
     this.lstSOW = [];
     this.lstMonths = [];
@@ -348,7 +349,6 @@ export class SowutilizationreportComponent implements OnInit {
     this.ExportCSV(sheetName, exHeader, this.dtUtilizationReport.nativeElement);
   }
 
-
   ExportCSV(sheetName, exHeader, dataElement) {
     const dtNow = new Date();
     const dtFileName = sheetName + '_' + this.datePipe.transform(dtNow, 'yyyy_MM_dd_hh_mm_ss');
@@ -385,7 +385,6 @@ export class SowutilizationreportComponent implements OnInit {
         objCSV.fileExtension);
     }
   }
-
 
   BuildGraph() {
 
@@ -496,6 +495,24 @@ export class SowutilizationreportComponent implements OnInit {
     this.graphDialog = true;
     this.BuildGraph();
   }
-
+  openReport(month: string, year: string) {
+    this.hoursDialog = true;
+    this._month = month;
+    this._year = year;
+    this._empId = '';
+    const dateNew = this.datePipe.transform(year + '-' + month + '-01', 'MMM, yyyy');
+    this._title = 'Working hours for ' + dateNew;
+    // tslint:disable-next-line:max-line-length
+    // this.router.navigate(['/menu/sowmonthlyutilizationreport/' + this._selectedSOW.toString() + '/' + month + '/' + year + '']); // Session Expired
+  }
+  openReportForUSer(month: string, year: string, empId: string, empName: string) {
+    this.hoursDialog = true;
+    this._month = month;
+    this._year = year;
+    this._empId = empId;
+    const dateNew = this.datePipe.transform(year + '-' + month + '-01', 'MMM, yyyy');
+    this._title = 'Working hours of ' + empName + ' for ' + dateNew;
+    // tslint:disable-next-line:max-line-length
+    // this.router.navigate(['/menu/sowmonthlyutilizationreport/' + this._selectedSOW.toString() + '/' + month + '/' + year + '']); // Session Expired
+  }
 }
-
