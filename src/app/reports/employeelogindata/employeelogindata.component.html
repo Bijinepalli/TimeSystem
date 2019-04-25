@@ -16,12 +16,13 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-6 ui-lg-3">
         <label class="label" style="padding:0px 10px;">Select:</label>
-        <p-selectButton [options]="types" [(ngModel)]="selectedType" pTooltip="Show employees that have this status"
-          tooltipPosition="bottom"></p-selectButton>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+        <!-- pTooltip="Show employees that have this status"
+        tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-6 ui-lg-2">
-        <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType"
-          pTooltip="Show employees that are paid this way" tooltipPosition="bottom"></p-selectButton>
+        <p-selectButton [options]="salaryTypes" [(ngModel)]="selectedSalaryType"></p-selectButton>
+        <!-- pTooltip="Show employees that are paid this way" tooltipPosition="bottom" -->
       </div>
     </div>
     <p-footer>

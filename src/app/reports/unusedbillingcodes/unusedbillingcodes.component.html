@@ -16,13 +16,15 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-3">
         <label class="label" style="padding:0px 10px;">Select:</label>
-        <p-selectButton [options]="codeType" pTooltip="Show this type of billing code on the report"
-          tooltipPosition="bottom" [(ngModel)]="selectedCodeType"></p-selectButton>
+        <p-selectButton [options]="codeType" [(ngModel)]="selectedCodeType"></p-selectButton>
+        <!-- pTooltip="Show this type of billing code on the report"
+        tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-5">
-        <p-selectButton [options]="usageTypes"
-          pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
-          tooltipPosition="bottom" [(ngModel)]="selectedUsageType"></p-selectButton> &nbsp;
+        <p-selectButton [options]="usageTypes" [(ngModel)]="selectedUsageType"></p-selectButton>
+        <!-- pTooltip="Show items that are never used on any timesheets or that are inactive for all employees"
+          tooltipPosition="bottom" -->
+        &nbsp;
         <p-dropdown [options]="dates" pTooltip="Select the period to use" tooltipPosition="bottom"
           [(ngModel)]="selectedDate" [style]="{'width':'20%'}" [disabled]="!(this.selectedUsageType == 2)"></p-dropdown>
       </div>
@@ -37,8 +39,8 @@
   <div class="ui-g">&nbsp;</div>
   <div class="ui-g" *ngIf="showReport">
     <div class="ui-g-6 ui-m-6">
-      <button pButton pTooltip="Delete Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right" class="ui-button-info"
-        label="Delete Codes" (click)=deleteCodes()></button>
+      <button pButton pTooltip="Delete Codes" [disabled]="!(this._selectedCode.length>0)" tooltipPosition="right"
+        class="ui-button-info" label="Delete Codes" (click)=deleteCodes()></button>
       <!-- [disabled]="!(this._selectedCode.length>0)" -->
     </div>
     <div class="ui-g-6 ui-m-6" style="display: none">

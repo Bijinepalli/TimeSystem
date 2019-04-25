@@ -118,7 +118,7 @@ export class ListemployeesreportsComponent implements OnInit {
     this._endDate = null;
     this._status = [
       { label: 'Active', value: '0' },
-      { label: 'InActive', value: '1' },
+      { label: 'Inactive', value: '1' },
       { label: 'Both', value: '' }
     ];
     this._paid = [
