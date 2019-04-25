@@ -106,6 +106,7 @@ import { UnauthorizedaccessComponent } from './unauthorizedaccess/unauthorizedac
 import { SowComponent } from './sow/sow.component';
 import { MaintaintimesheethourlyComponent } from './maintaintimesheethourly/maintaintimesheethourly.component';
 import { EmployeeclienttimesheetsComponent } from './reports/employeeclienttimesheets/employeeclienttimesheets.component';
+import { SowmonthlyutilizationreportComponent } from './sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -264,6 +265,7 @@ const appRoutes: Routes = [
     SowComponent,
     MaintaintimesheethourlyComponent,
     EmployeeclienttimesheetsComponent,
+    SowmonthlyutilizationreportComponent,
   ],
   imports: [
     BrowserAnimationsModule,
