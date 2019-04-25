@@ -62,8 +62,8 @@
             </div>
             <ng-template #nondatecol>
               <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
-                <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank" class="HypExternal"
-                  title="{{rowData[col.field]}}">
+                <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank"
+                  class="HypExternal" title="{{rowData[col.field]}}">
                   <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
                 </a>
               </div>
@@ -150,7 +150,7 @@
               Total Contract Value<span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
               <input type="text" pInputText style="width:100%;text-align: right;"
-                formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event)">
+                formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event,'frmTotalContractValue')">
 
               <!-- [value]="_frm.get('frmTotalContractValue').value | currency:'USD':'symbol-narrow':'4.2-2'" -->
             </div>
@@ -165,7 +165,10 @@
               </p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-              <br>
+              Hours <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%;text-align: right;" formControlName="frmHours"
+                appendTo="body" pKeyFilter="num" (keypress)="numberOnly($event,'frmHours')">
             </div>
           </div>
 

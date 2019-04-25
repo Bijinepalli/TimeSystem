@@ -117,7 +117,7 @@ export class DashboardComponent implements OnInit {
 
   GetMethods() {
     if (this.showOutStandingTimesheets) {
-      this.getIncompleteTimeSheets();
+      // this.getIncompleteTimeSheets();
     }
   }
 
