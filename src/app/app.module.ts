@@ -107,7 +107,7 @@ import { SowComponent } from './sow/sow.component';
 import { MaintaintimesheethourlyComponent } from './maintaintimesheethourly/maintaintimesheethourly.component';
 import { EmployeeclienttimesheetsComponent } from './reports/employeeclienttimesheets/employeeclienttimesheets.component';
 import { SowutilizationreportComponent } from './reports/sowutilizationreport/sowutilizationreport.component';
-import { SowmonthlyutilizationreportComponent } from './sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
+import { SowmonthlyutilizationreportComponent } from './reports/sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -182,6 +182,8 @@ const appRoutes: Routes = [
       { path: 'rollbillingcodes', component: RollbillingcodesComponent },
       { path: 'employeeclienttimesheets', component: EmployeeclienttimesheetsComponent },
       { path: 'sowutilizationreport', component: SowutilizationreportComponent },
+      { path: 'sowmonthlyutilizationreport/:somid/:month/:year/:empId', component: SowmonthlyutilizationreportComponent },
+      { path: 'sowmonthlyutilizationreport/:somid/:month/:year', component: SowmonthlyutilizationreportComponent },
     ],
     runGuardsAndResolvers: 'always',
   },

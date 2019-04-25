@@ -16,6 +16,8 @@
     <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new SOW" tooltipPosition="bottom" class="ui-button-info"
         label="Add New SOW" *ngIf="!_HasEdit" (click)=addSOW()></button>
+        <button pButton icon="fa fa-plus fa-1x" pTooltip="Generate Monthly Report" tooltipPosition="bottom" class="ui-button-info"
+        label="Generate Monthly Report" *ngIf="!_HasEdit" (click)=showMonthlyReport()></button>
     </div>
   </div>
   <div class="ui-g">&nbsp;</div>

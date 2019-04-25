@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -18,19 +18,22 @@ export class SowutilizationreportComponent implements OnInit {
 
   // _reports: SOWUtilizationReport;
   cols: any;
-
+  _title = '';
   _recData = 0;
   showReport = false;
   showSpinner = false;
   ParamSubscribe: any;
   IsSecure = false;
-
+  hoursDialog = false;
   _DateFormat: any;
   _DisplayDateFormat: any;
   _sortArray = [];
   @ViewChild('dt') dt: Table;
   @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
 
+  _month: string;
+  _year: string;
+  _empId: string;
 
   _DisplayDateTimeFormat: any;
   _SOWs: SelectItem[] = [];
@@ -43,7 +46,6 @@ export class SowutilizationreportComponent implements OnInit {
   lstEmployees?: SOWDetails[] = [];
   lstDetails?: SOWDetails[] = [];
   _SOWFilesPath: string;
-
   constructor(
     private timesysSvc: TimesystemService,
     private router: Router,
@@ -282,6 +284,25 @@ export class SowutilizationreportComponent implements OnInit {
         objCSV.fileExtension);
     }
   }
-
+  openReport(month: string, year: string) {
+    this.hoursDialog = true;
+    this._month = month;
+    this._year = year;
+    this._empId = '';
+    const dateNew = this.datePipe.transform(year + '-' + month + '-01', 'MMM, yyyy');
+    this._title = 'Working hours for ' + dateNew;
+    // tslint:disable-next-line:max-line-length
+    // this.router.navigate(['/menu/sowmonthlyutilizationreport/' + this._selectedSOW.toString() + '/' + month + '/' + year + '']); // Session Expired
+  }
+  openReportForUSer(month: string, year: string, empId: string, empName: string) {
+    this.hoursDialog = true;
+    this._month = month;
+    this._year = year;
+    this._empId = empId;
+    const dateNew = this.datePipe.transform(year + '-' + month + '-01', 'MMM, yyyy');
+    this._title = 'Working hours of ' + empName + ' for ' + dateNew;
+    // tslint:disable-next-line:max-line-length
+    // this.router.navigate(['/menu/sowmonthlyutilizationreport/' + this._selectedSOW.toString() + '/' + month + '/' + year + '']); // Session Expired
+  }
 }
 

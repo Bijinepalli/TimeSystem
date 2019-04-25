@@ -119,7 +119,8 @@
               <th>Client</th>
               <th>Employee</th>
               <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
-                <th [ngStyle]="getDisplayColors(i,1)">
+                <th [ngStyle]="getDisplayColors(i,1)" (click)="openReport(weekNumDetails.Month,weekNumDetails.Year)"
+                  style="cursor: pointer;">
                   {{ (weekNumDetails.Year +'-'+ weekNumDetails.Month+'-01' | dateFormat: 'MMM, yyyy') }}
                 </th>
               </ng-container>
@@ -137,12 +138,14 @@
                     {{employee.EmployeeName}}
                   </td>
                   <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)" style="cursor: pointer;"
+                      (click)="openReportForUSer(weekNumDetails.Month,weekNumDetails.Year,employee.EmployeeID,employee.EmployeeName)">
                       {{ getHours(weekNumDetails.Year,weekNumDetails.Month,client.ClientID,employee.EmployeeID) }}
                     </td>
                   </ng-container>
 
-                  <td class="tdValues" style="border:0px;font-weight:bold;">
+                  <td class="tdValues" style="border:0px;font-weight:bold;cursor: pointer;"
+                    (click)="openReportForUSer(weekNumDetails.Month,weekNumDetails.Year,employee.EmployeeID,employee.EmployeeName)">
                     {{ getHours(0,0,client.ClientID,employee.EmployeeID) }}
                   </td>
                 </tr>
@@ -165,5 +168,11 @@
     </p-scrollPanel>
   </div>
 </ng-container>
+<p-dialog [header]="_title" [(visible)]="hoursDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200"
+  minHeigh="600">
+  <app-sowmonthlyutilizationreport *ngIf="hoursDialog" [_somId]="_selectedSOW" [_month]="_month" [_year]="_year"
+    [_empid]="_empId">
+  </app-sowmonthlyutilizationreport>
+</p-dialog>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
