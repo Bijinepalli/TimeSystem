@@ -15,12 +15,13 @@
   <div class="ui-g">
     <div class="ui-g-12 ui-md-2">
       <label class="label" style="padding:0px 10px;">Select:</label>
-      <p-selectButton [options]="billingType" pTooltip="Show this type of billing code on the report"
-        tooltipPosition="bottom" [(ngModel)]="selectedBillingType"></p-selectButton>
+      <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
+      <!-- pTooltip="Show this type of billing code on the report"
+      tooltipPosition="bottom" -->
     </div>
     <div class="ui-g-12 ui-md-2">
-      <p-selectButton [options]="types" pTooltip="Show items that have this status" tooltipPosition="bottom"
-        [(ngModel)]="selectedType"></p-selectButton>
+      <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+      <!-- pTooltip="Show items that have this status" tooltipPosition="bottom" -->
     </div>
   </div>
   <p-footer>
@@ -69,9 +70,9 @@
       <div class="ui-g label"> -->
         <div class="ui-g-12 ui-md-5">
           <label class="label" style="padding:0px 10px;">Billing Code/Employee Assignment Status:</label>
-          <p-selectButton [options]="assignStatus"
-            pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
-            tooltipPosition="bottom" [(ngModel)]="selectedassignStatus"></p-selectButton>
+          <p-selectButton [options]="assignStatus" [(ngModel)]="selectedassignStatus"></p-selectButton>
+          <!-- pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
+          tooltipPosition="bottom" -->
         </div>
         <!-- <div class="ui-g-12 ui-md-2">
           <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"

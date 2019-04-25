@@ -898,4 +898,9 @@ export class TimesystemService {
     return this.http.get<SOWUtilizationReport>(this.url + 'GetSOWUtilizationReport', { params });
   }
 
+  SendEmptyTimesheetToFinance(strTimeSheetId: string) {
+    const params = new HttpParams()
+      .set('strTimeSheetId', strTimeSheetId.toString());
+    return this.http.get<Departments[]>(this.url + 'SendEmptyTimesheetToFinance', { params });
+  }
 }
