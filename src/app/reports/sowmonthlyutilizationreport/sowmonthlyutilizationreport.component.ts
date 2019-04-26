@@ -60,36 +60,14 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
     this.commonSvc.setAppSettings();
   }
   ngOnInit() {
-    console.log('robooo');
-    console.log(this._somId, this._month, this._year, this._empid);
+    this.showSpinner = true;
     this._somId = this._somId === undefined ? '' : this._somId;
     this._month = this._month === undefined ? '' : this._month;
     this._year = this._year === undefined ? '' : this._year;
     this._empid = this._empid === undefined ? '' : this._empid;
-    this.showSpinner = true;
-    this.IsSecure = false;
+    this.ClearAllProperties();
+    this.IsSecure = true;
     this.Initialisations();
-    this.generateReport();
-    // this.ParamSubscribe = this.route.queryParams.subscribe(params => {
-    //   if (params['somid'] !== undefined && params['somid'] !== null && params['somid'].toString() !== '') {
-    //     this._somId = params['somid'].toString();
-    //     this._month = params['month'].toString();
-    //     this._year = params['year'].toString();
-    //     this._empid = params['empId'].toString();
-    //     // this.CheckSecurity(SplitVals[SplitVals.length - 1]);
-    //   } else {
-    //     this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
-    //   }
-    // });
-    // this.activatedRoute.params.subscribe((params) => {
-    //   this._somId = params['somid'] === undefined ? '' : params['somid'];
-    //   this._month = params['month'] === undefined ? '' : params['month'];
-    //   this._year = params['year'] === undefined ? '' : params['year'];
-    //   this._empid = params['empId'] === undefined ? '' : params['empId'];
-    //   this.Initialisations();
-    //   this.generateReport();
-    // });
-    this.showSpinner = false;
   }
   CheckActiveSession() {
     let sessionActive = false;
@@ -160,6 +138,7 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
     for (let i = 1; i <= +days; i++) {
       this.cols.push({ field: 'Day' + i, header: i, width: '60px', align: 'right' });
     }
+    this.generateReport();
   }
   getDaysInMonth(month: any, year: any) {
     let days: any;
@@ -176,11 +155,13 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
     this.lstClients = [];
     this.lstEmployees = [];
     this.lstDetails = [];
-    console.log(this._somId.toString(), this._month, this._year, this._empid);
-    this.timesysSvc.GetSOWMonthlyUtilizationReport(this._somId.toString(), this._month, this._year, this._empid).subscribe((data) => {
-      console.log(data);
-      this.showTable(data);
-    });
+    this.timesysSvc.GetSOWMonthlyUtilizationReport(
+      this._somId.toString(),
+      this._month,
+      this._year,
+      this._empid).subscribe((data) => {
+        this.showTable(data);
+      });
   }
 
   showTable(data: SOWMonthlyUtilizationReport) {
@@ -197,7 +178,7 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
       this.showReport = true;
     }
     this._recData = this.lstDetails.length;
-    this.showSpinner = false;
     this.resetSort();
+    this.showSpinner = false;
   }
 }

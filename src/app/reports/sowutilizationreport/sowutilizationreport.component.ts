@@ -360,7 +360,7 @@ export class SowutilizationreportComponent implements OnInit {
       sessionStorage.getItem(environment.buildType.toString() + '_' + 'currentUser').toString() + '",' + '\n';
     exFooter += '"Report Generated On",' + '"' + this.datePipe.transform(dtNow, 'yyyy-MM-dd hh:mm:ss') + '",' + '\n';
 
-    let dataElement = this.dtUtilizationReport.nativeElement;
+    const dataElement = this.dtUtilizationReport.nativeElement;
     const exportOptions = {
       headers: true,
       formats: ['csv'],
@@ -373,7 +373,7 @@ export class SowutilizationreportComponent implements OnInit {
       trimWhitespace: true,
       RTL: false,
       sheetname: 'SOWUtilizationReport',
-    }
+    };
     const tblExport = new TableExport(dataElement, exportOptions);
     const key = dataElement.attributes['tableexport-key'] ?
       dataElement.attributes['tableexport-key'].value : 'tableexport-1';
