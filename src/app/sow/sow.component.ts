@@ -664,8 +664,4 @@ export class SowComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['EffectiveDate', 'ExpirationDate'], ['TotalContractValue', 'Hours']);
   }
-  showMonthlyReport() {
-    // tslint:disable-next-line:max-line-length
-    this.router.navigate(['/menu/sowmonthlyutilizationreport/5/12/2018']); // Session Expired
-  }
 }
