@@ -221,7 +221,8 @@
         </div>
       </p-scrollPanel>
     </div>
-    <p-dialog [(visible)]="graphDialog" [responsive]="true" showEffect="fade" [modal]="true" width="700" minHeigh="600">
+    <p-dialog [(visible)]="graphDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200"
+      minHeight="600">
       <p-header>
         Graphical Representation
       </p-header>
@@ -241,7 +242,7 @@
   </div>
 </ng-container>
 <p-dialog [header]="_title" [(visible)]="hoursDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200"
-  minHeigh="600">
+  minHeight="600">
   <app-sowmonthlyutilizationreport *ngIf="hoursDialog" [_somId]="_selectedSOW" [_month]="_month" [_year]="_year"
     [_empid]="_empId">
   </app-sowmonthlyutilizationreport>
