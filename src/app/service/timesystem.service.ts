@@ -914,4 +914,8 @@ export class TimesystemService {
       .set('empId', empId);
     return this.http.get<SOWMonthlyUtilizationReport>(this.url + 'GetSOWMonthlyUtilizationReport', { params });
   }
+
+  GetSOWUtilizationReportTotal() {
+    return this.http.get<SOWUtilizationReport>(this.url + 'GetSOWUtilizationReportTotal');
+  }
 }

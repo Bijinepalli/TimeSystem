@@ -77,6 +77,8 @@ export class SowutilizationreportComponent implements OnInit {
 
   chartplugins: any;
   chartoptions: any;
+  routeParamSubscribe: any;
+  _queryParams: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -107,20 +109,26 @@ export class SowutilizationreportComponent implements OnInit {
   // tslint:disable-next-line:use-life-cycle-interface
   ngOnDestroy() {
     this.ParamSubscribe.unsubscribe();
+    this.routeParamSubscribe.unsubscribe();
   }
 
   ngOnInit() {
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
-      if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
-        const SplitVals = params['Id'].toString().split('@');
-        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
-      } else {
-        this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
-      }
+      this.routeParamSubscribe = this.route.params.subscribe(rparams => {
+        if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
+          if (rparams['sowid'] !== undefined && rparams['sowid'] !== null && rparams['sowid'].toString() !== '') {
+            this._selectedSOW = rparams['sowid'].toString();
+          }
+          this._queryParams = params;
+          const SplitVals = params['Id'].toString().split('@');
+          this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        } else {
+          this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
+        }
+      });
     });
-    this.showSpinner = false;
   }
   CheckSecurity(PageId: string) {
     this.showSpinner = true;
@@ -139,7 +147,7 @@ export class SowutilizationreportComponent implements OnInit {
 
   ClearAllProperties() {
     this._SOWs = [];
-    this._selectedSOW = null;
+    // this._selectedSOW = null;
     this.lstSOW = [];
     this.lstMonths = [];
     this.lstClients = [];
@@ -231,7 +239,8 @@ export class SowutilizationreportComponent implements OnInit {
       }
     }];
 
-    this.getSOWs();
+    // this.getSOWs();
+    this.generateReport();
   }
 
 
@@ -296,10 +305,11 @@ export class SowutilizationreportComponent implements OnInit {
       // analysis.Probability = '-80';
       // lstAnalysis.push(analysis);
       // this.lstSOWAnalysis = lstAnalysis;
-      this.showReport = true;
+      // this.showReport = true;
     }
     this._recData = this.lstDetails.length;
     // this.BuildGraph();
+    this.showReport = true;
     this.showSpinner = false;
     this.resetSort();
   }
@@ -332,6 +342,11 @@ export class SowutilizationreportComponent implements OnInit {
   startOver() {
     this.ClearAllProperties();
     this.Initialisations();
+  }
+
+  goBack() {
+    const routerLinkTimesheet = '/menu/sowutilizationreport';
+    this.router.navigate([routerLinkTimesheet], { queryParams: this._queryParams, skipLocationChange: true });
   }
 
   customSort(event: SortEvent) {

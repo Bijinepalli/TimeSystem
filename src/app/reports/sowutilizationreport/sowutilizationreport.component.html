@@ -1,6 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    SOW Utilization Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+    SOW Utilization Detail Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('SOWUtilizationReport.htm')"></i>
   </div>
@@ -12,7 +12,7 @@
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-  <p-panel [toggleable]="true" header="Filter" *ngIf="!showReport || (showReport && _recData === 0)">
+  <!-- <p-panel [toggleable]="true" header="Filter" *ngIf="!showReport || (showReport && _recData === 0)">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-4">
         <label class="label" style="padding:0px 10px;">Select SOW:</label>
@@ -28,12 +28,16 @@
           (click)=generateReport()></button>
       </div>
     </p-footer>
-  </p-panel>
+  </p-panel> -->
 
   <div class="ui-g">&nbsp;</div>
 
-  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
+  <div class="ui-g" *ngIf="showReport && _recData === 0">
+    <div class="ui-g-12 ui-md-12 ui-lg-12" style="text-align:right;">
+      <button pButton pTooltip="Back to Summary Report" tooltipPosition="bottom" class="ui-button-warning"
+        label="Back to Summary" (click)="goBack()"></button>&nbsp;
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage" style="background: #e7e7e7;">
       No matching data for the selected criteria
     </div>
   </div>
@@ -122,8 +126,10 @@
           <div class="ui-g ui-g-nopad recordsBar">
             <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound"></div>
             <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+              <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp; -->
+              <button pButton pTooltip="Back to Summary Report" tooltipPosition="bottom" class="ui-button-warning"
+                label="Back" (click)="goBack()"></button>&nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="exportClick()"></button>
             </div>
           </div>
@@ -221,31 +227,31 @@
         </div>
       </p-scrollPanel>
     </div>
-    <p-dialog [(visible)]="graphDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200"
-      minHeight="600">
-      <p-header>
-        Graphical Representation
-      </p-header>
-      <div style="width:100%;">
-        <label class="label" style="padding:0px 10px;">Select Type:</label>
-        <p-dropdown [options]="_Types" placeholder="Select Type" [(ngModel)]="_selectedType" [style]="{'width':'200px'}"
-          (onChange)="changeType()">
-        </p-dropdown>
-      </div>
-      <ng-container *ngIf="ShowGraph">
-        <div style="width:100%;" *ngIf="(hoursByTeamChartData !== undefined && hoursByTeamChartData !== null)">
-          <p-chart type="bar" [data]="hoursByTeamChartData" [options]="chartoptions" [plugins]="chartplugins" #barChart>
-          </p-chart>
-        </div>
-      </ng-container>
-    </p-dialog>
   </div>
+  <p-dialog [(visible)]="graphDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200" minHeight="600">
+    <p-header>
+      Graphical Representation
+    </p-header>
+    <div style="width:100%;">
+      <label class="label" style="padding:0px 10px;">Select Type:</label>
+      <p-dropdown [options]="_Types" placeholder="Select Type" [(ngModel)]="_selectedType" [style]="{'width':'200px'}"
+        (onChange)="changeType()">
+      </p-dropdown>
+    </div>
+    <ng-container *ngIf="ShowGraph">
+      <div style="width:100%;" *ngIf="(hoursByTeamChartData !== undefined && hoursByTeamChartData !== null)">
+        <p-chart type="bar" [data]="hoursByTeamChartData" [options]="chartoptions" [plugins]="chartplugins" #barChart>
+        </p-chart>
+      </div>
+    </ng-container>
+  </p-dialog>
+  <p-dialog [header]="_title" [(visible)]="hoursDialog" [responsive]="true" showEffect="fade" [modal]="true"
+    width="1200" minHeight="600">
+    <app-sowmonthlyutilizationreport *ngIf="hoursDialog" [_somId]="_selectedSOW" [_month]="_month" [_year]="_year"
+      [_empid]="_empId">
+    </app-sowmonthlyutilizationreport>
+  </p-dialog>
 </ng-container>
-<p-dialog [header]="_title" [(visible)]="hoursDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200"
-  minHeight="600">
-  <app-sowmonthlyutilizationreport *ngIf="hoursDialog" [_somId]="_selectedSOW" [_month]="_month" [_year]="_year"
-    [_empid]="_empId">
-  </app-sowmonthlyutilizationreport>
-</p-dialog>
+
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>

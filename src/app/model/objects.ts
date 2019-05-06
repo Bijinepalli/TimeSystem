@@ -584,6 +584,17 @@ export class SOWDetails {
 }
 
 export class SOWAnalysis {
+    SOWID?: number;
+    CustomerID?: number;
+    CustomerName?: string;
+    Name?: string;
+    EffectiveDate?: string;
+    ExpirationDate?: string;
+    EffectiveDateSearch?: string;
+    ExpirationDateSearch?: string;
+    CurrencyType?: string;
+    TotalContractValue?: string;
+    Hours?: string;
     UtilizedHours?: string;
     RemainingHours?: string;
     UtilizationPercent?: string;
