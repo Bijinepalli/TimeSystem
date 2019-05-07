@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { Customers } from '../model/objects';
+import { Customers, Employee } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -21,6 +21,7 @@ export class CustomersComponent implements OnInit {
 
   _customers: Customers[] = null;
   _customersUsed: Customers[] = null;
+  _leadBAs: SelectItem[] = [];
   cols: any;
   _recData = 0;
 
@@ -114,6 +115,7 @@ export class CustomersComponent implements OnInit {
     this._frm = new FormGroup({});
     this._IsEdit = false;
     this._selectedCustomer = new Customers();
+    this._leadBAs = null;
     this.chkInactive = false;
     this._HasEdit = true;
   }
@@ -129,6 +131,7 @@ export class CustomersComponent implements OnInit {
     this.cols = [
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
       { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
+      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
     ];
     this.selectedType = 'Active';
     this.getCustomers();
@@ -174,24 +177,40 @@ export class CustomersComponent implements OnInit {
             this._recData = this._customers.length;
           }
           this.showReport = true;
-          this.showSpinner = false;
-          // else {
-          //   this._recData = 'No customers found';
-          // }
+          // this.showSpinner = false;
+          this.getLeadBAs();
         }
       );
   }
+
+  getLeadBAs() {
+    this.showSpinner = true;
+    this.timesysSvc.getLeadBAs('0')
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._leadBAs = data;
+          } else {
+            this._leadBAs = [];
+          }
+          this.showSpinner = false;
+        }
+      );
+  }
+
   clickButton(event: any) {
     if (this.selectedType === 'Both') {
       this.cols = [
-        { field: 'CustomerName', header: 'Customer Name' },
-        { field: 'CustomerNumber', header: 'Customer Number' },
+        { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
+        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
+        { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive' },
       ];
     } else {
       this.cols = [
-        { field: 'CustomerName', header: 'Customer Name' },
-        { field: 'CustomerNumber', header: 'Customer Number' },
+        { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
+        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
+        { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
       ];
     }
     this.clearControls();
@@ -217,6 +236,7 @@ export class CustomersComponent implements OnInit {
     this._selectedCustomer.CustomerNumber = data.CustomerNumber;
     this._selectedCustomer.InUse = data.InUse;
     this._selectedCustomer.Inactive = data.Inactive;
+    this._selectedCustomer.LeadBAId = data.LeadBAId;
     this.resetForm();
     this.setDataToControls(this._selectedCustomer);
     this.customerHdr = 'Edit Customer';
@@ -234,12 +254,16 @@ export class CustomersComponent implements OnInit {
       Validators.pattern('^[0-9]{7}$'),
       ]
     ));
+    this._frm.addControl('leadBA', new FormControl(null,
+      Validators.required
+    ));
     this.chkInactive = false;
   }
 
   setDataToControls(data: Customers) {
     this._frm.controls['customerName'].setValue(data.CustomerName);
     this._frm.controls['customerNumber'].setValue(data.CustomerNumber);
+    this._frm.controls['leadBA'].setValue(data.LeadBAId);
     if (data.Inactive !== undefined) {
       this.chkInactive = data.Inactive;
     } else {
@@ -280,6 +304,7 @@ export class CustomersComponent implements OnInit {
     }
     this._selectedCustomer.CustomerName = this._frm.controls['customerName'].value.toString().trim();
     this._selectedCustomer.CustomerNumber = this._frm.controls['customerNumber'].value.toString().trim();
+    this._selectedCustomer.LeadBAId = this._frm.controls['leadBA'].value.toString().trim();
     this._selectedCustomer.Inactive = this.chkInactive;
     this.SaveCustomerSPCall();
   }
