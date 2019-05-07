@@ -918,4 +918,10 @@ export class TimesystemService {
   GetSOWUtilizationReportTotal() {
     return this.http.get<SOWUtilizationReport>(this.url + 'GetSOWUtilizationReportTotal');
   }
+
+  getLeadBAs(CustomerID: string) {
+    const params = new HttpParams()
+      .set('CustomerID', CustomerID);
+    return this.http.get<SelectItem[]>(this.url + 'GetLeadBA', { params });
+  }
 }

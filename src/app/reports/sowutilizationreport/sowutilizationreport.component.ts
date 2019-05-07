@@ -183,18 +183,20 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstDetails = [];
     this.lstSOWAnalysis = [];
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '100px' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: '180px' },
+      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+      { field: 'SOWName', header: 'SOW Name', align: 'left', width: 'auto' },
+      { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: 'auto' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: 'auto' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: 'auto' },
+      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: 'auto' },
       { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
       { field: 'Hours', header: 'Hours', align: 'right', width: 'auto' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: '100px' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '120px' },
-      { field: 'Status', header: 'Status', align: 'left', width: '150px' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '60px' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: 'auto' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: 'auto' },
+      { field: 'Status', header: 'Status', align: 'left', width: 'auto' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: 'auto' },
       { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
       { field: 'SOWFileName', header: 'SOW File', align: 'center', width: 'auto' },
     ];
@@ -253,7 +255,7 @@ export class SowutilizationreportComponent implements OnInit {
           this._SOWs = [];
           if (data !== undefined && data !== null && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-              this._SOWs.push({ label: data[i].Name, value: data[i].SOWID });
+              this._SOWs.push({ label: data[i].SOWName, value: data[i].SOWID });
             }
             // this._selectedSOW = this._SOWs[0].value;
           }
@@ -423,8 +425,10 @@ export class SowutilizationreportComponent implements OnInit {
     let objSOWDetails = '"';
     objSOWDetails += this.cols.map(m => m.header).join('","');
     objSOWDetails += '"\n';
-    objSOWDetails += '"' + this.lstSOW[0].Name + '"' + ',';
+    objSOWDetails += '"' + this.lstSOW[0].SOWName + '"' + ',';
+    objSOWDetails += '"' + this.lstSOW[0].SOWNumber + '"' + ',';
     objSOWDetails += '"' + this.lstSOW[0].CustomerName + '"' + ',';
+    objSOWDetails += '"' + this.lstSOW[0].LeadBAName + '"' + ',';
     objSOWDetails += '"' + this.lstSOW[0].EffectiveDate + '"' + ',';
     objSOWDetails += '"' + this.lstSOW[0].ExpirationDate + '"' + ',';
     objSOWDetails += '"' + this.lstSOW[0].CurrencyType + '"' + ',';
@@ -484,7 +488,7 @@ export class SowutilizationreportComponent implements OnInit {
     this.hoursByTeamChartData.datasets = [];
     if (this._selectedType === '0' || this._selectedType === '1') {
       this.hoursByTeamChartData.datasets.push({
-        label: this.lstSOW[0].Name,
+        label: this.lstSOW[0].SOWName,
         backgroundColor: '',
         borderColor: '',
         data: []

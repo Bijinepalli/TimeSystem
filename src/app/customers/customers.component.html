@@ -23,7 +23,7 @@
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <label class="label" style="padding:0px 10px;">Select:</label>
         <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"></p-selectButton>
-          <!-- pTooltip="Show customers that have this status" tooltipPosition="bottom" -->
+        <!-- pTooltip="Show customers that have this status" tooltipPosition="bottom" -->
       </div>
     </div>
   </p-panel>
@@ -102,8 +102,9 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Customer Name <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <input type="text" maxlength="100" pInputText style="width:100%" placeholder="Customer Name" formControlName="customerName"
-              pTooltip="The display name for the customer" pattern="^[a-zA-Z0-9\040\047\055]*$" tooltipPosition="bottom">
+            <input type="text" maxlength="100" pInputText style="width:100%" placeholder="Customer Name"
+              formControlName="customerName" pTooltip="The display name for the customer"
+              pattern="^[a-zA-Z0-9\040\047\055]*$" tooltipPosition="bottom">
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12">
@@ -111,7 +112,16 @@
             Customer Number <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
             <input type="text" maxlength="7" pInputText style="width:100%" placeholder="Customer Number"
-              formControlName="customerNumber" pattern="^[0-9]{7}$" pTooltip="The unique ID for the customer" tooltipPosition="bottom">
+              formControlName="customerNumber" pattern="^[0-9]{7}$" pTooltip="The unique ID for the customer"
+              tooltipPosition="bottom">
+          </div>
+        </div>
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            Lead Business Analyst <span class="mandatoryStar">* </span><br>
+            <div style="height:5px"></div>
+            <p-dropdown appendTo="body" [options]="_leadBAs" formControlName="leadBA" placeholder="Select Lead Business Analyst" [style]="{'width':'100%'}">
+            </p-dropdown>
           </div>
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEdit">

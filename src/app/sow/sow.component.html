@@ -106,21 +106,34 @@
         <div class="ui-g-12 ui-md-8 ui-lg-8">
 
           <div class="ui-g-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
-              Name <span class="mandatoryStar">* </span><br>
-              <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body"
-                pToolTip="SOW's name">
-            </div>
+
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Customer <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
               <p-dropdown appendTo="body" [options]="_Customers" placeholder="Select Customer"
-                formControlName="frmCustomer" [style]="{'width':'99%'}">
+                formControlName="frmCustomer" [style]="{'width':'99%'}" (onChange)="getLeadBAName()">
               </p-dropdown>
             </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Lead Business Analyst <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <label>{{_LeadBAName}}</label>
+            </div>
           </div>
-
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              SOW Name <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body"
+                pToolTip="SOW's name" pattern="^[a-zA-Z0-9\040\047\055]*$" maxlength="10">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              SOW Number <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%" formControlName="frmSOWNumber" appendTo="body"
+                pToolTip="SOW's Number" pattern="^[a-zA-Z0-9\040\047\055]*$" maxlength="10">
+            </div>
+          </div>  
           <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Effective Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
@@ -150,7 +163,8 @@
               Total Contract Value<span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
               <input type="text" pInputText style="width:100%;text-align: right;"
-                formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event,'frmTotalContractValue')">
+                formControlName="frmTotalContractValue" appendTo="body"
+                (keypress)="numberOnly($event,'frmTotalContractValue')">
 
               <!-- [value]="_frm.get('frmTotalContractValue').value | currency:'USD':'symbol-narrow':'4.2-2'" -->
             </div>

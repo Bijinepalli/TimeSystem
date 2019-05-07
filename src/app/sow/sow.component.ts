@@ -4,7 +4,7 @@ import { SOW } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, MaxLengthValidator } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
@@ -54,6 +54,7 @@ export class SowComponent implements OnInit {
   _selectedSOWStatus = '';
   _isFilesRequired = false;
   _SOWFilesPath = '';
+  _LeadBAName = '';
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -148,23 +149,25 @@ export class SowComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '100px' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: '180px' },
+      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+      { field: 'SOWName', header: 'SOW Name', align: 'left', width: 'auto' },
+      { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: 'auto' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: 'auto' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: 'auto' },
+      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: 'auto' },
       { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
       { field: 'Hours', header: 'Hours', align: 'right', width: 'auto' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: '100px' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '120px' },
-      { field: 'Status', header: 'Status', align: 'left', width: '150px' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '60px' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: 'auto' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: 'auto' },
+      { field: 'Status', header: 'Status', align: 'left', width: 'auto' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: 'auto' },
       { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
       { field: 'SOWFileName', header: 'SOW File', align: 'center', width: 'auto' },
     ];
     this._sortArray = [
-      'Name', 'CustomerName',
+      'CustomerName', 'LeadBAName', 'SOWName', 'SOWNumber',
       'EffectiveDateSearch', 'ExpirationDateSearch',
       'CurrencyType', 'TotalContractValue',
       'InvoiceFrequency', 'Hours', 'Originate',
@@ -347,8 +350,9 @@ export class SowComponent implements OnInit {
   }
 
   addControls() {
-    this._frm.addControl('frmName', new FormControl(null, Validators.required));
     this._frm.addControl('frmCustomer', new FormControl(null, Validators.required));
+    this._frm.addControl('frmName', new FormControl(null, Validators.required));
+    this._frm.addControl('frmSOWNumber', new FormControl(null, Validators.required));
     this._frm.addControl('frmEffectiveDate', new FormControl(null, Validators.required));
     this._frm.addControl('frmExpirationDate', new FormControl(null, Validators.required));
     this._frm.addControl('frmCurrencyType', new FormControl('USD', Validators.required));
@@ -377,8 +381,13 @@ export class SowComponent implements OnInit {
     this._selectedSOWStatus = '';
     this._previousSOWStatus = '';
     if (!this.IsControlUndefined('frmName')) {
-      if (data.Name !== undefined && data.Name !== null && data.Name.toString() !== '') {
-        this._frm.controls['frmName'].setValue(data.Name);
+      if (data.SOWName !== undefined && data.SOWName !== null && data.SOWName.toString() !== '') {
+        this._frm.controls['frmName'].setValue(data.SOWName);
+      }
+    }
+    if (!this.IsControlUndefined('frmSOWNumber')) {
+      if (data.SOWNumber !== undefined && data.SOWNumber !== null && data.SOWNumber.toString() !== '') {
+        this._frm.controls['frmSOWNumber'].setValue(data.SOWNumber);
       }
     }
     if (!this.IsControlUndefined('frmCustomer')) {
@@ -386,6 +395,14 @@ export class SowComponent implements OnInit {
         this._frm.controls['frmCustomer'].setValue(data.CustomerID);
       }
     }
+
+    if (data.LeadBAName !== undefined && data.LeadBAName !== null && data.LeadBAName.toString() !== '') {
+      this._LeadBAName = data.LeadBAName;
+    } else {
+      this._LeadBAName = '';
+    }
+
+    // this.getLeadBAName();
     if (!this.IsControlUndefined('frmEffectiveDate')) {
       if (data.EffectiveDate !== undefined && data.EffectiveDate !== null && data.EffectiveDate.toString() !== '') {
         this._frm.controls['frmEffectiveDate'].setValue(new Date(data.EffectiveDate));
@@ -492,11 +509,14 @@ export class SowComponent implements OnInit {
       }
       this._selectedSOW.SOWID = -1;
     }
-    if (!this.IsControlUndefinedAndHasValue('frmName')) {
-      this._selectedSOW.Name = this._frm.controls['frmName'].value.toString().trim();
-    }
     if (!this.IsControlUndefinedAndHasValue('frmCustomer')) {
       this._selectedSOW.CustomerID = this._frm.controls['frmCustomer'].value.toString().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('frmName')) {
+      this._selectedSOW.SOWName = this._frm.controls['frmName'].value.toString().trim();
+    }
+    if (!this.IsControlUndefinedAndHasValue('frmSOWNumber')) {
+      this._selectedSOW.SOWNumber = this._frm.controls['frmSOWNumber'].value.toString().trim();
     }
     if (!this.IsControlUndefinedAndHasValue('frmEffectiveDate')) {
       this._selectedSOW.EffectiveDate = this.datepipe.transform(this._frm.controls['frmEffectiveDate'].value.toString().trim(),
@@ -584,7 +604,7 @@ export class SowComponent implements OnInit {
   }
   deleteSOW(dataRow: SOW) {
     this.confSvc.confirm({
-      message: 'Are you sure you want to delete ' + dataRow.Name + '?',
+      message: 'Are you sure you want to delete ' + dataRow.SOWName + '?',
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
@@ -664,4 +684,23 @@ export class SowComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, ['EffectiveDate', 'ExpirationDate'], ['TotalContractValue', 'Hours']);
   }
+
+  getLeadBAName() {
+    this.showSpinner = true;
+    this._LeadBAName = '';
+    if (!this.IsControlUndefinedAndHasValue('frmCustomer')) {
+      this.timesysSvc.getLeadBAs(this._frm.controls['frmCustomer'].value.toString().trim())
+        .subscribe(
+          (data) => {
+            if (data !== undefined && data !== null && data.length > 0) {
+              this._LeadBAName = data[0].label;
+            }
+            this.showSpinner = false;
+          }
+        );
+    } else {
+      this.showSpinner = false;
+    }
+  }
+
 }

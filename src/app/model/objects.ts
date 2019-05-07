@@ -133,6 +133,8 @@ export class Customers {
     CustomerName?: string;
     Inactive?: boolean;
     InUse?: boolean;
+    LeadBAId?: number;
+    LeadBAName?: string;
 }
 
 export class Clients {
@@ -525,7 +527,9 @@ export class SOW {
     SOWID?: number;
     CustomerID?: number;
     CustomerName?: string;
-    Name?: string;
+    LeadBAName?: string;
+    SOWName?: string;
+    SOWNumber?: string;
     EffectiveDate?: string;
     ExpirationDate?: string;
     EffectiveDateSearch?: string;
@@ -588,7 +592,9 @@ export class SOWAnalysis {
     SOWID?: number;
     CustomerID?: number;
     CustomerName?: string;
-    Name?: string;
+    LeadBAName?: string;
+    SOWName?: string;
+    SOWNumber?: string;
     EffectiveDate?: string;
     ExpirationDate?: string;
     EffectiveDateSearch?: string;

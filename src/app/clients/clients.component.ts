@@ -305,7 +305,7 @@ export class ClientsComponent implements OnInit {
           this._SOWs = [];
           if (data !== undefined && data !== null && data.length > 0) {
             for (let i = 0; i < data.length; i++) {
-              this._SOWs.push({ label: data[i].Name, value: data[i].SOWID });
+              this._SOWs.push({ label: data[i].SOWName, value: data[i].SOWID });
             }
             if (SOWID !== undefined && SOWID !== null && SOWID !== '') {
               this._frm.controls['SOW'].setValue(SOWID.toString());
