@@ -13,7 +13,9 @@ import {
   SOW,
   FileSystem,
   DateArray,
-  PeriodEndWithKeys
+  PeriodEndWithKeys,
+  SOWUtilizationReport,
+  SOWMonthlyUtilizationReport
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -551,6 +553,7 @@ export class TimesystemService {
   }
   TimeLineAndTimeCell_DeleteAndInsert(_inputData: TimeSheetSubmit) {
     const body = JSON.stringify(_inputData);
+    console.log(body);
     return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
   }
   getBillableHours(code: string, key: string, codeInactive: string, assignInactive: string, startDate: string, endDate: string) {
@@ -890,9 +893,29 @@ export class TimesystemService {
     const body = JSON.stringify(_PeriodEndWithKeys);
     return this.http.post<DictionaryType[]>(this.url + 'SendTimesheetMail', body, httpOptions);
   }
+
+  GetSOWUtilizationReport(SOWID: string) {
+    const params = new HttpParams()
+      .set('SOWID', SOWID);
+    return this.http.get<SOWUtilizationReport>(this.url + 'GetSOWUtilizationReport', { params });
+  }
+
   SendEmptyTimesheetToFinance(strTimeSheetId: string) {
     const params = new HttpParams()
       .set('strTimeSheetId', strTimeSheetId.toString());
     return this.http.get<Departments[]>(this.url + 'SendEmptyTimesheetToFinance', { params });
+  }
+
+  GetSOWMonthlyUtilizationReport(SOWID: string, month: string, year: string, empId: string) {
+    const params = new HttpParams()
+      .set('SOWID', SOWID)
+      .set('month', month)
+      .set('year', year)
+      .set('empId', empId);
+    return this.http.get<SOWMonthlyUtilizationReport>(this.url + 'GetSOWMonthlyUtilizationReport', { params });
+  }
+
+  GetSOWUtilizationReportTotal() {
+    return this.http.get<SOWUtilizationReport>(this.url + 'GetSOWUtilizationReportTotal');
   }
 }

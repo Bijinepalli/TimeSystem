@@ -1,0 +1,49 @@
+.tdName {
+  min-width: 250px !important;
+  width: 100%;
+  font-weight: bold;
+  text-align: left;
+}
+
+.tdValues {
+  text-align: right;
+  width: 100%;
+  min-width: 150px;
+}
+
+.trHeader th {
+  background-color: black !important;
+  color: white !important;
+  border: 0px;
+}
+
+.trSummary td {
+  font-weight: bold;
+  background-color: #e3e3e3 !important;
+  color: black !important;
+  border: 0px;
+}
+
+.custombar2 .ui-scrollpanel-wrapper {
+  border-right: 9px solid #757575;
+  border-bottom: 9px solid #757575;
+}
+
+.custombar2 .ui-scrollpanel-bar {
+  background-color: #68C77D;
+  border-radius: 0;
+  opacity: 1;
+  transition: background-color .3s;
+}
+
+.custombar2:hover .ui-scrollpanel-bar {
+  background-color: #46A55A;
+}
+
+.analysisVal {
+  font-size: 24px;
+  color: white;
+  padding: 5px;
+  text-align: right;
+  min-width: 120px;
+}

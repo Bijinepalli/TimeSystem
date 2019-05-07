@@ -158,17 +158,17 @@
 
           <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Total Contract Hours <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%;text-align: right;" formControlName="frmHours"
+                appendTo="body" pKeyFilter="num" (keypress)="numberOnly($event,'frmHours')">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
               Invoice Frequency <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
               <p-dropdown appendTo="body" [options]="_InvoiceFrequencyTypes" placeholder="Select Invoice Frequency"
                 formControlName="frmInvoiceFrequency" [style]="{'width':'99%'}">
               </p-dropdown>
-            </div>
-            <div class="ui-g-12 ui-md-6 ui-lg-6">
-              Hours <span class="mandatoryStar">* </span><br>
-              <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%;text-align: right;" formControlName="frmHours"
-                appendTo="body" pKeyFilter="num" (keypress)="numberOnly($event,'frmHours')">
             </div>
           </div>
 

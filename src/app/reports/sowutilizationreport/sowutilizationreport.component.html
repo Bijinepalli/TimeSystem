@@ -1,0 +1,257 @@
+<div class="ui-g ui-g-nopad mainHeader">
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    SOW Utilization Detail Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="commonSvc.showHelp('SOWUtilizationReport.htm')"></i>
+  </div>
+  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+    <div class="ui-g-3 ui-md-6"></div>
+    <div class="ui-g-3 ui-md-4"></div>
+    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
+  </div>
+</div>
+<br>
+<ng-container *ngIf="IsSecure">
+  <!-- <p-panel [toggleable]="true" header="Filter" *ngIf="!showReport || (showReport && _recData === 0)">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-4">
+        <label class="label" style="padding:0px 10px;">Select SOW:</label>
+        <p-dropdown [options]="_SOWs" placeholder="Select SOW" [(ngModel)]="_selectedSOW" [style]="{'width':'200px'}">
+        </p-dropdown>
+      </div>
+      <div class="ui-g-12 ui-md-2">
+      </div>
+    </div>
+    <p-footer>
+      <div style="text-align: right">
+        <button pButton class="ui-button-info" label="Generate Report" [disabled]="!_selectedSOW"
+          (click)=generateReport()></button>
+      </div>
+    </p-footer>
+  </p-panel> -->
+
+  <div class="ui-g">&nbsp;</div>
+
+  <div class="ui-g" *ngIf="showReport && _recData === 0">
+    <div class="ui-g-12 ui-md-12 ui-lg-12" style="text-align:right;">
+      <button pButton pTooltip="Back to Summary Report" tooltipPosition="bottom" class="ui-button-warning"
+        label="Back to Summary" (click)="goBack()"></button>&nbsp;
+    </div>
+    <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage" style="background: #e7e7e7;">
+      No matching data for the selected criteria
+    </div>
+  </div>
+
+  <div class="ui-g" *ngIf="showReport && _recData > 0">
+
+    <div class="ui-g-12" *ngIf="lstSOWAnalysis && lstSOWAnalysis.length > 0">
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #22AA99;">
+        <div style="font-size:12px;color:white;">
+          Utilized Hours
+        </div>
+        <div class="analysisVal">
+          {{lstSOWAnalysis[0].UtilizedHours}} hrs
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #FF9900;">
+        <div style="font-size:12px;color:white;">
+          Remaining Hours
+        </div>
+        <div class="analysisVal">
+          {{lstSOWAnalysis[0].RemainingHours}} hrs
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #3366CC;">
+        <div style="font-size:12px;color:white;">
+          Utilization %
+        </div>
+        <div class="analysisVal">
+          {{lstSOWAnalysis[0].UtilizationPercent}} %
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #109618;">
+        <div style="font-size:12px;color:white;">
+          Time Taken
+        </div>
+        <div class="analysisVal">
+          {{lstSOWAnalysis[0].TimeTaken}} days
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #3B3EAC;">
+        <div style="font-size:12px;color:white;">
+          Time Remaining
+        </div>
+        <div class="analysisVal">
+          {{ lstSOWAnalysis[0].TimeRemaining > 0 ? lstSOWAnalysis[0].TimeRemaining +' days' : 'Expired' }}
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #DC3912;">
+        <div style="font-size:12px;color:white;">
+          Expected Days
+        </div>
+        <div class="analysisVal">
+          {{lstSOWAnalysis[0].ExpectedDays}} days
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;float:left;padding:5px;background: #316395;">
+        <div style="font-size:12px;color:white;">
+          Probability
+        </div>
+        <div class="analysisVal">
+          {{lstSOWAnalysis[0].Probability > 0 ? ((lstSOWAnalysis[0].Probability < 100) ? lstSOWAnalysis[0].Probability : '100') : '0' }}
+          %
+        </div>
+      </div>
+
+      <div style="margin:5px;border-radius:5px;background: #66AA00;cursor:pointer;float:right;"
+        (click)="ShowGraphDialog()">
+        <div class="analysisVal" style="text-align: center;font-size: 30px;padding: 0px 8px 0px 0px;">
+          &nbsp;<i class="pi pi-chart-bar"></i>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ui-g-12">
+
+      <p-table #dt [responsive]="false">
+        <ng-template pTemplate="caption">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound"></div>
+            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+              <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp; -->
+              <button pButton pTooltip="Back to Summary Report" tooltipPosition="bottom" class="ui-button-warning"
+                label="Back" (click)="goBack()"></button>&nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="exportClick()"></button>
+            </div>
+          </div>
+        </ng-template>
+      </p-table>
+
+      <p-table #dtSOW [columns]="cols" [value]="lstSOW" [responsive]="false" dataKey="SOWID">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+              <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
+                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+              </div>
+              <ng-template #nondatecol>
+                <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
+                  <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank"
+                    class="HypExternal" title="{{rowData[col.field]}}">
+                    <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
+                  </a>
+                </div>
+                <ng-template #defaultcol>
+                  <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
+                    <label>{{rowData[col.field] | currency}} </label>
+                  </div>
+                  <ng-template #othercol>
+                    {{rowData[col.field]}}
+                  </ng-template>
+                </ng-template>
+              </ng-template>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <p-scrollPanel [style]="{width: '100%',height:'400px'}" styleClass="custombar1">
+        <div style="width:100%;">
+          <table #dtUtilizationReport cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;"
+            class="ui-table" *ngIf="lstMonths !== undefined && lstMonths !== null && lstMonths.length > 0">
+            <thead class="ui-table-thead">
+              <tr class="trHeader">
+                <th>Client</th>
+                <th>Employee</th>
+                <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
+                  <th [ngStyle]="getDisplayColors(i,1)" style="cursor:pointer;"
+                    (click)="openReport(weekNumDetails.Month,weekNumDetails.Year)">
+                    {{ (weekNumDetails.Year +'-'+ weekNumDetails.Month+'-01' | dateFormat: 'MMM, yyyy') }}
+                  </th>
+                </ng-container>
+                <th>Employee Totals</th>
+              </tr>
+            </thead>
+            <tbody class="ui-table-tbody">
+              <ng-container *ngFor="let client of lstClients">
+                <ng-container *ngFor="let employee of lstEmployees">
+                  <tr>
+                    <td class="tdName" style="border:0px;">
+                      {{client.ClientName}}
+                    </td>
+                    <td class="tdName" style="border:0px;">
+                      {{employee.EmployeeName}}
+                    </td>
+                    <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)" style="cursor:pointer;"
+                        (click)="openReportForUSer(weekNumDetails.Month,weekNumDetails.Year,employee.EmployeeID,employee.EmployeeName)">
+                        {{ getHours(weekNumDetails.Year,weekNumDetails.Month,client.ClientID,employee.EmployeeID) }}
+                      </td>
+                    </ng-container>
+
+                    <td class="tdValues" style="border:0px;font-weight:bold;">
+                      {{ getHours(0,0,client.ClientID,employee.EmployeeID) }}
+                    </td>
+                  </tr>
+                </ng-container>
+                <tr class="trSummary">
+                  <td colspan="2" class="tdName" style="border:0px;font-weight:bold;">
+                    Monthly Totals
+                  </td>
+                  <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
+                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)" style="font-weight:bold;">
+                      {{ getHours(weekNumDetails.Year,weekNumDetails.Month,client.ClientID,0) }}
+                    </td>
+                  </ng-container>
+                  <td class="tdValues" style="border:0px;font-weight:bold;">{{ getHours(0,0,0,0) }}</td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </p-scrollPanel>
+    </div>
+  </div>
+  <p-dialog [(visible)]="graphDialog" [responsive]="true" showEffect="fade" [modal]="true" width="1200" minHeight="600">
+    <p-header>
+      Graphical Representation
+    </p-header>
+    <div style="width:100%;">
+      <label class="label" style="padding:0px 10px;">Select Type:</label>
+      <p-dropdown [options]="_Types" placeholder="Select Type" [(ngModel)]="_selectedType" [style]="{'width':'200px'}"
+        (onChange)="changeType()">
+      </p-dropdown>
+    </div>
+    <ng-container *ngIf="ShowGraph">
+      <div style="width:100%;" *ngIf="(hoursByTeamChartData !== undefined && hoursByTeamChartData !== null)">
+        <p-chart type="bar" [data]="hoursByTeamChartData" [options]="chartoptions" [plugins]="chartplugins" #barChart>
+        </p-chart>
+      </div>
+    </ng-container>
+  </p-dialog>
+  <p-dialog [header]="_title" [(visible)]="hoursDialog" [responsive]="true" showEffect="fade" [modal]="true"
+    width="1200" minHeight="600">
+    <app-sowmonthlyutilizationreport *ngIf="hoursDialog" [_somId]="_selectedSOW" [_month]="_month" [_year]="_year"
+      [_empid]="_empId">
+    </app-sowmonthlyutilizationreport>
+  </p-dialog>
+</ng-container>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

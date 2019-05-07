@@ -571,3 +571,88 @@ export class PeriodEndWithKeys {
     Keys?: string[];
     EmailAddress?: string;
 }
+
+
+export class SOWDetails {
+    Month?: number;
+    Year?: number;
+    Day?: number;
+    ClientID?: number;
+    EmployeeID?: number;
+    ClientName?: string;
+    EmployeeName?: string;
+    Hours?: string;
+}
+
+export class SOWAnalysis {
+    SOWID?: number;
+    CustomerID?: number;
+    CustomerName?: string;
+    Name?: string;
+    EffectiveDate?: string;
+    ExpirationDate?: string;
+    EffectiveDateSearch?: string;
+    ExpirationDateSearch?: string;
+    CurrencyType?: string;
+    TotalContractValue?: string;
+    Hours?: string;
+    UtilizedHours?: string;
+    RemainingHours?: string;
+    UtilizationPercent?: string;
+    TimeTaken?: string;
+    TimeRemaining?: string;
+    ExpectedDays?: string;
+    Probability?: string;
+}
+
+
+
+export class SOWUtilizationReport {
+    lstSOW?: SOW[];
+    lstMonths?: SOWDetails[];
+    lstClients?: SOWDetails[];
+    lstEmployees?: SOWDetails[];
+    lstDetails?: SOWDetails[];
+    lstSOWAnalysis?: SOWAnalysis[];
+}
+export class SOWMonthlyUtilizationReport {
+    lstClients?: SOWDetails[];
+    lstEmployees?: SOWDetails[];
+    lstDetails?: SOWDetails[];
+    monthlyHours?: SOWMonthlyHours[];
+}
+export class SOWMonthlyHours {
+    EmployeeName: string;
+    ClientName: string;
+    Day1: string;
+    Day2: string;
+    Day3: string;
+    Day4: string;
+    Day5: string;
+    Day6: string;
+    Day7: string;
+    Day8: string;
+    Day9: string;
+    Day10: string;
+    Day11: string;
+    Day12: string;
+    Day13: string;
+    Day14: string;
+    Day15: string;
+    Day16: string;
+    Day17: string;
+    Day18: string;
+    Day19: string;
+    Day20: string;
+    Day21: string;
+    Day22: string;
+    Day23: string;
+    Day24: string;
+    Day25: string;
+    Day26: string;
+    Day27: string;
+    Day28: string;
+    Day29: string;
+    Day30: string;
+    Day31: string;
+}

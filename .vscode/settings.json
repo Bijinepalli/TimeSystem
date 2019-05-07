@@ -1,7 +1,7 @@
 {
     "xml.fileAssociations": [
         {
-            "systemId": "d:\\ECTS_Git\\TimeSystem\\schema\\tns.xsd",
+            "systemId": "d:\\VSCode\\Git%20Repository\\Bijinepalli\\TimeSystem\\schema\\tns.xsd",
             "pattern": "**/**/*.xml"
         }
     ],
