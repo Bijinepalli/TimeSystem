@@ -15,19 +15,19 @@
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
       <div class="ui-g-12 ui-md-2 ui-lg-4">
-        <label class="label">Status: </label>
+        <label class="label" style="padding:0px 10px;">Status: </label>
         <p-selectButton [options]="_status" [(ngModel)]="_statusselected"></p-selectButton>
         <!-- pTooltip="Select only inactive employees"
           tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-        <label class="label">Paid: </label>
+        <label class="label" style="padding:0px 10px;">Paid: </label>
         <p-selectButton [options]="_paid" [(ngModel)]="_paidselected"></p-selectButton>
         <!-- pTooltip="Select only hourly employees"
           tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-        <label class="label">IPay: </label>
+        <label class="label" style="padding:0px 10px;">IPay: </label>
         <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected"></p-selectButton>
         <!-- pTooltip="Select only employees that cannot get IPay"
         tooltipPosition="bottom" -->
@@ -35,19 +35,19 @@
     </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-          <label class="label">TimeSheets: </label>
+          <label class="label" style="padding:0px 10px;">TimeSheets: </label>
         <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected"></p-selectButton>
         <!-- pTooltip="Select only employees that do not submit timesheets"
         tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-          <label class="label">Holidays: </label>
+          <label class="label" style="padding:0px 10px;">Holidays: </label>
         <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected"></p-selectButton>
         <!-- pTooltip="Select only employees that follow the Vertex holiday schedule"
         tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-          <label class="label">Hire Date From: </label>
+          <label class="label" style="padding:0px 8px;">Hire Date From: </label>
         <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"

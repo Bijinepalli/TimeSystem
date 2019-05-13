@@ -14,7 +14,7 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-3">
+      <div class="ui-g-12 ui-md-3 ui-lg-4">
         <label class="label" style="padding:0px 10px;">Date From:</label>
         <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" dateFormat="mm-dd-yy" [(ngModel)]="_startDate"
@@ -24,7 +24,7 @@
           showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
+      <div class="ui-g-12 ui-md-2 ui-lg-4" style="padding-top: 13px">
         <p-checkbox label="" [(ngModel)]="showTotals" binary="true"></p-checkbox><label class="label"
           style="padding:0px 10px;">Total
           by Employee</label>
@@ -54,7 +54,7 @@
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
+            <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
