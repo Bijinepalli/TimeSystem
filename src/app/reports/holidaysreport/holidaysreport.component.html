@@ -14,8 +14,8 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-1 label">Calendar Year :</div>
-      <div class="ui-g-12 ui-md-2">
+      <div class="ui-g-12 ui-md-2 ui-lg-2 label">Calendar Year :</div>
+      <div class="ui-g-12 ui-md-2 ui-lg-2">
         <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="top"
           [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
       </div>
@@ -36,7 +36,7 @@
             <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
             <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter"
+              <input type="text" pInputText size="30" placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
