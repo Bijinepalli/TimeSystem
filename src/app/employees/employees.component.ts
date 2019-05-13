@@ -467,9 +467,9 @@ export class EmployeesComponent implements OnInit {
   setCols() {
     if (this.selectedType === 2 && this.selectedSalaryType === 2) {
       this.cols = [
-        { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
-        { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+        { field: 'Department', header: 'Department', align: 'left', width: '150px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
         { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
         { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
@@ -477,25 +477,25 @@ export class EmployeesComponent implements OnInit {
     } else {
       if (this.selectedType !== 2 && this.selectedSalaryType === 2) {
         this.cols = [
-          { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
-          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Department', header: 'Department', align: 'left', width: '150px' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
           { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
           { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
         this.cols = [
-          { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
-          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Department', header: 'Department', align: 'left', width: '150px' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
           { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
           { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       } else {
         this.cols = [
-          { field: 'Department', header: 'Department', align: 'left', width: 'auto' },
-          { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
+          { field: 'Department', header: 'Department', align: 'left', width: '150px' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
           { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
         ];
       }
