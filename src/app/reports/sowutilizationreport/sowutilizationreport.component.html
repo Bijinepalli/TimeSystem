@@ -139,14 +139,16 @@
       <p-table #dtSOW [columns]="cols" [value]="lstSOW" [responsive]="false" dataKey="SOWID">
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width"
+              >
               {{col.header}}
             </th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
+              style="word-wrap: break-word">
               <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
                 <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
               </div>

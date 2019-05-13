@@ -7,9 +7,10 @@ import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, MaxLengthValidator } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
-import { DatePipe } from '@angular/common';
+import { DatePipe, JsonPipe } from '@angular/common';
 import { Table } from 'primeng/table';
 import { CurrencyConverterPipe } from '../sharedpipes/currencycoverter.pipe';
+import { FileUpload } from 'primeng/primeng';
 
 @Component({
   selector: 'app-sow',
@@ -48,6 +49,8 @@ export class SowComponent implements OnInit {
   _sortArray: string[];
 
   @ViewChild('dt') dt: Table;
+  @ViewChild('fupSOWFile') fupSOWFile: FileUpload;
+
   _DisplayDateFormat: any;
   _DisplayDateTimeFormat: any;
   _previousSOWStatus = '';
@@ -55,6 +58,9 @@ export class SowComponent implements OnInit {
   _isFilesRequired = false;
   _SOWFilesPath = '';
   _LeadBAName = '';
+
+  selectedFile: File[] = [];
+  isIEOrEdge = false;
 
   // tslint:disable-next-line:max-line-length
   constructor(
@@ -94,6 +100,7 @@ export class SowComponent implements OnInit {
   ngOnInit() {
     this.showSpinner = true;
     this.IsSecure = false;
+    this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
@@ -150,21 +157,21 @@ export class SowComponent implements OnInit {
     this.showSpinner = true;
     this.cols = [
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
-      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+      { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: 'auto' },
       { field: 'SOWName', header: 'SOW Name', align: 'left', width: 'auto' },
       { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: 'auto' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: 'auto' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: 'auto' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: 'auto' },
-      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: 'auto' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: 'auto' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: 'auto' },
-      { field: 'Status', header: 'Status', align: 'left', width: 'auto' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '90px' },
+      { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: 'auto' },
+      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: '100px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '80px' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: '90px' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '110px' },
+      { field: 'Status', header: 'Status', align: 'left', width: '90px' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '80px' },
       { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
-      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: 'auto' },
+      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '60px' },
     ];
     this._sortArray = [
       'CustomerName', 'LeadBAName', 'SOWName', 'SOWNumber',
@@ -560,6 +567,13 @@ export class SowComponent implements OnInit {
     } else {
       this._selectedSOW.SOWFileName = '';
       errMsg = 'No file selected. Do you wish to continue?';
+      // if (this.selectedFile.length > 0) {
+      //   this._selectedSOW.SOWFileName = this.selectedFile[0].name;
+      //   this.uploadFile(null);
+      // } else {
+      //   this._selectedSOW.SOWFileName = '';
+      //   errMsg = 'No file selected. Do you wish to continue?';
+      // }
     }
     if (errMsg.trim() !== '') {
       this.confSvc.confirm({
@@ -701,6 +715,68 @@ export class SowComponent implements OnInit {
     } else {
       this.showSpinner = false;
     }
+  }
+
+  onRemoveFile(event) {
+    const index: number = this.selectedFile.indexOf(event.file);
+    if (index !== -1) {
+      this.selectedFile.splice(index, 1);
+    }
+  }
+
+  onSelectFiles(file: any) {
+    this.selectedFile = [];
+    for (const f of file) {
+      const fileIndex = this._SOWFileNames.findIndex(m => m.label === f.name);
+      if (fileIndex > -1) {
+        this.removeUploadFiles();
+        this.msgSvc.add({
+          key: 'alert',
+          sticky: true,
+          severity: 'error',
+          summary: 'Error!',
+          detail: 'File already exists'
+        });
+      } else {
+        this.selectedFile.push(f);
+      }
+    }
+    if (this.selectedFile.length > 0) {
+      this.clearSelectedFile();
+    }
+  }
+  removeUploadFiles() {
+    // this.selectedFile.splice(0, 1);
+    this.selectedFile = [];
+    if (this.fupSOWFile) {
+      this.fupSOWFile.clear();
+      this.fupSOWFile.clearInputElement();
+      this.fupSOWFile.clearIEInput();
+    }
+    // for (let i = 0; i >= 0 && i < this.selectedFile.length; i++) {
+    //   this.selectedFile.splice(i, 1);
+    //   i--;
+    // }
+  }
+
+  uploadFile(event) {
+    this.showSpinner = true;
+    const uploadData: FormData = new FormData();
+    const i = 0;
+    // for (let i = 0; i < this.selectedFile.length; i++) {
+    uploadData.append('SOWFile' + i, this.selectedFile[i], this.selectedFile[i].name);
+    // }
+    const SelectedFileName = this.selectedFile[i].name;
+    this.timesysSvc.uploadFileToServer(uploadData).subscribe((result) => {
+      this.showSpinner = false;
+      this.GetCustomersAndFiles(this._selectedSOW);
+      this.removeUploadFiles();
+    },
+      error => {
+        this.showSpinner = false;
+        this.removeUploadFiles();
+        console.log(error);
+      });
   }
 
 }

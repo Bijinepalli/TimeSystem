@@ -114,13 +114,13 @@ export class SowtotalreportComponent implements OnInit {
     this.lstSOWAnalysis = [];
     this.cols = [
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
-      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+      { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: 'auto' },
       { field: 'SOWName', header: 'SOW Name', align: 'left', width: 'auto' },
       { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: 'auto' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: 'auto' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: 'auto' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '90px' },
+      { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: 'auto' },
       // { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
       { field: 'Hours', header: 'Total Hours', align: 'right', width: 'auto' },
       // { field: 'Originate', header: 'Originate', align: 'left', width: '100px' },
