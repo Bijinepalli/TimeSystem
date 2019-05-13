@@ -2,7 +2,7 @@
   <form [formGroup]="pageFormgroup" *ngIf="pageFormgroup">
     <div class="ui-g">
       <div class="ui-g-12">
-        <div class="ui-g-12 ui-md-1" style="width: 4.5%; text-align: right; padding-top: 12px;">Role :</div>
+        <div class="ui-g-12 ui-md-1" style="width: 4.5%; text-align: right; padding-top: 12px;">Role </div>
         <div class="ui-g-12 ui-md-2">
           <p-dropdown [options]="_roles" formControlName="roleDrp" placeholder="Please select a Role"
             (onChange)="onRoleChange($event)"></p-dropdown>
