@@ -1,44 +1,93 @@
-.weekDay {
-  background-color: white;
-  color: black;
-  text-align: right;
-  width: 55px;
-  margin-right: 5px;
+
+@media screen and (min-width: 1440px) and (max-width: 1900px){
+  .weekDay {
+    background-color: white;
+    color: black;
+    text-align: right;
+    width: 40px;
+    margin-right: 5px;
+    font-size:12px;
+  }
+  .weekEnd {
+    background-color: gold;
+    color: red;
+    text-align: right;
+    width: 40px;
+    margin-right: 5px;
+    font-size: 12px;
+  }
+  .weekEndLabel {
+    border: 0px;
+    background-color: transparent;
+    text-align: right;
+    width: 40px;
+    margin-right: 5px;
+    color: red;
+    font-size: 12px;
+  }
+  .weekDayLabel {
+    border: 0px;
+    background-color: transparent;
+    text-align: right;
+    width: 40px;
+    margin-right: 5px;
+    color: black;
+    font-size: 12px;
+  }
+  .weekTotals {
+    background-color: lightgreen;
+    width: 60px;
+    margin-right: 5px;
+    color: black;
+    text-align: right;
+    font-size: 12px;
+  }
+}
+  @media screen and (min-width: 1920px){
+    .weekDay {
+      background-color: white;
+      color: black;
+      text-align: right;
+      width: 55px;
+      margin-right: 5px;
+    }
+    .weekEnd {
+      background-color: gold;
+      color: red;
+      text-align: right;
+      width: 55px;
+      margin-right: 5px;
+    }
+    .weekEndLabel {
+      border: 0px;
+      background-color: transparent;
+      text-align: right;
+      width: 55px;
+      margin-right: 5px;
+      color: red;
+    }
+    .weekDayLabel {
+      border: 0px;
+      background-color: transparent;
+      text-align: right;
+      width: 55px;
+      margin-right: 5px;
+      color: black;
+    }
+    .weekTotals {
+      background-color: lightgreen;
+      width: 65px;
+      margin-right: 5px;
+      color: black;
+      text-align: right;
+    }
 }
 
-.weekEnd {
-  background-color: gold;
-  color: red;
-  text-align: right;
-  width: 55px;
-  margin-right: 5px;
-}
 
-.weekEndLabel {
-  border: 0px;
-  background-color: transparent;
-  text-align: right;
-  width: 55px;
-  margin-right: 5px;
-  color: red;
-}
 
-.weekDayLabel {
-  border: 0px;
-  background-color: transparent;
-  text-align: right;
-  width: 55px;
-  margin-right: 5px;
-  color: black;
-}
 
-.weekTotals {
-  background-color: lightgreen;
-  width: 65px;
-  margin-right: 5px;
-  color: black;
-  text-align: right;
-}
+
+
 
 .comments {
   background-color: white;

@@ -13,13 +13,13 @@
 <br>
 <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
   <div class="ui-g">
-    <div class="ui-g-12 ui-md-2">
+    <div class="ui-g-12 ui-md-2 ui-lg-3">
       <label class="label" style="padding:0px 10px;">Select:</label>
       <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
       <!-- pTooltip="Show this type of billing code on the report"
       tooltipPosition="bottom" -->
     </div>
-    <div class="ui-g-12 ui-md-2">
+    <div class="ui-g-12 ui-md-2 ui-lg-3">
       <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
       <!-- pTooltip="Show items that have this status" tooltipPosition="bottom" -->
     </div>
@@ -53,7 +53,7 @@
         </div>
       </div>
       <div class="ui-g">
-        <div class="ui-g-4 ui-md-4">
+        <div class="ui-g-4 ui-md-4 ui-lg-4">
           <label class="label" style="padding:0px 10px;">Date From :</label>
           <p-calendar [(ngModel)]="startDate" [readonlyInput]="true"
             pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
@@ -68,7 +68,7 @@
         </div>
         <!-- </div>
       <div class="ui-g label"> -->
-        <div class="ui-g-12 ui-md-5">
+        <div class="ui-g-12 ui-md-5 ui-lg-6">
           <label class="label" style="padding:0px 10px;">Billing Code/Employee Assignment Status:</label>
           <p-selectButton [options]="assignStatus" [(ngModel)]="selectedassignStatus"></p-selectButton>
           <!-- pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
@@ -116,10 +116,10 @@
       [globalFilterFields]="_sortArray">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+          <div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-8 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
+            <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button pButton pTooltip="Change your billing code selections" tooltipPosition="bottom"
               class="ui-button-warning" label="Change Codes" (click)="changeCodes()"></button>&nbsp;

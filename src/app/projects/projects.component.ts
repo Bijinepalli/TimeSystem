@@ -472,11 +472,12 @@ export class ProjectsComponent implements OnInit {
           this.showSpinner = false;
           if (outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
-              key: 'alert',
+              key: outputData.ErrorType,
               sticky: true,
               severity: 'error',
               summary: 'Error!',
-              detail: outputData.ErrorMessage
+              detail: outputData.ErrorMessage,
+              data: outputData.ExceptionDetails,
             });
           } else {
             this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Project saved successfully' });
@@ -504,11 +505,12 @@ export class ProjectsComponent implements OnInit {
               this.showSpinner = false;
               if (outputData !== null && outputData.ErrorMessage !== '') {
                 this.msgSvc.add({
-                  key: 'alert',
+                  key: outputData.ErrorType,
                   sticky: true,
                   severity: 'error',
                   summary: 'Error!',
-                  detail: outputData.ErrorMessage
+                  detail: outputData.ErrorMessage,
+                  data: outputData.ExceptionDetails,
                 });
               } else {
                 this.msgSvc.add({

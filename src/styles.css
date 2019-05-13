@@ -1,36 +1,43 @@
 /* You can add global styles to this file, and also import other style files */
 body {
-    background-color: #f5f7f8!important;
-    margin: 0px;
-    top: 100px;
-    font-size: 1em !important;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: steelblue;
-  }
-
-
-
+  background-color: #f5f7f8 !important;
+  margin: 0px;
+  top: 100px;
+  font-size: 1em !important;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: steelblue;
+}
 
 .leftNav1 .ui-menu {
-	padding: 0;
-	background-color: white;
+  padding: 0;
+  background-color: white;
   border: 1px solid white;
   width: 100%;
 }
-.leftNav1 .ui-menu .ui-menuitem-link .ui-menuitem-text, body .ui-menubar .ui-menuitem-link .ui-menuitem-text, body .ui-tieredmenu .ui-menuitem-link .ui-menuitem-text, body .ui-contextmenu .ui-menuitem-link .ui-menuitem-text, body .ui-megamenu .ui-menuitem-link .ui-menuitem-text, body .ui-slidemenu .ui-menuitem-link .ui-menuitem-text {
-	color: black;
+.leftNav1 .ui-menu .ui-menuitem-link .ui-menuitem-text,
+body .ui-menubar .ui-menuitem-link .ui-menuitem-text,
+body .ui-tieredmenu .ui-menuitem-link .ui-menuitem-text,
+body .ui-contextmenu .ui-menuitem-link .ui-menuitem-text,
+body .ui-megamenu .ui-menuitem-link .ui-menuitem-text,
+body .ui-slidemenu .ui-menuitem-link .ui-menuitem-text {
+  color: black;
 }
-.leftNav1 .ui-menu .ui-menuitem-link .ui-menuitem-icon, body .ui-menubar .ui-menuitem-link .ui-menuitem-icon, body .ui-tieredmenu .ui-menuitem-link .ui-menuitem-icon, body .ui-contextmenu .ui-menuitem-link .ui-menuitem-icon, body .ui-megamenu .ui-menuitem-link .ui-menuitem-icon, body .ui-slidemenu .ui-menuitem-link .ui-menuitem-icon {
-	color:black;
-	margin-right: 0.5em;
+.leftNav1 .ui-menu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-menubar .ui-menuitem-link .ui-menuitem-icon,
+body .ui-tieredmenu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-contextmenu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-megamenu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-slidemenu .ui-menuitem-link .ui-menuitem-icon {
+  color: black;
+  margin-right: 0.5em;
 }
-body .ui-sidebar{
+body .ui-sidebar {
   background-color: white;
 }
 body .ui-slidemenu {
-	padding: 0;
-	background-color: white;
-	border: 1px solid white;
+  padding: 0;
+  background-color: white;
+  border: 1px solid white;
 }
 
 /* .mainHeader{
@@ -42,7 +49,7 @@ body .ui-slidemenu {
   border-radius: .3em;
 } */
 
-.mainHeader{
+.mainHeader {
   font-size: 24px;
   color: dodgerblue;
   background-color: aliceblue;
@@ -50,53 +57,48 @@ body .ui-slidemenu {
   border-right: 0px;
   border-left: 0px;
   /* padding: 15px 5px 5px 5px; */
-  box-shadow: 0 0px 5px 1px rgba(0,0,0,.3);
+  box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.3);
   margin-top: 10px;
 }
-.editIcon{
-  cursor:pointer;
-  color:green
+.editIcon {
+  cursor: pointer;
+  color: green;
 }
-.deleteIcon{
-  cursor:pointer;
-  color:red
+.deleteIcon {
+  cursor: pointer;
+  color: red;
 }
-.viewIcon{
-  cursor:pointer;
-  color:#007ad9;
+.viewIcon {
+  cursor: pointer;
+  color: #007ad9;
 }
-.helpClass{
-  /* background-color: gold; */  
+.helpClass {
+  /* background-color: gold; */
   /* border-top-right-radius: .3em;
   border-bottom-right-radius: .3em; */
   height: 43px;
   text-align: center;
-  color:dodgerblue!important;
+  color: dodgerblue !important;
 }
 
-.recordsFound
-{
-  color:white;
+.recordsFound {
+  color: white;
   text-align: left;
   vertical-align: middle;
   font-weight: normal;
-  padding-top:5px;
-  padding-left:10px;
+  padding-top: 5px;
+  padding-left: 10px;
 }
 
-.recordsBar
-{
-  background-color:#333333;
-  padding:2px;
+.recordsBar {
+  background-color: #333333;
+  padding: 2px;
 }
 
-.helpDisplayClass
-{
-  color:black;
+.helpDisplayClass {
+  color: black;
   font-size: 10pt;
 }
-
-
 
 .dialogHeader .ui-dialog-titlebar.ui-widget-header {
   background-color: lightgreen !important;
@@ -114,45 +116,35 @@ body .ui-slidemenu {
   color: white !important;
 }
 
-
 .ui-sidebar.sidebarHelp {
-  background-color: #FBFCC5 !important;
-   color: black !important;
-   width:400px;
+  background-color: #fbfcc5 !important;
+  color: black !important;
+  width: 400px;
 }
-  
-  
-  
-  /*To make the background of the dialog's body white*/
-  /* .ui-dialog.dialogHeader .ui-dialog-content {
+
+/*To make the background of the dialog's body white*/
+/* .ui-dialog.dialogHeader .ui-dialog-content {
    background-color: white !important;
    color: #0078d7 !important;
   } */
-  
-  
-  
-  .ui-dialog-titlebar.ui-widget-header {
+
+.ui-dialog-titlebar.ui-widget-header {
   background-color: black !important;
   color: white !important;
-  }
-  
-  
-  
-  
-  .ui-sidebar.sidebarHelp {
-  background-color: #FBFCC5 !important;
-  color: black !important;
-  
-  } 
- 
+}
 
- /* @media screen and (max-width: 40em) {
+.ui-sidebar.sidebarHelp {
+  background-color: #fbfcc5 !important;
+  color: black !important;
+}
+
+/* @media screen and (max-width: 40em) {
     .ui-dialog.ui-dialog-responsive {
         width: 550px !important;
     }
 }*/
 
-.checkboxLabel .ui-chkbox-label{
+.checkboxLabel .ui-chkbox-label {
   color: red !important;
 }
 body .ui-panel .ui-panel-content {
@@ -164,11 +156,11 @@ body .ui-panel .ui-panel-content {
 }
 .ui-panel .ui-panel-footer {
   border-width: 1px 0 0;
-  padding: .25em .5em;
+  padding: 0.25em 0.5em;
   text-align: left !important;
 }
 
-.panelEmpBilling .ui-panel .ui-panel-content{
+.panelEmpBilling .ui-panel .ui-panel-content {
   color: black !important;
 }
 .positionMiddle {
@@ -176,91 +168,104 @@ body .ui-panel .ui-panel-content {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  }
-  .label
-{
-    /* font-weight: bold; */
-    padding-top: 13px;
-    text-align: right;
-    color: #329AFF;
+}
+.label {
+  /* font-weight: bold; */
+  padding-top: 13px;
+  text-align: right;
+  color: #329aff;
 }
 /* body .ui-table .ui-table-caption, body .ui-table .ui-table-summary {
   background-color: black;
   border: 1px solid black;
 } */
 
-
 .custombar1 .ui-scrollpanel-wrapper {
   border-right: 9px solid #f4f4f4;
 }
-  
+
 .custombar1 .ui-scrollpanel-bar {
   background-color: #1976d2;
   opacity: 1;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 }
-  
+
 .custombar1 .ui-scrollpanel-bar:hover {
   background-color: #135ba1;
 }
 
-.tablePadding .ui-table{
-  padding-right:9px!important;
+.tablePadding .ui-table {
+  padding-right: 9px !important;
 }
 
-.errorBlock{
-  padding:15px;
+.errorBlock {
+  padding: 15px;
   background-color: #ffffff;
-  color:crimson;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  color: crimson;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
   border: 1px solid #ffaebe;
 }
-.errorBlockHeader{
-  padding:7px;
+.errorBlockHeader {
+  padding: 7px;
   background-color: #ffffff;
-  color:crimson;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  color: crimson;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
   border: 1px solid #ffaebe;
 }
-.warningBlock{
-  padding:15px;
+.warningBlock {
+  padding: 15px;
   background-color: #ffffff;
   /* color:#ff7400; */
-  color:green;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  color: green;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
   /* border:1px solid #fcac6a; */
-  border:1px solid lightgreen;
+  border: 1px solid lightgreen;
 }
-.warningBlockHeader{
-  padding:7px;
+.warningBlockHeader {
+  padding: 7px;
   background-color: #ffffff;
   /* color:#ff7400; */
-  color:green;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  color: green;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
   /* border:1px solid #fcac6a; */
-  border:1px solid lightgreen;
+  border: 1px solid lightgreen;
 }
-.successBlock{
-  padding:15px;
+.successBlock {
+  padding: 15px;
   background-color: #ffffff;
-  color:green;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  border:1px solid lightgreen;
+  color: green;
+  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
+    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
+    0 2px 1px -1px rgba(0, 0, 0, 0.12);
+  border: 1px solid lightgreen;
 }
 
 .ActiveRouteLink {
   /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff,lightsalmon; */
-  background:peachpuff;
+  background: peachpuff;
 }
 
 .ActiveRouteLink > a {
@@ -270,7 +275,7 @@ body .ui-panel .ui-panel-content {
 
 .ActiveRouteLinkNext {
   /* background: darkturquoise, darksalmon, burlywood, blanchedalmond,lavender,peachpuff; */
-  background:lavender;
+  background: lavender;
 }
 
 .ActiveRouteLinkNext > a {
@@ -278,25 +283,24 @@ body .ui-panel .ui-panel-content {
   /* color:firebrick!important; */
 }
 
-
 /* .ActiveRouteLink .ui-menuitem-link{
 color:red;
 } */
 
-.mandatoryStar{
-  color:red!important;
+.mandatoryStar {
+  color: red !important;
 }
 
-.NoDataMessage{
-  color:red!important;
-  font-weight: 400!important;
-  padding: 14px!important;
-  text-align: left!important;
+.NoDataMessage {
+  color: red !important;
+  font-weight: 400 !important;
+  padding: 14px !important;
+  text-align: left !important;
 }
 
-.NoDataStrip{
-  background: #e7e7e7!important;
-  border:0px!important;
+.NoDataStrip {
+  background: #e7e7e7 !important;
+  border: 0px !important;
 }
 
 /* body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a{
@@ -308,9 +312,17 @@ color:red;
 body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a .ui-panelmenu-icon{
   color:black;
 } */
-body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a{
+body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a {
   outline: 0 none;
-  border: 1px solid #007ad9;/* #005b9f;*/
-  background-color: #007ad9;/* #005b9f;*/
+  border: 1px solid #007ad9; /* #005b9f;*/
+  background-color: #007ad9; /* #005b9f;*/
   color: #ffffff;
+}
+@media screen and (min-width: 1440px) and (max-width: 1900px) {
+  .drpFS .ui-dropdown .ui-dropdown-label {
+    font-size: 12px !important;
+  }
+  .drpFS .ui-dropdown-panel .ui-dropdown-item {
+    font-size: 12px !important;
+  }
 }

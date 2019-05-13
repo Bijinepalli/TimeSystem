@@ -39,14 +39,14 @@
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
     <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo"
-      (sortFunction)="customSort($event)" [customSort]="true" [responsive]="true" dataKey="Id"
-      [globalFilterFields]="_sortArray">
+      (sortFunction)="customSort($event)" [customSort]="true" [responsive]="false" dataKey="Id"
+      [globalFilterFields]="_sortArray" >
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} employees found</div>
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
+            <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
@@ -540,7 +540,7 @@
               <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recRateData}} matching rates</div>
               <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
                 <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-                <input type="text" pInputText size="50" placeholder="Global Filter"
+                <input type="text" pInputText size="30" placeholder="Global Filter"
                   (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:70%"> &nbsp;
                 <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
               </div>

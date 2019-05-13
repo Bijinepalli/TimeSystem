@@ -325,11 +325,12 @@ export class CompaniesComponent implements OnInit {
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
-              key: 'alert',
+              key: outputData.ErrorType,
               sticky: true,
               severity: 'error',
               summary: 'Error!',
-              detail: outputData.ErrorMessage
+              detail: outputData.ErrorMessage,
+              data: outputData.ExceptionDetails,
             });
           } else {
             this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Company saved successfully' });
@@ -354,11 +355,12 @@ export class CompaniesComponent implements OnInit {
             (outputData) => {
               if (outputData !== null && outputData.ErrorMessage !== '') {
                 this.msgSvc.add({
-                  key: 'alert',
+                  key: outputData.ErrorType,
                   sticky: true,
                   severity: 'error',
                   summary: 'Error!',
-                  detail: outputData.ErrorMessage
+                  detail: outputData.ErrorMessage,
+                  data: outputData.ExceptionDetails,
                 });
               } else {
                 this.msgSvc.add({
@@ -470,11 +472,12 @@ export class CompaniesComponent implements OnInit {
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
-              key: 'alert',
+              key: outputData.ErrorType,
               sticky: true,
               severity: 'error',
               summary: 'Error!',
-              detail: outputData.ErrorMessage
+              detail: outputData.ErrorMessage,
+              data: outputData.ExceptionDetails,
             });
           } else {
             this.msgSvc.add({

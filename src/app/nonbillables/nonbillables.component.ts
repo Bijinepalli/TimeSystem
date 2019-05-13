@@ -389,11 +389,12 @@ export class NonbillablesComponent implements OnInit {
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {
             this.msgSvc.add({
-              key: 'alert',
+              key: outputData.ErrorType,
               sticky: true,
               severity: 'error',
               summary: 'Error!',
-              detail: outputData.ErrorMessage
+              detail: outputData.ErrorMessage,
+              data: outputData.ExceptionDetails,
             });
           } else {
             this.msgSvc.add({
@@ -425,11 +426,12 @@ export class NonbillablesComponent implements OnInit {
             (outputData) => {
               if (outputData !== null && outputData.ErrorMessage !== '') {
                 this.msgSvc.add({
-                  key: 'alert',
+                  key: outputData.ErrorType,
                   sticky: true,
                   severity: 'error',
                   summary: 'Error!',
-                  detail: outputData.ErrorMessage
+                  detail: outputData.ErrorMessage,
+                  data: outputData.ExceptionDetails,
                 });
               } else {
                 this.msgSvc.add({

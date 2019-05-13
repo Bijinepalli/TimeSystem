@@ -77,7 +77,7 @@
           <div class="ui-g" *ngFor="let _entry of _timeTandM;let i = index">
             <div class="ui-g-12 ui-md-3" style="padding:1px;">
               <p-dropdown [options]="tandm" formControlName="drpTandM_{{i}}" [style]="{'width':'100%'}"
-                (onChange)="drpChange($event)"></p-dropdown>
+                (onChange)="drpChange($event)"  class="drpFS"></p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
               <input *ngFor="let _c of _DateArray;let c = index" type="text"
@@ -102,7 +102,7 @@
         <div class="ui-g">
           <div class="ui-g-12 ui-md-3" style="padding:1px;">
             <p-dropdown [options]="tandm" formControlName="drpTandMDefault" [style]="{'width':'100%'}"
-              (onChange)="drpChange($event)"></p-dropdown>
+              (onChange)="drpChange($event)"  class="drpFS"></p-dropdown>
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
             <input *ngFor="let _c of _DateArray;let i = index" formControlName="txttimeTandMHoursDefault_{{i}}"
@@ -162,7 +162,7 @@
         <div *ngIf="_timeProjBill !== undefined && _timeProjBill !==null && _timeProjBill.length>0">
           <div class="ui-g" *ngFor="let _entry of _timeProjBill;let i = index">
             <div class="ui-g-12 ui-md-3" style="padding:1px;">
-              <p-dropdown [options]="projectBillable" formControlName="drpProjBill_{{i}}" [style]="{'width':'100%'}">
+              <p-dropdown [options]="projectBillable" formControlName="drpProjBill_{{i}}" [style]="{'width':'100%'}"  class="drpFS">
               </p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
@@ -187,7 +187,7 @@
         <!-- Always Show a New Line -->
         <div class="ui-g">
           <div class="ui-g-12 ui-md-3" style="padding:1px;">
-            <p-dropdown [options]="projectBillable" formControlName="drpProjBillDefault" [style]="{'width':'100%'}">
+            <p-dropdown [options]="projectBillable" formControlName="drpProjBillDefault" [style]="{'width':'100%'}"  class="drpFS">
             </p-dropdown>
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">
@@ -249,7 +249,7 @@
         <div *ngIf="_timeNONbill !== undefined && _timeNONbill !==null && _timeNONbill.length>0">
           <div class="ui-g" *ngFor="let _entry of _timeNONbill;let i = index">
             <div class="ui-g-12 ui-md-3" style="padding:1px;">
-              <p-dropdown [options]="nonBillable" [style]="{'width':'100%'}" formControlName="drpNONBill_{{i}}">
+              <p-dropdown [options]="nonBillable" [style]="{'width':'100%'}" formControlName="drpNONBill_{{i}}"  class="drpFS">
               </p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-8" style="padding:1px;">
@@ -274,7 +274,7 @@
         <!-- Always Show a New Line -->
         <div class="ui-g">
           <div class="ui-g-12 ui-md-3" style="padding:1px;">
-            <p-dropdown [options]="nonBillable" formControlName="drpNonBillDefault" [style]="{'width':'100%'}">
+            <p-dropdown [options]="nonBillable" formControlName="drpNonBillDefault" [style]="{'width':'100%'}"  class="drpFS">
             </p-dropdown>
           </div>
           <div class="ui-g-12 ui-md-8" style="padding:1px;">

@@ -298,7 +298,7 @@ export class EmployeehoursComponent implements OnInit {
     this._endDate = null;
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
     this._endDateSelect = '';
-    this.showTotals = false;
+    this.showTotals = true;
     this.showSpinner = false;
   }
   changeCodes() {

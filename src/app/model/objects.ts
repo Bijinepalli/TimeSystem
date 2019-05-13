@@ -125,6 +125,7 @@ export class LoginErrorMessage {
     ReturnVal?: string;
     Exception?: any;
     ExceptionDetails?: ExceptionDetails;
+    ErrorType?: string;
 }
 export class Customers {
     Id?: number;
