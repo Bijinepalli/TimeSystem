@@ -130,7 +130,7 @@
             <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
             <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter"
+              <input type="text" pInputText size="30" placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
                 class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
