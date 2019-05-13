@@ -123,8 +123,8 @@ export class NonbillablehoursComponent implements OnInit {
       { label: 'Custom', value: 4 },
     ];
     this.cols = [
-      { field: 'ReportGroup', header: 'Report Group', align: 'left', width: 'auto' },
-      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: 'auto' },
+      { field: 'ReportGroup', header: 'Report Group', align: 'left', width: '200px' },
+      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: '200px' },
       { field: 'Jan', header: 'JAN', align: 'right', width: '75px' },
       { field: 'Feb', header: 'FEB', align: 'right', width: '75px' },
       { field: 'Mar', header: 'MAR', align: 'right', width: '75px' },

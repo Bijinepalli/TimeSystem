@@ -177,7 +177,7 @@ export class PayrollComponent implements OnInit {
     this.cols = [
       { field: 'Salaried', header: 'Salaried', align: 'center', width: '80px' },
       { field: 'EmployeeNumber', header: 'Employee Number', align: 'left', width: '155px' },
-      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: 'auto' },
+      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: '200px' },
       { field: 'Worked', header: 'Worked', align: 'right', width: '80px' },
       { field: 'HolidayHours', header: 'Holiday Hours', align: 'right', width: '124px' },
       { field: 'PTOHours', header: 'PTO Hours', align: 'right', width: '100px' },
