@@ -586,8 +586,9 @@ export class ClientsComponent implements OnInit {
       .subscribe(
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {
+            console.log(outputData);
             this.msgSvc.add({
-              key: 'exception',
+              key: outputData.ErrorType,
               sticky: true,
               severity: 'error',
               summary: 'Error!',
@@ -618,11 +619,12 @@ export class ClientsComponent implements OnInit {
             (outputData) => {
               if (outputData !== null && outputData.ErrorMessage !== '') {
                 this.msgSvc.add({
-                  key: 'alert',
+                  key: outputData.ErrorType,
                   sticky: true,
                   severity: 'error',
                   summary: 'Error!',
-                  detail: outputData.ErrorMessage
+                  detail: outputData.ErrorMessage,
+                  data: outputData.ExceptionDetails,
                 });
               } else {
                 this.msgSvc.add({

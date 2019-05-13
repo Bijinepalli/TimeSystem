@@ -14,12 +14,12 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter" *ngIf="showFilters">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-3">
+      <div class="ui-g-12 ui-md-3 ui-lg-3">
         <label class="label" style="padding:0px 10px;">Select Department:</label>
         <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name"
           pTooltip="Employee's Department" tooltipPosition="right" [style]="{'width':'300px;'}"></p-dropdown>
       </div>
-      <div class="ui-g-12 ui-md-3">
+      <div class="ui-g-12 ui-md-3 ui-lg-4">
         <label class="label" style="padding:0px 10px;">Select:</label>
         <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
         <!-- pTooltip="Show employees that have this status" tooltipPosition="bottom" -->
@@ -116,7 +116,7 @@
     <p-table #dt [responsive]="false" class="tablePadding">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-5 ui-g-nopad recordsFound">
+          <div class="ui-g-12 ui-md-5 ui-lg-8 ui-g-nopad recordsFound">
             <div class="ui-g-12 ui-md-5" style="text-align: left;">
               <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
                 Department : {{_selectedDepartment.Name}}
@@ -128,7 +128,7 @@
               </ng-container>
             </div>
           </div>
-          <div class="ui-g-12 ui-md-7 ui-g-nopad" style="text-align: right;">
+          <div class="ui-g-12 ui-md-7 ui-lg-4 ui-g-nopad" style="text-align: right;">
             <!-- <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
           <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
             style="width:auto"> &nbsp; -->

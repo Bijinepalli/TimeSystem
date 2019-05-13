@@ -30,7 +30,7 @@
     <form [formGroup]="_frm">
       <p-panel [toggleable]="true" header="Filter">
         <div class="ui-g">
-          <div class="ui-g-3">
+          <div class="ui-g-12">
             <label class="label" style="padding:0px 10px;">Date From:</label>
             <p-calendar appendTo="body" [readonlyInput]="true"
               pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
@@ -73,8 +73,8 @@
       [globalFilterFields]="_sortArray">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+          <div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+          <div class="ui-g-12 ui-md-6 ui-lg-8 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
             <input type="text" pInputText size="50" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;

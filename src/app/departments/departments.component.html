@@ -7,14 +7,15 @@
 </div>
 <ng-container *ngIf="IsSecure">
   <div class="ui-g" style="height:50px;">
-    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
+    <div class="ui-g-12 ui-md-10 ui-lg-8"></div>
+    <div class="ui-g-12 ui-md-2 ui-lg-4" style="text-align: right">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Department" tooltipPosition="bottom"
         class="ui-button-info" label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
     </div>
-  </div>
-  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
-      No matching data for the selected criteria
+    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+      <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+        No matching data for the selected criteria
+      </div>
     </div>
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
@@ -25,7 +26,7 @@
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} departments found</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
+            <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
@@ -53,10 +54,11 @@
             <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
               <label (mouseenter)="showEmployees($event,rowData,op2)"
                 style="font-size:14px; color: blue; cursor: pointer;"><b>{{rowData[col.field]}}</b></label>
-              <p-overlayPanel #op2 [showCloseIcon]="true" [dismissable]="true" appendTo="body">
-                <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
-                  [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5">
-                  <ng-template pTemplate="header" let-columns>
+              <ng-container>
+                <p-overlayPanel #op2 [showCloseIcon]="true" [dismissable]="true" appendTo="body">
+                  <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
+                    [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5">
+                    <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
             {{col.header}}
@@ -75,63 +77,63 @@
       </ng-template>
     </p-table>
     </p-overlayPanel>
-  </div>
-  <ng-template #defaultColumn>
-    {{rowData[col.field]}}
-  </ng-template>
-  </td>
-  <td style="text-align: center">
-    <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon"
-      pTooltip="Delete this Department. It has no employees assigned" tooltipPosition="left"
-      (click)="deleteDepartment(rowData)"></i>
-  </td>
-  </tr>
-  </ng-template>
-  </p-table>
-  </div>
-  <p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
-    [closeOnEscape]="false" [closable]="false" blockScroll="true">
-    <p-header>
-      {{departmentHdr}}
-      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
-        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-        (click)="commonSvc.showHelp('')"></i>
-    </p-header>
-    <div *ngIf="_IsEditDepartment">
-      <form [formGroup]="_frmDepartment">
-        <div class="ui-g">
-          <div class="ui-g-12" style="text-align:left" style="color:red;">
-            * marked fields are required to save the data.
-          </div>
-        </div>
-        <div class="ui-g">
-          <div class="ui-g-4" style="text-align:right">
-            Department Name <span class="mandatoryStar">* </span>:
-          </div>
-          <div class="ui-g-6">
-            <input type="text" maxlength="50" pInputText formControlName="frmName" pToolTip="Unique department name"
-              tooltipPosition="bottom">
-          </div>
-          <div class="ui-g-4" style="text-align:right">
-            Description:
-          </div>
-          <div class="ui-g-6">
-            <input type="text" maxlength="50" pInputText formControlName="frmDescription" tooltipPosition="bottom">
-          </div>
-        </div>
-      </form>
-    </div>
-    <p-footer>
+</ng-container>
+</div>
+<ng-template #defaultColumn>
+  {{rowData[col.field]}}
+</ng-template>
+</td>
+<td style="text-align: center">
+  <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon"
+    pTooltip="Delete this Department. It has no employees assigned" tooltipPosition="left"
+    (click)="deleteDepartment(rowData)"></i>
+</td>
+</tr>
+</ng-template>
+</p-table>
+</div>
+<p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
+  [closeOnEscape]="false" [closable]="false" blockScroll="true">
+  <p-header>
+    {{departmentHdr}}
+    <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+      style="cursor:help; font-size: 18px; color: orange; vertical-align: middle" (click)="commonSvc.showHelp('')"></i>
+  </p-header>
+  <div *ngIf="_IsEditDepartment">
+    <form [formGroup]="_frmDepartment">
       <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-12">
-          <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()"
-            [disabled]="hasFormErrorsDepartment()" class="ui-button-success"></button>
-          &nbsp;
-          <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
+        <div class="ui-g-12" style="text-align:left" style="color:red;">
+          * marked fields are required to save the data.
         </div>
       </div>
-    </p-footer>
-  </p-dialog>
+      <div class="ui-g">
+        <div class="ui-g-4" style="text-align:right">
+          Department Name <span class="mandatoryStar">* </span>:
+        </div>
+        <div class="ui-g-6">
+          <input type="text" maxlength="50" pInputText formControlName="frmName" pToolTip="Unique department name"
+            tooltipPosition="bottom">
+        </div>
+        <div class="ui-g-4" style="text-align:right">
+          Description:
+        </div>
+        <div class="ui-g-6">
+          <input type="text" maxlength="50" pInputText formControlName="frmDescription" tooltipPosition="bottom">
+        </div>
+      </div>
+    </form>
+  </div>
+  <p-footer>
+    <div class="ui-g">
+      <div class="ui-g-12 ui-md-12 ui-lg-12">
+        <button pButton label="Save" *ngIf="!_HasEdit" (click)="saveDepartment()" [disabled]="hasFormErrorsDepartment()"
+          class="ui-button-success"></button>
+        &nbsp;
+        <button pButton label="Cancel" (click)="cancelDepartment()" class="ui-button-danger"></button>
+      </div>
+    </div>
+  </p-footer>
+</p-dialog>
 </ng-container>
 
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"

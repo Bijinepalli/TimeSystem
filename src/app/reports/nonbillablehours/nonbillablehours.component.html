@@ -27,13 +27,13 @@
   </div>
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-5">
+      <div class="ui-g-12 ui-md-5 ui-lg-12">
         <label class="label" style="padding:0px 10px;">Report Type:</label>
         <p-selectButton [options]="reportType" [(ngModel)]="selectedReportType"></p-selectButton>
         <!-- pTooltip="Show the hours for this type of non-billable work"
           tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-12 ui-md-3">
+      <div class="ui-g-12 ui-md-3 ui-lg-4">
         <label class="label" style="padding:0px 10px;">Date From :</label>
         <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date"
           tooltipPosition="top" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"
@@ -44,7 +44,7 @@
           [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-2" style="padding-top: 13px">
+      <div class="ui-g-12 ui-md-2 ui-lg-2" style="padding-top: 13px">
         <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report"
           tooltipPosition="bottom" binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show
           Totals</label>
@@ -73,7 +73,7 @@
             <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
             <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter"
+              <input type="text" pInputText size="30" placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
