@@ -1,5 +1,5 @@
 
-@media screen and (min-width: 1440px){
+@media screen and (min-width: 1440px) and (max-width: 1900px){
   .weekDay {
     background-color: white;
     color: black;
