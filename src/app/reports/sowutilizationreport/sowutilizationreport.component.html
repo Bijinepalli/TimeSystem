@@ -120,33 +120,32 @@
     </div>
 
     <div class="ui-g-12">
-
-      <p-table #dt [responsive]="false">
+      <p-table #dtSOW [columns]="scrollableCols" [frozenColumns]="frozenCols" [value]="lstSOW" [scrollable]="true"
+        scrollHeight="200px" frozenWidth="{{ (frozenCols.length * 150)+'px'  }}">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
             <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound"></div>
             <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp; -->
               <button pButton pTooltip="Back to Summary Report" tooltipPosition="bottom" class="ui-button-warning"
                 label="Back" (click)="goBack()"></button>&nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="exportClick()"></button>
             </div>
           </div>
         </ng-template>
-      </p-table>
-
-      <p-table #dtSOW [columns]="cols" [value]="lstSOW" [responsive]="false" dataKey="SOWID">
+        <ng-template pTemplate="colgroup" let-columns>
+          <colgroup>
+            <col *ngFor="let col of columns" style="width:150px">
+          </colgroup>
+        </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width"
-              >
+            <th *ngFor="let col of columns" [style.width]="col.width">
               {{col.header}}
             </th>
           </tr>
         </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
+        <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>
             <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
               style="word-wrap: break-word">
               <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
@@ -172,7 +171,6 @@
           </tr>
         </ng-template>
       </p-table>
-
       <p-scrollPanel [style]="{width: '100%',height:'400px'}" styleClass="custombar1">
         <div style="width:100%;">
           <table #dtUtilizationReport cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;"

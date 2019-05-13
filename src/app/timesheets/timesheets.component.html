@@ -15,9 +15,8 @@
 
 <ng-container *ngIf="IsSecure">
   <ng-container *ngIf="!Hourschrg">
-    <div class="ui-g">
-      <div class="ui-g-12 ui-md-8"></div>
-      <div class="ui-g-12 ui-md-4" style="text-align: right;">
+    <div class="ui-g" style="height:50px;">
+      <div class="ui-g-12" style="text-align: right;padding-right:0px;">
         <button pButton icon="fa fa-plus fa-1x" pTooltip="Create a New Timesheet" tooltipPosition="bottom"
           class="ui-button-info" label="Add New Timesheet" (click)=addTimesheet()></button> &nbsp;
         <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom"

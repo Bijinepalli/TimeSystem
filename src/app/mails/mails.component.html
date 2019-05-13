@@ -11,9 +11,8 @@
   </div>
 </div>
 <ng-container *ngIf="IsSecure">
-  <div class="ui-g">
-    <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
-    <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+  <div class="ui-g" style="height:50px;">
+    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Email" tooltipPosition="bottom" class="ui-button-info"
         label="Add New Email" *ngIf="!_HasEdit" (click)="addEmail()"></button>
     </div>
@@ -113,7 +112,8 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Subject <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <input type="text" maxlength="255" pInputText style="width:100%" placeholder="Subject" formControlName="txtSubject"><br>
+            <input type="text" maxlength="255" pInputText style="width:100%" placeholder="Subject"
+              formControlName="txtSubject"><br>
             <div style="height:5px"></div>
             <p-checkbox binary="true" label="Subject used as template" [(ngModel)]="chkIsSubjectTemplate"
               [ngModelOptions]="{standalone: true}"
