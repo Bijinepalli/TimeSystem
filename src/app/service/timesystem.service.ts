@@ -924,4 +924,10 @@ export class TimesystemService {
       .set('CustomerID', CustomerID);
     return this.http.get<SelectItem[]>(this.url + 'GetLeadBA', { params });
   }
+
+  uploadFileToServer(frmdata: FormData) {
+    const _headers = new HttpHeaders();
+    _headers.append('Content-Type', 'multipart/form-data');
+    return this.http.post<any>(this.url + 'uploadFileToServer', frmdata, { headers: _headers });
+  }
 }
