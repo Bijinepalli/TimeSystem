@@ -53,6 +53,8 @@ export class ClientsComponent implements OnInit {
   _OldCompanyID = '';
   _DisplayDateFormat: any;
 
+  _UsedSOWs: Clients[] = [];
+
   // tslint:disable-next-line:max-line-length
   constructor(
     private router: Router,
@@ -135,6 +137,7 @@ export class ClientsComponent implements OnInit {
     this._companyNames = [];
     this._customers = [];
     this._companies = [];
+    this._UsedSOWs = [];
     this._HasEdit = true;
   }
 
@@ -213,6 +216,8 @@ export class ClientsComponent implements OnInit {
     this.showSpinner = true;
     this.showReport = false;
     this._recData = 0;
+    this._clients = [];
+    this._UsedSOWs = [];
     this.timesysSvc.getClients()
       .subscribe(
         (data) => {
@@ -224,6 +229,8 @@ export class ClientsComponent implements OnInit {
             } else {
               this._clients = data;
             }
+
+            this._UsedSOWs = data.filter(P => P.Inactive === false && P.SOWID.toString() !== '' && P.SOWID > 0);
           } else {
             this._clients = [];
           }
@@ -304,6 +311,14 @@ export class ClientsComponent implements OnInit {
         (data) => {
           this._SOWs = [];
           if (data !== undefined && data !== null && data.length > 0) {
+            console.log(data);
+            console.log(this._UsedSOWs);
+            data = data.filter(m => !(this._UsedSOWs.
+              filter(c => (this._IsEdit && c.Id !== this._selectedClient.Id && c.SOWID !== this._selectedClient.SOWID) || !this._IsEdit).
+              map(s => s.SOWID).
+              includes(m.SOWID)));
+            console.log(data);
+
             for (let i = 0; i < data.length; i++) {
               this._SOWs.push({ label: data[i].SOWName, value: data[i].SOWID });
             }

@@ -14,12 +14,12 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-3">
+      <div class="ui-g-12 ui-md-3 ui-lg-4">
         <label class="label" style="padding:0px 10px;">Select:</label>
         <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
         <!-- tooltipPosition="bottom" pTooltip="Show this type of billing code on the report" -->
       </div>
-      <div class="ui-g-12 ui-md-2">
+      <div class="ui-g-12 ui-md-2 ui-lg-4">
         <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
           <!-- pTooltip="Show items that have this status" tooltipPosition="bottom" -->
       </div>

@@ -184,21 +184,21 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstSOWAnalysis = [];
     this.cols = [
       { field: 'CustomerName', header: 'Customer', align: 'left', width: 'auto' },
-      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+      { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: 'auto' },
       { field: 'SOWName', header: 'SOW Name', align: 'left', width: 'auto' },
       { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: 'auto' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: 'auto' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: 'auto' },
-      { field: 'TotalContractValue', header: 'Total Contract Value', align: 'right', width: 'auto' },
-      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: 'auto' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: 'auto' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: 'auto' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: 'auto' },
-      { field: 'Status', header: 'Status', align: 'left', width: 'auto' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: 'auto' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '90px' },
+      { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: 'auto' },
+      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: '100px' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '80px' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: '90px' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '110px' },
+      { field: 'Status', header: 'Status', align: 'left', width: '90px' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '80px' },
       { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
-      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: 'auto' },
+      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '60px' },
     ];
 
     this._SOWFilesPath = environment.SOWFiles;

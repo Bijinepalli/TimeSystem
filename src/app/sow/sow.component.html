@@ -41,7 +41,8 @@
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width"
+            >
             {{col.header}}
             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
               ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
@@ -56,7 +57,8 @@
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this SOW"
               tooltipPosition="bottom" (click)="editSOW(rowData)"></i>
           </td>
-          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
+            style="word-wrap: break-word">
             <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
               <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
             </div>
@@ -115,9 +117,9 @@
               </p-dropdown>
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-              Lead Business Analyst <span class="mandatoryStar">* </span><br>
+              Lead Business Analyst <br>
               <div style="height:5px"></div>
-              <label>{{_LeadBAName}}</label>
+              <label><b>{{_LeadBAName}}</b></label>
             </div>
           </div>
           <div class="ui-g-12 ui-g-nopad">
@@ -133,7 +135,7 @@
               <input type="text" pInputText style="width:100%" formControlName="frmSOWNumber" appendTo="body"
                 pToolTip="SOW's Number" pattern="^[a-zA-Z0-9\040\047\055]*$" maxlength="10">
             </div>
-          </div>  
+          </div>
           <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Effective Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
@@ -225,19 +227,34 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             SOW File <span class="mandatoryStar" *ngIf="_isFilesRequired">* </span><br>
             <div style="height:5px"></div>
+            <div *ngIf="isIEOrEdge" style="color:red">
+              Note: Attachments not supported in EDGE, Please choose Chrome to add the files.
+            </div>
             <p-listbox appendTo="body" [options]="_SOWFileNames" filter="true" formControlName="frmSOWFileName"
-              [style]="{'width':'99%'}">
+              [style]="{'width':'99%'}" (onChange)="removeUploadFiles()">
               <p-header>
-                <i class="fa fa-file"></i>
-                Available SOW Files
+                <div style="float:left;">
+                  <i class="fa fa-file"></i>
+                  Available SOW Files
+                </div>
+                <div style="float:right;">
+                  <p-fileUpload #fupSOWFile *ngIf="!isIEOrEdge" (onSelect)="onSelectFiles($event.files)"
+                    multiple="false" mode="basic" maxFileSize="10000000" [showUploadButton]="false"
+                    [showCancelButton]="false" (onRemove)="onRemoveFile($event)"
+                    accept=".csv, .xml, .xlsm, application/msexcel, application/msmsword" customUpload="true"
+                    (uploadHandler)="uploadFile($event)" auto="true" chooseLabel="Add">
+                  </p-fileUpload>
+                </div>
               </p-header>
               <ng-template let-SOWFile let-i="index" pTemplate="item">
                 {{SOWFile.value}}
               </ng-template>
               <p-footer>
-                Selected: {{_frm.controls['frmSOWFileName'].value||'-'}} <i
-                  *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()" class="pi pi-times"
-                  style="color:red;float:right;"></i>
+                <div style="width:100%;padding:5px;overflow: auto;">
+                  Selected: {{_frm.controls['frmSOWFileName'].value||'-'}}
+                  <i *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()" class="pi pi-times"
+                    style="color:red;float:right;padding:5px;"></i>
+                </div>
               </p-footer>
             </p-listbox>
           </div>
