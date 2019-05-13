@@ -42,7 +42,7 @@
     font-size: 12px;
   }
 }
-@media screen and (min-width: 1440px) and (max-width: 1900px){
+@media screen and (min-width: 1440px) and (max-width: 1920px){
   .weekDay {
     background-color: white;
     color: black;
