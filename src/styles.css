@@ -314,3 +314,11 @@ body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a{
   background-color: #007ad9;/* #005b9f;*/
   color: #ffffff;
 }
+
+.drpFS .ui-dropdown .ui-dropdown-label
+{
+  font-size: 12px !important;
+}
+.drpFS .ui-dropdown-panel .ui-dropdown-item{
+  font-size: 12px !important;
+}
