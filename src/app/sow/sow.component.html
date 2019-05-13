@@ -11,9 +11,8 @@
   </div>
 </div>
 <ng-container *ngIf="IsSecure">
-  <div class="ui-g">
-    <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
-    <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+  <div class="ui-g" style="height:50px;">
+    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new SOW" tooltipPosition="bottom" class="ui-button-info"
         label="Add New SOW" *ngIf="!_HasEdit" (click)=addSOW()></button>
     </div>
@@ -25,67 +24,73 @@
     </div>
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-table #dt [columns]="cols" [value]="_SOWs" [paginator]="true" [rows]="20" [responsive]="false" dataKey="SOWID"
-      (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
-      <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} SOWs found</div>
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-table ui-widget">
+        <div class="ui-table-caption ui-widget-header">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} SOWs found</div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+              <input type="text" pInputText size="30" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            </div>
           </div>
         </div>
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width"
-            >
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-          <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td style="text-align: center" *ngIf="!_HasEdit">
-            <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this SOW"
-              tooltipPosition="bottom" (click)="editSOW(rowData)"></i>
-          </td>
-          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
-            style="word-wrap: break-word">
-            <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
-              <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-            </div>
-            <ng-template #nondatecol>
-              <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
-                <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank"
-                  class="HypExternal" title="{{rowData[col.field]}}">
-                  <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
-                </a>
-              </div>
-              <ng-template #defaultcol>
-                <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
-                  <label>{{rowData[col.field] | currency}} </label>
+      </div>
+      <p-scrollPanel [style]="{width: '100%',height:'500px'}" styleClass="custombar1">
+        <p-table #dt [columns]="cols" [value]="_SOWs" [paginator]="true" [rows]="10" [responsive]="false"
+          dataKey="SOWID" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order">
+                </p-sortIcon>
+              </th>
+              <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+              <td style="text-align: center" *ngIf="!_HasEdit">
+                <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this SOW"
+                  tooltipPosition="bottom" (click)="editSOW(rowData)"></i>
+              </td>
+              <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
+                style="word-wrap: break-word">
+                <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
+                  <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
                 </div>
-                <ng-template #othercol>
-                  {{rowData[col.field]}}
+                <ng-template #nondatecol>
+                  <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
+                    <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank"
+                      class="HypExternal" title="{{rowData[col.field]}}">
+                      <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
+                    </a>
+                  </div>
+                  <ng-template #defaultcol>
+                    <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
+                      <label>{{rowData[col.field] | currency}} </label>
+                    </div>
+                    <ng-template #othercol>
+                      {{rowData[col.field]}}
+                    </ng-template>
+                  </ng-template>
                 </ng-template>
-              </ng-template>
-            </ng-template>
-          </td>
-          <td style="text-align: center" *ngIf="!_HasEdit">
-            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this SOW" tooltipPosition="left"
-              (click)="deleteSOW(rowData)"></i>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+              </td>
+              <td style="text-align: center" *ngIf="!_HasEdit">
+                <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this SOW" tooltipPosition="left"
+                  (click)="deleteSOW(rowData)"></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-scrollPanel>
+    </div>
   </div>
 
 

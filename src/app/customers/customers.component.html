@@ -11,9 +11,8 @@
   </div>
 </div>
 <ng-container *ngIf="IsSecure">
-  <div class="ui-g">
-    <div class="ui-g-12 ui-md-10 ui-lg-10"></div>
-    <div class="ui-g-12 ui-md-2 ui-lg-2" style="text-align: right">
+  <div class="ui-g" style="height:50px;">
+    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new customer to invoice" tooltipPosition="bottom"
         class="ui-button-info" label="Add New Customer" *ngIf="!_HasEdit" (click)=addCustomer()></button>
     </div>
@@ -120,7 +119,8 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             Lead Business Analyst <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
-            <p-dropdown appendTo="body" [options]="_leadBAs" formControlName="leadBA" placeholder="Select Lead Business Analyst" [style]="{'width':'100%'}">
+            <p-dropdown appendTo="body" [options]="_leadBAs" formControlName="leadBA"
+              placeholder="Select Lead Business Analyst" [style]="{'width':'100%'}">
             </p-dropdown>
           </div>
         </div>

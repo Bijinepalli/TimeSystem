@@ -11,9 +11,8 @@
   </div>
 </div>
 <ng-container *ngIf="IsSecure">
-  <div class="ui-g">
-    <div class="ui-g-12 ui-md-10"></div>
-    <div class="ui-g-12 ui-md-2" style="text-align: right">
+  <div class="ui-g" style="height:50px;">
+    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a New Holiday Date" tooltipPosition="bottom"
         class="ui-button-info" label="Add New Holiday" *ngIf="!_HasEdit" (click)=addHoliday()></button>
     </div>
@@ -104,8 +103,8 @@
             Holiday Name <span class="mandatoryStar">* </span><br>
             <div style="height:5px"></div>
             <input *ngIf="!_IsEdit || !(_IsEdit && (_selectedHoliday.InUse>0))" type="text" pInputText
-              style="width:100%" maxlength="30" pattern="^[a-zA-Z0-9\040\047\055]*$" placeholder="Holiday Name" pTooltip="The display name for the holiday"
-              tooltipPosition="bottom" formControlName="holidayName">
+              style="width:100%" maxlength="30" pattern="^[a-zA-Z0-9\040\047\055]*$" placeholder="Holiday Name"
+              pTooltip="The display name for the holiday" tooltipPosition="bottom" formControlName="holidayName">
             <label *ngIf="(_IsEdit && (_selectedHoliday.InUse>0))"><b>{{_selectedHoliday.HolidayName}}</b></label>
           </div>
         </div>

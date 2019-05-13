@@ -10,9 +10,8 @@
     <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
   </div>
 </div>
-<div class="ui-g">
-  <div class="ui-g-12 ui-md-10"></div>
-  <div class="ui-g-12 ui-md-2" style="text-align: right">
+<div class="ui-g" style="height:50px;">
+  <div class="ui-g-12" style="text-align: right;padding-right:0px;">
     <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new project to the project billable timesheet category"
       tooltipPosition="bottom" class="ui-button-info" label="Add New Project" *ngIf="!_HasEdit"
       (click)=addProject()></button>
@@ -23,7 +22,7 @@
     <div class="ui-g-12 ui-md-12" style="text-align: left">
       <label class="label" style="padding:0px 10px;">Select:</label>
       <p-selectButton [options]="_status" [(ngModel)]="_selectedStatus" (onChange)="changeStatus()"></p-selectButton>
-        <!-- pTooltip="Show projects that have this status" tooltipPosition="bottom" -->
+      <!-- pTooltip="Show projects that have this status" tooltipPosition="bottom" -->
     </div>
   </div>
 </p-panel>
@@ -108,16 +107,17 @@
         <div class="ui-g-12 ui-md-12">
           Project Code <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" maxlength="15" pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$" pInputText style="width:100%" placeholder="Project Code" formControlName="projectCode"
-            pToolTip="Unique project code" tooltipPosition="bottom" appendTo="body">
+          <input type="text" maxlength="15" pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$" pInputText
+            style="width:100%" placeholder="Project Code" formControlName="projectCode" pToolTip="Unique project code"
+            tooltipPosition="bottom" appendTo="body">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
         <div class="ui-g-12 ui-md-12">
           Project Name <span class="mandatoryStar">* </span><br>
           <div style="height:5px"></div>
-          <input type="text" maxlength="50" pInputText style="width:100%" placeholder="Project Name" formControlName="projectName"
-            pToolTip="Unique project name" tooltipPosition="bottom">
+          <input type="text" maxlength="50" pInputText style="width:100%" placeholder="Project Name"
+            formControlName="projectName" pToolTip="Unique project name" tooltipPosition="bottom">
         </div>
       </div>
       <div class="ui-g-12 ui-md-12">
