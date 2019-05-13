@@ -154,15 +154,15 @@ export class Master2Component implements OnInit {
             ) {
               this.dashboard = [{
                 label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')
-              },
-              { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              }
+              // , { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
             } else {
               this.dashboard = [{
                 label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')
               },
-              { label: 'Timesheets', queryParams: { Id: -2 }, command: (event) => this.navigateByRoute(event, '/menu/timesheets') },
-              { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+              { label: 'Timesheets', queryParams: { Id: -2 }, command: (event) => this.navigateByRoute(event, '/menu/timesheets') }
+              // , { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
             }
             this.selectInitialMenuItemBasedOnUrl(-1);

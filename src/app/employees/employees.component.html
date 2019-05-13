@@ -39,8 +39,8 @@
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
     <p-table #dt [columns]="cols" [value]="_employees" [paginator]="true" [rows]="20" [first]="_employeesPageNo"
-      (sortFunction)="customSort($event)" [customSort]="true" [responsive]="true" dataKey="Id"
-      [globalFilterFields]="_sortArray">
+      (sortFunction)="customSort($event)" [customSort]="true" [responsive]="false" dataKey="Id"
+      [globalFilterFields]="_sortArray" >
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} employees found</div>
