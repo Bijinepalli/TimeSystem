@@ -18,12 +18,12 @@
         <div class="label">
           Client Billing Cycle:
         </div>
-        <div class="ui-g-5">
+        <div class="ui-g-12 ui-lg-6">
           <p-selectButton [options]="billingCycle" [(ngModel)]="selectedbillingCycle"></p-selectButton>
           <!-- pTooltip="Show clients with this billing cycle on the report"
           tooltipPosition="bottom" -->
         </div>
-        <div class="ui-g-3">
+        <div class="ui-g-12 ui-lg-4">
           <label class="label" style="padding:0px 10px;">Date From:</label>
           <p-calendar appendTo="body" [readonlyInput]="true"
             pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
@@ -37,7 +37,7 @@
             showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [inputStyle]="{'width':'100px'}">
           </p-calendar>
         </div>
-        <div class="ui-g-2 label" style="text-align: left">
+        <div class="ui-g-12 ui-lg-4 label" style="text-align: left">
           <p-checkbox binary="true" label="Total by Billing Code"
             pTooltip="Check this option to include a total of hours for each billing code" tooltipPosition="bottom"
             [(ngModel)]="showTotals" binary="true"></p-checkbox>
