@@ -14,52 +14,40 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-1 label">
-        Status:
-      </div>
-      <div class="ui-g-2">
+      <div class="ui-g-12 ui-md-2 ui-lg-4">
+        <label class="label">Status: </label>
         <p-selectButton [options]="_status" [(ngModel)]="_statusselected"></p-selectButton>
         <!-- pTooltip="Select only inactive employees"
           tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-1 label">
-        Paid:
-      </div>
-      <div class="ui-g-2">
+      <div class="ui-g-12 ui-md-4 ui-lg-4">
+        <label class="label">Paid: </label>
         <p-selectButton [options]="_paid" [(ngModel)]="_paidselected"></p-selectButton>
         <!-- pTooltip="Select only hourly employees"
           tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-1 label">
-        IPay:
-      </div>
-      <div class="ui-g-5">
+      <div class="ui-g-12 ui-md-4 ui-lg-4">
+        <label class="label">IPay: </label>
         <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected"></p-selectButton>
         <!-- pTooltip="Select only employees that cannot get IPay"
         tooltipPosition="bottom" -->
       </div>
     </div>
     <div class="ui-g">
-      <div class="ui-g-1 label">
-        TimeSheets:
-      </div>
-      <div class="ui-g-2">
+      <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <label class="label">TimeSheets: </label>
         <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected"></p-selectButton>
         <!-- pTooltip="Select only employees that do not submit timesheets"
         tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-1 label">
-        Holidays:
-      </div>
-      <div class="ui-g-2">
+      <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <label class="label">Holidays: </label>
         <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected"></p-selectButton>
         <!-- pTooltip="Select only employees that follow the Vertex holiday schedule"
         tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-1 label">
-        Hire Date From:
-      </div>
-      <div class="ui-g-5">
+      <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <label class="label">Hire Date From: </label>
         <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
@@ -103,7 +91,7 @@
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching employees</div>
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
+            <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>

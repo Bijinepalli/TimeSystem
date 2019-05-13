@@ -14,19 +14,19 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter" *ngIf="!showReport">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-4">
+      <div class="ui-g-12 ui-md-4 ui-lg-6">
         <label class="label" style="padding:0px 10px;">Client BIlling Cycle:</label>
         <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle"></p-selectButton>
         <!-- pTooltip="Show clients with this billing cycle on the report" tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-12 ui-md-2">
+      <div class="ui-g-12 ui-md-2 ui-lg-3">
         <label class="label" style="padding:0px 10px;">Invoice Date :</label>
         <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
           [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
           pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="top"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-5">
+      <div class="ui-g-12 ui-md-5 ui-lg-5">
         <label class="label" style="padding:0px 10px;">Date From :</label>
         <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
           [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
@@ -65,7 +65,7 @@
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="50" placeholder="Global Filter"
+            <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning"
               label="Start Over" (click)="startOver()"></button> &nbsp;
