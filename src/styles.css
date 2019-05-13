@@ -318,7 +318,7 @@ body .leftNav1 .ui-panelmenu .ui-panelmenu-header > a {
   background-color: #007ad9; /* #005b9f;*/
   color: #ffffff;
 }
-@media screen and (min-width: 1440px) and (max-width: 1920px) {
+@media screen and (min-width: 1440px) and (max-width: 1900px) {
   .drpFS .ui-dropdown .ui-dropdown-label {
     font-size: 12px !important;
   }
