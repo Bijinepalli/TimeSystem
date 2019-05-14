@@ -159,10 +159,10 @@ export class ClientsComponent implements OnInit {
     ];
 
     this.cols = [
-      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'ClientName', header: 'Client Name', align: 'left', width: '400px' },
       { field: 'Key', header: 'Code', align: 'left', width: '200px' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '350px' },
-      { field: 'SOWName', header: 'SOW Name' },
+      { field: 'SOWName', header: 'SOW Name', width: '200px' },
       { field: 'PONumber', header: 'PO#', align: 'left', width: '150px' },
     ];
 
@@ -193,20 +193,20 @@ export class ClientsComponent implements OnInit {
   clickButton(event: any) {
     if (this.selectedType === 'Both') {
       this.cols = [
-        { field: 'ClientName', header: 'Client Name' },
-        { field: 'Key', header: 'Code' },
-        { field: 'CustomerName', header: 'Customer Name' },
-        { field: 'SOWName', header: 'SOW Name' },
-        { field: 'PONumber', header: 'PO#' },
-        { field: 'Inactive', header: 'Inactive' },
+        { field: 'ClientName', header: 'Client Name', width: '400px' },
+        { field: 'Key', header: 'Code', width: 'auto' },
+        { field: 'CustomerName', header: 'Customer Name', width: 'auto' },
+        { field: 'SOWName', header: 'SOW Name', width: 'auto' },
+        { field: 'PONumber', header: 'PO#', width: 'auto' },
+        { field: 'Inactive', header: 'Inactive', width: 'auto' },
       ];
     } else {
       this.cols = [
-        { field: 'ClientName', header: 'Client Name' },
-        { field: 'Key', header: 'Code' },
-        { field: 'CustomerName', header: 'Customer Name' },
-        { field: 'SOWName', header: 'SOW Name' },
-        { field: 'PONumber', header: 'PO#' },
+        { field: 'ClientName', header: 'Client Name', width: '400px' },
+        { field: 'Key', header: 'Code', width: 'auto' },
+        { field: 'CustomerName', header: 'Customer Name', width: 'auto' },
+        { field: 'SOWName', header: 'SOW Name', width: 'auto' },
+        { field: 'PONumber', header: 'PO#', width: 'auto' },
       ];
     }
     this.getClients();
