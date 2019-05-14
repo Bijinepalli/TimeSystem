@@ -72,7 +72,6 @@ export class CustomersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -84,10 +83,8 @@ export class CustomersComponent implements OnInit {
     });
   }
   CheckSecurity(PageId: string) {
-    this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), PageId)
       .subscribe((data) => {
-        this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
           this.ClearAllProperties();
           if (data[0].HasEdit) {
@@ -121,7 +118,6 @@ export class CustomersComponent implements OnInit {
   }
 
   Initialisations() {
-    this.showSpinner = true;
     this.types = [
       { label: 'Active', value: 'Active' },
       { label: 'Inactive', value: 'Inactive' },
@@ -177,14 +173,13 @@ export class CustomersComponent implements OnInit {
             this._recData = this._customers.length;
           }
           this.showReport = true;
-          // this.showSpinner = false;
+          this.showSpinner = false;
           this.getLeadBAs();
         }
       );
   }
 
   getLeadBAs() {
-    this.showSpinner = true;
     this.timesysSvc.getLeadBAs('0')
       .subscribe(
         (data) => {
@@ -193,7 +188,6 @@ export class CustomersComponent implements OnInit {
           } else {
             this._leadBAs = [];
           }
-          this.showSpinner = false;
         }
       );
   }
