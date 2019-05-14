@@ -35,19 +35,19 @@
     </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-          <label class="label" style="padding:0px 10px;">TimeSheets: </label>
+        <label class="label" style="padding:0px 10px;">TimeSheets: </label>
         <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected"></p-selectButton>
         <!-- pTooltip="Select only employees that do not submit timesheets"
         tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-          <label class="label" style="padding:0px 10px;">Holidays: </label>
+        <label class="label" style="padding:0px 10px;">Holidays: </label>
         <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected"></p-selectButton>
         <!-- pTooltip="Select only employees that follow the Vertex holiday schedule"
         tooltipPosition="bottom" -->
       </div>
       <div class="ui-g-12 ui-md-4 ui-lg-4">
-          <label class="label" style="padding:0px 8px;">Hire Date From: </label>
+        <label class="label" style="padding:0px 8px;">Hire Date From: </label>
         <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
@@ -78,64 +78,71 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport">
-    <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true"
-      [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)"
-      [customSort]="true" [globalFilterFields]="_sortArray">
-      <ng-template pTemplate="caption">
-        <div style="text-align:left">
-          <p-multiSelect [options]="_headerLabels" [(ngModel)]="selectedColumns" optionLabel="header"
-            selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns">
-          </p-multiSelect>
-        </div>
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching employees</div>
-          <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="30" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+    <div class="ui-g-12 ui-g-nopad">
+      <div class="ui-table ui-widget">
+        <div class="ui-table-caption ui-widget-header">
+          <div style="text-align:left">
+            <p-multiSelect [options]="_headerLabels" [(ngModel)]="selectedColumns" optionLabel="header"
+              selectedItemsLabel="{0} columns selected" [style]="{minWidth: '200px'}" defaultLabel="Choose Columns">
+            </p-multiSelect>
+          </div>
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching employees</div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+              <input type="text" pInputText size="30" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            </div>
           </div>
         </div>
-      </ng-template>
+      </div>
+      <p-scrollPanel [style]="{width: '100%',height:'460px'}" styleClass="custombar1">
+        <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true"
+          [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)"
+          [customSort]="true" [globalFilterFields]="_sortArray">
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
+                [style.width]="col.width">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order">
+                </p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
 
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn [style.width]="col.width">
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
+          <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+              <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width"
+                [style.text-align]="col.align">
 
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width"
-            [style.text-align]="col.align">
-
-            <div
-              *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
-              {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
-            </div>
-            <ng-template #elsepart>
-              <div *ngIf="(col.field === 'HireDate'); else nondatecol">
-                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                <!-- <label>{{rowData[col.field]}} </label> -->
-              </div>
-              <ng-template #nondatecol>
-                {{rowData[col.field]}}
-              </ng-template>
-            </ng-template>
-          </td>
-          <!-- <td *ngFor="let col of columns">
+                <div
+                  *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
+                  {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+                </div>
+                <ng-template #elsepart>
+                  <div *ngIf="(col.field === 'HireDate'); else nondatecol">
+                    <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                    <!-- <label>{{rowData[col.field]}} </label> -->
+                  </div>
+                  <ng-template #nondatecol>
+                    {{rowData[col.field]}}
+                  </ng-template>
+                </ng-template>
+              </td>
+              <!-- <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
             {{rowData[col.field] === true ? 'Yes' : 'No'}}
           </div>
         </td> -->
-        </tr>
-      </ng-template>
-    </p-table>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-scrollPanel>
+    </div>
   </div>
 </ng-container>
 

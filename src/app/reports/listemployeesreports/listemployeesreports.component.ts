@@ -153,7 +153,7 @@ export class ListemployeesreportsComponent implements OnInit {
       { field: 'FirstName', header: 'First Name', align: 'left', width: '134px' },
       { field: 'NickName', header: 'Nick Name', align: 'left', width: '120px' },
       { field: 'PayRoleID', header: 'Payroll ID', align: 'left', width: '100px' },
-      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
+      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: '300px' },
       { field: 'LoginID', header: 'Login ID', align: 'left', width: '189px' },
       { field: 'HireDate', header: 'Hire Date', align: 'center', width: '100px' },
       { field: 'UserLevel', header: 'Security', align: 'center', width: '75px' },
