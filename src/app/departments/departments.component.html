@@ -19,7 +19,8 @@
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
     <p-table #dt [columns]="cols" [value]="_departmentList" [responsive]="false" dataKey="ID" [paginator]="true"
-      [rows]="20" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true">
+      [rows]="20" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true"
+      [scrollable]="true">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} departments found</div>
@@ -45,7 +46,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td style="text-align: center">
+          <td style="width: 5em;text-align: center;">
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
               (click)="editDepartment(rowData)"></i>
           </td>
@@ -56,7 +57,8 @@
               <ng-container>
                 <p-overlayPanel #op2 [showCloseIcon]="true" [dismissable]="true" appendTo="body">
                   <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
-                    [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5">
+                    [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5"
+                    [scrollable]="true">
                     <ng-template pTemplate="header" let-columns>
         <tr>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field">
@@ -82,7 +84,7 @@
   {{rowData[col.field]}}
 </ng-template>
 </td>
-<td style="text-align: center">
+<td style="width: 5em;text-align: center;">
   <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon"
     pTooltip="Delete this Department. It has no employees assigned" tooltipPosition="left"
     (click)="deleteDepartment(rowData)"></i>

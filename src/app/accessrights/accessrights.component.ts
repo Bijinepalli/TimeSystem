@@ -102,6 +102,7 @@ export class AccessrightsComponent implements OnInit {
 
 
   Initialisations() {
+    this.showSpinner = true;
     this.pageFormgroup = this.fb.group({
       roleDrp: [''],
     });
@@ -119,10 +120,12 @@ export class AccessrightsComponent implements OnInit {
       { field: 'ModuleName', header: 'Action/Section' },
       { field: 'HasEdit', header: 'Edit' },
     ];
+    this.showSpinner = false;
     this.getPages();
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
     this._recData = '';
     this.cols = {};
     this._pages = [];
@@ -136,6 +139,7 @@ export class AccessrightsComponent implements OnInit {
   }
 
   getPages() {
+    this.showSpinner = true;
     this.timesysSvc.getMasterPages()
       .subscribe(
         (data) => {
@@ -157,11 +161,13 @@ export class AccessrightsComponent implements OnInit {
               }
             }
           }
+          this.showSpinner = false;
         }
       );
   }
 
   toggleControls(id: string) {
+    this.showSpinner = true;
     let chk: boolean;
     chk = this.pageFormgroup.get('chkPage_' + id).value;
     if (chk === true) {
@@ -172,10 +178,11 @@ export class AccessrightsComponent implements OnInit {
       this.pageFormgroup.controls['editSwitch_' + id].setValue(false);
       this.pageFormgroup.controls['editSwitch_' + id].disable();
     }
-
+    this.showSpinner = false;
   }
 
   toggleControlsSection(id: string, sectionId: string) {
+    this.showSpinner = true;
     let chk: boolean;
     chk = this.pageFormgroup.get('chkPageSection_' + id + '_' + sectionId).value;
     if (chk === true) {
@@ -186,7 +193,7 @@ export class AccessrightsComponent implements OnInit {
       this.pageFormgroup.controls['editSwitchSection_' + id + '_' + sectionId].setValue(false);
       this.pageFormgroup.controls['editSwitchSection_' + id + '_' + sectionId].disable();
     }
-
+    this.showSpinner = false;
   }
 
   onRoleChange(e) {
@@ -196,6 +203,7 @@ export class AccessrightsComponent implements OnInit {
   }
 
   savePages() {
+    this.showSpinner = true;
     let allSelections: MasterPages[];
     allSelections = [];
     for (let i = 0; i < this._pages.length; i++) {
@@ -239,9 +247,11 @@ export class AccessrightsComponent implements OnInit {
         allSelections.push(_selectedPage);
       }
     }
+
     this.timesysSvc.InsertAccessRights(allSelections)
       .subscribe(
         (data) => {
+          this.showSpinner = false;
           if (data !== undefined && data !== null && data.length > 0) {
             this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Settings saved Successfully' });
             this.getPages();
@@ -267,6 +277,7 @@ export class AccessrightsComponent implements OnInit {
   }
 
   resetControls() {
+    this.showSpinner = true;
     for (let i = 0; i < this._pages.length; i++) {
       const PageId = this._pages[i].ID;
       this.pageFormgroup.controls['chkPage_' + PageId].enable();
@@ -284,9 +295,11 @@ export class AccessrightsComponent implements OnInit {
         }
       }
     }
+    this.showSpinner = false;
   }
 
   getPagesbyRole(role: string) {
+    this.showSpinner = true;
     this.timesysSvc.getPagesbyRoles(role, '0')
       .subscribe((data) => {
         this._pagesbyroles = [];
@@ -330,6 +343,7 @@ export class AccessrightsComponent implements OnInit {
             }
           }
         }
+        this.showSpinner = false;
       });
   }
 

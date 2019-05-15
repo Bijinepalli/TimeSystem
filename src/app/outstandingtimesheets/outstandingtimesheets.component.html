@@ -1,6 +1,6 @@
 <ng-container *ngIf="IsSecure">
   <p-table #dt [columns]="cols" [value]="_outStandings" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
-    (sortFunction)="customSort($event)" [customSort]="true">
+    (sortFunction)="customSort($event)" [customSort]="true" [scrollable]="true">
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 5em">
@@ -16,7 +16,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center">
+        <td style="width: 5em;text-align: center">
           <i class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
             (click)="editTimeSheet(rowData)"></i>
         </td>

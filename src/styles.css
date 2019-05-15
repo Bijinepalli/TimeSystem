@@ -198,13 +198,13 @@ body .ui-panel .ui-panel-content {
 
 /* width */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #f4f4f4; 
+  background: lightsteelblue; 
 }
  
 /* Handle */
@@ -220,6 +220,32 @@ body .ui-panel .ui-panel-content {
 ::-webkit-scrollbar-thumb:hover {
   background: #135ba1; 
 }
+
+/* width */
+::-moz-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Track */
+::-moz-scrollbar-track {
+  background: lightsteelblue; 
+}
+ 
+/* Handle */
+::-moz-scrollbar-thumb {
+  background: #1976d2; 
+  border-radius: 3px;
+  z-index: 2;
+  cursor: pointer;
+  transition: background-color 0.3s;  
+}
+
+/* Handle on hover */
+::-moz-scrollbar-thumb:hover {
+  background: #135ba1; 
+}
+
 
 /* .custombar1 .ui-scrollpanel {
   width: 100% !important;

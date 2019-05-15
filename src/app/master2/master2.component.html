@@ -175,7 +175,7 @@
 
   <div id="content-body" class="ui-g-10">
     <div class="ui-g-12" style="min-height: 800px">
-      <router-outlet></router-outlet>
+      <router-outlet *ngIf="ShowBody"></router-outlet>
     </div>
     <div style="text-align: center" class="ui-g-12">
       © Copyright Ebix Consulting
@@ -200,3 +200,6 @@
     </p-scrollPanel>
   </p-sidebar>
 </div>
+
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

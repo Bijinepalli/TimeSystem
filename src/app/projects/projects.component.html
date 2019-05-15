@@ -34,7 +34,7 @@
 </div>
 <div class="ui-g" *ngIf="showReport && _recData > 0">
   <p-table #dt [columns]="cols" [value]="_projects" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
-    (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
+    (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
     <ng-template pTemplate="caption">
       <div class="ui-g ui-g-nopad recordsBar">
         <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} projects found</div>
@@ -60,7 +60,7 @@
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
       <tr [pSelectableRow]="rowData">
-        <td style="text-align: center" *ngIf="!_HasEdit">
+        <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
           <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this billing code"
             tooltipPosition="bottom" (click)="editProject(rowData)"></i>
         </td>
@@ -79,7 +79,7 @@
           </ng-template>
 
         </td>
-        <td style="text-align: center" *ngIf="!_HasEdit">
+        <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
           <i *ngIf="rowData['CanBeDeleted'] === 0" class="fa fa-times fa-150x deleteIcon"
             pTooltip="Delete this unused project" tooltipPosition="left" (click)="deleteProject(rowData)"></i>
         </td>

@@ -23,7 +23,8 @@
     </div>
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-table #dt [columns]="cols" [value]="_lstEmails" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+    <p-table #dt [columns]="cols" [value]="_lstEmails" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
+      [scrollable]="true">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} email types found</div>
@@ -49,11 +50,11 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this email" tooltipPosition="bottom"
               (click)="editEmail(rowData)"></i>
           </td>
-          <td *ngFor="let col of columns" style="word-break: break-word;word-wrap: break-word;"
+          <td *ngFor="let col of columns" style="word-break: break-word;"
             [style.text-align]="col.align" [style.width]="col.width">
             <div *ngIf="(col.header.indexOf('Is High Priority') >= 0 
             || col.header.indexOf('Is Subject Template') >= 0 
@@ -69,7 +70,7 @@
               {{rowData[col.field]}}
             </div>
           </td>
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
             <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete Email" tooltipPosition="left"
               (click)="deleteEmail(rowData)"></i>
           </td>

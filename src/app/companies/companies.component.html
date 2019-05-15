@@ -24,7 +24,8 @@
     </div>
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-table #dt [columns]="cols" [value]="_companies" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id">
+    <p-table #dt [columns]="cols" [value]="_companies" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id"
+      [scrollable]="true">
       <ng-template pTemplate="caption">
         <div class="ui-g ui-g-nopad recordsBar">
           <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} companies found</div>
@@ -51,7 +52,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="width: 5em;text-align: center;" *ngIf="!_HasEdit">
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this company" tooltipPosition="bottom"
               (click)="editCompany(rowData)"></i>
           </td>
@@ -63,12 +64,12 @@
               {{rowData[col.field]}}
             </div>
           </td>
-          <td style="text-align: center" *ngIf="!_HasEdit">
+          <td style="width: 5em;text-align: center;" *ngIf="!_HasEdit">
             <i *ngIf="rowData['HolidaysInUse'] === 0" class="fa fa-times fa-150x deleteIcon"
               pTooltip="Delete this company. It has no hours assigned to its holidays." tooltipPosition="left"
               (click)="deleteCompany(rowData)"></i>
           </td>
-          <td style="text-align: center">
+          <td style="width: 7em;text-align: center;">
             <i class="fa fa-calendar fa-150x" pTooltip="Manage the holidays assigned to this company"
               style="cursor:pointer;color:green" tooltipPosition="left" (click)="assignCompanyHolidays(rowData)"></i>
           </td>

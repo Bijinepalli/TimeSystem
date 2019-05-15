@@ -43,7 +43,8 @@ export class Master2Component implements OnInit {
   helpText = '';
 
   loginTime: string;
-
+  ShowBody = false;
+  showSpinner = false;
   constructor(
     private router: Router,
     private msgSvc: MessageService,
@@ -62,6 +63,8 @@ export class Master2Component implements OnInit {
   }
 
   Initialisations() {
+    this.showSpinner = true;
+    this.ShowBody = false;
     this.menuItems = [];
     this.fullName = 'Hello';
     this.BuildType = environment.buildType;
@@ -140,11 +143,13 @@ export class Master2Component implements OnInit {
   }
 
   getNavItems() {
+    this.showSpinner = true;
     if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== undefined &&
       sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole') !== null) {
       this.timesysSvc.getLeftNavMenu(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserRole').toString(), '0')
         .subscribe(
           (data) => {
+            this.showSpinner = false;
             // this.menuItems=data;
             this.buildMenuItems(data);
             if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'SubmitsTime') !== undefined &&
@@ -155,17 +160,18 @@ export class Master2Component implements OnInit {
               this.dashboard = [{
                 label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')
               }
-              // , { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+                // , { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
             } else {
               this.dashboard = [{
                 label: 'Dashboard', queryParams: { Id: -1 }, command: (event) => this.navigateByRoute(event, '/menu/dashboard')
               },
               { label: 'Timesheets', queryParams: { Id: -2 }, command: (event) => this.navigateByRoute(event, '/menu/timesheets') }
-              // , { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
+                // , { label: 'Pay Stubs', queryParams: { Id: -3 }, command: (event) => this.navigateByRoute(event, '/menu/paystubs') }
               ];
             }
             this.selectInitialMenuItemBasedOnUrl(-1);
+            this.ShowBody = true;
           });
     }
   }

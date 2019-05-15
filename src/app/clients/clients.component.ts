@@ -120,6 +120,7 @@ export class ClientsComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this.showSpinner = true;
     this.types = [];
     this.selectedType = '';
     this._billingCodes = new BillingCode();
@@ -139,6 +140,7 @@ export class ClientsComponent implements OnInit {
     this._companies = [];
     this._UsedSOWs = [];
     this._HasEdit = true;
+    this.showSpinner = false;
   }
 
   Initialisations() {
@@ -168,6 +170,7 @@ export class ClientsComponent implements OnInit {
 
     this._billingCodes = new BillingCode();
     this.addControls();
+    this.showSpinner = false;
     this.getClients();
     this.getCompanies();
     this.getCustomers();
@@ -194,19 +197,19 @@ export class ClientsComponent implements OnInit {
     if (this.selectedType === 'Both') {
       this.cols = [
         { field: 'ClientName', header: 'Client Name', width: '400px' },
-        { field: 'Key', header: 'Code', width: 'auto' },
-        { field: 'CustomerName', header: 'Customer Name', width: 'auto' },
-        { field: 'SOWName', header: 'SOW Name', width: 'auto' },
-        { field: 'PONumber', header: 'PO#', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive', width: 'auto' },
+        { field: 'Key', header: 'Code', width: '200px' },
+        { field: 'CustomerName', header: 'Customer Name', width: '200px' },
+        { field: 'SOWName', header: 'SOW Name', width: '150px' },
+        { field: 'PONumber', header: 'PO#', width: '150px' },
+        { field: 'Inactive', header: 'Inactive', width: '100px' },
       ];
     } else {
       this.cols = [
         { field: 'ClientName', header: 'Client Name', width: '400px' },
-        { field: 'Key', header: 'Code', width: 'auto' },
-        { field: 'CustomerName', header: 'Customer Name', width: 'auto' },
-        { field: 'SOWName', header: 'SOW Name', width: 'auto' },
-        { field: 'PONumber', header: 'PO#', width: 'auto' },
+        { field: 'Key', header: 'Code', width: '200px' },
+        { field: 'CustomerName', header: 'Customer Name', width: '200px' },
+        { field: 'SOWName', header: 'SOW Name', width: '150px' },
+        { field: 'PONumber', header: 'PO#', width: '150px' },
       ];
     }
     this.getClients();
@@ -311,13 +314,10 @@ export class ClientsComponent implements OnInit {
         (data) => {
           this._SOWs = [];
           if (data !== undefined && data !== null && data.length > 0) {
-            console.log(data);
-            console.log(this._UsedSOWs);
             data = data.filter(m => !(this._UsedSOWs.
               filter(c => (this._IsEdit && c.Id !== this._selectedClient.Id && c.SOWID !== this._selectedClient.SOWID) || !this._IsEdit).
               map(s => s.SOWID).
               includes(m.SOWID)));
-            console.log(data);
 
             for (let i = 0; i < data.length; i++) {
               this._SOWs.push({ label: data[i].SOWName, value: data[i].SOWID });
@@ -586,7 +586,6 @@ export class ClientsComponent implements OnInit {
       .subscribe(
         (outputData) => {
           if (outputData !== null && outputData.ErrorMessage !== '') {
-            console.log(outputData);
             this.msgSvc.add({
               key: outputData.ErrorType,
               sticky: true,

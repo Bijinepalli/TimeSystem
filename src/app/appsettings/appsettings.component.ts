@@ -98,16 +98,19 @@ export class AppsettingsComponent implements OnInit {
     ];
   }
   getAppSettings() {
+    this.showSpinner = true;
     this.timesysSvc.getAppSettings()
       .subscribe(
         (data) => {
           this._appsettings = data;
           this._recData = data.length + ' appSettings found';
           this.addformcontrols();
+          this.showSpinner = false;
         }
       );
   }
   ClearAllProperties() {
+    this.showSpinner = true;
     this._appsettings = [];
     this._recData = '';
     this.cols = {};
@@ -160,6 +163,7 @@ export class AppsettingsComponent implements OnInit {
     }
   }
   onSubmit() {
+    this.showSpinner = true;
     let appsettings = new AppSettings();
 
     for (let i = 0; i < this._appsettingsselection.length; i++) {
@@ -177,6 +181,7 @@ export class AppsettingsComponent implements OnInit {
       this._appsettingInsert.push(appsettings);
     }
     this.timesysSvc.updateAppSettings(this._appsettingInsert).subscribe(data => {
+      this.showSpinner = false;
       if (data != null && data[0].Id > 0) {
         this._appsettingInsert = [];
         this._appsettingsselection = [];
