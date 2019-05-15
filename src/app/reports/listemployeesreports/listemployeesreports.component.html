@@ -97,51 +97,49 @@
           </div>
         </div>
       </div>
-      <p-scrollPanel [style]="{width: '100%',height:'460px'}" styleClass="custombar1">
-        <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true"
-          [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)"
-          [customSort]="true" [globalFilterFields]="_sortArray">
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn
-                [style.width]="col.width">
-                {{col.header}}
-                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                  ariaLabelDesc="Activate to sort in descending order"
-                  ariaLabelAsc="Activate to sort in ascending order">
-                </p-sortIcon>
-              </th>
-            </tr>
-          </ng-template>
+      <!-- <p-scrollPanel [style]="{width: '100%',height:'460px'}" styleClass="custombar1"> -->
+      <p-table #dt [columns]="selectedColumns" [value]="_listEmployeesForReport" [reorderableColumns]="true"
+        [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)"
+        [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" pReorderableColumn [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
 
-          <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-            <tr [pSelectableRow]="rowData">
-              <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width"
-                [style.text-align]="col.align">
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns" style="word-break: break-word" [style.width]="col.width"
+              [style.text-align]="col.align">
 
-                <div
-                  *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
-                  {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+              <div
+                *ngIf="col.header.indexOf('Inactive') >= 0||col.header.indexOf('Salaried') >= 0||col.header.indexOf('IPay') >= 0||col.header.indexOf('Submits Time') >= 0||col.header.indexOf('Vertex Holidays') >= 0;else elsepart">
+                {{rowData[col.field] === 'True' ? 'Yes' : 'No'}}
+              </div>
+              <ng-template #elsepart>
+                <div *ngIf="(col.field === 'HireDate'); else nondatecol">
+                  <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                  <!-- <label>{{rowData[col.field]}} </label> -->
                 </div>
-                <ng-template #elsepart>
-                  <div *ngIf="(col.field === 'HireDate'); else nondatecol">
-                    <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                    <!-- <label>{{rowData[col.field]}} </label> -->
-                  </div>
-                  <ng-template #nondatecol>
-                    {{rowData[col.field]}}
-                  </ng-template>
+                <ng-template #nondatecol>
+                  {{rowData[col.field]}}
                 </ng-template>
-              </td>
-              <!-- <td *ngFor="let col of columns">
+              </ng-template>
+            </td>
+            <!-- <td *ngFor="let col of columns">
           <div *ngIf="col.header.indexOf('Inactive') >= 0">
             {{rowData[col.field] === true ? 'Yes' : 'No'}}
           </div>
         </td> -->
-            </tr>
-          </ng-template>
-        </p-table>
-      </p-scrollPanel>
+          </tr>
+        </ng-template>
+      </p-table>
+      <!-- </p-scrollPanel> -->
     </div>
   </div>
 </ng-container>

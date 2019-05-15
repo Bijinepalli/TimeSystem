@@ -181,7 +181,8 @@ body .ui-panel .ui-panel-content {
 } */
 
 .custombar1 .ui-scrollpanel-wrapper {
-  border-right: 9px solid #f4f4f4;
+  border-right: 0px solid #f4f4f4;
+  padding-right: 20px;
 }
 
 .custombar1 .ui-scrollpanel-bar {
@@ -194,8 +195,46 @@ body .ui-panel .ui-panel-content {
   background-color: #135ba1;
 }
 
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f4f4f4; 
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #1976d2; 
+  border-radius: 3px;
+  z-index: 2;
+  cursor: pointer;
+  transition: background-color 0.3s;  
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #135ba1; 
+}
+
+/* .custombar1 .ui-scrollpanel {
+  width: 100% !important;
+}
+
+.custombar1 .ui-scrollpanel-container,
+.custombar1 .ui-scrollpanel-content {
+  width: auto !important;
+} */
+
 .tablePadding .ui-table {
   padding-right: 9px !important;
+}
+.ui-table .ui-paginator-bottom {
+  border: 0 !important;
 }
 
 .errorBlock {

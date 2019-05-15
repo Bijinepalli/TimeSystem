@@ -160,6 +160,7 @@ export class SowComponent implements OnInit {
       { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: '150px' },
       { field: 'SOWName', header: 'SOW Name', align: 'left', width: '150px' },
       { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '150px' },
+      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '60px' },
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
       { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
       { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '90px' },
@@ -171,7 +172,6 @@ export class SowComponent implements OnInit {
       { field: 'Status', header: 'Status', align: 'left', width: '90px' },
       { field: 'SOWType', header: 'SOW Type', align: 'left', width: '80px' },
       { field: 'Notes', header: 'Notes', align: 'left', width: '200px' },
-      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '60px' },
     ];
     this._sortArray = [
       'CustomerName', 'LeadBAName', 'SOWName', 'SOWNumber',
