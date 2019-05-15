@@ -80,8 +80,8 @@
           </div>
         </div>
       </div>
-      <p-scrollPanel [style]="{width: '100%',height:'650px'}" styleClass="custombar1">
-        <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID">
+      <!-- <p-scrollPanel [style]="{width: '100%',height:'650px'}" styleClass="custombar1"> -->
+        <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [scrollable]="true">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th *ngFor="let col of columns" [pSortableColumn]="" [style.width]="col.width">
@@ -104,7 +104,7 @@
             </tr>
           </ng-template>
         </p-table>
-      </p-scrollPanel>
+      <!-- </p-scrollPanel> -->
     </div>
   </div>
 </ng-container>
