@@ -58,45 +58,48 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
-      (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
-      <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
-          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="30" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-            <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning"
-              label="Start Over" (click)="startOver()"></button> &nbsp;
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-          </div>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            <div *ngIf="(col.field === 'InvoiceDate' || col.field === 'StartDate' || col.field === 'EndDate'); else nondatecol">
-              <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-              <!-- <label>{{rowData[col.field]}} </label> -->
+    <div class="ui-g-12">
+      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
+        (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
+            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+              <input type="text" pInputText size="30" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+              <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning"
+                label="Start Over" (click)="startOver()"></button> &nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
-            <ng-template #nondatecol>
-              {{rowData[col.field]}}
-            </ng-template>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+              <div
+                *ngIf="(col.field === 'InvoiceDate' || col.field === 'StartDate' || col.field === 'EndDate'); else nondatecol">
+                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                <!-- <label>{{rowData[col.field]}} </label> -->
+              </div>
+              <ng-template #nondatecol>
+                {{rowData[col.field]}}
+              </ng-template>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 </ng-container>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"

@@ -1,6 +1,7 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px;">
-    View Outstanding Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+    View Outstanding Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('PendingTimesheets.htm')"></i>
   </div>
   <div class="ui-g-3 ui-md-2 ui-g-nopad">
@@ -15,7 +16,8 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-4">
         <label class="label" style="padding:0px 10px;">Select a Period End :</label>
-        <p-dropdown [options]="dates" placeholder="Select Period End" [(ngModel)]="selectedDate" pTooltip="Pick the period end date to use. All outstanding timesheets for this period and earlier will be shown"
+        <p-dropdown [options]="dates" placeholder="Select Period End" [(ngModel)]="selectedDate"
+          pTooltip="Pick the period end date to use. All outstanding timesheets for this period and earlier will be shown"
           (onChange)="onDateChange($event)" appendTo="body"></p-dropdown>
       </div>
     </div>
@@ -29,55 +31,58 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-scrollPanel [style]="{width: '100%', height: '570px'}" class="custombar1">
-      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees" dataKey="Id"
-        (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
-        <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">Unsubmitted: {{_UnSubmittedCnt}}, Not Created: {{_NotCreatedCnt}}, Total: {{_recData}}</div>
-            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="30" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-                style="width:auto"> &nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
+    <!-- <p-scrollPanel [style]="{width: '100%', height: '570px'}" class="custombar1"> -->
+    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" [(selection)]="_selectedEmployees"
+      dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray"
+      [scrollable]="true" scrollHeight="460px">
+      <ng-template pTemplate="caption">
+        <div class="ui-g ui-g-nopad recordsBar">
+          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">Unsubmitted: {{_UnSubmittedCnt}}, Not Created:
+            {{_NotCreatedCnt}}, Total: {{_recData}}</div>
+          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <input type="text" pInputText size="30" placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th style="width: 3em">
-              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
-            </th>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order"
-                ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td>
-              <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
-            </td>
-            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-              <div *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
-                <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3em">
+            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td style="width: 3em">
+            <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+          </td>
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <div
+              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+            </div>
+            <ng-template #defaultColumn>
+              <div *ngIf="col.header === 'Period Ending'; else nondatecol">
+                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
               </div>
-              <ng-template #defaultColumn>
-                <div *ngIf="col.header === 'Period Ending'; else nondatecol">
-                  <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                </div>
-                <ng-template #nondatecol>
-                  {{rowData[col.field]}}
-                </ng-template>
+              <ng-template #nondatecol>
+                {{rowData[col.field]}}
               </ng-template>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </p-scrollPanel>
+            </ng-template>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <!-- </p-scrollPanel> -->
   </div>
 
   <div class="ui-g" style="border:solid 1px #d3d3d3" *ngIf="showReport && _recData > 0">
