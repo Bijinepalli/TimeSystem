@@ -49,8 +49,8 @@
           </div>
         </div>
       </div>
-      <p-scrollPanel [style]="{width: '100%', height: '450px'}" *ngIf="_clients" styleClass="custombar1">
-        <p-table #dt [columns]="cols" [value]="_clients" [responsive]="false" dataKey="Id">
+      <p-scrollPanel [style]="{width: '100%', height: '480px'}" *ngIf="_clients" styleClass="custombar1">
+        <p-table #dt [columns]="cols" [value]="_clients" [responsive]="false" dataKey="Id" [paginator]="true" [rows]="20">
           <ng-template pTemplate="header" let-columns>
             <tr>
               <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
