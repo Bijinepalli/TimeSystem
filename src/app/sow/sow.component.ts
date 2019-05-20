@@ -769,6 +769,7 @@ export class SowComponent implements OnInit {
     const SelectedFileName = this.selectedFile[i].name;
     this.timesysSvc.uploadFileToServer(uploadData).subscribe((result) => {
       this.showSpinner = false;
+      this._selectedSOW.SOWFileName = SelectedFileName;
       this.GetCustomersAndFiles(this._selectedSOW);
       this.removeUploadFiles();
     },
