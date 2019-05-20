@@ -93,7 +93,7 @@
 </ng-template>
 </p-table>
 </div>
-<p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="500"
+<p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450"
   [closeOnEscape]="false" [closable]="false" blockScroll="true">
   <p-header>
     {{departmentHdr}}
@@ -108,18 +108,23 @@
         </div>
       </div>
       <div class="ui-g">
-        <div class="ui-g-4" style="text-align:right">
-          Department Name <span class="mandatoryStar">* </span>:
+        <div class="ui-g-12">
+          Department Name <span class="mandatoryStar">* </span>
+          <i class="fa fa-info-circle fa-150x" pTooltip="Department Name should have maximum length of 50"
+            style="cursor:help; font-size: 18px; color: orange; vertical-align: bottom;"></i>
         </div>
-        <div class="ui-g-6">
+        <div class="ui-g-12">
           <input type="text" maxlength="50" pInputText formControlName="frmName" pToolTip="Unique department name"
-            tooltipPosition="bottom">
+            tooltipPosition="bottom" style="width: 100%">
         </div>
-        <div class="ui-g-4" style="text-align:right">
-          Description:
+        <div class="ui-g-12">
+          Description
+          <i class="fa fa-info-circle fa-150x" pTooltip="Description should have maximum length of 50"
+            style="cursor:help; font-size: 18px; color: orange; vertical-align: bottom;"></i>
         </div>
-        <div class="ui-g-6">
-          <input type="text" maxlength="50" pInputText formControlName="frmDescription" tooltipPosition="bottom">
+        <div class="ui-g-12">
+          <input type="text" maxlength="50" pInputText formControlName="frmDescription" tooltipPosition="bottom"
+            style="width: 100%">
         </div>
       </div>
     </form>
