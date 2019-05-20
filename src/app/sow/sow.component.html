@@ -123,20 +123,22 @@
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               Lead Business Analyst <br>
               <div style="height:5px"></div>
-              <label><b>{{_LeadBAName}}</b></label>
+              <label><b>{{_LeadBAName !== '' ? _LeadBAName : '-'}}</b></label>
             </div>
           </div>
           <div class="ui-g-12 ui-g-nopad">
             <div class="ui-g-12 ui-md-6 ui-lg-6">
-              SOW Name <span class="mandatoryStar">* </span><br>
+              SOW Name <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x"
+                pTooltip="SOW Name can only contain upper or lower case letters, numbers, apostrophe, blank and hyphen"
+                style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
               <div style="height:5px"></div>
               <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body"
-                pToolTip="SOW's name" pattern="^[a-zA-Z0-9_ ]*$">
+                pToolTip="SOW's name" pattern="^[a-zA-Z0-9\040\047\055]*$">
             </div>
             <div class="ui-g-12 ui-md-6 ui-lg-6">
               SOW Number <span class="mandatoryStar">* </span> <i class="fa fa-info-circle fa-150x"
-                pTooltip="SOW Number should contain only Alpha-Numeric characters with maximum length of 10"
-                style="cursor:help; font-size: 18px; color: orange; vertical-align: bottom;"></i><br>
+                pTooltip="SOW Number can only contain upper or lower case letters and numbers with maximum length of 10"
+                style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
               <div style="height:5px"></div>
               <input type="text" pInputText style="width:100%" formControlName="frmSOWNumber" appendTo="body"
                 pToolTip="SOW's Number" pattern="^[a-zA-Z0-9]*$" maxlength="10">

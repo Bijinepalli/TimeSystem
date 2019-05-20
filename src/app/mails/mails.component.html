@@ -54,8 +54,8 @@
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this email" tooltipPosition="bottom"
               (click)="editEmail(rowData)"></i>
           </td>
-          <td *ngFor="let col of columns" style="word-break: break-word;"
-            [style.text-align]="col.align" [style.width]="col.width">
+          <td *ngFor="let col of columns" style="word-break: break-word;" [style.text-align]="col.align"
+            [style.width]="col.width">
             <div *ngIf="(col.header.indexOf('Is High Priority') >= 0 
             || col.header.indexOf('Is Subject Template') >= 0 
             || col.header.indexOf('Is Body Template') >= 0 
@@ -111,7 +111,9 @@
         </div>
         <div class="ui-g-12 ui-md-12 ui-lg-12">
           <div class="ui-g-12 ui-md-12 ui-lg-12">
-            Subject <span class="mandatoryStar">* </span><br>
+            Subject <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x"
+              pTooltip="Subject has maximum length of 255"
+              style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
             <div style="height:5px"></div>
             <input type="text" maxlength="255" pInputText style="width:100%" placeholder="Subject"
               formControlName="txtSubject"><br>
