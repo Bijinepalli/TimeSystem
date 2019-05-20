@@ -993,7 +993,7 @@ export class EmployeesComponent implements OnInit {
         if ((this._frmEmployee.controls['frmPayrollID'].value.toString().length === 7 &&
           MAS90payrollIDExp.test(this._frmEmployee.controls['frmPayrollID'].value.toString())) ||
           (this._frmEmployee.controls['frmPayrollID'].value.toString().length === 4 &&
-          payrollIDExp.test(this._frmEmployee.controls['frmPayrollID'].value.toString()))) {
+            payrollIDExp.test(this._frmEmployee.controls['frmPayrollID'].value.toString()))) {
           this._selectedEmployee.PayRoleID = this._frmEmployee.controls['frmPayrollID'].value.toString()
             .trim().toUpperCase();
         } else {
@@ -1734,7 +1734,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   hasFormErrorsRate() {
-    return !this._frmRate.valid;
+    return !(this._frmRate.valid && (+(this._frmRate.controls['frmRatetext'].value.toString()) > 0));
   }
 
   addNewRate() {
