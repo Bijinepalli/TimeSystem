@@ -719,7 +719,7 @@ export class EmployeesComponent implements OnInit {
   manageClients(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
     this.getClients(dataRow.ID);
-    this._popUpHeader = 'Client';
+    this._popUpHeader = 'Billing Code';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
     this.clientDialog = true;
   }
@@ -1406,7 +1406,7 @@ export class EmployeesComponent implements OnInit {
       case 'Project':
         cancelApproval = this.commonSvc.isArrayEqual(this._projectsAssignToEmpSaved, this._projectsAssignToEmp);
         break;
-      case 'Client':
+      case 'BIlling Code':
         cancelApproval = this.commonSvc.isArrayEqual(this._clientsAssignToEmpSaved, this._clientsAssignToEmp);
         break;
       case 'Rate':
@@ -1442,7 +1442,7 @@ export class EmployeesComponent implements OnInit {
       case 'Project':
         cancelApproval = this.commonSvc.isArrayEqual(this._projectsAssignToEmpSaved, this._projectsAssignToEmp);
         break;
-      case 'Client':
+      case 'Billing Code':
         cancelApproval = this.commonSvc.isArrayEqual(this._clientsAssignToEmpSaved, this._clientsAssignToEmp);
         break;
       case 'Rate':
@@ -1478,7 +1478,7 @@ export class EmployeesComponent implements OnInit {
         newItems = this.getNewItems(this._projectsAssignToEmpSaved, this._projectsAssignToEmp);
         billingCodeVal = this._billingCodes.Project;
         break;
-      case 'Client':
+      case 'Billing Code':
         removedItems = this.getRemovedItems(this._clientsAssignToEmpSaved, this._clientsAssignToEmp);
         newItems = this.getNewItems(this._clientsAssignToEmpSaved, this._clientsAssignToEmp);
         billingCodeVal = this._billingCodes.Client;
@@ -1548,7 +1548,7 @@ export class EmployeesComponent implements OnInit {
             removedItemsNames += projectSaved.ProjectName;
           }
           break;
-        case 'Client':
+        case 'Billing Code':
           const clientSaved = this._clientsAssignToEmpSaved.find(m => m.Id === +(data[cnt].ChargeID));
           if (clientSaved !== undefined) {
             removedItemsNames += clientSaved.ClientName;
@@ -1601,7 +1601,7 @@ export class EmployeesComponent implements OnInit {
         AssignType = 'Project';
         ChargeType = this._billingCodes.Project;
         break;
-      case 'Client':
+      case 'Billing Code':
         AssignType = 'Client';
         ChargeType = this._billingCodes.Client;
         break;
@@ -1699,7 +1699,7 @@ export class EmployeesComponent implements OnInit {
         this._projectsNotAssignToEmp = [];
         this.projectDialog = false;
         break;
-      case 'Client':
+      case 'Billing Code':
         if (this.pcklClient !== undefined && this.pcklClient !== null) {
           this.pcklClient.resetFilter();
         }
@@ -1742,7 +1742,7 @@ export class EmployeesComponent implements OnInit {
     this._IsAddRate = true;
     this.resetRateControls();
     this._rateId = '';
-    this._ratePlaceholder = 'Please select a Client Name';
+    this._ratePlaceholder = 'Please select a Billing Code Name';
     this._frmRate.controls['frmCustomerName'].disable();
     this._frmRate.controls['frmEffectiveDate'].setValue(new Date());
     this.timesysSvc.getClientsAssignToEmployee(+this._employeeId)
@@ -1870,7 +1870,7 @@ export class EmployeesComponent implements OnInit {
     this._IsEditRate = false;
     this._IsAddRate = false;
     this._ratecols = [
-      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: 'auto' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
       { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },

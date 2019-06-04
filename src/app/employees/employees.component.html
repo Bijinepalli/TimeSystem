@@ -67,7 +67,7 @@
                 ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
               </p-sortIcon>
             </th>
-            <th style="width: 5em" *ngIf="!_ShowClients">Clients</th>
+            <th style="width: 5em" *ngIf="!_ShowClients">Billing Codes</th>
             <th style="width: 6em" *ngIf="!_ShowProjects">Projects</th>
             <th style="width: 8em" *ngIf="!_ShowNonBillables">Non-Billable</th>
             <th style="width: 5em" *ngIf="!_ShowRates">Rates</th>
@@ -110,7 +110,7 @@
             </td>
             <td style="width: 5em;text-align: center;" *ngIf="!_ShowClients">
               <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
-                class="fa fa-handshake-o fa-150x" pTooltip="Manage the clients assigned to this employee"
+                class="fa fa-handshake-o fa-150x" pTooltip="Manage the billing codes assigned to this employee"
                 style="cursor:pointer;color:orangered" tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
             </td>
             <td style="width: 6em;text-align: center;" *ngIf="!_ShowProjects">
@@ -635,11 +635,11 @@
         <div class="ui-g">
           <div class="ui-g-6">
             <div class="ui-g-12">
-              Client Name <span class="mandatoryStar">* </span>
+              Billing Code Name <span class="mandatoryStar">* </span>
             </div>
             <div class="ui-g-12">
               <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}"
-                formControlName="frmClientName" pToolTip="The client hours are charged to" [style]="{'width':'85%'}"
+                formControlName="frmClientName" pToolTip="The billing code hours are charged to" [style]="{'width':'85%'}"
                 (onChange)="getCustomerForClient()">
               </p-dropdown>
             </div>
@@ -665,7 +665,7 @@
             </div>
             <div class="ui-g-12">
               <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
-                pToolTip="The customer to invoice this client" style="width:85%;">
+                pToolTip="The customer to invoice this billing code" style="width:85%;">
             </div>
             <div class="ui-g-12">
               Rate <span class="mandatoryStar">* </span>
