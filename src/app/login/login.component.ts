@@ -228,7 +228,7 @@ export class LoginComponent implements OnInit {
             const PasswordLastUpdatedDays = this.EmployeeData[0].LastUpdatedDays;
             if (PasswordLastUpdatedDays !== undefined && PasswordLastUpdatedDays !== null) {
               const PasswordExpiryDays = this.commonSvc.getAppSettingsValue('PasswordExpiryDays');
-              const ExpiryDays = +PasswordExpiryDays - PasswordLastUpdatedDays;
+              const ExpiryDays = +PasswordExpiryDays + PasswordLastUpdatedDays;
               if (ExpiryDays < 0) {
                 PasswordExpired = true;
               }
