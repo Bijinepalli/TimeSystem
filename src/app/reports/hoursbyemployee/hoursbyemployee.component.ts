@@ -134,7 +134,6 @@ export class HoursbyemployeeComponent implements OnInit {
     this._selectcheckbox = [];
     this._displayCheckBoxes = [];
 
-    this._clients = [];
     this._selectString = '';
     this.showBillingCodeList = false;
     this.allcheckbox = false;
@@ -158,7 +157,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.billingType = [
-      { label: 'Client', value: 0 },
+      { label: 'Billing Code', value: 0 },
       { label: 'Project', value: 1 },
       { label: 'Non-Billable', value: 2 }
     ];
@@ -209,7 +208,7 @@ export class HoursbyemployeeComponent implements OnInit {
           for (let i = 0; i < this._clients.length; i++) {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
           }
-          this._selectString = 'Clients (' + this._clients.length + ' matching codes found)';
+          this._selectString = 'Billing Codes (' + this._clients.length + ' matching codes found)';
           this.showBillingCodeList = true;
           this.showPeriodEndDetail = true;
           this.showTotals = true;
@@ -285,7 +284,6 @@ export class HoursbyemployeeComponent implements OnInit {
       this._billingCodesSpecial.periodEnd = this.showPeriodEndDetail;
       let _start = '';
       let _end = '';
-
       if (this._startDate !== undefined && this._startDate !== null) {
         _start = this.datePipe.transform(this._startDate, this._DateFormat);
         // this._startDate = this.datePipe.transform(dateValid, this._DisplayDateFormat);

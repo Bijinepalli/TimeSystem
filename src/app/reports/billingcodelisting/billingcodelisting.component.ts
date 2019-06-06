@@ -116,7 +116,7 @@ export class BillingcodelistingComponent implements OnInit {
       { label: 'Both', value: 2 }
     ];
     this.billingType = [
-      { label: 'Client', value: 0 },
+      { label: 'Billing Code', value: 0 },
       { label: 'Project', value: 1 },
       { label: 'Non-Billable', value: 2 }
     ];

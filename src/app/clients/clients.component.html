@@ -1,6 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Clients <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+    Billing Codes <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('ClientsSelect.htm')"></i>
   </div>
@@ -15,8 +15,8 @@
   <div class="ui-g" style="height:50px;">
     <div class="ui-g-12" style="text-align: right;padding-right:0px;">
       <button pButton icon="fa fa-plus fa-1x"
-        pTooltip="Add a new client to the time and materials billable timesheet category" tooltipPosition="bottom"
-        class="ui-button-info" label="Add New Client" *ngIf="!_HasEdit" (click)=addClient()></button>
+        pTooltip="Add a new Billing Code to the time and materials billable timesheet category" tooltipPosition="bottom"
+        class="ui-button-info" label="Add New Billing Code" *ngIf="!_HasEdit" (click)=addClient()></button>
     </div>
   </div>
   <p-panel [toggleable]="true" header="Filter">
@@ -24,7 +24,7 @@
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <label class="label" style="padding:0px 10px;">Select:</label>
         <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"></p-selectButton>
-        <!-- pTooltip="Show clients that have this status" tooltipPosition="bottom" -->
+        <!-- pTooltip="Show billing codes that have this status" tooltipPosition="bottom" -->
       </div>
     </div>
   </p-panel>
@@ -39,7 +39,7 @@
       <div class="ui-table ui-widget">
         <div class="ui-table-caption ui-widget-header">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} clients found</div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} billing codes found</div>
             <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
               <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
               <input type="text" pInputText size="30" placeholder="Global Filter"
@@ -67,7 +67,7 @@
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
           <tr [pSelectableRow]="rowData">
             <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this client"
+              <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this billing code"
                 tooltipPosition="bottom" (click)="editClient(rowData)"></i>
             </td>
             <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
@@ -81,7 +81,7 @@
             </td>
             <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
               <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon"
-                pTooltip="Delete this unused client" tooltipPosition="left" (click)="deleteClient(rowData)"></i>
+                pTooltip="Delete this unused billing code" tooltipPosition="left" (click)="deleteClient(rowData)"></i>
             </td>
           </tr>
         </ng-template>
@@ -107,12 +107,12 @@
         <div class="ui-g">
           <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
             <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Client Code <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x"
-              pTooltip="Client code can only contain letters, numbers, apostrophe, space, hyphen, period and forward slash and should have maximum length of 15"
+              Billing Code <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x"
+              pTooltip="Billing code can only contain letters, numbers, apostrophe, space, hyphen, period and forward slash and should have maximum length of 15"
               style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Client Code" formControlName="clientCode"
-                appendTo="body" pToolTip="Unique client code that matches what's in the payroll system" maxlength="15"
+              <input type="text" pInputText style="width:100%" placeholder="Billing Code" formControlName="clientCode"
+                appendTo="body" pToolTip="Unique billing code that matches what's in the payroll system" maxlength="15"
                 pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$">
 
               <!-- maxlength="15" -->
@@ -120,10 +120,10 @@
           </div>
           <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
             <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Client Name <span class="mandatoryStar">* </span><br>
+              Billing Code Name <span class="mandatoryStar">* </span><br>
               <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Client Name" formControlName="clientName"
-                appendTo="body" pToolTip="Unique client name that matches what's in the payroll system" maxlength="50">
+              <input type="text" pInputText style="width:100%" placeholder="Billing Code Name" formControlName="clientName"
+                appendTo="body" pToolTip="Unique billing code name that matches what's in the payroll system" maxlength="50">
             </div>
           </div>
           <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
@@ -131,7 +131,7 @@
               Billing Cycle <br>
               <div style="height:5px"></div>
               <p-dropdown appendTo="body" [options]="_billingCycle" placeholder="Select Billing Cycle"
-                formControlName="billingCycle" pToolTip="The billing cycle used for this client."
+                formControlName="billingCycle" pToolTip="The billing cycle used for this billing code"
                 [style]="{'width':'99%'}"></p-dropdown>
             </div>
           </div>
@@ -148,7 +148,7 @@
               Customer Name <br>
               <div style="height:5px"></div>
               <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer"
-                formControlName="customerName" pToolTip="The customer to invoice for hours charged to this client."
+                formControlName="customerName" pToolTip="The customer to invoice for hours charged to this billing code"
                 [style]="{'width':'99%'}" (onChange)="getSOWByCustomerID('')"></p-dropdown>
             </div>
           </div>
@@ -166,7 +166,7 @@
               <div style="height:5px"></div>
               <p-dropdown appendTo="body" [options]="_companyNames" placeholder="Select Company"
                 formControlName="parentCompany"
-                pToolTip="The company whose holiday schedule this client follows. Disabled if changing this would affect existing timesheets."
+                pToolTip="The company whose holiday schedule this billing code follows. Disabled if changing this would affect existing timesheets."
                 [style]="{'width':'99%'}"></p-dropdown>
             </div>
           </div>
@@ -174,7 +174,7 @@
             <div class="ui-g-12 ui-md-12 ui-lg-12">
               <div style="height:5px"></div>
               <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive"
-                [ngModelOptions]="{standalone: true}" pTooltip="Check to mark this client as inactive. It will not be allowed on new timesheets 
+                [ngModelOptions]="{standalone: true}" pTooltip="Check to mark this billing code as inactive. It will not be allowed on new timesheets 
           and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
             </div>
           </div>

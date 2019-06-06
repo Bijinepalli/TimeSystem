@@ -16,11 +16,11 @@
     <p-panel [toggleable]="true" header="Filter">
       <div class="ui-g">
         <div class="label">
-          Client Billing Cycle:
+          Billing Code Billing Cycle:
         </div>
         <div class="ui-g-12 ui-lg-10">
           <p-selectButton [options]="billingCycle" [(ngModel)]="selectedbillingCycle"></p-selectButton>
-          <!-- pTooltip="Show clients with this billing cycle on the report"
+          <!-- pTooltip="Show billing codes with this billing cycle on the report"
           tooltipPosition="bottom" -->
         </div>
         <div class="ui-g-12 ui-lg-4">
@@ -59,7 +59,7 @@
       <p-footer>
         <div style="text-align: right">
           <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-            (click)=showBillingCodes() pTooltip="Get the client codes/run the report" tooltipPosition="bottom"></button>
+            (click)=showBillingCodes() pTooltip="Get the billing codes/run the report" tooltipPosition="bottom"></button>
           <!-- <i class="fa fa-play-circle fa-2x" pTooltip="Get the client codes/run the report" style="cursor:pointer;color:green" (click)="showBillingCodes()" tooltipPosition="left"></i> -->
         </div>
       </p-footer>

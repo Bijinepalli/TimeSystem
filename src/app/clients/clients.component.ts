@@ -28,7 +28,7 @@ export class ClientsComponent implements OnInit {
   _recData = 0;
 
   clientDialog = false;
-  clientHdr = 'Add New Client';
+  clientHdr = 'Add New Billing Code';
 
   _frm = new FormGroup({});
 
@@ -161,7 +161,7 @@ export class ClientsComponent implements OnInit {
     ];
 
     this.cols = [
-      { field: 'ClientName', header: 'Client Name', align: 'left', width: '400px' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '400px' },
       { field: 'Key', header: 'Code', align: 'left', width: '200px' },
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '350px' },
       { field: 'SOWName', header: 'SOW Name', width: '200px' },
@@ -196,7 +196,7 @@ export class ClientsComponent implements OnInit {
   clickButton(event: any) {
     if (this.selectedType === 'Both') {
       this.cols = [
-        { field: 'ClientName', header: 'Client Name', width: '400px' },
+        { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
         { field: 'Key', header: 'Code', width: '200px' },
         { field: 'CustomerName', header: 'Customer Name', width: '200px' },
         { field: 'SOWName', header: 'SOW Name', width: '150px' },
@@ -205,7 +205,7 @@ export class ClientsComponent implements OnInit {
       ];
     } else {
       this.cols = [
-        { field: 'ClientName', header: 'Client Name', width: '400px' },
+        { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
         { field: 'Key', header: 'Code', width: '200px' },
         { field: 'CustomerName', header: 'Customer Name', width: '200px' },
         { field: 'SOWName', header: 'SOW Name', width: '150px' },
@@ -338,7 +338,7 @@ export class ClientsComponent implements OnInit {
     this.chkInactive = false;
     this.resetForm();
     this.setDataToControls(this._selectedClient);
-    this.clientHdr = 'Add New Client';
+    this.clientHdr = 'Add New Billing Code';
     this.clientDialog = true;
   }
 
@@ -359,7 +359,7 @@ export class ClientsComponent implements OnInit {
     this.chkInactive = false;
     this.resetForm();
     this.setDataToControls(data);
-    this.clientHdr = 'Edit Client';
+    this.clientHdr = 'Edit Billing Code';
     this.clientDialog = true;
   }
 
@@ -425,7 +425,7 @@ export class ClientsComponent implements OnInit {
     this._selectedClient = null;
     this.chkInactive = false;
     this.resetForm();
-    this.clientHdr = 'Add New Client';
+    this.clientHdr = 'Add New Billing Code';
     this.clientDialog = false;
   }
 
@@ -476,9 +476,9 @@ export class ClientsComponent implements OnInit {
           .subscribe(
             (outputData) => {
               if (outputData !== undefined && outputData !== null && outputData.length > 0) {
-                errorMsg += 'Inactivating this client will remove it and associated hours from all unsubmitted timesheets.<br>';
+                errorMsg += 'Inactivating this billing code will remove it and associated hours from all unsubmitted timesheets.<br>';
               } else {
-                errorMsg += 'Client is marked as inactive. It will not appear on new timesheets.<br>';
+                errorMsg += 'Billing Code is marked as inactive. It will not appear on new timesheets.<br>';
               }
               if (errorMsg.trim() !== '') {
                 this.showConfirmation(errorMsg, 0);
@@ -491,7 +491,7 @@ export class ClientsComponent implements OnInit {
       }
     } else {
       if (this.IsControlUndefinedAndHasValue('parentCompany')) {
-        errorMsg += 'No company was selected. No holiday schedule will be assigned to this client.<br>';
+        errorMsg += 'No company was selected. No holiday schedule will be assigned to this billing code.<br>';
       }
       if (this.IsControlUndefinedAndHasValue('customerName')) {
         errorMsg += 'No customer to invoice was selected.<br>';
@@ -595,7 +595,12 @@ export class ClientsComponent implements OnInit {
               data: outputData.ExceptionDetails,
             });
           } else {
-            this.msgSvc.add({ key: 'saveSuccess', severity: 'success', summary: 'Info Message', detail: 'Client saved successfully' });
+            this.msgSvc.add({
+              key: 'saveSuccess',
+              severity: 'success',
+              summary: 'Info Message',
+              detail: 'Billing Code saved successfully'
+            });
             this.clearControls();
             this.getClients();
           }
@@ -630,7 +635,7 @@ export class ClientsComponent implements OnInit {
                   key: 'saveSuccess',
                   severity: 'success',
                   summary: 'Info Message',
-                  detail: 'Client deleted successfully'
+                  detail: 'Billing Code deleted successfully'
                 });
                 this.getClients();
               }
