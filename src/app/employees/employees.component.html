@@ -159,13 +159,21 @@
       </div>
       <div class="ui-g">
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          Last Name <span class="mandatoryStar">* </span><br>
+          Last Name <span class="mandatoryStar">* </span>
+          <i class="fa fa-info-circle fa-150x"
+            pTooltip="Last name can contain only letters, apostrophe, hyphen, period or space and should have maximum length of 30"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" maxlength="30" pattern="^[a-zA-Z\040\047\055\056]*$" pInputText style="width:100%"
             placeholder="Last Name" formControlName="frmLastName" appendTo="body" pToolTip="Employee's last name">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          First Name <span class="mandatoryStar">* </span><br>
+          First Name <span class="mandatoryStar">* </span>
+          <i class="fa fa-info-circle fa-150x"
+            pTooltip="First name can contain only letters, apostrophe, hyphen, period or space and should have maximum length of 25"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" maxlength="25" pattern="^[a-zA-Z\040\047\055\056]*$" pInputText style="width:100%"
             placeholder="First Name" formControlName="frmFirstName" appendTo="body" pToolTip="Employee's first name">
@@ -173,7 +181,11 @@
         <div class="ui-g-12 ui-md-2 ui-lg-2">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          Nick Name <span class="mandatoryStar">* </span><br>
+          Nick Name <span class="mandatoryStar">* </span>
+          <i class="fa fa-info-circle fa-150x"
+            pTooltip="Nick name can contain only letters, apostrophe, hyphen, period or space and should have maximum length of 25"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" maxlength="25" pattern="^[a-zA-Z\040\047\055\056]*$" pInputText style="width:100%"
             placeholder="Nick Name" formControlName="frmNickName" appendTo="body"
@@ -186,13 +198,20 @@
           appendTo="body" pToolTip="The ID the employee logs in to the Extranet with">
       </div> -->
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          Payroll ID <span class="mandatoryStar">*</span><br>
+          Payroll ID <span class="mandatoryStar">*</span>
+          <i class="fa fa-info-circle fa-150x" pTooltip="Payroll ID should have maximum length of 7"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" pInputText style="width:100%" placeholder="Payroll ID" formControlName="frmPayrollID"
             appendTo="body" pToolTip="The employee's unique ID in the payroll system" minlength="4" maxlength="7">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          Email Address <span class="mandatoryStar">* </span><br>
+          Email Address <span class="mandatoryStar">* </span>
+          <i class="fa fa-info-circle fa-150x"
+            pTooltip="Email address can contain only letters, numbers, hyphen, underscore, or period and must include @ domain and should have maximum length of 55"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" maxlength="55"
             pattern="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
@@ -200,7 +219,11 @@
             pToolTip="Employee's email address.">
         </div>
         <div class="ui-g-12 ui-md-5 ui-lg-5">
-          Secondary Email Address<br>
+          Secondary Email Address
+          <i class="fa fa-info-circle fa-150x"
+            pTooltip="Secondary Email address can contain only letters, numbers, hyphen, underscore, or period and must include @ domain should have maximum length of 55"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" maxlength="55"
             pattern="^([\w-\.]+)@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.)|(([\w-]+\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$"
@@ -222,7 +245,11 @@
             formControlName="frmDepartment" pToolTip="Employee's Department" [style]="{'width':'99%'}"></p-dropdown>
         </div>
         <div class="ui-g-12 ui-md-2 ui-lg-2">
-          Hours Per Day<br>
+          Hours Per Day
+          <i class="fa fa-info-circle fa-150x"
+            pTooltip="Hours per day must be a numeric value greater than 0 and should have maximum length of 5"
+            style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i>
+          <br>
           <div style="height:5px"></div>
           <input type="text" maxlength="5" pInputText style="width:100%" placeholder="Hours Per Day"
             formControlName="frmHoursPerDay" appendTo="body"
@@ -606,54 +633,49 @@
           </div>
         </div>
         <div class="ui-g">
-          <div class="ui-g-12">
-            <div class="ui-g-4" style="text-align:right">
-              Client Name <span class="mandatoryStar">* </span>:
+          <div class="ui-g-6">
+            <div class="ui-g-12">
+              Client Name <span class="mandatoryStar">* </span>
             </div>
-            <div class="ui-g-6">
+            <div class="ui-g-12">
               <p-dropdown appendTo="body" [options]="_clients" placeholder="{{_ratePlaceholder}}"
                 formControlName="frmClientName" pToolTip="The client hours are charged to" [style]="{'width':'85%'}"
                 (onChange)="getCustomerForClient()">
               </p-dropdown>
             </div>
-          </div>
-          <div class="ui-g-12">
-            <div class="ui-g-4" style="text-align:right">
-              Customer Name <span class="mandatoryStar">* </span>:
+            <div class="ui-g-12">
+              Effective Date <span class="mandatoryStar">* </span>
             </div>
-            <div class="ui-g-6">
-              <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
-                pToolTip="The customer to invoice this client" style="width:85%;">
-            </div>
-          </div>
-          <div class="ui-g-12">
-            <div class="ui-g-4" style="text-align:right">
-              Effective Date <span class="mandatoryStar">* </span>:
-            </div>
-            <div class="ui-g-6">
+            <div class="ui-g-12">
               <p-calendar [showIcon]="false" tooltipPosition="top" [readonlyInput]="true" dateFormat="mm-dd-yy"
                 formControlName="frmEffectiveDate" appendTo="body"
                 pTooltip="The original date the employee started work">
               </p-calendar>
               (mm-dd-yyyy)
             </div>
-          </div>
-          <div class="ui-g-12">
-            <div class="ui-g-4" style="text-align:right">
-              Rate <span class="mandatoryStar">* </span>:
-            </div>
-            <div class="ui-g-6">
-              <input type="text" maxlength="6" pInputText formControlName="frmRatetext"
-                pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
-            </div>
-          </div>
-          <div class="ui-g-12" *ngIf="!_IsAddRate">
-            <div class="ui-g-4">
-            </div>
-            <div class="ui-g-6">
+            <div class="ui-g-12" *ngIf="!_IsAddRate">
               <p-checkbox binary="true" [(ngModel)]="chkrateInactive" [ngModelOptions]="{standalone: true}">
               </p-checkbox>
               Inactive
+            </div>
+          </div>
+          <div class="ui-g-6">
+            <div class="ui-g-12">
+              Customer Name <span class="mandatoryStar">* </span>
+            </div>
+            <div class="ui-g-12">
+              <input type="text" pInputText placeholder="Customer Name" formControlName="frmCustomerName"
+                pToolTip="The customer to invoice this client" style="width:85%;">
+            </div>
+            <div class="ui-g-12">
+              Rate <span class="mandatoryStar">* </span>
+              <i class="fa fa-info-circle fa-150x"
+                pTooltip="Rate should be greater than 0 and should have maximum length of 6"
+                style="cursor:help; font-size: 16px; color: orange;"></i>
+            </div>
+            <div class="ui-g-12">
+              <input type="text" maxlength="6" pInputText formControlName="frmRatetext"
+                pToolTip="The hourly invoice rate for this employee" (keypress)="numberOnly($event)">
             </div>
           </div>
         </div>
