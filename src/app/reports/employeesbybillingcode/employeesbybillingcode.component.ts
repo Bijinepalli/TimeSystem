@@ -145,7 +145,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       { label: 'Both', value: 2 }
     ];
     this.billingType = [
-      { label: 'Client', value: 0 },
+      { label: 'Billing Code', value: 0 },
       { label: 'Project', value: 1 },
       { label: 'Non-Billable', value: 2 }
     ];
@@ -182,7 +182,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
           for (let i = 0; i < this._clients.length; i++) {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
           }
-          this._selectString = 'Clients (' + this._clients.length + ' matching codes found)';
+          this._selectString = 'Billing Codes (' + this._clients.length + ' matching codes found)';
           this.showBillingCodeList = true;
           this.showSpinner = false;
         }
