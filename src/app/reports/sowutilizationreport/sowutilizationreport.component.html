@@ -215,7 +215,7 @@
             class="ui-table" *ngIf="lstMonths !== undefined && lstMonths !== null && lstMonths.length > 0">
             <thead class="ui-table-thead">
               <tr class="trHeader">
-                <th>Client</th>
+                <th>Billing Code</th>
                 <th>Employee</th>
                 <ng-container *ngFor="let weekNumDetails of lstMonths;index as i">
                   <th [ngStyle]="getDisplayColors(i,1)" style="cursor:pointer;"

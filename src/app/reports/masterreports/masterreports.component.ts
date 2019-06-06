@@ -111,7 +111,7 @@ export class MasterreportsComponent implements OnInit {
               label: 'Invoice Related',
               items: [
                 { label: 'Invoice Data by Customer', icon: 'pi pi-fw pi-user-plus' },
-                { label: 'Employee - Client Rates', icon: 'pi pi-fw pi-user-minus' },
+                { label: 'Employee - Billing Code Rates', icon: 'pi pi-fw pi-user-minus' },
               ]
             }];
           break;

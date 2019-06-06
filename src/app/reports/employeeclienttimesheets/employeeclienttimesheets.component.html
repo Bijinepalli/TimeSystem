@@ -1,6 +1,6 @@
 <div class="ui-g ui-g-nopad mainHeader">
   <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Client Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+    Billing Code Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('ViewTimesheets.htm')"></i>
   </div>
@@ -38,8 +38,8 @@
         </ng-container>
       </div>
       <div class="ui-g-12 ui-md-4">
-        <label class="label">Select Client</label>
-        <p-listbox [options]="_clients" *ngIf="_clients.length > 0" placeholder="Select Client"
+        <label class="label">Select Billing Code</label>
+        <p-listbox [options]="_clients" *ngIf="_clients.length > 0" placeholder="Select Billing Code"
           [(ngModel)]="selectedClient" (onChange)="getEmployees()" multiple="true" checkbox="true" filter="true"
           [listStyle]="{'max-height':'150px','min-height':'150px'}" [style]="{'width':'100%'}">
         </p-listbox>
@@ -47,7 +47,7 @@
           <div class="ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all"
             style="width:100%;min-height: 200px;">
             <br>
-            <label style="padding:0px 10px;color:grey;">No clients to show</label>
+            <label style="padding:0px 10px;color:grey;">No billing codes to show</label>
           </div>
         </ng-container>
       </div>

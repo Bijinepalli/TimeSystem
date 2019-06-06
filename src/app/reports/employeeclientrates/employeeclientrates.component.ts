@@ -177,8 +177,8 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'LastName', header: 'Last Name', align: 'left', width: '130px' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '130px' },
       { field: 'EmployeeID', header: 'Employee ID', align: 'right', width: '140px' },
-      { field: 'ClientName', header: 'Client Name', align: 'left', width: 'auto' },
-      { field: 'ClientID', header: 'Client ID', align: 'right', width: '120px' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: 'auto' },
+      { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '155px' },
       { field: 'Rate', header: 'Rate', align: 'right', width: '85px' },
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
     ];

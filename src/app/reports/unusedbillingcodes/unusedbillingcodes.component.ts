@@ -135,7 +135,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this._DisplayDateTimeFormat = this.commonSvc.getAppSettingsValue('DisplayTimeStampFormat').toString();
     this.codeType = [
-      { label: 'Client', value: 0 },
+      { label: 'Billing Code', value: 0 },
       { label: 'Project', value: 1 },
       { label: 'Non-Billable', value: 2 }
     ];
@@ -225,7 +225,7 @@ export class UnusedbillingcodesComponent implements OnInit {
     const deleteCodesList = new NonBillables();
     switch (this._searchedCodeType.toString()) {
       case '0':
-        deleteCodesList.ChargeType = 'Clients';
+        deleteCodesList.ChargeType = 'Billing Codes';
         break;
       case '1':
         deleteCodesList.ChargeType = 'Projects';
@@ -281,13 +281,13 @@ export class UnusedbillingcodesComponent implements OnInit {
     if (this.selectedCodeType === 0) {
       switch (this.selectedUsageType.toString()) {
         case '0':
-          this._codeHeader = 'Active Clients Codes that are Inactive for All Employees';
+          this._codeHeader = 'Active Billing Codes that are Inactive for All Employees';
           break;
         case '1':
-          this._codeHeader = 'Never Used Clients Codes';
+          this._codeHeader = 'Never Used Billing Codes';
           break;
         case '2':
-          this._codeHeader = 'Unused Clients Codes';
+          this._codeHeader = 'Unused Billing Codes';
           break;
       }
     } else if (this.selectedCodeType === 1) {

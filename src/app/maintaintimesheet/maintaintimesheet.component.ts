@@ -952,7 +952,7 @@ export class MaintaintimesheetComponent implements OnInit {
     }
     if (countError > 0) {
       // tslint:disable-next-line:max-line-length
-      this._errorMessage += 'None of your clients or projects have holidays scheduled on the day(s) you charged holiday time.Please contact Finance. (Section: Non-Billable).<br>';
+      this._errorMessage += 'None of your billing codes or projects have holidays scheduled on the day(s) you charged holiday time.Please contact Finance. (Section: Non-Billable).<br>';
     }
     if (this._errorHourlyNonBillHolidayArray.length > 0) {
       this._errorMessage += 'You cannot enter more than 8 hours of holiday time per day. (Section: Non-Billable)<br/>';
