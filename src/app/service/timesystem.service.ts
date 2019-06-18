@@ -15,7 +15,8 @@ import {
   DateArray,
   PeriodEndWithKeys,
   SOWUtilizationReport,
-  SOWMonthlyUtilizationReport
+  SOWMonthlyUtilizationReport,
+  ActivityLog
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -929,5 +930,8 @@ export class TimesystemService {
     const _headers = new HttpHeaders();
     _headers.append('Content-Type', 'multipart/form-data');
     return this.http.post<any>(this.url + 'uploadFileToServer', frmdata, { headers: _headers });
+  }
+  getActivityLog() {
+    return this.http.get<ActivityLog[]>(this.url + 'GetActivityLog');
   }
 }

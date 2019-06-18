@@ -34,6 +34,10 @@ export class LoginComponent implements OnInit {
   signInForm: FormGroup;
   showSpinner = false;
 
+  _type = 'password';
+  _class = 'fa fa-eye';
+  _bool = true;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -338,6 +342,16 @@ export class LoginComponent implements OnInit {
           }
         }
       );
+  }
+
+  showPassword() {
+    if (this._type === 'password') {
+      this._type = 'text';
+      this._class = 'fa fa-eye-slash';
+    } else {
+      this._type = 'password';
+      this._class = 'fa fa-eye';
+    }
   }
 
 

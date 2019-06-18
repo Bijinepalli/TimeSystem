@@ -109,6 +109,7 @@ import { EmployeeclienttimesheetsComponent } from './reports/employeeclienttimes
 import { SowutilizationreportComponent } from './reports/sowutilizationreport/sowutilizationreport.component';
 import { SowmonthlyutilizationreportComponent } from './reports/sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 import { SowtotalreportComponent } from './reports/sowtotalreport/sowtotalreport.component';
+import { ActivitylogreportComponent } from './reports/activitylogreport/activitylogreport.component';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -187,6 +188,7 @@ const appRoutes: Routes = [
       { path: 'sowdetailreport/:sowid', component: SowutilizationreportComponent },
       { path: 'sowmonthlyutilizationreport/:somid/:month/:year/:empId', component: SowmonthlyutilizationreportComponent },
       { path: 'sowmonthlyutilizationreport/:somid/:month/:year', component: SowmonthlyutilizationreportComponent },
+      { path: 'activitylogreport', component: ActivitylogreportComponent },
     ],
     runGuardsAndResolvers: 'always',
   },
@@ -275,6 +277,7 @@ const appRoutes: Routes = [
     SowutilizationreportComponent,
     SowmonthlyutilizationreportComponent,
     SowtotalreportComponent,
+    ActivitylogreportComponent,
   ],
   imports: [
     BrowserAnimationsModule,

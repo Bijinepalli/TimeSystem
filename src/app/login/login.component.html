@@ -40,8 +40,11 @@
             </app-fielderrors>
           </div>
           <div class="ui-g-12 ui-md-12">
-            <input type="password" maxlength="20" pInputText placeholder="Password" autocomplete="current-password" formControlName="password"
+              <input type="password" maxlength="20" pInputText placeholder="Password" autocomplete="current-password" formControlName="password"
               value="password" style="color: black; background-color: white;width:100%;">
+            <!-- <input [type]="_type" maxlength="20" pInputText placeholder="Password" autocomplete="current-password" formControlName="password"
+              value="password" style="color: black; background-color: white;width:100%;"> -->
+              <!-- <span class="textIcon" (click)="showPassword()"><i [class]="_class"></i></span> -->
           </div>
           <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: left;">
             <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">

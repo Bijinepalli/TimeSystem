@@ -88,6 +88,14 @@
   text-transform: none;
 }
 
+.textIcon{
+  float: right;
+  position: relative;
+  margin-right: 9px;
+  margin-top: -30px;
+  cursor: pointer;
+}
+
 /* 
 @media only screen and (max-width: 1000px) {
   #content-body {
