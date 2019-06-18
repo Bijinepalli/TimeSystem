@@ -662,3 +662,20 @@ export class SOWMonthlyHours {
     Day30: string;
     Day31: string;
 }
+
+export class ActivityLog {
+    ID?: number;
+    UserID?: number;
+    UserName?: string;
+    PageID?: number;
+    PageName?: string;
+    PageParams?: string;
+    SectionID?: number;
+    SectionName?: string;
+    SectionParams?: string;
+    ActionName?: string;
+    ActionParams?: string;
+    Message?: string;
+    Mode?: string;
+    TimeStamp?: string;
+}
