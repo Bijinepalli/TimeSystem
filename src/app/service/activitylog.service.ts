@@ -18,10 +18,10 @@ export class ActivitylogService {
 
   private url = environment.url;
   constructor(private http: HttpClient) { }
-  ActionLog(PageID: number, PageName: string, SectionName: string, Mode: string, ActionName: string, Message: string) {
+  ActionLog(PageName: string, SectionName: string, Mode: string, ActionName: string, Message: string,
+    PageParams: string, SectionParams: string, ActionParams: string) {
     let activity: ActivityLog;
     activity = {};
-
     if (sessionStorage && environment && environment.buildType) {
       if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId')) {
         activity.UserID = +(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId').toString());
@@ -31,15 +31,16 @@ export class ActivitylogService {
         }
       }
     }
-
-    activity.PageID = PageID;
     activity.PageName = PageName;
+    activity.PageParams = PageParams;
     activity.SectionName = SectionName;
+    activity.SectionParams = SectionParams;
     activity.ActionName = ActionName;
+    activity.ActionParams = ActionParams;
     activity.Mode = Mode;
     activity.Message = Message;
     this.http.post<LoginErrorMessage>(this.url + 'ActivityLog_Insert', JSON.stringify(activity), httpOptions)
-    .subscribe((data) => { }, (error) => { });
+      .subscribe((data) => { }, (error) => { });
   }
 
 }

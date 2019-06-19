@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { ActivitylogService } from '../service/activitylog.service';
+import { PageNames } from '../model/objects';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -60,7 +61,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(0, 'Dashboard', '', 'Fine', 'OnInit', 'Initialisation');
+    this.logSvc.ActionLog(PageNames.Dashboard, '', 'Fine', 'OnInit', 'Initialisation', '', '', '');
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
