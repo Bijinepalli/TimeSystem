@@ -6,9 +6,10 @@ import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
 import { Table } from 'primeng/table';
-import { SOWUtilizationReport, SOWDetails, SOW, SOWMonthlyUtilizationReport, SOWMonthlyHours } from 'src/app/model/objects';
+import { SOWUtilizationReport, SOWDetails, SOW, SOWMonthlyUtilizationReport, SOWMonthlyHours, PageNames } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
 import { DatePipe } from '@angular/common';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-sowmonthlyutilizationreport',
@@ -48,6 +49,7 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -61,6 +63,8 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
   }
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWMonthlyUtilizationReport', 'Fine', 'OnInit', 'Initialisation', '',
+      '{PhysicalPath:"app/reports/sowmonthlyutilizationreport"}', ''); // ActivityLog
     this._somId = this._somId === undefined ? '' : this._somId;
     this._month = this._month === undefined ? '' : this._month;
     this._year = this._year === undefined ? '' : this._year;

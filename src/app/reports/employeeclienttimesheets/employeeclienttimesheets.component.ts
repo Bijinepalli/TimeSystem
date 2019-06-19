@@ -5,8 +5,9 @@ import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
-import { TimeSheet, PeriodEndWithKeys } from 'src/app/model/objects';
+import { TimeSheet, PeriodEndWithKeys, PageNames } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-employeeclienttimesheets',
@@ -43,6 +44,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -77,6 +79,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.BillingCodeTimesheets, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {

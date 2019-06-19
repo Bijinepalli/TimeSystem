@@ -6,9 +6,10 @@ import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
 import { Table } from 'primeng/table';
-import { SOWUtilizationReport, SOWDetails, SOW, SOWAnalysis } from 'src/app/model/objects';
+import { SOWUtilizationReport, SOWDetails, SOW, SOWAnalysis, PageNames } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
 import { DatePipe } from '@angular/common';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 @Component({
   selector: 'app-sowtotalreport',
   templateUrl: './sowtotalreport.component.html',
@@ -37,6 +38,7 @@ export class SowtotalreportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -68,6 +70,7 @@ export class SowtotalreportComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWTotalReport', 'Fine', 'OnInit', 'Initialisation', '', '{PhysicalPath:"app/reports/sowtotalreport"}', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this._queryParams = params;

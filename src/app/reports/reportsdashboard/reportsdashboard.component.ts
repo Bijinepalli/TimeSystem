@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MenuItem } from 'primeng/api';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
+import { PageNames } from 'src/app/model/objects';
 
 @Component({
   selector: 'app-reportsdashboard',
@@ -8,12 +10,14 @@ import { MenuItem } from 'primeng/api';
 })
 export class ReportsdashboardComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private logSvc: ActivitylogService, // ActivityLog - Default
+  ) { }
 
   ReportCategories: MenuItem[];
 
   ngOnInit() {
-
+    this.logSvc.ActionLog(PageNames.ReportsDashboard, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.ReportCategories = [
       {
         label: 'Billing Code Related',

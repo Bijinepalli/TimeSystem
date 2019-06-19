@@ -669,6 +669,7 @@ export enum PageNames {
     Dashboard = 'Dashboard',
     ForgotPassword = 'Forgot Password',
     AccessDenied = 'Access Denied',
+    ReportsDashboard = 'Reports Dashboard',
     Holidays = 'Admin/Holidays',
     Companies = 'Admin/Companies',
     Projects = 'Admin/Projects',

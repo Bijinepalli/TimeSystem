@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
+import { Clients, Projects, NonBillables, BillingCodesSpecial, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from '../../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-billablehours',
@@ -48,6 +49,7 @@ export class BillablehoursComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -84,6 +86,7 @@ export class BillablehoursComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -176,6 +179,14 @@ export class BillablehoursComponent implements OnInit {
 
   showBillingCodes() {
     this.showSpinner = true;
+
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedBillingType: this.selectedBillingType.toString(),
+      selectedType: this.selectedType.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Fine', 'showBillingCodes', 'Show Billing Codes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.codes = [];
     this.selectedCode = '';
     if (this.selectedBillingType === 0) {
@@ -226,6 +237,7 @@ export class BillablehoursComponent implements OnInit {
 
   generateReport() {
     this.showSpinner = true;
+
     this.showReport = false;
     this._reports = [];
     this._recData = 0;
@@ -237,6 +249,18 @@ export class BillablehoursComponent implements OnInit {
     if (this.endDate !== undefined && this.endDate !== null && this.endDate.toString() !== '') {
       end = this.datePipe.transform(this.endDate.toString(), 'MM-dd-yyyy');
     }
+
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedBillingType: this.selectedBillingType.toString(),
+      selectedCode: this.selectedCode.toString(),
+      selectedType: this.selectedType.toString(),
+      selectedassignStatus: this.selectedassignStatus.toString(),
+      start: start,
+      end: end
+    }
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Fine', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.getBillableHours(
       this.selectedBillingType.toString(),
       this.selectedCode.toString(),

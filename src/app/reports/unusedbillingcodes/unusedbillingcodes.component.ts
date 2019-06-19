@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { CommonService } from '../../service/common.service';
 import { SelectItem, SortEvent } from 'primeng/api';
 import { Router, ActivatedRoute } from '@angular/router';
-import { NonBillables, TimePeriods } from '../../model/objects';
+import { NonBillables, TimePeriods, PageNames } from '../../model/objects';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-unusedbillingcodes',
@@ -47,6 +48,7 @@ export class UnusedbillingcodesComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -81,6 +83,7 @@ export class UnusedbillingcodesComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.UnusedBillingCodes, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {

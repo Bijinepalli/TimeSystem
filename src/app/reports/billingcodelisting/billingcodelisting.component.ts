@@ -6,6 +6,8 @@ import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from '../../service/activitylog.service'; // ActivityLog - Default
+import { PageNames } from 'src/app/model/objects';
 
 @Component({
   selector: 'app-billingcodelisting',
@@ -36,6 +38,7 @@ export class BillingcodelistingComponent implements OnInit {
   _DisplayDateTimeFormat: any;
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -66,6 +69,7 @@ export class BillingcodelistingComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.ListBillingCodes, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
