@@ -77,8 +77,8 @@ export class NonbillablehoursAddgroupComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.NonBillableHoursAcrossMonths, 'Add Group', 'Fine', 'OnInit', 'Initialisation', '',
-      '{PhysicalPath:"app/reports/nonbillablehours-addgroup"}', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.NonBillableHoursAcrossMonths, 'Add Group', 'Reports', 'OnInit', 'Initialisation', '',
+      '{"PhysicalPath":"app/reports/nonbillablehours-addgroup"}', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {

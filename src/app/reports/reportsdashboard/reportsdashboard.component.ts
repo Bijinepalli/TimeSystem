@@ -17,7 +17,7 @@ export class ReportsdashboardComponent implements OnInit {
   ReportCategories: MenuItem[];
 
   ngOnInit() {
-    this.logSvc.ActionLog(PageNames.ReportsDashboard, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.ReportsDashboard, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.ReportCategories = [
       {
         label: 'Billing Code Related',

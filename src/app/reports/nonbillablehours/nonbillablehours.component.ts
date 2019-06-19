@@ -74,7 +74,7 @@ export class NonbillablehoursComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.NonBillableHoursAcrossMonths, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.NonBillableHoursAcrossMonths, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {

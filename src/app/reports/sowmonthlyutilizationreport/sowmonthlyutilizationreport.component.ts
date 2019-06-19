@@ -63,7 +63,7 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
   }
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWMonthlyUtilizationReport', 'Fine', 'OnInit', 'Initialisation', '',
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWMonthlyUtilizationReport', 'Reports', 'OnInit', 'Initialisation', '',
       '{PhysicalPath:"app/reports/sowmonthlyutilizationreport"}', ''); // ActivityLog
     this._somId = this._somId === undefined ? '' : this._somId;
     this._month = this._month === undefined ? '' : this._month;

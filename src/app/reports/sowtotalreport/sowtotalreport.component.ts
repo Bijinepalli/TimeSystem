@@ -70,7 +70,8 @@ export class SowtotalreportComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWTotalReport', 'Fine', 'OnInit', 'Initialisation', '', '{PhysicalPath:"app/reports/sowtotalreport"}', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWTotalReport', 'Reports', 'OnInit', 'Initialisation', '',
+      '{"PhysicalPath":"app/reports/sowtotalreport"}', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this._queryParams = params;

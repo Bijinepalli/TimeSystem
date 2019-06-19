@@ -83,7 +83,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.WeeklyHoursbyEmployee, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.WeeklyHoursbyEmployee, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {

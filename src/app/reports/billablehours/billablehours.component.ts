@@ -86,7 +86,7 @@ export class BillablehoursComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -185,7 +185,7 @@ export class BillablehoursComponent implements OnInit {
       selectedBillingType: this.selectedBillingType.toString(),
       selectedType: this.selectedType.toString(),
     }
-    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Fine', 'showBillingCodes', 'Show Billing Codes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports', 'showBillingCodes', 'Show Billing Codes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.codes = [];
     this.selectedCode = '';
@@ -259,7 +259,7 @@ export class BillablehoursComponent implements OnInit {
       start: start,
       end: end
     }
-    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Fine', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.timesysSvc.getBillableHours(
       this.selectedBillingType.toString(),

@@ -120,7 +120,7 @@ export class SowutilizationreportComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.routeParamSubscribe = this.route.params.subscribe(rparams => {

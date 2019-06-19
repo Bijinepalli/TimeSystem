@@ -71,7 +71,7 @@ export class AccessrightsComponent implements OnInit {
 
   ngOnInit() {
     this.logSvc.ActionLog(PageNames.Configuration, 'Page Settings', 'Fine', 'OnInit', 'Initialisation', '',
-      '{PhysicalPath:"app/accessrights"}', ''); // ActivityLog
+      '{"PhysicalPath":"app/accessrights"}', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
