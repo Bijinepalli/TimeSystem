@@ -720,5 +720,6 @@ export class ActivityLog {
     Message?: string;
     Mode?: string;
     TimeStamp?: string;
+    SessionID?: string;
 }
 

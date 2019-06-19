@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, ɵConsole } from '@angular/core';
 import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -30,6 +30,9 @@ export class ActivitylogService {
           activity.UserName = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserName');
         }
       }
+      if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'SessionID')) {
+        activity.SessionID = (sessionStorage.getItem(environment.buildType.toString() + '_' + 'SessionID').toString());
+      }
     }
     activity.PageName = PageName;
     activity.PageParams = PageParams;
@@ -40,7 +43,15 @@ export class ActivitylogService {
     activity.Mode = Mode;
     activity.Message = Message;
     this.http.post<LoginErrorMessage>(this.url + 'ActivityLog_Insert', JSON.stringify(activity), httpOptions)
-      .subscribe((data) => { }, (error) => { });
+      .subscribe((data) => {
+        if (data.ErrorType === 'Logged In') {
+          if (sessionStorage && environment && environment.buildType) {
+            sessionStorage.setItem(environment.buildType.toString() + '_' + 'SessionID', data.ErrorMessage);
+          }
+        }
+      }, (error) => {
+        console.log(error);
+      });
   }
 
 }
