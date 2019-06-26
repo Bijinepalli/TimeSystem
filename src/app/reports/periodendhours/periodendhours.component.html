@@ -41,7 +41,8 @@
         <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
           label="Start Over" (click)=startOver()></button> &nbsp; -->
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
-          label="Generate Report" [disabled]="!(this.selectedDate!=='')" (click)=onDateChange($event)></button>&nbsp;
+          label="Generate Report" [disabled]="!(this.selectedDate!=='')"
+          (click)="generateReport($event)"></button>&nbsp;
       </div>
     </p-footer>
   </p-panel>

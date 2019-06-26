@@ -141,7 +141,7 @@ export class PeriodendhoursComponent implements OnInit {
         }
       );
   }
-  onDateChange(e) {
+  generateReport(e) {
     this.showSpinner = true;
     this.showReport = false;
     this.buildCols();
@@ -154,6 +154,13 @@ export class PeriodendhoursComponent implements OnInit {
     }
     this._timesheet.PeriodEndDate = _date;
     if (_date !== null && _date !== '') {
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        date: _date.toString()
+      };
+      this.logSvc.ActionLog(PageNames.PeriodEndHours,
+        '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
         (data) => {
           this.showTable(data);
@@ -197,6 +204,8 @@ export class PeriodendhoursComponent implements OnInit {
     this.showSpinner = false;
   }
   viewTimeSheet(rowData: TimeSheet) {
+    this.logSvc.ActionLog(PageNames.PeriodEndHours,
+      '', 'Reports/Event', 'viewTimeSheet', 'View TimeSheet', '', '', ''); // ActivityLog
     this.navigateToTimesheet(rowData.TimesheetID, '');
   }
   navigateToTimesheet(TimesheetId, TimesheetDate) {

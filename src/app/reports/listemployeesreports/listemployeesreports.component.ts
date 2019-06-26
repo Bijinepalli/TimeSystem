@@ -217,6 +217,19 @@ export class ListemployeesreportsComponent implements OnInit {
     if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
       _end = this.datePipe.transform(this._endDate, this._DateFormat);
     }
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      statusselected: this._statusselected.toString(),
+      Ipayselected: this._Ipayselected.toString(),
+      paidselected: this._paidselected.toString(),
+      timesheetsselected: this._timesheetsselected.toString(),
+      holidaysselected: this._holidaysselected.toString(),
+      startDate: _start.toString(),
+      endDate: _end.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.ListEmployees,
+      '', 'Reports/Event', 'getEmployeesForReport', 'Get Employees For Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.getEmployeesForReport(this._statusselected, this._Ipayselected, this._paidselected,
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(
