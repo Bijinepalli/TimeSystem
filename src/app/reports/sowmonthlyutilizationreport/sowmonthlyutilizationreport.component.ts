@@ -64,7 +64,7 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
   ngOnInit() {
     this.showSpinner = true;
     this.logSvc.ActionLog(PageNames.SOWUtilizationReport, 'SOWMonthlyUtilizationReport', 'Reports', 'OnInit', 'Initialisation', '',
-      '{PhysicalPath:"app/reports/sowmonthlyutilizationreport"}', ''); // ActivityLog
+      '{"PhysicalPath":"app/reports/sowmonthlyutilizationreport"}', ''); // ActivityLog
     this._somId = this._somId === undefined ? '' : this._somId;
     this._month = this._month === undefined ? '' : this._month;
     this._year = this._year === undefined ? '' : this._year;
@@ -159,6 +159,17 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
     this.lstClients = [];
     this.lstEmployees = [];
     this.lstDetails = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      somId: this._somId.toString(),
+      month: this._month.toString(),
+      year: this._year.toString(),
+      empid: this._empid.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      'SOWMonthlyUtilizationReport', 'Reports/Event', 'generateReport', 'Generate Report', '',
+      '{"PhysicalPath":"app/reports/sowmonthlyutilizationreport"}', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.GetSOWMonthlyUtilizationReport(
       this._somId.toString(),
       this._month,

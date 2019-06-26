@@ -41,7 +41,7 @@
           label="Start Over" (click)=startOver()></button> &nbsp; -->
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" [disabled]="!(this.selectedDate!=='')"
-          (click)=getPeriodEndDetails($event)></button>&nbsp;
+          (click)="generateReport($event)"></button>&nbsp;
       </div>
     </p-footer>
   </p-panel>

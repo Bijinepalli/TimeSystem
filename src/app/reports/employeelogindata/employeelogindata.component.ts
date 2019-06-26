@@ -108,7 +108,7 @@ export class EmployeelogindataComponent implements OnInit {
     ];
     this.selectedType = '0';
     this.selectedSalaryType = '2';
-    this.getEmployeesForReport();
+    this.generateReport();
     this.showSpinner = false;
   }
 
@@ -124,7 +124,7 @@ export class EmployeelogindataComponent implements OnInit {
     this._recData = '';
     this.showSpinner = false;
   }
-  getEmployeesForReport() {
+  generateReport() {
     this.showSpinner = true;
     this.resetSort();
     this.cols = [
@@ -147,7 +147,12 @@ export class EmployeelogindataComponent implements OnInit {
     } else if (this.selectedSalaryType === '1') {
       _Salaried = '0';
     }
-
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      _InActive: _InActive,
+      _Salaried: _Salaried,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeLoginData, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {

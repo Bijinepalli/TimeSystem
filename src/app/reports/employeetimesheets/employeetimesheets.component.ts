@@ -157,10 +157,16 @@ export class EmployeetimesheetsComponent implements OnInit {
     ];
     this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours'];
   }
-  getEmployees() {
+  showBillingCodes() {
     this.showSpinner = true;
     this.codes = [];
     this.selectedCode = '';
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      selectedhoursType: this.selectedhoursType,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeTimesheets, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
       (data) => {
         this._employee = [];
@@ -194,6 +200,11 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.resetSort();
     const Mode = '0';
     this.selectedEmployeeName = this.codes.find(m => m.value === this.selectedCode).label.toString();
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedCode: this.selectedCode,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeTimesheets, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getEmployeeTimeSheetList(this.selectedCode.toString(), Mode)
       .subscribe(
         (data) => {

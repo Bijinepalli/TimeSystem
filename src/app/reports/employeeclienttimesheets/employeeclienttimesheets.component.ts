@@ -279,7 +279,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
       _PeriodEndWithKeys.PeriodEnd = this.selectedPeriodEnd;
       _PeriodEndWithKeys.EmailAddress = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress');
       // 'Ramesh.Rao@Ebix.com'; // Logged in user email address
-
+      this.logSvc.ActionLog(PageNames.BillingCodeTimesheets, '', 'Reports/Event', 'GetTimesheets', (mode === 0) ? 'Generate Report' : 'Send Timesheet Mail', '', '', JSON.stringify(_PeriodEndWithKeys)); // ActivityLog
       if (mode === 0) {
         this.showSpinner = true;
         this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
@@ -316,6 +316,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
                 summary: 'Error!',
                 detail: Errors,
               });
+              this.logSvc.ActionLog(PageNames.BillingCodeTimesheets, '', 'Reports/Event', 'GetTimesheets', 'Send Timesheet Mail', '', '', '"Errors":"' + Errors + '"'); // ActivityLog
             } else {
               this.msgSvc.add({
                 key: 'saveSuccess',
