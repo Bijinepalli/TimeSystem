@@ -171,6 +171,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._displayCheckBoxes = [];
     const selectedType = 0;
     if (this.selectedbillingCycle < 3) {
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', ''); // ActivityLog
       this.timesysSvc.getClients().subscribe(
         (data) => {
           this._clients = [];
@@ -235,7 +236,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
           _selectedBillingCycle = 'A';
         }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
-
+        this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
             this.showTable(data);
@@ -243,6 +244,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         );
       }
     } else {
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);

@@ -129,19 +129,24 @@ export class HolidaysreportComponent implements OnInit {
             }
             const _date: Date = new Date();
             this.selectedYear = _date.getFullYear();
-            this.getHolidays();
+            this.generateReport();
           } else {
             this.showSpinner = false;
           }
         });
   }
 
-  getHolidays() {
+  generateReport() {
     this.showSpinner = true;
     let year = '';
     if (this.selectedYear.toString() !== '0') {
       year = this.selectedYear.toString();
     }
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedYear: this.selectedYear.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.BillingCode_Holidays, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.showReport = false;
     this._holidayList = [];
     this._recData = 0;
@@ -163,7 +168,7 @@ export class HolidaysreportComponent implements OnInit {
           this.showSpinner = false;
         }
       );
-      this.resetSort();
+    this.resetSort();
   }
 
   customSort(event: SortEvent) {

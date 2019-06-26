@@ -115,7 +115,6 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     const month = today.getMonth();
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1).toString();
-    console.log(this._startDate);
     this._startDate = this.datePipe.transform(this._startDate, this.DisplayDateFormat);
     this._endDate = '';
   }
@@ -134,7 +133,6 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
       const month = today.getMonth();
       const year = today.getFullYear();
       this._storeDate = new Date(year, month - 1, 1).toString();
-      console.log(this._storeDate);
     } else {
       this._storeDate = this._startDate;
     }
@@ -155,6 +153,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     //   this._billingCodesSpecial.startDate = '';
     //   this._billingCodesSpecial.endDate = '';
     // }
+    this.logSvc.ActionLog(PageNames.HoursbyTimesheetCategory, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
     this.timesysSvc.ListEmployeeHoursByTimeSheetCategory(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);

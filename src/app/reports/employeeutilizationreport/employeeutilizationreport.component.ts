@@ -208,6 +208,12 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this._displayCheckBoxes = [];
     this._selectcheckbox = [];
     this._selectString = '';
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      _selectedDepartment: this._selectedDepartment,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'showEmployees', 'showEmployees', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.departmentEmployee_Get(this._selectedDepartment.Id.toString()).subscribe(
       (data) => {
         this.showFilters = false;
@@ -268,7 +274,14 @@ export class EmployeeutilizationreportComponent implements OnInit {
         // this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
         this._endDateVal = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
-
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        _selectcheckbox: this._selectcheckbox,
+        _selectedDepartment: this._selectedDepartment,
+        _start: _start,
+        _end: _end,
+      }
+      this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
       if (this._startDate > this._endDate) {
         this.showSpinner = false;
       } else {
