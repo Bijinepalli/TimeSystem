@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { NonBillables, BillingCodesSpecial, NonBillablesTotalHours } from 'src/app/model/objects';
+import { NonBillables, BillingCodesSpecial, NonBillablesTotalHours, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { DateFormats } from 'src/app/model/constants';
 import { CommonService } from '../../service/common.service';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-nonbillablehours',
@@ -39,6 +40,7 @@ export class NonbillablehoursComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -72,6 +74,7 @@ export class NonbillablehoursComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.NonBillableHoursAcrossMonths, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {

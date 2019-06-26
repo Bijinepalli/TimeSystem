@@ -663,14 +663,56 @@ export class SOWMonthlyHours {
     Day31: string;
 }
 
+export enum PageNames {
+    Login = 'Login',
+    Logout = 'Logout',
+    Dashboard = 'Dashboard',
+    ForgotPassword = 'Forgot Password',
+    AccessDenied = 'Access Denied',
+    ReportsDashboard = 'Reports Dashboard',
+    Holidays = 'Admin/Holidays',
+    Companies = 'Admin/Companies',
+    Projects = 'Admin/Projects',
+    Customers = 'Admin/Customers',
+    BillingCodes = 'Admin/Billing Codes',
+    NonBillables = 'Admin/Non-Billables',
+    Configuration = 'Admin/Configuration',
+    Employees = 'Admin/Employees',
+    RollBillingCodes = 'Admin/Roll Billing Codes',
+    SOW = 'Admin/SOW',
+    Emails = 'Admin/Emails',
+    Departments = 'Admin/Departments',
+    RevenueReport = 'Billing Code Related/Revenue Report',
+    ListBillingCodes = 'Billing Code Related/List Billing Codes',
+    EmployeeHoursbyBillingCode = 'Billing Code Related/Employee Hours by Billing Code',
+    EmployeesbyBillingCode = 'Billing Code Related/Employees by Billing Code',
+    HoursbyEmployee = 'Billing Code Related/Hours by Employee',
+    WeeklyHoursbyEmployee = 'Billing Code Related/Weekly Hours by Employee',
+    UnusedBillingCodes = 'Billing Code Related/Unused Billing Codes',
+    BillingCode_Holidays = 'Billing Code Related/Holidays',
+    NonBillableHoursAcrossMonths = 'Billing Code Related/Non-Billable Hours Across Months',
+    BillableHoursbyBillingCodesorProject = 'Billing Code Related/Billable Hours by Billing Codes or Project',
+    EmployeeTimesheets = 'Timesheet Related/Employee Timesheets',
+    HoursbyTimesheetCategory = 'Timesheet Related/Hours by Timesheet Category',
+    PeriodEndHours = 'Timesheet Related/Period End Hours',
+    OutstandingTimesheets = 'Timesheet Related/Outstanding Timesheets',
+    EmployeeUtilizationReport = 'Timesheet Related/Employee Utilization Report',
+    BillingCodeTimesheets = 'Timesheet Related/Billing Code Timesheets',
+    SOWUtilizationReport = 'Timesheet Related/SOW Utilization Report',
+    Payroll = 'Timesheet Related/Payroll',
+    ListEmployees = 'Employee Related/List Employees',
+    EmployeeHours = 'Employee Related/Employee Hours',
+    EmployeeLoginData = 'Employee Related/Employee Login Data',
+    InvoiceDatabyCustomer = 'Invoice Related/Invoice Data by Customer',
+    EmployeeBillingCodeRates = 'Invoice Related/Employee - Billing Code Rates'
+}
+
 export class ActivityLog {
     ID?: number;
     UserID?: number;
     UserName?: string;
-    PageID?: number;
     PageName?: string;
     PageParams?: string;
-    SectionID?: number;
     SectionName?: string;
     SectionParams?: string;
     ActionName?: string;
@@ -678,4 +720,6 @@ export class ActivityLog {
     Message?: string;
     Mode?: string;
     TimeStamp?: string;
+    SessionID?: string;
 }
+

@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { MenuItem } from 'primeng/primeng';
 import { Menu } from 'primeng/components/menu/menu';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 declare var jQuery: any;
 
@@ -27,9 +28,10 @@ export class MasterreportsComponent implements OnInit {
   @ViewChild('smallMenu') smallMenu: Menu;
   userOptions: any;
 
-  constructor(private router: Router) {
-
-  }
+  constructor(
+    private router: Router,
+    private logSvc: ActivitylogService, // ActivityLog - Default
+  ) { }
 
   // tslint:disable-next-line:use-life-cycle-interface
   ngAfterViewInit() {

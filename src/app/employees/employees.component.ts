@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
 import {
   Employee, NonBillables, Projects, Clients, BillingCodesPendingTimesheet,
-  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments, Customers, Rates
+  AssignForEmployee, EmailOptions, LoginErrorMessage, Invoice, Departments, Customers, Rates, PageNames
 } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -13,7 +13,7 @@ import { BillingCode, YearEndCodes } from '../model/constants';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { PickList } from 'primeng/primeng';
-import { ActivitylogService } from '../service/activitylog.service';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-employees',
@@ -139,7 +139,6 @@ export class EmployeesComponent implements OnInit {
   @ViewChild('pcklNonBillable') pcklNonBillable: PickList;
   @ViewChild('pcklProject') pcklProject: PickList;
   @ViewChild('pcklClient') pcklClient: PickList;
-  _PageId: string;
 
   /* #endregion */
 
@@ -151,7 +150,7 @@ export class EmployeesComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private logSvc: ActivitylogService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
@@ -180,15 +179,16 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.logSvc.ActionLog(0, 'Employees', '', 'Fine', 'OnInit', 'Initialisation');
+    console.log(document.location);
+    alert(document.location.hostname);
+    this.logSvc.ActionLog(PageNames.Employees, '', 'Page', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-        this._PageId = SplitVals[SplitVals.length - 1];
-        this.CheckSecurity(this._PageId);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -204,7 +204,7 @@ export class EmployeesComponent implements OnInit {
       .subscribe((data) => {
         this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
-          // this.logSvc.ActionLog(+this._PageId, 'Employees', '', 'Fine', 'Check Security', 'Successful');
+          // this.logSvc.ActionLog(+this._PageId, 'Employees', '', 'Fine', 'Check Security', 'Successful'); // ActivityLog
           this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
@@ -723,7 +723,7 @@ export class EmployeesComponent implements OnInit {
   /* #region Manage Calls for Popup Opening */
   manageClients(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
-    this.logSvc.ActionLog(+this._PageId, 'Employees', 'Clients', 'Fine', 'Manage Clients', 'Manage Clients');
+    this.logSvc.ActionLog(PageNames.Employees, 'Clients', 'Page', 'manageClients', 'Manage Clients', '', dataRow.ID, ''); // ActivityLog
     this.getClients(dataRow.ID);
     this._popUpHeader = 'Billing Code';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
@@ -731,6 +731,7 @@ export class EmployeesComponent implements OnInit {
   }
   manageProjects(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
+    this.logSvc.ActionLog(PageNames.Employees, 'Projects', 'Page', 'manageProjects', 'Manage Projects', '', dataRow.ID, ''); // ActivityLog
     this.getProjects(dataRow.ID);
     this._popUpHeader = 'Project';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
@@ -738,6 +739,8 @@ export class EmployeesComponent implements OnInit {
   }
   manageNonBillables(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
+    this.logSvc.ActionLog(PageNames.Employees, 'Non-Billables', 'Page', 'manageNonBillables',
+      'Manage Non-Billables', '', dataRow.ID, ''); // ActivityLog
     this.getNonBillables(dataRow.ID);
     this._popUpHeader = 'Non-Billable Item';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
@@ -745,6 +748,7 @@ export class EmployeesComponent implements OnInit {
   }
   manageRates(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
+    this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Page', 'manageRates', 'Manage Rates', '', dataRow.ID, ''); // ActivityLog
     this._employeeId = this._selectedEmployeeForAction.ID.toString();
     this.populateTable();
     this._popUpHeader = 'Rate';
@@ -1167,6 +1171,8 @@ export class EmployeesComponent implements OnInit {
                   this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
                   this._selectedDepartment.EmployeeId = +outputData.ReturnVal;
                   this.SaveDepartmentSPCall();
+                  this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+                    'SaveEmployeeSPCall', 'Employee Insert', '', outputData.ReturnVal.toString(), ''); // ActivityLog
                 } else {
                   this.msgSvc.add({
                     key: 'alert',
@@ -1203,6 +1209,8 @@ export class EmployeesComponent implements OnInit {
                 detail: outputData.ErrorMessage
               });
             } else {
+              this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+              'SaveEmployeeSPCall', 'Employee Update', '', this._selectedEmployee.ID.toString(), ''); // ActivityLog
               this.SaveDepartmentSPCall();
             }
           },
@@ -1245,6 +1253,8 @@ export class EmployeesComponent implements OnInit {
                   }
                 });
               }
+              this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+                'SaveDepartmentSPCall', 'Department Insert', '', '', ''); // ActivityLog
               this.clearControlsEmployee();
               this.getEmployees();
               this.getSupervisors();
@@ -1279,6 +1289,8 @@ export class EmployeesComponent implements OnInit {
                   summary: 'Info Message',
                   detail: 'Employee unlocked successfully'
                 });
+                this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+                'unlockEmployee', 'Emplyoee Unlocked', '', '', ''); // ActivityLog
                 this.getEmployees();
               }
             },

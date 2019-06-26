@@ -3,7 +3,7 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { NonBillables, BillingCodesSpecial, TimeSheet, Employee, TimePeriods, EmailOptions, Email, SendEmail } from 'src/app/model/objects';
+import { NonBillables, BillingCodesSpecial, TimeSheet, Employee, TimePeriods, EmailOptions, Email, SendEmail, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from '../../service/common.service';
 import { TimesheetsComponent } from 'src/app/timesheets/timesheets.component';
@@ -12,6 +12,7 @@ import { DateFormats } from 'src/app/model/constants';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
 import { not } from '@angular/compiler/src/output/output_ast';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-pendingtimesheets',
@@ -47,6 +48,7 @@ export class PendingtimesheetsComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -80,6 +82,7 @@ export class PendingtimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.OutstandingTimesheets, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.IsSecure = false;

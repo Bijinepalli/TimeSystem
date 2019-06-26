@@ -3,12 +3,13 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { Invoice, BillingCodesSpecial } from 'src/app/model/objects';
+import { Invoice, BillingCodesSpecial, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { InvokeFunctionExpr } from '@angular/compiler';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 @Component({
   selector: 'app-employeeclientrates',
   templateUrl: './employeeclientrates.component.html',
@@ -40,6 +41,7 @@ export class EmployeeclientratesComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -73,6 +75,7 @@ export class EmployeeclientratesComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.EmployeeBillingCodeRates, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.IsSecure = false;
@@ -150,6 +153,12 @@ export class EmployeeclientratesComponent implements OnInit {
         _end = this.datePipe.transform(this._endDate, this._DateFormat);
       }
     }
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      startDate: _start,
+      endDate: _end,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeBillingCodeRates, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._billingCodesSpecial = new BillingCodesSpecial();
     this._billingCodesSpecial.startDate = _start;
     this._billingCodesSpecial.endDate = _end;

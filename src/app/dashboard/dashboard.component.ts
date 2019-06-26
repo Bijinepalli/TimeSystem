@@ -5,7 +5,8 @@ import { TimesystemService } from '../service/timesystem.service';
 import { environment } from 'src/environments/environment';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
-import { ActivitylogService } from '../service/activitylog.service';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
+import { PageNames } from '../model/objects';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -22,15 +23,13 @@ export class DashboardComponent implements OnInit {
   IsSecure: boolean;
   _HasEdit: boolean;
 
-  _PageId: string;
-
   constructor(
     private router: Router,
     private route: ActivatedRoute,
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
-    private logSvc: ActivitylogService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
@@ -60,13 +59,12 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(0, 'Dashboard', '', 'Fine', 'OnInit', 'Initialisation');
+    this.logSvc.ActionLog(PageNames.Dashboard, '', 'Fine', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-        this._PageId = SplitVals[SplitVals.length - 1];
-        this.CheckSecurity(this._PageId);
+        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }

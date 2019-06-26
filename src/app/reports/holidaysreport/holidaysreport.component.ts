@@ -1,11 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { SelectItem, SortEvent } from 'primeng/api';
-import { Holidays } from '../../model/objects';
+import { Holidays, PageNames } from '../../model/objects';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-holidaysreport',
@@ -31,6 +32,7 @@ export class HolidaysreportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     public commonSvc: CommonService,
@@ -61,6 +63,7 @@ export class HolidaysreportComponent implements OnInit {
   }
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.BillingCode_Holidays, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {

@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { SelectItem } from 'primeng/api';
-import { MasterPages } from '../model/objects';
+import { MasterPages, PageNames } from '../model/objects';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { CommonService } from '../service/common.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-accessrights',
@@ -41,6 +42,7 @@ export class AccessrightsComponent implements OnInit {
     private fb: FormBuilder,
     public commonSvc: CommonService,
     private route: ActivatedRoute,
+    private logSvc: ActivitylogService, // ActivityLog - Default
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -68,6 +70,8 @@ export class AccessrightsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Configuration, 'Page Settings', 'Fine', 'OnInit', 'Initialisation', '',
+      '{"PhysicalPath":"app/accessrights"}', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -269,6 +273,8 @@ export class AccessrightsComponent implements OnInit {
                   /* do nothing */
                 }
               });
+              this.logSvc.ActionLog(PageNames.Configuration, 'Page Settings',
+                'Update', 'savePages', 'Access rights modified', '', '', ''); // ActivityLog
             }
           } else {
             this.msgSvc.add({ key: 'saveSuccess', severity: 'warn', summary: 'Info Message', detail: 'An Error Occurred' });
