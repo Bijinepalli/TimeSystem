@@ -17,7 +17,7 @@
       <div class="ui-g-12 ui-md-2 ui-lg-2 label">Calendar Year :</div>
       <div class="ui-g-12 ui-md-2 ui-lg-2">
         <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="top"
-          [(ngModel)]="selectedYear" (onChange)="getHolidays()"></p-dropdown>
+          [(ngModel)]="selectedYear" (onChange)="generateReport()"></p-dropdown>
       </div>
     </div>
   </p-panel>

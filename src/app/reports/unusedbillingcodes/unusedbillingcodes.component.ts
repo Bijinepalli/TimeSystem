@@ -204,6 +204,15 @@ export class UnusedbillingcodesComponent implements OnInit {
     } else {
       this.selectedUsageType = +this._searchedUsageType;
     }
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      searchedCodeType: this._searchedCodeType.toString(),
+      searchedUsageType: this._searchedUsageType.toString(),
+      selectedDate: this.selectedDate.toString()
+    };
+    this.logSvc.ActionLog(PageNames.UnusedBillingCodes,
+      '', 'Reports/Event', 'getReports', 'Get Reports', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.getUnusedBillingCodes(this._searchedCodeType, this._searchedUsageType, this.selectedDate.toString())
       .subscribe(
         (data) => {
@@ -250,6 +259,9 @@ export class UnusedbillingcodesComponent implements OnInit {
           }
         }
         deleteCodesList.Key = _keys;
+        this.logSvc.ActionLog(PageNames.UnusedBillingCodes,
+          '', 'Reports/Event', 'deleteCodes', 'Delete Codes', '', '', JSON.stringify(deleteCodesList)); // ActivityLog
+
         this.timesysSvc.deleteUnusedBillingCodes(deleteCodesList)
           .subscribe(
             (data) => {

@@ -169,14 +169,14 @@ export class NonbillablehoursComponent implements OnInit {
     this.setHeader();
     this.rowdata = {};
     const _dateS = Date.parse(this.startDate);
-      if (Number.isNaN(_dateS)) {
-        const today = new Date();
-        const month = today.getMonth();
-        const year = today.getFullYear();
-        this._storeStartDate = new Date(year, month - 1, 1).toString();
-      } else {
-        this._storeStartDate = this.startDate;
-      }
+    if (Number.isNaN(_dateS)) {
+      const today = new Date();
+      const month = today.getMonth();
+      const year = today.getFullYear();
+      this._storeStartDate = new Date(year, month - 1, 1).toString();
+    } else {
+      this._storeStartDate = this.startDate;
+    }
     const _dateE = Date.parse(this.endDate);
     if (Number.isNaN(_dateE)) {
       const today = new Date();
@@ -192,6 +192,16 @@ export class NonbillablehoursComponent implements OnInit {
       this.errMsg += 'Date cannot span over years';
       this.showSpinner = false;
     } else {
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        startDate: start.toString(),
+        endDate: end.toString(),
+        selectedReportType: this.selectedReportType.toString(),
+        totalChecked: this.totalChecked.toString()
+      };
+      this.logSvc.ActionLog(PageNames.NonBillableHoursAcrossMonths,
+        '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
       this.timesysSvc.getNonBillableHours(start, end, this.selectedReportType.toString(), this.totalChecked.toString()).subscribe(
         (data) => {
           this.showReport = false;

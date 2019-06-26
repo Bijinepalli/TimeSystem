@@ -143,7 +143,7 @@ export class PayrollComponent implements OnInit {
         }
       );
   }
-  getPeriodEndDetails(e) {
+  generateReport(e) {
     this.showSpinner = true;
     this.showReport = false;
     this.buildCols();
@@ -155,6 +155,13 @@ export class PayrollComponent implements OnInit {
       // this.selectedDate = _date;
     }
     if (_date !== null && _date !== '') {
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        date: _date.toString()
+      };
+      this.logSvc.ActionLog(PageNames.Payroll,
+        '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
         (data) => {
           this.showTable(data);

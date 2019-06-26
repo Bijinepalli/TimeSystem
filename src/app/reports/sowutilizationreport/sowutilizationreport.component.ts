@@ -326,6 +326,13 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstEmployees = [];
     this.lstDetails = [];
     this.lstSOWAnalysis = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedSOW: this._selectedSOW.toString()
+    };
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.GetSOWUtilizationReport(this._selectedSOW.toString()).subscribe((data) => {
       this.showTable(data);
     });
@@ -521,8 +528,6 @@ export class SowutilizationreportComponent implements OnInit {
 
     this.ShowGraph = false;
     this.hoursByTeamChartData = { labels: [], datasets: [] };
-
-
     const labels = [];
     if (this._selectedType === '0' || this._selectedType === '2') {
       for (let weekCnt = 0; weekCnt < this.lstMonths.length; weekCnt++) {
@@ -623,6 +628,12 @@ export class SowutilizationreportComponent implements OnInit {
   }
 
   ShowGraphDialog() {
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this._selectedType.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      '', 'Reports/Event', 'ShowGraphDialog', 'Show Graph Dialog', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.graphDialog = true;
     this.BuildGraph();
   }

@@ -168,6 +168,12 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   }
   showBillingCodes() {
     this.showSpinner = true;
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      selectedBillingType: this.selectedBillingType,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
@@ -258,6 +264,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       }
       this._billingCodesSpecial.codeStatus = this.selectedType.toString();
       this._billingCodesSpecial.relStatus = this.selectedassignStatus.toString();
+      this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       if (this.selectedBillingType === 0) {
         // tslint:disable-next-line:max-line-length
         this.timesysSvc.listAllClientItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(

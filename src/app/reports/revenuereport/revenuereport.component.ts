@@ -166,6 +166,13 @@ export class RevenuereportComponent implements OnInit {
     startDate = this.datePipe.transform(new Date(startDate), 'yyyy-MM-dd');
     let endDate = this._frm.controls['_endDateSelect'].value.toString().trim();
     endDate = this.datePipe.transform(new Date(endDate), 'yyyy-MM-dd');
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.RevenueReport,
+      '', 'Reports/Event', 'showRevenueReport', 'Show Revenue Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.timesysSvc.getRevenueReports(startDate, endDate)
       .subscribe(

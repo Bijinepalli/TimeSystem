@@ -200,6 +200,12 @@ export class HoursbyemployeeComponent implements OnInit {
   showBillingCodes() {
     this.showSpinner = true;
     this._displayCheckBoxes = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      selectedBillingType: this.selectedBillingType,
+    }
+    this.logSvc.ActionLog(PageNames.HoursbyEmployee, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
         (data) => {
@@ -301,6 +307,12 @@ export class HoursbyemployeeComponent implements OnInit {
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
       this._billingCodesSpecial.includePeriodEnd = this.showPeriodEndDetail === true ? 1 : 0;
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        selectedbreakOut: this.selectedbreakOut,
+        _billingCodesSpecial: this._billingCodesSpecial,
+      }
+      this.logSvc.ActionLog(PageNames.HoursbyEmployee, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
       if (this.selectedbreakOut.toString() === '0') {
         switch (this.selectedBillingType) {
           case 0:

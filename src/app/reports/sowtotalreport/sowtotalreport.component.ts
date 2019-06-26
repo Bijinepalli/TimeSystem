@@ -151,6 +151,9 @@ export class SowtotalreportComponent implements OnInit {
     this.showReport = false;
     this._recData = 0;
     this.lstSOWAnalysis = [];
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      'SOWTotalReport', 'Reports/Event', 'generateReport', 'Generate Report', '', '{"PhysicalPath":"app/reports/sowtotalreport"}', ''); // ActivityLog
+
     this.timesysSvc.GetSOWUtilizationReportTotal().subscribe((data) => {
       this.showTable(data);
     });
@@ -181,6 +184,9 @@ export class SowtotalreportComponent implements OnInit {
   }
 
   viewSOWUtilization(rowData: SOWAnalysis) {
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      'SOWTotalReport', 'Reports/Event', 'viewSOWUtilization', 'View SOW Utilization', '', '{"PhysicalPath":"app/reports/sowtotalreport"}', JSON.stringify(rowData)); // ActivityLog
+
     const routerLinkTimesheet = '/menu/sowdetailreport/' + rowData.SOWID;
     this.router.navigate([routerLinkTimesheet], { queryParams: this._queryParams, skipLocationChange: true });
   }

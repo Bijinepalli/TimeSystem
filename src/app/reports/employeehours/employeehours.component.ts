@@ -165,6 +165,12 @@ export class EmployeehoursComponent implements OnInit {
 
   showBillingCodes() {
     this.showSpinner = true;
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType.toString(),
+      selectedhoursType: this.selectedhoursType.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     // if (this.selectedhoursType === '' && this.selectedType === '') {
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
@@ -256,6 +262,7 @@ export class EmployeehoursComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+      this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       this.timesysSvc.GetEmployeeHours(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);

@@ -180,6 +180,20 @@ export class InvoicedataComponent implements OnInit {
     if (!(this._selectedBillingCycle === 'A')) {
       selectedValue = this._selectedBillingCycle;
     }
+
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      invoicedate: invoicedate,
+      start: start,
+      end: end,
+      divisionId: divisionId,
+      productCode: productCode,
+      selectedValue: selectedValue,
+      formattedStart: formattedStart,
+      formattedEnd: formattedEnd
+    }
+    this.logSvc.ActionLog(PageNames.InvoiceDatabyCustomer, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc
       .getInvoiceData(invoicedate, start, end, divisionId, productCode, selectedValue, formattedStart, formattedEnd)
       .subscribe(
