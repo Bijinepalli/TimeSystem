@@ -185,7 +185,7 @@ export class BillablehoursComponent implements OnInit {
       selectedBillingType: this.selectedBillingType.toString(),
       selectedType: this.selectedType.toString(),
     }
-    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports', 'showBillingCodes', 'Show Billing Codes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports/Event', 'showBillingCodes', 'Show Billing Codes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.codes = [];
     this.selectedCode = '';
@@ -259,7 +259,7 @@ export class BillablehoursComponent implements OnInit {
       start: start,
       end: end
     }
-    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.BillableHoursbyBillingCodesorProject, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.timesysSvc.getBillableHours(
       this.selectedBillingType.toString(),

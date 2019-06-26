@@ -42,16 +42,28 @@ export class ActivitylogService {
     activity.ActionParams = ActionParams;
     activity.Mode = Mode;
     activity.Message = Message;
-    this.http.post<LoginErrorMessage>(this.url + 'ActivityLog_Insert', JSON.stringify(activity), httpOptions)
-      .subscribe((data) => {
-        if (data.ErrorType === 'Logged In') {
-          if (sessionStorage && environment && environment.buildType) {
-            sessionStorage.setItem(environment.buildType.toString() + '_' + 'SessionID', data.ErrorMessage);
-          }
-        }
-      }, (error) => {
-        console.log(error);
+    if (activity.Message === 'Logged In') {
+      new Promise((resolve, reject) => {
+        this.http.post<LoginErrorMessage>(this.url + 'ActivityLog_Insert', JSON.stringify(activity), httpOptions)
+          .subscribe((data) => {
+            // if (data.ErrorType === 'Logged In') {
+            if (sessionStorage && environment && environment.buildType) {
+              sessionStorage.setItem(environment.buildType.toString() + '_' + 'SessionID', data.ErrorMessage);
+            }
+            // }
+            resolve(true);
+          }, (error) => {
+            console.log(error);
+          });
       });
+    }
+    else {
+      this.http.post<LoginErrorMessage>(this.url + 'ActivityLog_Insert', JSON.stringify(activity), httpOptions)
+        .subscribe((data) => {
+        }, (error) => {
+          console.log(error);
+        });
+    }
   }
 
 }

@@ -128,19 +128,24 @@ export class BillingcodelistingComponent implements OnInit {
     this.selectedBillingType = 0;
     this._reports = [];
     this.showReport = false;
-    this.searchReports();
+    this.generateReport();
   }
 
 
 
-  searchReports() {
+  generateReport() {
     this.showSpinner = true;
     let mode = null;
 
     this._reports = [];
     this.setCols(this.selectedBillingType.toString());
     this.showReport = false;
-
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedBillingType: this.selectedBillingType.toString(),
+      selectedType: this.selectedType.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.ListBillingCodes, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     if (this.selectedType.toString() === '2') {
       mode = '';
     } else {
@@ -150,7 +155,6 @@ export class BillingcodelistingComponent implements OnInit {
       case '0':
         this.timesysSvc.listAllClientItems(mode).subscribe(
           (data) => {
-            console.log(data);
             this.showTable(data);
           });
         break;
