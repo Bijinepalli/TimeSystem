@@ -289,15 +289,28 @@ export class CompaniesComponent implements OnInit {
     /**** Very very important code */
     this._slctHolidays = this._slctHolidays.sort(
       function (a, b) {
-        if (a.DisplayName < b.DisplayName) {
+        if (a.HolidayDateSearch < b.HolidayDateSearch) {
           return -1;
-        } else if (a.DisplayName > b.DisplayName) {
+        } else if (a.HolidayDateSearch > b.HolidayDateSearch) {
           return 1;
         } else {
           return 0;
         }
       }
     );
+
+    this._availableHolidays = this._availableHolidays.sort(
+      function (a, b) {
+        if (a.HolidayDateSearch < b.HolidayDateSearch) {
+          return -1;
+        } else if (a.HolidayDateSearch > b.HolidayDateSearch) {
+          return 1;
+        } else {
+          return 0;
+        }
+      }
+    );
+
   }
 
   cancelCompany() {

@@ -13,6 +13,7 @@ import { BillingCode, YearEndCodes } from '../model/constants';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { PickList } from 'primeng/primeng';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-employees',
@@ -138,6 +139,7 @@ export class EmployeesComponent implements OnInit {
   @ViewChild('pcklNonBillable') pcklNonBillable: PickList;
   @ViewChild('pcklProject') pcklProject: PickList;
   @ViewChild('pcklClient') pcklClient: PickList;
+  _PageId: string;
 
   /* #endregion */
 
@@ -149,6 +151,7 @@ export class EmployeesComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
@@ -177,13 +180,15 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(0, 'Employees', '', 'Fine', 'OnInit', 'Initialisation');
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
-        this.CheckSecurity(SplitVals[SplitVals.length - 1]);
+        this._PageId = SplitVals[SplitVals.length - 1];
+        this.CheckSecurity(this._PageId);
       } else {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
@@ -199,6 +204,7 @@ export class EmployeesComponent implements OnInit {
       .subscribe((data) => {
         this.showSpinner = false;
         if (data !== undefined && data !== null && data.length > 0) {
+          // this.logSvc.ActionLog(+this._PageId, 'Employees', '', 'Fine', 'Check Security', 'Successful');
           this.ClearAllProperties();
           if (data[0].HasEdit) {
             this._HasEdit = false;
@@ -416,7 +422,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   GetMethods() {
-    console.log('oeeeee');
     this.getEmployees();
     this.getSupervisors();
     this.getDepartments();
@@ -718,6 +723,7 @@ export class EmployeesComponent implements OnInit {
   /* #region Manage Calls for Popup Opening */
   manageClients(dataRow: any) {
     this._selectedEmployeeForAction = dataRow;
+    this.logSvc.ActionLog(+this._PageId, 'Employees', 'Clients', 'Fine', 'Manage Clients', 'Manage Clients');
     this.getClients(dataRow.ID);
     this._popUpHeader = 'Billing Code';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
@@ -952,7 +958,6 @@ export class EmployeesComponent implements OnInit {
 
   cancelEmployee() {
     this.clearControlsEmployee();
-    console.log('cancel');
     this.GetMethods();
   }
   saveEmployee() {
@@ -1124,7 +1129,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   ValidateEmployee() {
-    console.log(this._selectedEmployee);
     this.timesysSvc.Employee_Validate(this._selectedEmployee)
       .subscribe(
         (outputData) => {
@@ -1803,7 +1807,6 @@ export class EmployeesComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        console.log(dataRow);
         this.timesysSvc.DeleteRate(dataRow)
           .subscribe(
             (outputData) => {

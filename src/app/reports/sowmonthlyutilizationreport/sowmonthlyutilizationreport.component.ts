@@ -132,7 +132,7 @@ export class SowmonthlyutilizationreportComponent implements OnInit {
     this.lstDetails = [];
     this.cols = [];
     this.cols = [{ field: 'EmployeeName', header: 'Employee Name', width: '200px', align: 'left' },
-    { field: 'ClientName', header: 'Client Name', width: '200px', align: 'left' }];
+    { field: 'ClientName', header: 'Billing Code Name', width: '200px', align: 'left' }];
     // const days = this.getDaysInMonth(this.selectedMonth, this.selectedyear);
     const days = this.getDaysInMonth(this._month, this._year);
     for (let i = 1; i <= +days; i++) {

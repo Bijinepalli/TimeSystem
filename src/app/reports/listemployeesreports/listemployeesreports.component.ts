@@ -138,7 +138,7 @@ export class ListemployeesreportsComponent implements OnInit {
     ];
     this._holidays = [
       { label: 'Vertex', value: '1' },
-      { label: 'Client', value: '0' },
+      { label: 'Billing Code', value: '0' },
       { label: 'Both', value: '' }
     ];
 

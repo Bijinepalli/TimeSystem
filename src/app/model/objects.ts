@@ -663,7 +663,7 @@ export class SOWMonthlyHours {
     Day31: string;
 }
 
-export class ActivityLog{
+export class ActivityLog {
     ID?: number;
     UserID?: number;
     UserName?: string;

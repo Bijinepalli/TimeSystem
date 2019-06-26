@@ -44,6 +44,7 @@ import { DateTimeFormatPipe } from './sharedpipes/dateformat';
 import { CurrencyConverterPipe } from './sharedpipes/currencycoverter.pipe';
 
 import { TimesystemService } from './service/timesystem.service';
+import { ActivitylogService } from './service/activitylog.service';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
 import { FielderrorsComponent } from './fielderrors/fielderrors.component';
@@ -328,7 +329,7 @@ const appRoutes: Routes = [
     InplaceModule, ScrollPanelModule, TieredMenuModule,
     KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
   ],
-  providers: [TimesystemService, MessageService, ConfirmationService, CommonService,
+  providers: [TimesystemService, ActivitylogService, MessageService, ConfirmationService, CommonService,
     { provide: APP_INITIALIZER, useFactory: jokesProviderFactory, deps: [CommonService], multi: true }
   ],
   bootstrap: [AppComponent]

@@ -127,7 +127,7 @@ export class RevenuereportComponent implements OnInit {
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.cols = [
-      { field: 'Name', header: 'Client Name', align: 'left', width: 'auto' },
+      { field: 'Name', header: 'Billing Code Name', align: 'left', width: 'auto' },
       { field: 'PeriodEnd', header: 'Period End', align: 'left', width: '150px' },
       { field: 'Hours', header: 'T & M Hours', align: 'right', width: '140px' },
     ];

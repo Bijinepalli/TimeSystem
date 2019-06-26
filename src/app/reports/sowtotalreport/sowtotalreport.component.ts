@@ -155,7 +155,9 @@ export class SowtotalreportComponent implements OnInit {
   showTable(data: SOWUtilizationReport) {
     this.lstSOWAnalysis = [];
     if (data !== undefined && data !== null) {
-      this.lstSOWAnalysis = data.lstSOWAnalysis;
+      if (data.lstSOWAnalysis !== undefined && data.lstSOWAnalysis !== null) {
+        this.lstSOWAnalysis = data.lstSOWAnalysis;
+      }
       this.showReport = true;
     }
     this._recData = this.lstSOWAnalysis.length;

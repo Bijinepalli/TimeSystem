@@ -153,7 +153,7 @@ export class BillablehoursComponent implements OnInit {
       { label: 'Both', value: 2 }
     ];
     this.billingType = [
-      { label: 'Client', value: 0 },
+      { label: 'Billing Code', value: 0 },
       { label: 'Project', value: 1 },
     ];
     this.cols = [
@@ -194,9 +194,9 @@ export class BillablehoursComponent implements OnInit {
           for (let i = 0; i < this._clients.length; i++) {
             this.codes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
           }
-          this._codeCount = 'Select from ' + this._clients.length + ' matching Clients';
+          this._codeCount = 'Select from ' + this._clients.length + ' matching Billing Codes';
           this.showBillingCodeList = true;
-          this._codeType = 'Clients';
+          this._codeType = 'Billing Codes';
           this.showSpinner = false;
         }
       );

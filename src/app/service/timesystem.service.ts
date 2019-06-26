@@ -931,7 +931,4 @@ export class TimesystemService {
     _headers.append('Content-Type', 'multipart/form-data');
     return this.http.post<any>(this.url + 'uploadFileToServer', frmdata, { headers: _headers });
   }
-  getActivityLog() {
-    return this.http.get<ActivityLog[]>(this.url + 'GetActivityLog');
-  }
 }

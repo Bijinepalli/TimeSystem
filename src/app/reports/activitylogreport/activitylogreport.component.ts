@@ -6,6 +6,7 @@ import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { Table } from 'primeng/table';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-activitylogreport',
@@ -28,6 +29,7 @@ export class ActivitylogreportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private activitylogSvc: ActivitylogService,
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -134,7 +136,7 @@ export class ActivitylogreportComponent implements OnInit {
     this.showReport = false;
     this._reports = [];
     this._recData = 0;
-    this.timesysSvc.getActivityLog()
+    this.activitylogSvc.getActivityLog()
       .subscribe(
         (data) => {
           this.showReport = false;

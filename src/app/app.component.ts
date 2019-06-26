@@ -3,6 +3,7 @@ import { TimesystemService } from './service/timesystem.service';
 import { CommonService } from './service/common.service';
 import { Validators } from '@angular/forms';
 import { ValidatorHelper } from './sharedpipes/validationhelper.validator';
+import { NavigationEnd, Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -11,7 +12,12 @@ import { ValidatorHelper } from './sharedpipes/validationhelper.validator';
 })
 export class AppComponent implements OnInit {
   title = 'TimeSystem';
-  constructor(public commonSvc: CommonService) {
+  constructor(public commonSvc: CommonService, private router: Router) {
+    this.router.events.subscribe((ev) => {
+      if (ev instanceof NavigationEnd) {
+        // console.log(ev.urlAfterRedirects);
+      }
+    });
 
   }
 

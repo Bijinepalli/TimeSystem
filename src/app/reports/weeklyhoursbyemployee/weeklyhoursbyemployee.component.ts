@@ -185,7 +185,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
         for (let i = 0; i < this._clients.length; i++) {
           this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
         }
-        this._selectString = 'Clients (' + this._clients.length + ' matching codes found)';
+        this._selectString = 'Billing Codes (' + this._clients.length + ' matching codes found)';
         this.showBillingCodeList = true;
         this.showSpinner = false;
       }
