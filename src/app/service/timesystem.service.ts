@@ -785,11 +785,10 @@ export class TimesystemService {
 
   PendingTimesheetEmail(recipientsToEmailJSON: string, byCloseOfBusiness: string, ccFinance: string, periodEndDate: string) {
     const params = new HttpParams()
-      .set('recipientsToEmailJSON', recipientsToEmailJSON)
+      .set('recipientsJSON', recipientsToEmailJSON)
       .set('byCloseOfBusiness', byCloseOfBusiness)
       .set('ccFinance', ccFinance)
       .set('periodEndDate', periodEndDate);
-
     return this.http.get<DictionaryType[]>(this.url + 'PendingTimesheetEmail', { params });
   }
 

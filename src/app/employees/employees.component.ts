@@ -179,8 +179,6 @@ export class EmployeesComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(document.location);
-    alert(document.location.hostname);
     this.logSvc.ActionLog(PageNames.Employees, '', 'Page', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat');
     this.showSpinner = true;
@@ -938,6 +936,8 @@ export class EmployeesComponent implements OnInit {
   }
 
   addEmployee() {
+    this.logSvc.ActionLog(PageNames.Employees, '', 'Page/Event',
+      'addEmployee', 'Add New Employee buton clicked', '', '', ''); // ActivityLog
     // this.router.navigate(['/menu/addemployee']);
     this._IsEditEmployee = false;
     this._selectedEmployee = {};
@@ -949,6 +949,8 @@ export class EmployeesComponent implements OnInit {
   }
 
   editEmployee(data: Employee) {
+    this.logSvc.ActionLog(PageNames.Employees, '', 'Page/Event',
+      'editEmployee', 'Edit Employee button clicked', data.ID.toString(), '', ''); // ActivityLog
     // this.router.navigate(['/menu/addemployee/' + data.ID]);
     this._IsEditEmployee = true;
     this._selectedDepartment = {};
@@ -961,6 +963,8 @@ export class EmployeesComponent implements OnInit {
   }
 
   cancelEmployee() {
+    this.logSvc.ActionLog(PageNames.Employees, '', 'Section/Event',
+      'cancelEmployee', 'Cancel button clicked', '', '', ''); // ActivityLog
     this.clearControlsEmployee();
     this.GetMethods();
   }
@@ -1171,7 +1175,7 @@ export class EmployeesComponent implements OnInit {
                   this.SendEmailChangePassword(this._selectedEmployee.EmailAddress, this._selectedEmployee.Password);
                   this._selectedDepartment.EmployeeId = +outputData.ReturnVal;
                   this.SaveDepartmentSPCall();
-                  this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+                  this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section\Event',
                     'SaveEmployeeSPCall', 'Employee Insert', '', outputData.ReturnVal.toString(), ''); // ActivityLog
                 } else {
                   this.msgSvc.add({
@@ -1210,7 +1214,7 @@ export class EmployeesComponent implements OnInit {
               });
             } else {
               this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
-              'SaveEmployeeSPCall', 'Employee Update', '', this._selectedEmployee.ID.toString(), ''); // ActivityLog
+                'SaveEmployeeSPCall', 'Employee Update', '', this._selectedEmployee.ID.toString(), ''); // ActivityLog
               this.SaveDepartmentSPCall();
             }
           },
@@ -1290,7 +1294,7 @@ export class EmployeesComponent implements OnInit {
                   detail: 'Employee unlocked successfully'
                 });
                 this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
-                'unlockEmployee', 'Emplyoee Unlocked', '', '', ''); // ActivityLog
+                  'unlockEmployee', 'Emplyoee Unlocked', '', '', ''); // ActivityLog
                 this.getEmployees();
               }
             },
@@ -1332,6 +1336,8 @@ export class EmployeesComponent implements OnInit {
                   detail: outputData.ErrorMessage
                 });
               } else {
+                this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+                  'saveTerminate', 'Employee Terminated', this._selectedEmployeeForAction.ID.toString(), '', ''); // ActivityLog
                 this.msgSvc.add({
                   key: 'saveSuccess',
                   severity: 'success',
