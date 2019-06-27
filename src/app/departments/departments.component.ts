@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { Departments, Employee } from '../model/objects';
+import { Departments, Employee, PageNames } from '../model/objects';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { CommonService } from '../service/common.service';
 import { DatePipe } from '@angular/common';
 import { OverlayPanel, SortEvent } from 'primeng/primeng';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-departments',
@@ -54,8 +55,10 @@ export class DepartmentsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -85,6 +88,7 @@ export class DepartmentsComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.IsSecure = false;
@@ -154,6 +158,7 @@ export class DepartmentsComponent implements OnInit {
 
   getDepartments() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'getDepartments', 'Get Departments', '', '', ''); // ActivityLog
     this.showReport = false;
     this._recData = 0;
     this.timesysSvc.getDepartments('')
@@ -200,6 +205,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   addDepartment() {
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'addDepartment', 'Add Department', '', '', ''); // ActivityLog
     this._IsEditDepartment = true;
     this._selectedDepartment = {};
     this.resetFormDepartment();
@@ -209,6 +215,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   editDepartment(data: Departments) {
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'editDepartment', 'Edit Department', '', '', JSON.stringify(data)); // ActivityLog
     this._IsEditDepartment = true;
     this._selectedDepartment = new Departments();
     this._selectedDepartment.Id = data.Id;
@@ -224,6 +231,7 @@ export class DepartmentsComponent implements OnInit {
   }
 
   showEmployees(event, dataRow: Departments, overlaypanel: OverlayPanel) {
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'showEmployees', 'Show Employees', '', '', JSON.stringify(dataRow)); // ActivityLog
     this.deptEmployeeHdr = 'Employees associated with department';
     this._deptEmployeePageNo = 0;
     if (this.previousOPs !== undefined && this.previousOPs !== null && this.previousOPs.length > 0) {
@@ -287,6 +295,7 @@ export class DepartmentsComponent implements OnInit {
 
   SaveDepartmentSPCall() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'SaveDepartment', 'Save Department', '', '', JSON.stringify(this._selectedDepartment)); // ActivityLog
     this.timesysSvc.Department_InsertOrUpdate(this._selectedDepartment)
       .subscribe(
         (outputData) => {
@@ -313,7 +322,8 @@ export class DepartmentsComponent implements OnInit {
         });
   }
 
-  deleteDepartment(dataRow: Departments) {
+  deleteDepartment(dataRow: Departments) {    
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'deleteDepartment', 'Delete Department', '', '', JSON.stringify(dataRow)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + dataRow.Name + '?',
       header: 'Confirmation',
