@@ -2,7 +2,8 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewC
 import { TimesystemService } from '../service/timesystem.service';
 import {
   Holidays, Employee,
-  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit, TimeSheetForApproval, DateArray
+  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell,
+  TimeSheetSubmit, TimeSheetForApproval, DateArray, PageNames
 } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -17,6 +18,7 @@ import { DISABLED } from '@angular/forms/src/model';
 import { environment } from 'src/environments/environment';
 import { wrapIntoObservable } from '@angular/router/src/utils/collection';
 import { TableExport } from 'tableexport';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-maintaintimesheet',
@@ -31,7 +33,8 @@ export class MaintaintimesheetComponent implements OnInit {
 
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
-    private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe) { }
+    private logSvc: ActivitylogService, // ActivityLog - Default
+    private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe, ) { }
 
 
   _days = 0;
@@ -105,6 +108,7 @@ export class MaintaintimesheetComponent implements OnInit {
   @ViewChild('dtTimesheet') dtTimesheet: ElementRef;
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet', 'Page', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this._errorMessage = '';
     this._warningMessage = '';
     this.activatedRoute.params.subscribe((params) => {
@@ -1358,6 +1362,8 @@ export class MaintaintimesheetComponent implements OnInit {
       this.timesysSvc.timeSheetInsert(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
         this._timesheetId = +dataNew;
         timeSheetSubmit.timeSheet.Id = this._timesheetId;
+        this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+          , 'Page', 'SaveSPCall', 'Timesheet Created', '', '', this._timesheetId.toString()); // ActivityLog
 
         let timeLineAndTimeCellSaveArr: TimeLineAndTimeCell[];
         timeLineAndTimeCellSaveArr = [];
@@ -1418,6 +1424,8 @@ export class MaintaintimesheetComponent implements OnInit {
                       key: 'saveSuccess', severity: 'success'
                       , summary: 'Info Message', detail: 'Timesheet submitted successfully'
                     });
+                    this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                      , 'Page', 'SaveSPCall', 'Timesheet values submitted', '', '', this._timesheetId.toString()); // ActivityLog
                   } else {
                     this.msgSvc.add({
                       key: 'saveSuccess', severity: 'success'
@@ -1427,6 +1435,8 @@ export class MaintaintimesheetComponent implements OnInit {
                     this.defaultControlsToForm();
                     this.getClientProjectCategoryDropDown(sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId'));
                     this.getTimesheetTimeLineTimeCellDetails();
+                    this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                      , 'Page', 'SaveSPCall', 'Timesheet values Saved', '', '', this._timesheetId.toString()); // ActivityLog
                   }
 
                   this.showSpinner = false;
@@ -1457,23 +1467,31 @@ export class MaintaintimesheetComponent implements OnInit {
                       // tslint:disable-next-line:max-line-length
                       this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
                     });
-                // tslint:disable-next-line:max-line-length
+                this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                  , 'Page', 'SaveSPCall', 'Timesheet values submitted and sent for approval',
+                  '', '', this._timesheetId.toString()); // ActivityLog
               } else {
                 this.timesysSvc.SendEmptyTimesheetToFinance(this._timesheetId.toString()).subscribe(
                   (outputData) => {
                     this._submitMessage = 'Your timesheet has been submitted';
                   });
+                this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                  , 'Page', 'SaveSPCall', 'Timesheet with empty values submitted', '', '', this._timesheetId.toString()); // ActivityLog
               }
               this.msgSvc.add({
                 key: 'saveSuccess', severity: 'success'
                 , summary: 'Info Message', detail: 'Timesheet submitted successfully'
               });
+              this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                , 'Page', 'SaveSPCall', 'Timesheet values submitted', '', '', this._timesheetId.toString()); // ActivityLog
             }
           } else {
             this.msgSvc.add({
               key: 'saveSuccess', severity: 'success'
               , summary: 'Info Message', detail: 'Timesheet saved successfully'
             });
+            this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+              , 'Page', 'SaveSPCall', 'Timesheet values saved', '', '', this._timesheetId.toString()); // ActivityLog
           }
         }
       });
@@ -1528,6 +1546,9 @@ export class MaintaintimesheetComponent implements OnInit {
                           // tslint:disable-next-line:max-line-length
                           this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
                         });
+                    this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                      , 'Page', 'SaveSPCall', 'Timesheet values submitted and sent for approval',
+                      '', '', this._timesheetId.toString()); // ActivityLog
                   } else {
                     this._submitMessage = 'Your timesheet has been submitted';
                   }
@@ -1535,6 +1556,8 @@ export class MaintaintimesheetComponent implements OnInit {
                     key: 'saveSuccess', severity: 'success'
                     , summary: 'Info Message', detail: 'Timesheet submitted successfully'
                   });
+                  this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                    , 'Page', 'SaveSPCall', 'Timesheet values submitted', '', '', this._timesheetId.toString()); // ActivityLog
                 } else {
                   this.msgSvc.add({
                     key: 'saveSuccess', severity: 'success'
@@ -1544,6 +1567,8 @@ export class MaintaintimesheetComponent implements OnInit {
                   this.defaultControlsToForm();
                   this.getClientProjectCategoryDropDown(this._timesheetUserId);
                   this.getTimesheetTimeLineTimeCellDetails();
+                  this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                    , 'Page', 'SaveSPCall', 'Timesheet values saved', '', '', this._timesheetId.toString()); // ActivityLog
                 }
 
                 this.showSpinner = false;
@@ -1572,7 +1597,9 @@ export class MaintaintimesheetComponent implements OnInit {
                       // tslint:disable-next-line:max-line-length
                       this._submitMessage = 'Your timesheet has been submitted for approval to your supervisor: ' + this._supervisor[0].LastName + ', ' + this._supervisor[0].FirstName;
                     });
-                // tslint:disable-next-line:max-line-length
+                this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                  , 'Page', 'SaveSPCall', 'Timesheet values submitted and sent for approval',
+                  '', '', this._timesheetId.toString()); // ActivityLog
               } else {
                 this._submitMessage = 'Your timesheet has been submitted';
               }
@@ -1580,12 +1607,16 @@ export class MaintaintimesheetComponent implements OnInit {
                 key: 'saveSuccess', severity: 'success'
                 , summary: 'Info Message', detail: 'Timesheet submitted successfully'
               });
+              this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                , 'Page', 'SaveSPCall', 'Timesheet values submitted', '', '', this._timesheetId.toString()); // ActivityLog
             }
           } else {
             this.msgSvc.add({
               key: 'saveSuccess', severity: 'success'
               , summary: 'Info Message', detail: 'Timesheet saved successfully'
             });
+            this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+              , 'Page', 'SaveSPCall', 'Timesheet values saved', '', '', this._timesheetId.toString()); // ActivityLog
           }
         });
       }
@@ -1686,6 +1717,9 @@ export class MaintaintimesheetComponent implements OnInit {
           this.timesysSvc.timeSheetApprovalStatusUpdate(timesheet)
             .subscribe(
               (inputTime) => {
+                this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                  , 'Page', 'Approve', 'Timesheet approved', ''
+                  , this._timesheetId.toString(), this._ApprovalId.toString()); // ActivityLog
                 this.showSpinner = false;
                 // tslint:disable-next-line:max-line-length
                 this.router.navigate(['/menu/dashboard/'], { queryParams: { Id: -1 }, skipLocationChange: true });
@@ -1709,6 +1743,9 @@ export class MaintaintimesheetComponent implements OnInit {
           this.timesysSvc.timeSheetApprovalStatusUpdate(timesheet)
             .subscribe(
               (inputTime) => {
+                this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+                  , 'Page', 'Reject', 'Timesheet rejected', ''
+                  , this._timesheetId.toString(), this._ApprovalId.toString()); // ActivityLog
                 this.showSpinner = false;
                 // tslint:disable-next-line:max-line-length
                 this.router.navigate(['/menu/dashboard/'], { queryParams: { Id: -1 }, skipLocationChange: true });
@@ -1746,7 +1783,7 @@ export class MaintaintimesheetComponent implements OnInit {
       this.SaveSPCall(false, type);
     }
   }
-  deleteByType(rowData: any) {
+  deleteByType(rowData: TimeLine) {
     this._errorMessage = '';
     this._errorBlock = '';
     this.confSvc.confirm({
@@ -1767,6 +1804,9 @@ export class MaintaintimesheetComponent implements OnInit {
               this.getClientProjectCategoryDropDown(this._timesheetUserId);
               this.getTimesheetTimeLineTimeCellDetails();
             }
+            this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+              , 'Page', 'deleteByType', 'Timesheet Timeline and Timecell deleted', ''
+              , this._timesheetId.toString(), rowData.Id.toString()); // ActivityLog
           });
       },
       reject: () => {
@@ -1776,6 +1816,9 @@ export class MaintaintimesheetComponent implements OnInit {
   }
 
   exportClick() {
+    this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheet'
+      , 'Page', 'exportClick', 'Timesheet Exported', ''
+      , this._timesheetId.toString(), ''); // ActivityLog
     const sheetName = 'EmployeeTimesheet';
     let exHeader = '';
     exHeader += '"Employee Timesheet"' + '\n';

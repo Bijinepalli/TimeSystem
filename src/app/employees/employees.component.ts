@@ -1336,7 +1336,7 @@ export class EmployeesComponent implements OnInit {
                   detail: outputData.ErrorMessage
                 });
               } else {
-                this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
+                this.logSvc.ActionLog(PageNames.Employees, 'Terminate', 'Section',
                   'saveTerminate', 'Employee Terminated', this._selectedEmployeeForAction.ID.toString(), '', ''); // ActivityLog
                 this.msgSvc.add({
                   key: 'saveSuccess',
@@ -1378,6 +1378,8 @@ export class EmployeesComponent implements OnInit {
                   detail: outputData.ErrorMessage
                 });
               } else {
+                this.logSvc.ActionLog(PageNames.Employees, 'Reset Password', 'Section',
+                  'resetEmployeePassword', 'Employee Password reset', dataRow.ID.toString(), '', ''); // ActivityLog
                 this.SendEmailChangePassword(dataRow.EmailAddress, dataRow.Password);
               }
             },
@@ -1672,6 +1674,26 @@ export class EmployeesComponent implements OnInit {
             });
             this.clearModalControls();
             this.getEmployees();
+            switch (this._popUpHeader) {
+              case 'Non-Billable Item':
+                this.logSvc.ActionLog(PageNames.Employees, 'Non Billable', 'Section',
+                  'saveModalSPCall', 'Non Billable for employees changed'
+                  , this._selectedEmployeeForAction.ID.toString(), '', ''); // ActivityLog
+                break;
+              case 'Project':
+                this.logSvc.ActionLog(PageNames.Employees, 'Projects', 'Section',
+                  'saveModalSPCall', 'Projects for employees changed'
+                  , this._selectedEmployeeForAction.ID.toString(), '', ''); // ActivityLog
+                break;
+              case 'Billing Code':
+                this.logSvc.ActionLog(PageNames.Employees, 'Billing Codes', 'Section',
+                  'saveModalSPCall', 'Billing Codes for employees changed'
+                  , this._selectedEmployeeForAction.ID.toString(), '', ''); // ActivityLog
+                break;
+              default:
+                break;
+            }
+
           }
         },
         (error) => {
@@ -1777,6 +1799,9 @@ export class EmployeesComponent implements OnInit {
             }
             this._frmRate.controls['frmClientName'].setValue(this._clients[0].value);
             this.getCustomerForClient();
+            this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Section',
+              'addNewRate', 'Add New Rate Button Clicked'
+              , this._employeeId.toString(), '', ''); // ActivityLog
           }
         }
       );
@@ -1813,6 +1838,9 @@ export class EmployeesComponent implements OnInit {
                   } else {
                     this.chkrateInactive = false;
                   }
+                  this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Section',
+                    'editRate', 'Edit Rate Button Clicked'
+                    , dataRow.ID.toString(), '', ''); // ActivityLog
                 }
               });
         }
@@ -1846,6 +1874,9 @@ export class EmployeesComponent implements OnInit {
                 });
 
                 this.populateTable();
+                this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Section',
+                  'deleteRate', 'Rate deleted'
+                  , dataRow.ID.toString(), '', ''); // ActivityLog
               }
             },
             (error) => {
@@ -1934,6 +1965,7 @@ export class EmployeesComponent implements OnInit {
     this._selectedRate.Inactive = this.chkrateInactive;
     if (this._IsAddRate === true) {
       this.saveRateSPCall();
+
     } else {
       this.confSvc.confirm({
         header: 'Confirmation',
@@ -1941,6 +1973,7 @@ export class EmployeesComponent implements OnInit {
         message: 'You are retroactively changing a rate. Is this correct?',
         accept: () => {
           this.saveRateSPCall();
+
         }
       });
     }
@@ -1967,6 +2000,9 @@ export class EmployeesComponent implements OnInit {
             this._IsEditRate = false;
             this.resetRateControls();
             this.populateTable();
+            this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Section',
+              'saveRateModal', 'Rate saved'
+              , this._employeeId.toString(), '', ''); // ActivityLog
           }
         }
       );
