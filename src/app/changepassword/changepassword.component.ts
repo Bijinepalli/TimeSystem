@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { Employee, EmailOptions, EmployeePasswordHistory } from '../model/objects';
+import { Employee, EmailOptions, EmployeePasswordHistory, PageNames } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 
 @Component({
@@ -37,6 +38,7 @@ export class ChangepasswordComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     public commonSvc: CommonService,
   ) {
 
@@ -44,6 +46,7 @@ export class ChangepasswordComponent implements OnInit {
 
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.ForgotPassword, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.Initialisations();
   }
 
@@ -102,6 +105,8 @@ export class ChangepasswordComponent implements OnInit {
   }
 
   CancelClick() {
+    this.logSvc.ActionLog(PageNames.ForgotPassword,
+      '', 'Pages/Event', 'CancelClick', 'Cancel Password Change', '', '', ''); // ActivityLog
     this.navigateTo('/login');
   }
 
@@ -134,6 +139,8 @@ export class ChangepasswordComponent implements OnInit {
     employee.ID = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     employee.CreatedBy = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     employee.Password = this.currentFormControls.password.value;
+    this.logSvc.ActionLog(PageNames.ForgotPassword,
+      '', 'Pages/Event', 'UpdatePassword', 'Update Password', '', '', JSON.stringify(employee)); // ActivityLog
     this.timesysSvc.Employee_UpdatePassword(employee).subscribe(_employee => {
       this.SendEmailChangePassword(this.currentFormControls.password.value);
     });

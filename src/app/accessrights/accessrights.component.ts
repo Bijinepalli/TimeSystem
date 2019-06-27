@@ -70,7 +70,7 @@ export class AccessrightsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.logSvc.ActionLog(PageNames.Configuration, 'Page Settings', 'Fine', 'OnInit', 'Initialisation', '',
+    this.logSvc.ActionLog(PageNames.Configuration, 'Page Settings', 'Pages', 'OnInit', 'Initialisation', '',
       '{"PhysicalPath":"app/accessrights"}', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
@@ -251,6 +251,8 @@ export class AccessrightsComponent implements OnInit {
         allSelections.push(_selectedPage);
       }
     }
+    this.logSvc.ActionLog(PageNames.Configuration,
+      'Page Settings', 'Pages/Event', 'savePages', 'Save Pages', '', '{"PhysicalPath":"app/accessrights"}', JSON.stringify(allSelections)); // ActivityLog
 
     this.timesysSvc.InsertAccessRights(allSelections)
       .subscribe(

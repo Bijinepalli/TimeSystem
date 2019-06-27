@@ -5,8 +5,9 @@ import { FormBuilder, FormGroup, Validators, FormControl, ReactiveFormsModule, A
 import { DatePipe, DecimalPipe } from '@angular/common';
 import { TimesystemService } from '../service/timesystem.service';
 import { CommonService } from '../service/common.service';
-import { TimeSheet } from '../model/objects';
+import { TimeSheet, PageNames } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-rollbillingcodes',
@@ -17,6 +18,7 @@ export class RollbillingcodesComponent implements OnInit {
   _NonBillSelect = false;
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private fb: FormBuilder, public commonSvc: CommonService) { }
 
   _showRoll = false;
@@ -31,10 +33,9 @@ export class RollbillingcodesComponent implements OnInit {
     // const jsonDate = '/Date(1517855400000+0530)/ ';
     // const onlyDate = +(jsonDate.match(/\d+/)[0]);
     // const getDate = new Date(onlyDate);
+    this.logSvc.ActionLog(PageNames.RollBillingCodes, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.addDefaultControlsToForm();
     const todayDate = new Date('2019-01-19');
-    console.log(todayDate);
-    console.log(todayDate.getMonth());
     this._upComingYear = todayDate.getMonth() === 11 ? (todayDate.getFullYear() + 1).toString() : todayDate.getFullYear().toString();
     this._priorYear = todayDate.getMonth() === 11 ? todayDate.getFullYear().toString() : (todayDate.getFullYear() - 1).toString();
     if ((todayDate.getMonth() === 11 && todayDate.getDate() > 15) || todayDate.getMonth() === 0) {
