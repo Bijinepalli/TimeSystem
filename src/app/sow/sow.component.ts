@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { SelectItem, SortEvent } from 'primeng/api';
-import { SOW } from '../model/objects';
+import { SOW, PageNames } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -11,6 +11,7 @@ import { DatePipe, JsonPipe } from '@angular/common';
 import { Table } from 'primeng/table';
 import { CurrencyConverterPipe } from '../sharedpipes/currencycoverter.pipe';
 import { FileUpload } from 'primeng/primeng';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-sow',
@@ -69,6 +70,7 @@ export class SowComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
     private datepipe: DatePipe,
     private currencyConverter: CurrencyConverterPipe,
@@ -98,6 +100,7 @@ export class SowComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.isIEOrEdge = /msie\s|trident\/|edge\//i.test(window.navigator.userAgent);
@@ -218,6 +221,7 @@ export class SowComponent implements OnInit {
 
   getSOWs() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages/Events', 'getSOWs', 'Get SOWs', '', '', ''); // ActivityLog
     this.showReport = false;
     this._SOWs = [];
     this._recData = 0;
@@ -307,12 +311,14 @@ export class SowComponent implements OnInit {
 
 
   addSOW() {
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages/Events', 'addSOW', 'Add SOW', '', '', ''); // ActivityLog
     this._IsEdit = false;
     this.sowHdr = 'Add New SOW';
     this.GetCustomersAndFiles({});
   }
 
   editSOW(data: SOW) {
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages/Events', 'editSOW', 'Edit SOW', '', '', JSON.stringify(data)); // ActivityLog
     this._IsEdit = true;
     this.sowHdr = 'Edit SOW';
     this.GetCustomersAndFiles(data);
@@ -594,6 +600,7 @@ export class SowComponent implements OnInit {
 
   SaveSOWSPCall() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages/Events', 'saveSOW', 'Save SOW', '', '', JSON.stringify(this._selectedSOW)); // ActivityLog
     this.timesysSvc.SOW_InsertOrUpdate(this._selectedSOW)
       .subscribe(
         (outputData) => {
@@ -617,6 +624,7 @@ export class SowComponent implements OnInit {
         });
   }
   deleteSOW(dataRow: SOW) {
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages/Events', 'deleteSOW', 'Delete SOW', '', '', JSON.stringify(dataRow)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + dataRow.SOWName + '?',
       header: 'Confirmation',
@@ -767,6 +775,11 @@ export class SowComponent implements OnInit {
     uploadData.append('SOWFile' + i, this.selectedFile[i], this.selectedFile[i].name);
     // }
     const SelectedFileName = this.selectedFile[i].name;
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      SelectedFileName: SelectedFileName,
+    }
+    this.logSvc.ActionLog(PageNames.SOW, '', 'Pages/Events', 'uploadFile', 'Upload File', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.uploadFileToServer(uploadData).subscribe((result) => {
       this.showSpinner = false;
       this._selectedSOW.SOWFileName = SelectedFileName;
