@@ -241,9 +241,9 @@
           <div class="ui-g-12 ui-md-12 ui-lg-12">
             SOW File <span class="mandatoryStar" *ngIf="_isFilesRequired">* </span><br>
             <div style="height:5px"></div>
-            <div *ngIf="isIEOrEdge" style="color:red">
+            <!-- <div *ngIf="isIEOrEdge" style="color:red">
               Note: Attachments not supported in EDGE, Please choose Chrome to add the files.
-            </div>
+            </div> -->
             <p-listbox appendTo="body" [options]="_SOWFileNames" filter="true" formControlName="frmSOWFileName"
               [style]="{'width':'99%'}" [listStyle]="{'max-height':'460px'}" (onChange)="removeUploadFiles()">
               <p-header>
@@ -252,7 +252,8 @@
                   Available SOW Files
                 </div>
                 <div style="float:right;">
-                  <p-fileUpload #fupSOWFile *ngIf="!isIEOrEdge" (onSelect)="onSelectFiles($event.files)"
+                <!-- *ngIf="!isIEOrEdge"  -->
+                  <p-fileUpload #fupSOWFile (onSelect)="onSelectFiles($event.files)"
                     multiple="false" mode="basic" maxFileSize="10000000" [showUploadButton]="false"
                     [showCancelButton]="false" (onRemove)="onRemoveFile($event)" accept=".pdf" customUpload="true"
                     (uploadHandler)="uploadFile($event)" auto="true" chooseLabel="Add">
