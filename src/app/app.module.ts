@@ -112,12 +112,9 @@ import { EmployeeclienttimesheetsComponent } from './reports/employeeclienttimes
 import { SowutilizationreportComponent } from './reports/sowutilizationreport/sowutilizationreport.component';
 import { SowmonthlyutilizationreportComponent } from './reports/sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 import { SowtotalreportComponent } from './reports/sowtotalreport/sowtotalreport.component';
-<<<<<<< HEAD
 import { ActivitylogreportComponent } from './reports/activitylogreport/activitylogreport.component';
-=======
 // import { TreeNode } from '@angular/router/src/utils/tree';
 // import { TreeNode } from '@angular/api';
->>>>>>> 38792e3a18a8e454f126e2b1fb74ff90d5b0ee3f
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
