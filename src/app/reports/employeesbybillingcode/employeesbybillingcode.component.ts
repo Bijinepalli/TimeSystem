@@ -153,13 +153,13 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       { label: 'Non-Billable', value: 2 }
     ];
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '120px' },
-      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '200px' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-      { field: 'Salaried', header: 'Salaried', align: 'center', width: '120px' },
+      { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+      { field: 'Key', header: 'Code', align: 'left', width: '15em' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '8em' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '10em' },
     ];
     this.selectedType = 0;
     this.selectedBillingType = 0;
@@ -173,7 +173,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       selectedType: this.selectedType,
       selectedBillingType: this.selectedBillingType,
     }
-    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 
+    'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
