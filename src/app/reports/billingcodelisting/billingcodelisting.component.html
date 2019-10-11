@@ -18,14 +18,14 @@
         <label class="label">Select:</label>
       </div>
       <div class="ui-g-3 ui-sm-12 ui-md-3 ui-lg-3">
-          <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
-        </div>
+        <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
+      </div>
       <div class="ui-g-3 ui-sm-12 ui-md-2 ui-lg-3">
         <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div>
         <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom"
           class="ui-button-info" label="Generate Report" (click)=generateReport()></button>
       </div>
@@ -55,15 +55,15 @@
           </div>
         </div>-->
         <div class="ui-g recordsBar">
-            <div class="ui-g-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
-              <input type="text" pInputText placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
-            </div>
-            <div class="ui-g-1 ui-sm-12" style="text-align: left;">
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
+          <div class="ui-g-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+          <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+            <input type="text" pInputText placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
           </div>
+          <div class="ui-g-1 ui-sm-12" style="text-align: left;">
+            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+          </div>
+        </div>
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
