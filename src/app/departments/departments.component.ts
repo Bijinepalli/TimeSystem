@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Departments, Employee, PageNames } from '../model/objects';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,15 +9,23 @@ import { DatePipe } from '@angular/common';
 import { OverlayPanel, SortEvent } from 'primeng/primeng';
 import { environment } from 'src/environments/environment';
 import { ActivitylogService } from '../service/activitylog.service';
+import { TreeNode } from 'primeng/api';
+
+
+
 
 @Component({
   selector: 'app-departments',
   templateUrl: './departments.component.html',
   styleUrls: ['./departments.component.css'],
-  providers: [DatePipe]
+  providers: [DatePipe],
+  encapsulation: ViewEncapsulation.None,
 })
-export class DepartmentsComponent implements OnInit {
 
+
+
+export class DepartmentsComponent implements OnInit {
+  mailBody: string;
   ParamSubscribe: any;
 
   cols: any;
@@ -34,6 +42,8 @@ export class DepartmentsComponent implements OnInit {
   departmentDialog = false;
   _selectedDepartment: Departments;
 
+  mailDialog = false;
+
   empcols: any;
   _recDataEmp: any;
   _deptEmployeesList: Employee[] = [];
@@ -45,6 +55,12 @@ export class DepartmentsComponent implements OnInit {
   showReport: boolean;
 
   previousOPs: any[] = [];
+
+  files: TreeNode[];
+  maxDate: Date;
+  invalidDate: Date;
+  invalidDates: any[];
+
 
 
   /* #region Constructor */
@@ -87,6 +103,13 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.maxDate = new Date();
+
+    const invalidDate = new Date();
+    invalidDate.setDate(this.maxDate.getDate() - 1);
+    this.invalidDates = [this.maxDate, invalidDate];
+    console.log(this.invalidDates);
+
     this.showSpinner = true;
     this.logSvc.ActionLog(PageNames.Departments, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
@@ -99,6 +122,7 @@ export class DepartmentsComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
+
   }
   /* #endregion */
 
@@ -155,6 +179,7 @@ export class DepartmentsComponent implements OnInit {
   GetMethods() {
     this.getDepartments();
   }
+
 
   getDepartments() {
     this.showSpinner = true;
@@ -214,8 +239,11 @@ export class DepartmentsComponent implements OnInit {
     this.departmentDialog = true;
   }
 
+
+
   editDepartment(data: Departments) {
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'editDepartment', 'Edit Department', '', '', JSON.stringify(data)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'editDepartment', 'Edit Department', '', 
+    '', JSON.stringify(data)); // ActivityLog
     this._IsEditDepartment = true;
     this._selectedDepartment = new Departments();
     this._selectedDepartment.Id = data.Id;
@@ -231,7 +259,8 @@ export class DepartmentsComponent implements OnInit {
   }
 
   showEmployees(event, dataRow: Departments, overlaypanel: OverlayPanel) {
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'showEmployees', 'Show Employees', '', '', JSON.stringify(dataRow)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'showEmployees', 'Show Employees', '', 
+    '', JSON.stringify(dataRow)); // ActivityLog
     this.deptEmployeeHdr = 'Employees associated with department';
     this._deptEmployeePageNo = 0;
     if (this.previousOPs !== undefined && this.previousOPs !== null && this.previousOPs.length > 0) {
@@ -295,7 +324,8 @@ export class DepartmentsComponent implements OnInit {
 
   SaveDepartmentSPCall() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'SaveDepartment', 'Save Department', '', '', JSON.stringify(this._selectedDepartment)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'SaveDepartment', 'Save Department', 
+    '', '', JSON.stringify(this._selectedDepartment)); // ActivityLog
     this.timesysSvc.Department_InsertOrUpdate(this._selectedDepartment)
       .subscribe(
         (outputData) => {
@@ -322,8 +352,9 @@ export class DepartmentsComponent implements OnInit {
         });
   }
 
-  deleteDepartment(dataRow: Departments) {    
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'deleteDepartment', 'Delete Department', '', '', JSON.stringify(dataRow)); // ActivityLog
+  deleteDepartment(dataRow: Departments) {
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'deleteDepartment', 'Delete Department', '', 
+    '', JSON.stringify(dataRow)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + dataRow.Name + '?',
       header: 'Confirmation',
@@ -365,4 +396,10 @@ export class DepartmentsComponent implements OnInit {
   customSort(event: SortEvent) {
     this.commonSvc.customSortByCols(event, [], ['EmployeesCount']);
   }
+
+
+
+
+
+
 }
