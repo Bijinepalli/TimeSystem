@@ -145,7 +145,8 @@ export class BillingcodelistingComponent implements OnInit {
       selectedBillingType: this.selectedBillingType.toString(),
       selectedType: this.selectedType.toString(),
     }
-    this.logSvc.ActionLog(PageNames.ListBillingCodes, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.ListBillingCodes, '', 'Reports/Event', 'generateReport', 'Generate Report', '',
+     '', JSON.stringify(ActivityParams)); // ActivityLog
     if (this.selectedType.toString() === '2') {
       mode = '';
     } else {
@@ -188,27 +189,33 @@ export class BillingcodelistingComponent implements OnInit {
     this.cols = [];
     if (type === '0') {
       this.cols = [
-        { field: 'Key', header: 'Code', align: 'left', width: '200px' },
+        /*{ field: 'Key', header: 'Code', align: 'left', width: '200px' },
         { field: 'ClientName', header: 'Name', align: 'left', width: 'auto' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
         { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
-        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
+        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },*/
+        { field: 'Key', header: 'Code', align: 'left', width: '20em' },
+        { field: 'ClientName', header: 'Name', align: 'left', width: '20em' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '15em' },
+        { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '10em' },
+        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '25em' },
       ];
     } else if (type === '1') {
       this.cols = [
-        { field: 'Key', header: 'Code', align: 'left', width: '200px' },
-        { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
-        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },
+        { field: 'Key', header: 'Code', align: 'left', width: '20em' },
+        { field: 'ProjectName', header: 'Name', align: 'left', width: '30em' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '15em' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '15em' },
+        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '20em' },
       ];
     } else if (type === '2') {
       this.cols = [
-        { field: 'Key', header: 'Code', align: 'left', width: '200px' },
-        { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '150px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
+        { field: 'Key', header: 'Code', align: 'left', width: '20em' },
+        { field: 'ProjectName', header: 'Name', align: 'left', width: '55em' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '15em' },
       ];
     }
     this._sortArray = ['Key', 'ClientName', 'Inactive', 'CreatedOnSearch', 'BillingCycle', 'CompanyName', 'ProjectName'];

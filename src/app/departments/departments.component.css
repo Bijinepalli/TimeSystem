@@ -1,24 +1,2 @@
-@media print{
-    .doNotPrint{display:none !important;}
-  }
 
-
-    .fa fa-file-word-o:before {
-        color: green;
-    } 
-
-    .leaf-style {
-        color: blue;
-      }
-      
-      .no-leaf-style {
-        color: red;
-      }
-
-      .ui-datepicker-sunday .ui-state-default {
-        color: red;
-    }
-    .ui-datepicker-saturday .ui-state-default {
-        color: blue;
-    }
       
