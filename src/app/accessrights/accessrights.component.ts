@@ -251,6 +251,8 @@ export class AccessrightsComponent implements OnInit {
         allSelections.push(_selectedPage);
       }
     }
+    this.logSvc.ActionLog(PageNames.Configuration,
+      '', 'Admin/Event', 'savePages', 'Save Pages', '', '', JSON.stringify(allSelections)); // ActivityLog
 
     this.timesysSvc.InsertAccessRights(allSelections)
       .subscribe(

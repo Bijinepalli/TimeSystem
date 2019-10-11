@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { Projects, DrpList } from '../model/objects';
+import { Projects, DrpList, PageNames } from '../model/objects';
 import { BillingCode } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -9,6 +9,7 @@ import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-projects',
@@ -51,6 +52,7 @@ export class ProjectsComponent implements OnInit {
     private confSvc: ConfirmationService,
     public commonSvc: CommonService,
     private route: ActivatedRoute,
+    private logSvc: ActivitylogService, // ActivityLog - Default
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -78,6 +80,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Projects, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -234,6 +237,8 @@ export class ProjectsComponent implements OnInit {
     this.chkInactive = false;
     this._selectedProject = {};
     this.resetForm();
+    this.logSvc.ActionLog(PageNames.Projects,
+      '', 'Admin/Event', 'addProject', 'Add Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
     this.setDataToControls(this._selectedProject);
     this.projectHdr = 'Add New Project';
     this.projectDialog = true;
@@ -250,6 +255,8 @@ export class ProjectsComponent implements OnInit {
     this._selectedProject.Inactive = data.Inactive;
     this._selectedProject.CreatedOn = data.CreatedOn;
     this.resetForm();
+    this.logSvc.ActionLog(PageNames.Projects,
+      '', 'Admin/Event', 'editProject', 'Edit Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
     this.setDataToControls(this._selectedProject);
     this.projectHdr = 'Edit Project';
     this.projectDialog = true;
@@ -466,6 +473,8 @@ export class ProjectsComponent implements OnInit {
 
   SaveProjectSPCall() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Projects,
+      '', 'Admin/Event', 'SaveProjectSPCall', 'Save Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
     this.timesysSvc.Project_InsertOrUpdate(this._selectedProject)
       .subscribe(
         (outputData) => {
@@ -499,6 +508,8 @@ export class ProjectsComponent implements OnInit {
       accept: () => {
         /* do nothing */
         this.showSpinner = true;
+        this.logSvc.ActionLog(PageNames.Projects,
+          '', 'Admin/Event', 'deleteProject', 'Delete Project', '', '', JSON.stringify(data)); // ActivityLog
         this.timesysSvc.Project_Delete(data)
           .subscribe(
             (outputData) => {

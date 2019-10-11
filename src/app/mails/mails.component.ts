@@ -3,10 +3,11 @@ import { TimesystemService } from '../service/timesystem.service';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Email } from '../model/objects';
+import { Email, PageNames } from '../model/objects';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 @Component({
   selector: 'app-mails',
   templateUrl: './mails.component.html',
@@ -43,6 +44,7 @@ export class MailsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
@@ -71,6 +73,7 @@ export class MailsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Emails, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -171,6 +174,8 @@ export class MailsComponent implements OnInit {
     this._IsEdit = false;
     this._selectedEmail = {};
     this.resetForm();
+    this.logSvc.ActionLog(PageNames.Emails,
+      '', 'Admin/Event', 'addEmail', 'Add Email', '', '', JSON.stringify(this._selectedEmail)); // ActivityLog
     this.setDataToControls(this._selectedEmail);
     this.emailHdr = 'Add New Email';
     this.emailDialog = true;
@@ -190,6 +195,8 @@ export class MailsComponent implements OnInit {
     this._selectedEmail.Subject = data.Subject;
     this._selectedEmail.SubjectIsTemplate = data.SubjectIsTemplate;
     this.resetForm();
+    this.logSvc.ActionLog(PageNames.Emails,
+      '', 'Admin/Event', 'editEmail', 'Edit Email', '', '', JSON.stringify(this._selectedEmail)); // ActivityLog
     this.setDataToControls(this._selectedEmail);
     this.emailHdr = 'Edit Email';
     this.emailDialog = true;
@@ -255,7 +262,8 @@ export class MailsComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        /* do nothing */
+        this.logSvc.ActionLog(PageNames.Emails,
+          '', 'Reports/Event', 'deleteEmail', 'Delete Email', '', '', JSON.stringify(dataRow)); // ActivityLog
         this.timesysSvc.Email_Delete(dataRow)
           .subscribe(
             (outputData) => {
@@ -293,6 +301,8 @@ export class MailsComponent implements OnInit {
     this._selectedEmail.SubjectIsTemplate = this.chkIsSubjectTemplate;
     this._selectedEmail.BodyIsTemplate = this.chkIsBodyTemplate;
     this._selectedEmail.AddSignature = this.chkIsDefaultSignature;
+    this.logSvc.ActionLog(PageNames.Emails,
+      '', 'Admin/Event', 'SaveEmailSPCall', 'Save Email', '', '', JSON.stringify(this._selectedEmail)); // ActivityLog
     this.timesysSvc.Email_InsertOrUpdate(this._selectedEmail)
       .subscribe(
         (outputData) => {

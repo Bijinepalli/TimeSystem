@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { NonBillables, DrpList } from '../model/objects';
+import { NonBillables, DrpList, PageNames } from '../model/objects';
 import { BillingCode } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DatePipe } from '@angular/common';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-nonbillables',
@@ -46,6 +47,7 @@ export class NonbillablesComponent implements OnInit {
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     public commonSvc: CommonService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     public datepipe: DatePipe
   ) {
     this.CheckActiveSession();
@@ -73,6 +75,7 @@ export class NonbillablesComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -228,6 +231,8 @@ export class NonbillablesComponent implements OnInit {
     this._selectedNonBillable = {};
     this.chkInactive = false;
     this.resetForm();
+    this.logSvc.ActionLog(PageNames.NonBillables,
+      '', 'Admin/Event', 'addNonBillable', 'Add Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
     this.setDataToControls(this._selectedNonBillable);
     this.nonBillableHdr = 'Add New Non-Billable Item';
     this.nonBillableDialog = true;
@@ -243,6 +248,8 @@ export class NonbillablesComponent implements OnInit {
     this._selectedNonBillable.CreatedOn = data.CreatedOn;
     this.chkInactive = false;
     this.resetForm();
+    this.logSvc.ActionLog(PageNames.NonBillables,
+      '', 'Admin/Event', 'editNonBillable', 'Edit Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
     this.setDataToControls(this._selectedNonBillable);
     this.nonBillableHdr = 'Edit Non-Billable Item';
     this.nonBillableDialog = true;
@@ -383,7 +390,8 @@ export class NonbillablesComponent implements OnInit {
 
   SaveNonBillableSPCall() {
     this.showSpinner = true;
-    console.log(this._selectedNonBillable);
+    this.logSvc.ActionLog(PageNames.NonBillables,
+      '', 'Admin/Event', 'SaveNonBillableSPCall', 'Save Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
     this.timesysSvc.NonBillable_InsertOrUpdate(this._selectedNonBillable)
       .subscribe(
         (outputData) => {
@@ -420,7 +428,8 @@ export class NonbillablesComponent implements OnInit {
       header: 'Confirmation',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        /* do nothing */
+        this.logSvc.ActionLog(PageNames.NonBillables,
+          '', 'Admin/Event', 'deleteNonBillable', 'Delete Non-Billable', '', '', JSON.stringify(data)); // ActivityLog
         this.timesysSvc.NonBillable_Delete(data)
           .subscribe(
             (outputData) => {

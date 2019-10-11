@@ -3,11 +3,13 @@ import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { AppSettings } from '../model/objects';
+import { AppSettings, PageNames } from '../model/objects';
 import { checkAndUpdateBinding } from '@angular/core/src/view/util';
 import { DatePipe } from '@angular/common';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
+
 @Component({
   selector: 'app-appsettings',
   templateUrl: './appsettings.component.html',
@@ -28,6 +30,7 @@ export class AppsettingsComponent implements OnInit {
   appSettingsFormGroup = new FormGroup({});
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -63,6 +66,8 @@ export class AppsettingsComponent implements OnInit {
   ngOnInit() {
     this.showSpinner = true;
     this.IsSecure = false;
+    this.logSvc.ActionLog(PageNames.Configuration,
+      '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
@@ -180,6 +185,8 @@ export class AppsettingsComponent implements OnInit {
 
       this._appsettingInsert.push(appsettings);
     }
+    this.logSvc.ActionLog(PageNames.Configuration,
+      '', 'Admin/Event', 'onSubmit', 'On Save', '', '', JSON.stringify(this._appsettingInsert)); // ActivityLog
     this.timesysSvc.updateAppSettings(this._appsettingInsert).subscribe(data => {
       this.showSpinner = false;
       if (data != null && data[0].Id > 0) {
