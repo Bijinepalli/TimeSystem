@@ -159,9 +159,9 @@ export class DepartmentsComponent implements OnInit {
   Initialisations() {
     this.showSpinner = true;
     this.cols = [
-      { field: 'Name', header: 'Department Name', align: 'left', width: '250px' },
-      { field: 'Description', header: 'Description', align: 'left', width: 'auto' },
-      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: 'auto' },
+      { field: 'Name', header: 'Department Name', align: 'left', width: '25em' },
+      { field: 'Description', header: 'Description', align: 'left', width: '25em' },
+      { field: 'EmployeesCount', header: 'Employees Associated', align: 'right', width: '15em' },
     ];
     this.empcols = [
       { field: 'Name', header: 'Employee Name', align: 'left', width: '150px' },
