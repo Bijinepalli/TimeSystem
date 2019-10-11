@@ -157,3 +157,19 @@
 .TotalsDisabled:hover {
   border: 1px solid #a6a6a6;
 }
+@media screen and (max-width: 1400px) {
+  .displayTimeSheet {
+    display: none;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .nodisplayTimeSheet {
+    display: none;
+  }
+}
+.positionMiddle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
