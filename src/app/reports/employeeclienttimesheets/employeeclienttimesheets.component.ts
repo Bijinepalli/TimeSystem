@@ -5,8 +5,9 @@ import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
-import { TimeSheet, PeriodEndWithKeys } from 'src/app/model/objects';
+import { TimeSheet, PeriodEndWithKeys, PageNames } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-employeeclienttimesheets',
@@ -43,6 +44,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -77,6 +79,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.BillingCodeTimesheets, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -276,7 +279,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
       _PeriodEndWithKeys.PeriodEnd = this.selectedPeriodEnd;
       _PeriodEndWithKeys.EmailAddress = sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserEmailAddress');
       // 'Ramesh.Rao@Ebix.com'; // Logged in user email address
-
+      this.logSvc.ActionLog(PageNames.BillingCodeTimesheets, '', 'Reports/Event', 'GetTimesheets', (mode === 0) ? 'Generate Report' : 'Send Timesheet Mail', '', '', JSON.stringify(_PeriodEndWithKeys)); // ActivityLog
       if (mode === 0) {
         this.showSpinner = true;
         this.timesysSvc.GetTimesheetsForEmployees(_PeriodEndWithKeys).subscribe(
@@ -313,6 +316,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
                 summary: 'Error!',
                 detail: Errors,
               });
+              this.logSvc.ActionLog(PageNames.BillingCodeTimesheets, '', 'Reports/Event', 'GetTimesheets', 'Send Timesheet Mail', '', '', '"Errors":"' + Errors + '"'); // ActivityLog
             } else {
               this.msgSvc.add({
                 key: 'saveSuccess',

@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, Employee } from 'src/app/model/objects';
+import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, Employee, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-employeetimesheets',
@@ -45,6 +46,7 @@ export class EmployeetimesheetsComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -79,6 +81,7 @@ export class EmployeetimesheetsComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.EmployeeTimesheets, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -154,10 +157,16 @@ export class EmployeetimesheetsComponent implements OnInit {
     ];
     this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours'];
   }
-  getEmployees() {
+  showBillingCodes() {
     this.showSpinner = true;
     this.codes = [];
     this.selectedCode = '';
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      selectedhoursType: this.selectedhoursType,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeTimesheets, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
       (data) => {
         this._employee = [];
@@ -191,6 +200,11 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.resetSort();
     const Mode = '0';
     this.selectedEmployeeName = this.codes.find(m => m.value === this.selectedCode).label.toString();
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedCode: this.selectedCode,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeTimesheets, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getEmployeeTimeSheetList(this.selectedCode.toString(), Mode)
       .subscribe(
         (data) => {

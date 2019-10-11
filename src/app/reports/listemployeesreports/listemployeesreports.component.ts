@@ -4,11 +4,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators, FormBuilder } from '@angular/forms';
-import { Employee, NonBillables, Projects, Clients } from '../../model/objects';
+import { Employee, NonBillables, Projects, Clients, PageNames } from '../../model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-listemployeesreports',
@@ -47,6 +48,7 @@ export class ListemployeesreportsComponent implements OnInit {
   _sortArray: string[];
 
   constructor(private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -78,6 +80,7 @@ export class ListemployeesreportsComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.ListEmployees, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.IsSecure = false;
@@ -214,6 +217,19 @@ export class ListemployeesreportsComponent implements OnInit {
     if (this._endDate !== undefined && this._endDate !== null && this._endDate.toString() !== '') {
       _end = this.datePipe.transform(this._endDate, this._DateFormat);
     }
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      statusselected: this._statusselected.toString(),
+      Ipayselected: this._Ipayselected.toString(),
+      paidselected: this._paidselected.toString(),
+      timesheetsselected: this._timesheetsselected.toString(),
+      holidaysselected: this._holidaysselected.toString(),
+      startDate: _start.toString(),
+      endDate: _end.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.ListEmployees,
+      '', 'Reports/Event', 'getEmployeesForReport', 'Get Employees For Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.getEmployeesForReport(this._statusselected, this._Ipayselected, this._paidselected,
       this._timesheetsselected, this._holidaysselected, _start, _end)
       .subscribe(

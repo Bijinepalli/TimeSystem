@@ -1,13 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { BillingCodes } from 'src/app/model/objects';
+import { BillingCodes, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { SortEvent } from 'primeng/api';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-revenuereport',
@@ -41,6 +42,7 @@ export class RevenuereportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
@@ -80,6 +82,7 @@ export class RevenuereportComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.RevenueReport, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -163,6 +166,13 @@ export class RevenuereportComponent implements OnInit {
     startDate = this.datePipe.transform(new Date(startDate), 'yyyy-MM-dd');
     let endDate = this._frm.controls['_endDateSelect'].value.toString().trim();
     endDate = this.datePipe.transform(new Date(endDate), 'yyyy-MM-dd');
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      startDate: startDate.toString(),
+      endDate: endDate.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.RevenueReport,
+      '', 'Reports/Event', 'showRevenueReport', 'Show Revenue Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.timesysSvc.getRevenueReports(startDate, endDate)
       .subscribe(

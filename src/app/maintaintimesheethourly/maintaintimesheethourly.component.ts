@@ -2,7 +2,7 @@ import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewC
 import { TimesystemService } from '../service/timesystem.service';
 import {
   Holidays, Employee,
-  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit, TimeSheetForApproval, DateArray
+  TimeSheetBinding, TimeSheet, TimeLine, TimeCell, TimePeriods, TimeLineAndTimeCell, TimeSheetSubmit, TimeSheetForApproval, DateArray, PageNames
 } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -16,6 +16,7 @@ import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { DISABLED } from '@angular/forms/src/model';
 import { environment } from 'src/environments/environment';
 import { wrapIntoObservable } from '@angular/router/src/utils/collection';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-maintaintimesheethourly',
@@ -47,12 +48,14 @@ export class MaintaintimesheethourlyComponent implements OnInit {
   _submitMessage = '';
   constructor(private timesysSvc: TimesystemService, private router: Router, private msgSvc: MessageService,
     private confSvc: ConfirmationService, private activatedRoute: ActivatedRoute,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private fb: FormBuilder, private datePipe: DatePipe, private decimal: DecimalPipe) { }
   _errorMessage = '';
   _errorBlock = '';
   timeSheetForm = new FormGroup({});
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheetHourly', 'Page', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this._errorMessage = '';
     this.activatedRoute.params.subscribe((params) => {
       this._timesheetId = params['id'] === undefined ? -1 : params['id'];
@@ -104,6 +107,8 @@ export class MaintaintimesheethourlyComponent implements OnInit {
             this._submitMessage = 'Your timesheet has been submitted';
             this.showSpinner = false;
           });
+        this.logSvc.ActionLog(PageNames.Timesheets, 'MaintainTimesheetHourly',
+          'Page', 'Submit', 'Timesheet Submit', this._timesheetId, '', ''); // ActivityLog
       });
     } else {
       this.showSpinner = false;

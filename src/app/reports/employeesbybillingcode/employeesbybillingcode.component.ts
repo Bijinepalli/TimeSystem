@@ -3,10 +3,11 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { Clients, Projects, NonBillables, BillingCodesSpecial } from 'src/app/model/objects';
+import { Clients, Projects, NonBillables, BillingCodesSpecial, PageNames } from 'src/app/model/objects';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-employeesbybillingcode',
@@ -44,6 +45,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -77,6 +79,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -165,6 +168,12 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   }
   showBillingCodes() {
     this.showSpinner = true;
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      selectedBillingType: this.selectedBillingType,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
@@ -255,6 +264,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       }
       this._billingCodesSpecial.codeStatus = this.selectedType.toString();
       this._billingCodesSpecial.relStatus = this.selectedassignStatus.toString();
+      this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       if (this.selectedBillingType === 0) {
         // tslint:disable-next-line:max-line-length
         this.timesysSvc.listAllClientItemsForBillingCodesPost(this._billingCodesSpecial).subscribe(

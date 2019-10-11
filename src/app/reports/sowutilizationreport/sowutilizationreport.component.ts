@@ -6,9 +6,10 @@ import { SelectItem } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
 import { Table } from 'primeng/table';
-import { SOWUtilizationReport, SOWDetails, SOW, SOWAnalysis } from 'src/app/model/objects';
+import { SOWUtilizationReport, SOWDetails, SOW, SOWAnalysis, PageNames } from 'src/app/model/objects';
 import { TableExport } from 'tableexport';
 import { DatePipe } from '@angular/common';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 @Component({
   selector: 'app-sowutilizationreport',
   templateUrl: './sowutilizationreport.component.html',
@@ -86,6 +87,7 @@ export class SowutilizationreportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -118,6 +120,7 @@ export class SowutilizationreportComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.routeParamSubscribe = this.route.params.subscribe(rparams => {
@@ -323,6 +326,13 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstEmployees = [];
     this.lstDetails = [];
     this.lstSOWAnalysis = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedSOW: this._selectedSOW.toString()
+    };
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
     this.timesysSvc.GetSOWUtilizationReport(this._selectedSOW.toString()).subscribe((data) => {
       this.showTable(data);
     });
@@ -518,8 +528,6 @@ export class SowutilizationreportComponent implements OnInit {
 
     this.ShowGraph = false;
     this.hoursByTeamChartData = { labels: [], datasets: [] };
-
-
     const labels = [];
     if (this._selectedType === '0' || this._selectedType === '2') {
       for (let weekCnt = 0; weekCnt < this.lstMonths.length; weekCnt++) {
@@ -620,6 +628,12 @@ export class SowutilizationreportComponent implements OnInit {
   }
 
   ShowGraphDialog() {
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this._selectedType.toString(),
+    };
+    this.logSvc.ActionLog(PageNames.SOWUtilizationReport,
+      '', 'Reports/Event', 'ShowGraphDialog', 'Show Graph Dialog', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.graphDialog = true;
     this.BuildGraph();
   }

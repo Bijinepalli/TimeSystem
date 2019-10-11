@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes, Employee } from 'src/app/model/objects';
+import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes, Employee, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-employeehours',
@@ -46,6 +47,7 @@ export class EmployeehoursComponent implements OnInit {
   @ViewChild('dt') dt: Table;
 
   constructor(private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -77,6 +79,7 @@ export class EmployeehoursComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -162,6 +165,12 @@ export class EmployeehoursComponent implements OnInit {
 
   showBillingCodes() {
     this.showSpinner = true;
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType.toString(),
+      selectedhoursType: this.selectedhoursType.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     // if (this.selectedhoursType === '' && this.selectedType === '') {
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
@@ -253,6 +262,7 @@ export class EmployeehoursComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+      this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       this.timesysSvc.GetEmployeeHours(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);

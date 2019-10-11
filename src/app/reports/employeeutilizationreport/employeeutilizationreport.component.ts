@@ -2,12 +2,13 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
-import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails } from 'src/app/model/objects';
+import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 
 import { TableExport } from 'tableexport';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-employeeutilizationreport',
@@ -55,6 +56,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -89,6 +91,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -205,6 +208,12 @@ export class EmployeeutilizationreportComponent implements OnInit {
     this._displayCheckBoxes = [];
     this._selectcheckbox = [];
     this._selectString = '';
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType,
+      _selectedDepartment: this._selectedDepartment,
+    }
+    this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'showEmployees', 'showEmployees', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.departmentEmployee_Get(this._selectedDepartment.Id.toString()).subscribe(
       (data) => {
         this.showFilters = false;
@@ -265,7 +274,14 @@ export class EmployeeutilizationreportComponent implements OnInit {
         // this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
         this._endDateVal = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
-
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        _selectcheckbox: this._selectcheckbox,
+        _selectedDepartment: this._selectedDepartment,
+        _start: _start,
+        _end: _end,
+      }
+      this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
       if (this._startDate > this._endDate) {
         this.showSpinner = false;
       } else {

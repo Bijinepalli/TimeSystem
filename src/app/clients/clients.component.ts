@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { Clients, Customers, Companies } from '../model/objects';
+import { Clients, Customers, Companies, PageNames } from '../model/objects';
 import { BillingCode } from '../model/constants';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -9,6 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { DataTable } from 'primeng/primeng';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-clients',
@@ -62,6 +63,7 @@ export class ClientsComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
@@ -89,6 +91,7 @@ export class ClientsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -193,7 +196,7 @@ export class ClientsComponent implements OnInit {
   //   });
   // }
 
-  clickButton(event: any) {
+  showClients(event: any) {
     if (this.selectedType === 'Both') {
       this.cols = [
         { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
@@ -221,6 +224,11 @@ export class ClientsComponent implements OnInit {
     this._recData = 0;
     this._clients = [];
     this._UsedSOWs = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages/Events', 'getClients', 'Get Clients', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getClients()
       .subscribe(
         (data) => {
@@ -309,6 +317,12 @@ export class ClientsComponent implements OnInit {
   getSOWByCustomerID(SOWID: string) {
     this.showSpinner = true;
     this._SOWs = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      SOWID: SOWID.toString(),
+      customerName: this._frm.controls['customerName'].value.toString()
+    }
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages/Events', 'getSOWByCustomerID', 'Get SOW By Customer', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getSOWs(this._frm.controls['customerName'].value.toString())
       .subscribe(
         (data) => {
@@ -333,6 +347,7 @@ export class ClientsComponent implements OnInit {
   }
 
   addClient() {
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages/Events', 'addClient', 'Add Client', '', '', ''); // ActivityLog
     this._IsEdit = false;
     this._selectedClient = {};
     this.chkInactive = false;
@@ -343,6 +358,7 @@ export class ClientsComponent implements OnInit {
   }
 
   editClient(data: Clients) {
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages/Events', 'editClient', 'Edit Client', '', '', JSON.stringify(data)); // ActivityLog
     this._IsEdit = true;
     this._selectedClient = new Clients();
     this._selectedClient.Id = data.Id;
@@ -463,6 +479,7 @@ export class ClientsComponent implements OnInit {
     }
     this._selectedClient.Inactive = this.chkInactive;
     this._selectedClient.ChargeType = this._billingCodes.Client;
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages/Events', 'saveClient', 'Save Client', '', '', JSON.stringify(this._selectedClient)); // ActivityLog
     this.checkWarnings();
   }
 
@@ -611,6 +628,7 @@ export class ClientsComponent implements OnInit {
   }
 
   deleteClient(dataRow: any) {
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages/Events', 'deleteClient', 'Delete Client', '', '', JSON.stringify(dataRow)); // ActivityLog
     dataRow.ChargeType = this._billingCodes.Client;
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + dataRow.ClientName + '?',

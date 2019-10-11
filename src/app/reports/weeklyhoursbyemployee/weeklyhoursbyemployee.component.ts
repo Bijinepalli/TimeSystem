@@ -3,11 +3,12 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes } from 'src/app/model/objects';
+import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 @Component({
   selector: 'app-weeklyhoursbyemployee',
   templateUrl: './weeklyhoursbyemployee.component.html',
@@ -48,6 +49,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
@@ -81,6 +83,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.WeeklyHoursbyEmployee, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -174,6 +177,9 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   showBillingCodes() {
     this.showSpinner = true;
     this._displayCheckBoxes = [];
+    this.logSvc.ActionLog(PageNames.WeeklyHoursbyEmployee,
+      '', 'Reports/Event', 'showBillingCodes', 'Show Billing Codes', '', '', ''); // ActivityLog
+
 
     this.timesysSvc.getClients().subscribe(
       (data) => {
@@ -238,6 +244,7 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     this.errMsg = '';
     this._startDateSelect = '';
     this._endDateSelect = '';
+
     if (this._selectcheckbox.length > 0) {
       this.buildCols();
       this._billingCodesSpecial = new BillingCodesSpecial();
@@ -264,10 +271,11 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
       }
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
-      console.log(this._billingCodesSpecial);
+      this.logSvc.ActionLog(PageNames.WeeklyHoursbyEmployee,
+        '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+
       this.timesysSvc.ListWeekEndClientHoursByClientByEmployee(this._billingCodesSpecial).subscribe(
         (data) => {
-          console.log(data);
           this.showTable(data);
         }
       );

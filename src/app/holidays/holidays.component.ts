@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, HostListener, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { Holidays } from '../model/objects';
+import { Holidays, PageNames } from '../model/objects';
 import { YearEndCodes } from '../model/constants';
 import { ConfirmationService, MessageService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -11,6 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-holidays',
@@ -50,6 +51,7 @@ export class HolidaysComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
     public datepipe: DatePipe
   ) {
@@ -79,6 +81,7 @@ export class HolidaysComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Holidays, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       this.IsSecure = false;
@@ -159,6 +162,7 @@ export class HolidaysComponent implements OnInit {
 
   getHolidays() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Holidays, '', 'Pages/Events', 'getHolidays', 'Get Holidays', '', '', ''); // ActivityLog
     this.showReport = false;
     this.resetSort();
     this.timesysSvc.getHolidays(this.selectedYear, this._yec.HolidayCode + this.selectedYear)
@@ -177,6 +181,7 @@ export class HolidaysComponent implements OnInit {
   }
 
   addHoliday() {
+    this.logSvc.ActionLog(PageNames.Holidays, '', 'Pages/Events', 'addHoliday', 'Add Holiday', '', '', ''); // ActivityLog
     this._IsEdit = false;
     this._selectedHoliday = {};
     this.resetForm();
@@ -186,6 +191,7 @@ export class HolidaysComponent implements OnInit {
   }
 
   editHoliday(data: Holidays) {
+    this.logSvc.ActionLog(PageNames.Holidays, '', 'Pages/Events', 'editHoliday', 'Edit Holiday', '', '', JSON.stringify(data)); // ActivityLog
     this._IsEdit = true;
     this._selectedHoliday = new Holidays();
     this._selectedHoliday.Id = data.Id;
@@ -276,6 +282,7 @@ export class HolidaysComponent implements OnInit {
       this._selectedHoliday.CalendarYear = new Date(this._selectedHoliday.HolidayDate).getFullYear();
     }
     this.showSpinner = false;
+    this.logSvc.ActionLog(PageNames.Holidays, '', 'Pages/Events', 'saveHoliday', 'Save Holiday', '', '', JSON.stringify(this._selectedHoliday)); // ActivityLog
     this.SaveHolidaySPCall();
   }
 
@@ -303,6 +310,7 @@ export class HolidaysComponent implements OnInit {
   }
 
   deleteHoliday(data: Holidays) {
+    this.logSvc.ActionLog(PageNames.Holidays, '', 'Pages/Events', 'deleteHoliday', 'Delete Holiday', '', '', JSON.stringify(data)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + data.HolidayName + '?',
       header: 'Confirmation',

@@ -3,10 +3,11 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { NonBillables, BillingCodesSpecial, TimeSheet } from 'src/app/model/objects';
+import { NonBillables, BillingCodesSpecial, TimeSheet, PageNames } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { CommonService } from 'src/app/service/common.service';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from 'src/app/service/activitylog.service';
 
 @Component({
   selector: 'app-periodendhours',
@@ -33,6 +34,7 @@ export class PeriodendhoursComponent implements OnInit {
   _DisplayDateFormat = '';
   constructor(
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
     private route: ActivatedRoute,
     private msgSvc: MessageService,
@@ -66,6 +68,7 @@ export class PeriodendhoursComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.PeriodEndHours, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -138,7 +141,7 @@ export class PeriodendhoursComponent implements OnInit {
         }
       );
   }
-  onDateChange(e) {
+  generateReport(e) {
     this.showSpinner = true;
     this.showReport = false;
     this.buildCols();
@@ -151,6 +154,13 @@ export class PeriodendhoursComponent implements OnInit {
     }
     this._timesheet.PeriodEndDate = _date;
     if (_date !== null && _date !== '') {
+      let ActivityParams: any; // ActivityLog
+      ActivityParams = {
+        date: _date.toString()
+      };
+      this.logSvc.ActionLog(PageNames.PeriodEndHours,
+        '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+
       this.timesysSvc.GetTimeSheetsPerEmployeePeriodStart(_date).subscribe(
         (data) => {
           this.showTable(data);
@@ -194,6 +204,8 @@ export class PeriodendhoursComponent implements OnInit {
     this.showSpinner = false;
   }
   viewTimeSheet(rowData: TimeSheet) {
+    this.logSvc.ActionLog(PageNames.PeriodEndHours,
+      '', 'Reports/Event', 'viewTimeSheet', 'View TimeSheet', '', '', ''); // ActivityLog
     this.navigateToTimesheet(rowData.TimesheetID, '');
   }
   navigateToTimesheet(TimesheetId, TimesheetDate) {

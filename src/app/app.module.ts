@@ -15,6 +15,7 @@ import {
   ScheduleModule, TreeModule, GMapModule, DataGridModule, TooltipModule, ConfirmDialogModule,
   GrowlModule, DragDropModule, GalleriaModule, SlideMenuModule
 } from 'primeng/primeng';
+
 import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { CardModule } from 'primeng/card';
@@ -32,6 +33,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { PickListModule } from 'primeng/picklist';
 import { SelectButtonModule } from 'primeng/selectbutton';
+import {AutoCompleteModule} from 'primeng/autocomplete';
 
 import { PanelMenuModule } from 'primeng/panelmenu';
 
@@ -111,6 +113,8 @@ import { SowutilizationreportComponent } from './reports/sowutilizationreport/so
 import { SowmonthlyutilizationreportComponent } from './reports/sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 import { SowtotalreportComponent } from './reports/sowtotalreport/sowtotalreport.component';
 import { ActivitylogreportComponent } from './reports/activitylogreport/activitylogreport.component';
+// import { TreeNode } from '@angular/router/src/utils/tree';
+// import { TreeNode } from '@angular/api';
 
 const appRoutes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -308,7 +312,7 @@ const appRoutes: Routes = [
     StepsModule,
     ScheduleModule,
     TreeModule,
-    GMapModule,
+      GMapModule,
     DataGridModule,
     TooltipModule,
     ConfirmDialogModule,
@@ -327,7 +331,8 @@ const appRoutes: Routes = [
     FileUploadModule,
     RouterModule.forRoot(appRoutes, { onSameUrlNavigation: 'reload' }), AccordionModule,
     InplaceModule, ScrollPanelModule, TieredMenuModule,
-    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule
+    KeyFilterModule, DataViewModule, InputSwitchModule, SlideMenuModule, PickListModule, SelectButtonModule, PanelMenuModule,
+    AutoCompleteModule
   ],
   providers: [TimesystemService, ActivitylogService, MessageService, ConfirmationService, CommonService,
     { provide: APP_INITIALIZER, useFactory: jokesProviderFactory, deps: [CommonService], multi: true }

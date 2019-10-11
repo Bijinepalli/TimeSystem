@@ -4,12 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory } from '../model/objects';
+import { LoginErrorMessage, Employee, EmailOptions, ForgotPasswordHistory, PageNames } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
-import { ActivitylogService } from '../service/activitylog.service';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 
 @Component({
@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
-    private logSvc: ActivitylogService,
+    private logSvc: ActivitylogService, // ActivityLog - Default
     public commonSvc: CommonService,
   ) {
 
@@ -137,7 +137,8 @@ export class LoginComponent implements OnInit {
                 summary: 'Login Failed!',
                 detail: this.ValidateUserNameErrors[0].ErrorMessage
               });
-              this.logSvc.ActionLog(0, 'Login', '', 'Error', 'Validate UserName', this.ValidateUserNameErrors[0].ErrorMessage);
+              this.logSvc.ActionLog(PageNames.Login, '', 'Error', 'Validate UserName',
+                this.ValidateUserNameErrors[0].ErrorMessage, '', '', ''); // ActivityLog
             } else {
               // this.logSvc.ActionLog(0, 'Login', '', 'Success', 'Validate UserName', 'Validation Successful');
               if (key === 'submit') {
@@ -175,7 +176,8 @@ export class LoginComponent implements OnInit {
                 summary: 'Login Failed!',
                 detail: this.ValidateCredentialsErrors[0].ErrorMessage
               });
-              this.logSvc.ActionLog(0, 'Login', '', 'Error', 'Validate Credentials', this.ValidateCredentialsErrors[0].ErrorMessage);
+              this.logSvc.ActionLog(PageNames.Login, '', 'Error', 'Validate Credentials',
+                this.ValidateCredentialsErrors[0].ErrorMessage, '', '', ''); // ActivityLog
               if (this.ValidateCredentialsErrors[0].ErrorMessage.toString().indexOf('The user name is locked') > -1) {
                 this.showSpinner = true;
                 this.timesysSvc.EmailByType('',
@@ -245,7 +247,7 @@ export class LoginComponent implements OnInit {
               }
             }
             if (PasswordExpired) {
-              this.logSvc.ActionLog(0, 'Login', '', 'Error', 'Employee Data', 'Password Expired');
+              this.logSvc.ActionLog(PageNames.Login, '', 'Error', 'Employee Data', 'Password Expired', '', '', ''); // ActivityLog
               let forgotPasswordHistory: ForgotPasswordHistory = {};
               forgotPasswordHistory.EmployeeID = +(this.EmployeeData[0].ID.toString());
               forgotPasswordHistory.EmailAddress = this.EmployeeData[0].EmailAddress.toString();
@@ -258,7 +260,7 @@ export class LoginComponent implements OnInit {
                 }
               });
             } else {
-              this.logSvc.ActionLog(0, 'Login', '', 'Success', 'Login', 'Login Successful');
+              this.logSvc.ActionLog(PageNames.Login, '', 'Success', 'Login', 'Logged In', '', '', ''); // ActivityLog
               this.navigateTo('/menu/dashboard', { Id: -1 });
             }
           }
@@ -324,7 +326,7 @@ export class LoginComponent implements OnInit {
                         summary: 'Error!',
                         detail: Errors,
                       });
-                      this.logSvc.ActionLog(0, 'Login', '', 'Error', 'Forgot Password', Errors);
+                      this.logSvc.ActionLog(PageNames.Login, '', 'Error', 'Forgot Password', Errors, '', '', ''); // ActivityLog
                     } else {
                       this.msgSvc.add({
                         key: 'saveSuccess',
@@ -334,8 +336,9 @@ export class LoginComponent implements OnInit {
                         detail: 'Email is sent with a link to Change Password that will expire in '
                           + LinkExpiryMin.toString() + ' minutes.',
                       });
-                      this.logSvc.ActionLog(0, 'Login', '', 'Success', 'Forgot Password', 'Email is sent with a link to Change Password that will expire in '
-                        + LinkExpiryMin.toString() + ' minutes.');
+                      this.logSvc.ActionLog(PageNames.Login, '', 'Success', 'Forgot Password',
+                        'Email is sent with a link to Change Password that will expire in '
+                        + LinkExpiryMin.toString() + ' minutes.', '', '', ''); // ActivityLog
                     }
                   });
 
