@@ -21,7 +21,7 @@
     <div class="ui-g">
       <div class="ui-g-12 ui-md-12 ui-lg-12">
         <label class="label" style="padding:0px 10px;">Select:</label>
-        <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="clickButton($event)"></p-selectButton>
+        <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="showCustomers($event)"></p-selectButton>
         <!-- pTooltip="Show customers that have this status" tooltipPosition="bottom" -->
       </div>
     </div>

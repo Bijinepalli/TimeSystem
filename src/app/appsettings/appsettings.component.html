@@ -1,6 +1,6 @@
 <ng-container *ngIf="IsSecure">
   <div class="ui-g">
-    <form [formGroup]="appSettingsFormGroup" (ngSubmit)="onSubmit()" *ngIf="appSettingsFormGroup">
+    <form [formGroup]="appSettingsFormGroup" (ngSubmit)="saveAppSettings()" *ngIf="appSettingsFormGroup">
       <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}"> -->
       <p-table #dt [columns]="cols" [value]="_appsettings" [rows]="20" [responsive]="false" dataKey="Id"
         [scrollable]="true" scrollHeight="550px">

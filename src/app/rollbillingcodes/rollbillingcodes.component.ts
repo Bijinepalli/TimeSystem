@@ -33,11 +33,9 @@ export class RollbillingcodesComponent implements OnInit {
     // const jsonDate = '/Date(1517855400000+0530)/ ';
     // const onlyDate = +(jsonDate.match(/\d+/)[0]);
     // const getDate = new Date(onlyDate);
-    this.logSvc.ActionLog(PageNames.RollBillingCodes, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.RollBillingCodes, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.addDefaultControlsToForm();
     const todayDate = new Date('2019-01-19');
-    console.log(todayDate);
-    console.log(todayDate.getMonth());
     this._upComingYear = todayDate.getMonth() === 11 ? (todayDate.getFullYear() + 1).toString() : todayDate.getFullYear().toString();
     this._priorYear = todayDate.getMonth() === 11 ? todayDate.getFullYear().toString() : (todayDate.getFullYear() - 1).toString();
     if ((todayDate.getMonth() === 11 && todayDate.getDate() > 15) || todayDate.getMonth() === 0) {

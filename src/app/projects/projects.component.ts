@@ -80,7 +80,7 @@ export class ProjectsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.logSvc.ActionLog(PageNames.Projects, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Projects, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -238,7 +238,7 @@ export class ProjectsComponent implements OnInit {
     this._selectedProject = {};
     this.resetForm();
     this.logSvc.ActionLog(PageNames.Projects,
-      '', 'Admin/Event', 'addProject', 'Add Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
+      '', 'Pages/Event', 'addProject', 'Add Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
     this.setDataToControls(this._selectedProject);
     this.projectHdr = 'Add New Project';
     this.projectDialog = true;
@@ -256,7 +256,7 @@ export class ProjectsComponent implements OnInit {
     this._selectedProject.CreatedOn = data.CreatedOn;
     this.resetForm();
     this.logSvc.ActionLog(PageNames.Projects,
-      '', 'Admin/Event', 'editProject', 'Edit Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
+      '', 'Pages/Event', 'editProject', 'Edit Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
     this.setDataToControls(this._selectedProject);
     this.projectHdr = 'Edit Project';
     this.projectDialog = true;
@@ -474,7 +474,7 @@ export class ProjectsComponent implements OnInit {
   SaveProjectSPCall() {
     this.showSpinner = true;
     this.logSvc.ActionLog(PageNames.Projects,
-      '', 'Admin/Event', 'SaveProjectSPCall', 'Save Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
+      '', 'Pages/Event', 'SaveProjectSPCall', 'Save Project', '', '', JSON.stringify(this._selectedProject)); // ActivityLog
     this.timesysSvc.Project_InsertOrUpdate(this._selectedProject)
       .subscribe(
         (outputData) => {
@@ -509,7 +509,7 @@ export class ProjectsComponent implements OnInit {
         /* do nothing */
         this.showSpinner = true;
         this.logSvc.ActionLog(PageNames.Projects,
-          '', 'Admin/Event', 'deleteProject', 'Delete Project', '', '', JSON.stringify(data)); // ActivityLog
+          '', 'Pages/Event', 'deleteProject', 'Delete Project', '', '', JSON.stringify(data)); // ActivityLog
         this.timesysSvc.Project_Delete(data)
           .subscribe(
             (outputData) => {

@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
-import { Companies, CompanyHolidays } from '../model/objects';
+import { Companies, CompanyHolidays, PageNames } from '../model/objects';
 import { YearEndCodes, BillingCode } from '../model/constants';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
@@ -8,6 +8,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { PickList } from 'primeng/primeng';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-companies',
@@ -54,6 +55,7 @@ export class CompaniesComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
@@ -82,6 +84,7 @@ export class CompaniesComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -200,6 +203,7 @@ export class CompaniesComponent implements OnInit {
   }
   getCompanies() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'getCompanies', 'Get Companies', '', '', ''); // ActivityLog
     this.showReport = false;
     this._recData = 0;
     this.timesysSvc.getCompanies()
@@ -227,6 +231,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   addCompany() {
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'addCompany', 'Add Company', '', '', ''); // ActivityLog
     this._IsEdit = false;
     this._selectedCompany = {};
     this.resetForm();
@@ -236,6 +241,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   editCompany(data: Companies) {
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'editCompany', 'Edit Company', '', '', JSON.stringify(data)); // ActivityLog
     this._IsEdit = true;
     this._selectedCompany = new Companies();
     this._selectedCompany.Id = data.Id;
@@ -326,6 +332,7 @@ export class CompaniesComponent implements OnInit {
     }
     this._selectedCompany.CompanyName = this._frm.controls['companyName'].value.toString().trim();
     this._selectedCompany.DefaultCompany = this.chkDefaultCompany;
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'saveCompany', 'Save Company', '', '', JSON.stringify(this._selectedCompany)); // ActivityLog
     this.SaveCompanySPCall();
   }
 
@@ -357,6 +364,7 @@ export class CompaniesComponent implements OnInit {
   }
 
   deleteCompany(data: Companies) {
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'deleteCompany', 'Delete Company', '', '', JSON.stringify(data)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + data.CompanyName + '?',
       header: 'Confirmation',
@@ -407,6 +415,12 @@ export class CompaniesComponent implements OnInit {
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      _slctedCompanyId: this._slctedCompanyId.toString(),
+      selectedYear: this.selectedYear.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'getCompanyHolidays', 'Get Company Holidays', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getCompanyHolidays(this.selectedYear.toString(), this._slctedCompanyId)
       .subscribe(
         (data) => {
@@ -480,6 +494,7 @@ export class CompaniesComponent implements OnInit {
       companyHolidays.CompanyId = this._slctedCompanyId;
       this._slctHolidays.push(companyHolidays);
     }
+    this.logSvc.ActionLog(PageNames.Companies, '', 'Pages/Events', 'SaveCompanyHolidaySPCall', 'Save Company Holiday', '', '', JSON.stringify(this._slctHolidays)); // ActivityLog
     this.timesysSvc.CompanyHolidays_DeleteAndInsert(this._slctHolidays)
       .subscribe(
         (outputData) => {

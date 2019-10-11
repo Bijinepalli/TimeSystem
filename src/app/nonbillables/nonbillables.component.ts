@@ -75,7 +75,7 @@ export class NonbillablesComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.NonBillables, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -232,7 +232,7 @@ export class NonbillablesComponent implements OnInit {
     this.chkInactive = false;
     this.resetForm();
     this.logSvc.ActionLog(PageNames.NonBillables,
-      '', 'Admin/Event', 'addNonBillable', 'Add Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
+      '', 'Pages/Event', 'addNonBillable', 'Add Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
     this.setDataToControls(this._selectedNonBillable);
     this.nonBillableHdr = 'Add New Non-Billable Item';
     this.nonBillableDialog = true;
@@ -249,7 +249,7 @@ export class NonbillablesComponent implements OnInit {
     this.chkInactive = false;
     this.resetForm();
     this.logSvc.ActionLog(PageNames.NonBillables,
-      '', 'Admin/Event', 'editNonBillable', 'Edit Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
+      '', 'Pages/Event', 'editNonBillable', 'Edit Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
     this.setDataToControls(this._selectedNonBillable);
     this.nonBillableHdr = 'Edit Non-Billable Item';
     this.nonBillableDialog = true;
@@ -391,7 +391,7 @@ export class NonbillablesComponent implements OnInit {
   SaveNonBillableSPCall() {
     this.showSpinner = true;
     this.logSvc.ActionLog(PageNames.NonBillables,
-      '', 'Admin/Event', 'SaveNonBillableSPCall', 'Save Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
+      '', 'Pages/Event', 'SaveNonBillableSPCall', 'Save Non-Billable', '', '', JSON.stringify(this._selectedNonBillable)); // ActivityLog
     this.timesysSvc.NonBillable_InsertOrUpdate(this._selectedNonBillable)
       .subscribe(
         (outputData) => {
@@ -429,7 +429,7 @@ export class NonbillablesComponent implements OnInit {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.logSvc.ActionLog(PageNames.NonBillables,
-          '', 'Admin/Event', 'deleteNonBillable', 'Delete Non-Billable', '', '', JSON.stringify(data)); // ActivityLog
+          '', 'Pages/Event', 'deleteNonBillable', 'Delete Non-Billable', '', '', JSON.stringify(data)); // ActivityLog
         this.timesysSvc.NonBillable_Delete(data)
           .subscribe(
             (outputData) => {

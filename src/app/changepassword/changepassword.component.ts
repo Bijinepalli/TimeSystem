@@ -46,7 +46,7 @@ export class ChangepasswordComponent implements OnInit {
 
 
   ngOnInit() {
-    this.logSvc.ActionLog(PageNames.ForgotPassword, '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.ForgotPassword, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.Initialisations();
   }
 
@@ -106,7 +106,7 @@ export class ChangepasswordComponent implements OnInit {
 
   CancelClick() {
     this.logSvc.ActionLog(PageNames.ForgotPassword,
-      '', 'Admin/Event', 'CancelClick', 'Cancel Password Change', '', '', ''); // ActivityLog
+      '', 'Pages/Event', 'CancelClick', 'Cancel Password Change', '', '', ''); // ActivityLog
     this.navigateTo('/login');
   }
 
@@ -140,7 +140,7 @@ export class ChangepasswordComponent implements OnInit {
     employee.CreatedBy = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     employee.Password = this.currentFormControls.password.value;
     this.logSvc.ActionLog(PageNames.ForgotPassword,
-      '', 'Admin/Event', 'UpdatePassword', 'Update Password', '', '', JSON.stringify(employee)); // ActivityLog
+      '', 'Pages/Event', 'UpdatePassword', 'Update Password', '', '', JSON.stringify(employee)); // ActivityLog
     this.timesysSvc.Employee_UpdatePassword(employee).subscribe(_employee => {
       this.SendEmailChangePassword(this.currentFormControls.password.value);
     });

@@ -1,12 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { SelectItem } from 'primeng/api';
-import { Customers, Employee } from '../model/objects';
+import { Customers, Employee, PageNames } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from '../service/activitylog.service';
 
 @Component({
   selector: 'app-customers',
@@ -45,6 +46,7 @@ export class CustomersComponent implements OnInit {
     private confSvc: ConfirmationService,
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
   ) {
     this.CheckActiveSession();
@@ -72,6 +74,7 @@ export class CustomersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Customers, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -153,6 +156,11 @@ export class CustomersComponent implements OnInit {
 
   getCustomers() {
     this.showSpinner = true;
+    let ActivityParams: any; // ActivityLog
+    ActivityParams = {
+      selectedType: this.selectedType.toString(),
+    }
+    this.logSvc.ActionLog(PageNames.Customers, '', 'Pages/Events', 'getCustomers', 'Get Customers', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.showReport = false;
     this._recData = 0;
     this.timesysSvc.getCustomers()
@@ -192,7 +200,7 @@ export class CustomersComponent implements OnInit {
       );
   }
 
-  clickButton(event: any) {
+  showCustomers(event: any) {
     if (this.selectedType === 'Both') {
       this.cols = [
         { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
@@ -212,6 +220,7 @@ export class CustomersComponent implements OnInit {
   }
 
   addCustomer() {
+    this.logSvc.ActionLog(PageNames.Customers, '', 'Pages/Events', 'addCustomer', 'Add Customer', '', '', ''); // ActivityLog
     this._IsEdit = false;
     this.chkInactive = false;
     this._selectedCustomer = {};
@@ -222,6 +231,7 @@ export class CustomersComponent implements OnInit {
   }
 
   editCustomer(data: Customers) {
+    this.logSvc.ActionLog(PageNames.Customers, '', 'Pages/Events', 'editCustomer', 'Edit Customer', '', '', JSON.stringify(data)); // ActivityLog
     this._IsEdit = true;
     this.chkInactive = false;
     this._selectedCustomer = new Customers();
@@ -300,6 +310,7 @@ export class CustomersComponent implements OnInit {
     this._selectedCustomer.CustomerNumber = this._frm.controls['customerNumber'].value.toString().trim();
     this._selectedCustomer.LeadBAId = this._frm.controls['leadBA'].value.toString().trim();
     this._selectedCustomer.Inactive = this.chkInactive;
+    this.logSvc.ActionLog(PageNames.Customers, '', 'Pages/Events', 'saveCustomer', 'Save Customer', '', '', JSON.stringify(this._selectedCustomer)); // ActivityLog
     this.SaveCustomerSPCall();
   }
 
@@ -327,6 +338,7 @@ export class CustomersComponent implements OnInit {
         });
   }
   deleteCustomer(dataRow: Customers) {
+    this.logSvc.ActionLog(PageNames.Customers, '', 'Pages/Events', 'deleteCustomer', 'Delete Customer', '', '', JSON.stringify(dataRow)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + dataRow.CustomerName + '?',
       header: 'Confirmation',

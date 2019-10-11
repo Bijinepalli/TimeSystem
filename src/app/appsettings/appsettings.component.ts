@@ -67,7 +67,7 @@ export class AppsettingsComponent implements OnInit {
     this.showSpinner = true;
     this.IsSecure = false;
     this.logSvc.ActionLog(PageNames.Configuration,
-      '', 'Admin', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+      'App Settings', 'Pages', 'OnInit', 'Initialisation', '', '{"PhysicalPath":"app/appsettings"}', ''); // ActivityLog
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
@@ -167,7 +167,7 @@ export class AppsettingsComponent implements OnInit {
       this.appSettingsFormGroup.controls['txtAppSettingVal_' + id].disable();
     }
   }
-  onSubmit() {
+  saveAppSettings() {
     this.showSpinner = true;
     let appsettings = new AppSettings();
 
@@ -186,7 +186,8 @@ export class AppsettingsComponent implements OnInit {
       this._appsettingInsert.push(appsettings);
     }
     this.logSvc.ActionLog(PageNames.Configuration,
-      '', 'Admin/Event', 'onSubmit', 'On Save', '', '', JSON.stringify(this._appsettingInsert)); // ActivityLog
+      'App Settings', 'Pages/Event', 'saveAppSettings', 'Save AppSettings', '',
+      '{"PhysicalPath":"app/appsettings"}', JSON.stringify(this._appsettingInsert)); // ActivityLog
     this.timesysSvc.updateAppSettings(this._appsettingInsert).subscribe(data => {
       this.showSpinner = false;
       if (data != null && data[0].Id > 0) {

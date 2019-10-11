@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, SimpleChange, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 // tslint:disable-next-line:max-line-length
-import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet, Employee } from '../model/objects';
+import { TimeSheetForEmplyoee, TimeSheetBinding, TimeSheet, TimeSheetForApproval, TimePeriods, HoursByTimesheet, Employee, PageNames } from '../model/objects';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -9,6 +9,7 @@ import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from '../service/common.service';
 import { Table } from 'primeng/table';
+import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
 
 @Component({
   selector: 'app-timesheets',
@@ -66,7 +67,8 @@ export class TimesheetsComponent implements OnInit {
     private msgSvc: MessageService,
     private timesysSvc: TimesystemService,
     public commonSvc: CommonService,
-    public datepipe: DatePipe
+    public datepipe: DatePipe,
+    private logSvc: ActivitylogService, // ActivityLog - Default
   ) {
     this.CheckActiveSession();
     this.commonSvc.setAppSettings();
@@ -113,6 +115,7 @@ export class TimesheetsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.logSvc.ActionLog(PageNames.Timesheets, '', 'Page', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -226,6 +229,8 @@ export class TimesheetsComponent implements OnInit {
               }
               this.showSpinner = false;
               this.timesheetDialog = true;
+              this.logSvc.ActionLog(PageNames.Timesheets, '', 'Section', 'getTimeSheetPeriods'
+                , 'Add New Timesheet Button Clicked', '', '', ''); // ActivityLog
             });
         }
       );
@@ -236,6 +241,8 @@ export class TimesheetsComponent implements OnInit {
   }
 
   OpenHoursCharged() {
+    this.logSvc.ActionLog(PageNames.Timesheets, '', 'Section', 'OpenHoursCharged'
+    , 'Hours Charged Button Clicked', '', '', ''); // ActivityLog
     this.showSpinner = true;
     this._mainHeader = 'Hours by Timesheet Category';
     this.Hourschrg = true;
@@ -247,12 +254,16 @@ export class TimesheetsComponent implements OnInit {
     this.showSpinner = false;
   }
   viewTimeSheet(rowData: TimeSheetForEmplyoee) {
+    this.logSvc.ActionLog(PageNames.Timesheets, '', 'Section', 'viewTimeSheet'
+      , 'View Timesheet Click', rowData.Id.toString(), '', ''); // ActivityLog
     this.navigateToTimesheet(rowData.Id, '');
   }
   editTimeSheet(rowData: TimeSheetForEmplyoee) {
     // this.confSvc.confirm({
     //   message: 'Do you want to edit the timesheet?',
     //   accept: () => {
+    this.logSvc.ActionLog(PageNames.Timesheets, '', 'Section', 'editTimeSheet'
+      , 'Edit Timesheet Click', rowData.Id.toString(), '', ''); // ActivityLog
     this.navigateToTimesheet(rowData.Id, '');
     //   }
     // });
@@ -266,6 +277,8 @@ export class TimesheetsComponent implements OnInit {
         this.timesysSvc.timesheetDelete(timeSheet)
           .subscribe(
             (data) => {
+              this.logSvc.ActionLog(PageNames.Timesheets, '', 'Section', 'deleteTimeSheet'
+                , 'Delete Timesheet Click', rowData.Id.toString(), '', ''); // ActivityLog
               this.getTimeSheets();
             });
       }
@@ -370,6 +383,8 @@ export class TimesheetsComponent implements OnInit {
                   (data2) => {
                     this.showSpinner = false;
                     if (data2 !== undefined && data2 !== null) {
+                      this.logSvc.ActionLog(PageNames.Timesheets, '', 'Section', 'resubmittal'
+                        , 'New Timesheet Created', '', '', ''); // ActivityLog
                       this.navigateToTimesheet(data2, '');
                     }
                   });

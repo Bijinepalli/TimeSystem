@@ -5,11 +5,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { MessageService, ConfirmationService } from 'primeng/api';
 
-import { Employee, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory } from '../model/objects';
+import { Employee, EmailOptions, ForgotPasswordHistory, EmployeePasswordHistory, PageNames } from '../model/objects';
 import { TimesystemService } from '../service/timesystem.service';
 import { CommonService } from '../service/common.service';
 import { PasswordValidator } from '../sharedpipes/password.validator';
 import { environment } from 'src/environments/environment';
+import { ActivitylogService } from '../service/activitylog.service';
 
 
 
@@ -42,6 +43,7 @@ export class ForgotpasswordComponent implements OnInit {
     private msgSvc: MessageService,
     private confSvc: ConfirmationService,
     private timesysSvc: TimesystemService,
+    private logSvc: ActivitylogService,
     public commonSvc: CommonService,
 
   ) {
@@ -51,6 +53,7 @@ export class ForgotpasswordComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
+    this.logSvc.ActionLog(PageNames.ForgotPassword, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.activatedRoute.params.subscribe((params) => {
       this.IsSecure = false;
@@ -111,7 +114,7 @@ export class ForgotpasswordComponent implements OnInit {
 
     this.forgotPasswordHistory.UniqueCode = this.UniqueCode;
     this.forgotPasswordHistory.LinkExpiryMin = +LinkExpiryMin;
-
+    this.logSvc.ActionLog(PageNames.ForgotPassword, '', 'Pages/Event', 'ValidateUniqueCode', 'Validate Unique Code', '', '', JSON.stringify(this.forgotPasswordHistory)); // ActivityLog
     this.timesysSvc.ValidateForgotPassword(this.forgotPasswordHistory).subscribe(_forgotPasswordHistory => {
       this.showSpinner = false;
       this.BuildFormControls();
@@ -201,7 +204,7 @@ export class ForgotpasswordComponent implements OnInit {
       employee.ID = +this.forgotPasswordHistory.EmployeeID.toString();
       employee.CreatedBy = +this.forgotPasswordHistory.EmployeeID.toString();
       employee.Password = this.currentFormControls.password.value;
-
+      this.logSvc.ActionLog(PageNames.ForgotPassword, '', 'Pages/Event', 'UpdatePassword', 'Update Password', '', '', JSON.stringify(this.forgotPasswordHistory)); // ActivityLog
       this.showSpinner = true;
       this.timesysSvc.Employee_UpdatePassword(employee).subscribe(_employee => {
         this.showSpinner = false;

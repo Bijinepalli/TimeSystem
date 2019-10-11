@@ -10,6 +10,9 @@
     <div class="ui-g-12" style="text-align: right;padding-right:0px;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Department" tooltipPosition="bottom"
         class="ui-button-info" label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
+
+      <button pButton icon="fa fa-mail fa-1x" pTooltip="Add New Department" tooltipPosition="bottom"
+        class="ui-button-info" label="Mail" (click)=openMail()></button>
     </div>
     <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
       <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
@@ -17,36 +20,37 @@
       </div>
     </div>
   </div>
-  <div class="ui-g" *ngIf="showReport && _recData > 0">
+  <div class="ui-g" *ngIf="showReport && _recData > 0" id="print-section">
     <p-table #dt [columns]="cols" [value]="_departmentList" [responsive]="false" dataKey="ID" [paginator]="true"
-      [rows]="20" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true"
-      [scrollable]="true">
+      [rows]="2" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true"
+      [scrollable]="true" (onPage)="paginate($event)">
       <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
+        <div class="ui-g ui-g-nopad recordsBar doNotPrint">
           <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} departments found</div>
           <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
             <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
             <input type="text" pInputText size="30" placeholder="Global Filter"
               (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            <button type="button" pButton icon="fa fa-table" label="Print" (click)=print()></button>
           </div>
         </div>
       </ng-template>
       <ng-template pTemplate="header" let-columns>
         <tr>
-          <th style="width: 5em">Edit</th>
+          <th style="width: 5em" class="doNotPrint">Edit</th>
           <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
             {{col.header}}
             <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
               ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
             </p-sortIcon>
           </th>
-          <th style="width: 5em">Delete</th>
+          <th style="width: 5em" class="doNotPrint">Delete</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td style="width: 5em;text-align: center;">
+          <td style="width: 5em;text-align: center;" class="doNotPrint">
             <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
               (click)="editDepartment(rowData)"></i>
           </td>
@@ -84,7 +88,7 @@
   {{rowData[col.field]}}
 </ng-template>
 </td>
-<td style="width: 5em;text-align: center;">
+<td style="width: 5em;text-align: center;" class="doNotPrint">
   <i *ngIf="rowData['EmployeesCount'] === 0" class="fa fa-times fa-150x deleteIcon"
     pTooltip="Delete this Department. It has no employees assigned" tooltipPosition="left"
     (click)="deleteDepartment(rowData)"></i>
@@ -142,5 +146,3 @@
 </p-dialog>
 </ng-container>
 
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
