@@ -24,8 +24,8 @@
   padding-left: 0px;
   background-color: white !important;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
-  overflow-x: hidden;
-  overflow-y: auto;
+  margin-bottom: 30px;
+  overflow: auto;
 }
 
 #content-body {
