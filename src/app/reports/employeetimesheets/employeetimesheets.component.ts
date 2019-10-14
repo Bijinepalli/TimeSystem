@@ -148,12 +148,12 @@ export class EmployeetimesheetsComponent implements OnInit {
     ];
     this.selectedType = '0';
     this.cols = [
-      { field: 'PeriodEnd', header: 'PeriodEnd', align: 'center', width: 'auto' },
-      { field: 'Submitted', header: 'Submitted', align: 'center', width: 'auto' },
-      { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: 'auto' },
-      { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: 'auto' },
-      { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: 'auto' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
+      { field: 'PeriodEnd', header: 'PeriodEnd', align: 'center', width: '10em' },
+      { field: 'Submitted', header: 'Submitted', align: 'center', width: '10em' },
+      { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: '8em' },
+      { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: '10em' },
+      { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: '10em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
     ];
     this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours'];
   }
