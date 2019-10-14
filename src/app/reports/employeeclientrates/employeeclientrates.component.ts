@@ -183,13 +183,13 @@ export class EmployeeclientratesComponent implements OnInit {
 
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '130px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '130px' },
-      { field: 'EmployeeID', header: 'Employee ID', align: 'right', width: '140px' },
-      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: 'auto' },
-      { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '155px' },
-      { field: 'Rate', header: 'Rate', align: 'right', width: '85px' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '12em' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '12em' },
+      { field: 'EmployeeID', header: 'Employee ID', align: 'right', width: '15em' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '20em' },
+      { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '15em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '8em' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '12em' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'EmployeeID', 'ClientName', 'ClientID', 'Rate', 'EffectiveDateSearch'];
   }
