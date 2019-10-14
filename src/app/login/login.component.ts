@@ -217,6 +217,7 @@ export class LoginComponent implements OnInit {
           this.showSpinner = false;
           if (data !== undefined && data !== null && data.length > 0) {
             this.EmployeeData = data;
+            console.log(data);
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserId', this.EmployeeData[0].ID.toString());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'UserRole', this.EmployeeData[0].UserLevel.toString());
             sessionStorage.setItem(environment.buildType.toString() + '_' + 'HireDate', this.EmployeeData[0].HireDate.toString());

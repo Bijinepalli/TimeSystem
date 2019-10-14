@@ -160,11 +160,11 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
     ];
     this.selectedbreakOut = 0;
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '150px' },
+      { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em'  },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '15em'  },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '15em' },
+      { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '15em'  },
     ];
     this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'WeekEndSearch'];
     const today = new Date();
