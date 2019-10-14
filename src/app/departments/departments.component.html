@@ -7,7 +7,7 @@
 </div>
 <ng-container *ngIf="IsSecure">
   <div class="ui-g" style="height:50px;">
-    <div class="ui-g-12" style="text-align: left;padding-right:0px;">
+    <div class="ui-g-12" style="text-align: right;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Department" tooltipPosition="bottom"
         class="ui-button-info" label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
     </div>
@@ -23,9 +23,9 @@
         [rows]="10" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true"
         [scrollable]="true">
         <ng-template pTemplate="caption">
-          <div class="ui-g recordsBar">
-            <div class="ui-g-12 ui-lg-5 ui-md-5 ui-sm-12 recordsFound">{{_recData}} departments found</div>
-            <div class="ui-g-12 ui-lg-7 ui-md-7 ui-sm-12 smLeft" style="text-align: right;">
+          <div class="ui-g recordsBar ui-g-nopad">
+            <div class="ui-g-12 ui-lg-5 ui-md-5 ui-sm-12 ui-g-nopad recordsFound">{{_recData}} departments found</div>
+            <div class="ui-g-12 ui-lg-7 ui-md-7 ui-sm-12 ui-g-nopad smLeft" style="text-align: right;">
                 <input type="text" pInputText placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em">&nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>

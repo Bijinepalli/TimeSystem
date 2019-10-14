@@ -145,8 +145,8 @@ export class CompaniesComponent implements OnInit {
     // this.CheckSecurity();
     this.showSpinner = true;
     this.cols = [
-      { field: 'CompanyName', header: 'Company Name', align: 'left', width: 'auto' },
-      { field: 'DefaultCompany', header: 'Default', align: 'center', width: '120px' },
+      { field: 'CompanyName', header: 'Company Name', align: 'left', width: '20em' },
+      { field: 'DefaultCompany', header: 'Default', align: 'center', width: '10em' },
     ];
 
     this._years = [

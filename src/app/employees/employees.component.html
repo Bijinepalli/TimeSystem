@@ -53,9 +53,9 @@
         (sortFunction)="customSort($event)" [customSort]="true" [responsive]="false" dataKey="Id"
         [globalFilterFields]="_sortArray" [scrollable]="true">
         <ng-template pTemplate="caption">
-            <div class="ui-g recordsBar">
-                <div class="ui-g-12 ui-lg-5 ui-md-5 ui-sm-12 recordsFound">{{_recData}} employees found</div>
-                <div class="ui-g-12 ui-lg-7 ui-md-7 ui-sm-12 smLeft"  style="text-align: right;">
+            <div class="ui-g recordsBar ui-g-nopad">
+                <div class="ui-g-12 ui-lg-5 ui-md-5 ui-sm-12 ui-g-nopad recordsFound">{{_recData}} employees found</div>
+                <div class="ui-g-12 ui-lg-7 ui-md-7 ui-sm-12 ui-g-nopad smLeft"  style="text-align: right;">
                   <input type="text" pInputText placeholder="Global Filter"
                     (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em">&nbsp;
                   <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
