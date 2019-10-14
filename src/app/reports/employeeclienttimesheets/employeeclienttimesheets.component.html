@@ -16,11 +16,13 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-12">
-        <label class="label" style="padding-right:10px;">Select a Pay Period :</label>
-        <p-dropdown [options]="_periodEnds" placeholder="Select Period" [(ngModel)]="selectedPeriodEnd"
-          pTooltip="Select the pay period end date to create the report" (onChange)="getCustomers()"></p-dropdown>
+      <div class="ui-g-12 ui-sm-12 ui-md-12">
+        <label class="label">Select a Pay Period</label>
       </div>
+      <div class="ui-g-12 ui-sm-12 ui-md-12">
+          <p-dropdown [options]="_periodEnds" placeholder="Select Period" [(ngModel)]="selectedPeriodEnd"
+            pTooltip="Select the pay period end date to create the report" (onChange)="getCustomers()"></p-dropdown>
+        </div>
     </div>
     <div class="ui-g">
       <div class="ui-g-12 ui-md-4">
@@ -67,7 +69,7 @@
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div>
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" [disabled]="!( (selectedDate!=='') &&
            (selectedCustomer && selectedCustomer.length > 0)  && 
@@ -93,19 +95,18 @@
     <div class="ui-g-12">
       <p-table #dt [responsive]="false" class="tablePadding">
         <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-4 ui-g-nopad recordsFound">
-              {{_recData}} timesheets found
+          <div class="ui-g recordsBar">
+              <div class="ui-g-5 ui-sm-12 recordsFound">
+                  {{_recData}} timesheets found</div>
+              <div class="ui-g-3 ui-sm-12" style="text-align: left;">
+                  <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                  class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+                <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
+                  (click)="exportClick()"></button>&nbsp;
+                <button pButton pTooltip="Send Mail" tooltipPosition="bottom" icon="fa fa-envelope" label="Send Mail"
+                  (click)="sendTimesheetMail()"></button>&nbsp;
+              </div>
             </div>
-            <div class="ui-g-12 ui-md-8 ui-g-nopad" style="text-align: right;">
-              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
-              <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
-                (click)="exportClick()"></button>&nbsp;
-              <button pButton pTooltip="Send Mail" tooltipPosition="bottom" icon="fa fa-envelope" label="Send Mail"
-                (click)="sendTimesheetMail()"></button>&nbsp;
-            </div>
-          </div>
         </ng-template>
       </p-table>
       <p-scrollPanel [style]="{width: '100%', height: '650px'}" styleClass="custombar1">

@@ -4,11 +4,11 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('HoursByBillingCode.htm')"></i>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+  <!--<div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
+  </div>-->
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
@@ -84,8 +84,8 @@
       <p-header>
         <h3 class="first">{{_selectString}}</h3>
       </p-header>
-      <p-scrollPanel [style]="{height: '400px'}">
-        <div class="ui-g" style="margin-bottom:10px">
+      <p-scrollPanel [style]="{height: '200px'}" appendToBody="true">
+        <div class="ui-g" style="margin-bottom:0px">
           <div class="ui-g-4 ui-sm-12" style="width:33em" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label"
               [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>

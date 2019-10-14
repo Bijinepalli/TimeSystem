@@ -9,8 +9,11 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-12 ui-lg-6 ui-sm-12">
-        <label class="label" style="padding:0px 10px;"> Date From</label>
+      <div class="ui-g-12 ui-sm-12">
+        <label class="label">Date Range</label>
+      </div>
+      <div class="ui-g-12 ui-sm-12">
+        <label class="label">From</label>&nbsp;
         <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true"
           showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
@@ -27,7 +30,7 @@
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div>
         <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" (click)=generateReport()
           pTooltip="Show the employee - billing code rates that match your choices" tooltipPosition="bottom"></button>
@@ -36,7 +39,7 @@
   </p-panel>
   <div class="ui-g">&nbsp;</div>
   <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    <div class="ui-g-12 ui-sm-12 NoDataMessage">
       No matching data for the selected criteria
     </div>
   </div>
