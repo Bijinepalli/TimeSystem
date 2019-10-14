@@ -190,7 +190,7 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '30em' },
       { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '15em' },
       { field: 'Rate', header: 'Rate', align: 'right', width: '10em' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '10em' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '12em' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'EmployeeID', 'ClientName', 'ClientID', 'Rate', 'EffectiveDateSearch'];
   }
