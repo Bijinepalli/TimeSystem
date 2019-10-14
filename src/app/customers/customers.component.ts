@@ -129,7 +129,7 @@ export class CustomersComponent implements OnInit {
     this.selectedType = 'Active';
     this.cols = [
       { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '40em' },
-      { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '12em' },
+      { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '13em' },
       { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: '30em' },
     ];
     this.selectedType = 'Active';
@@ -204,14 +204,14 @@ export class CustomersComponent implements OnInit {
     if (this.selectedType === 'Both') {
       this.cols = [
         { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '40em' },
-        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '12em' },
+        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '13em' },
         { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: '30em' },
         { field: 'Inactive', header: 'Inactive', align: 'left', width: '8em' },
       ];
     } else {
       this.cols = [
         { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '40em' },
-        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '12em' },
+        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '13em' },
         { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: '30em' },
       ];
     }

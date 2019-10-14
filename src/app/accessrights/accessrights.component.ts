@@ -116,9 +116,9 @@ export class AccessrightsComponent implements OnInit {
       { label: 'Program Manager', value: 'P' },
     ];
     this.cols = [
-      { field: 'ModuleName', header: 'Module' },
-      { field: 'PageName', header: 'Page Name' },
-      { field: 'HasEdit', header: 'Edit' },
+      { field: 'ModuleName', header: 'Module', width: '20em' },
+      { field: 'PageName', header: 'Page Name', width: '20em' },
+      { field: 'HasEdit', header: 'Edit', width: '10em' },
     ];
     this.colsSections = [
       { field: 'ModuleName', header: 'Action/Section' },
