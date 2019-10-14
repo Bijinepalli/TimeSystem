@@ -18,7 +18,7 @@ import { ActivitylogService } from 'src/app/service/activitylog.service';
 })
 export class EmployeehoursbybillingcodeComponent implements OnInit {
   billingCycle: SelectItem[];
-  selectedbillingCycle: number;
+  selectedbillingCycle: any;
   _startDate: Date;
   _endDate: Date;
   _startDateSelect = '';
@@ -140,7 +140,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       { label: 'Weekly', value: 0 },
       { label: 'Bi-Weekly', value: 1 },
       { label: 'Monthly', value: 2 },
-      { label: 'All (Show T&M, Projects, Non-Billables)', value: 3 }
+      { label: 'All', value: 3 }
+      /*  (Show T&M, Projects, Non-Billables) */
     ];
     this.selectedbillingCycle = 3;
     const today = new Date();
@@ -171,7 +172,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._displayCheckBoxes = [];
     const selectedType = 0;
     if (this.selectedbillingCycle < 3) {
-      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', ''); // ActivityLog
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 
+      'showBillingCodes', '', '', ''); // ActivityLog
       this.timesysSvc.getClients().subscribe(
         (data) => {
           this._clients = [];
@@ -236,7 +238,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
           _selectedBillingCycle = 'A';
         }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
-        this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+        this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
+        'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
             this.showTable(data);
@@ -244,7 +247,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
         );
       }
     } else {
-      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
+      'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
@@ -268,11 +272,11 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-      { field: 'TANDM', header: 'T & M', align: 'right', width: '100px' },
-      { field: 'Project', header: 'Project', align: 'right', width: '125px' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '150px' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: '30em' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '20em' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '10em' },
+      { field: 'Project', header: 'Project', align: 'right', width: '15em' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '15em' },
     ];
   }
   startOver() {

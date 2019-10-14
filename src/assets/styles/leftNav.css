@@ -1,0 +1,52 @@
+.leftNav .ui-panelmenu .ui-panelmenu-header>a {
+  outline: 0 none;
+  border: 1px solid #007ad9;
+  /* #005b9f;*/
+  background-color: #007ad9;
+  /* #005b9f;*/
+  color: #ffffff;
+  font-weight: normal;
+}
+
+.leftNav .ui-menu {
+  padding: 0;
+  background-color: white;
+  border: 1px solid white;
+  width: 100%;
+}
+
+.leftNav .ui-menu .ui-menuitem-link .ui-menuitem-text,
+body .ui-menubar .ui-menuitem-link .ui-menuitem-text,
+body .ui-tieredmenu .ui-menuitem-link .ui-menuitem-text,
+body .ui-contextmenu .ui-menuitem-link .ui-menuitem-text,
+body .ui-megamenu .ui-menuitem-link .ui-menuitem-text,
+body .ui-slidemenu .ui-menuitem-link .ui-menuitem-text {
+  color: black;
+}
+
+.leftNav .ui-menu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-menubar .ui-menuitem-link .ui-menuitem-icon,
+body .ui-tieredmenu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-contextmenu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-megamenu .ui-menuitem-link .ui-menuitem-icon,
+body .ui-slidemenu .ui-menuitem-link .ui-menuitem-icon {
+  color: black;
+  margin-right: 0.5em;
+}
+
+
+.leftNav .ui-panelmenu .ui-panelmenu-header>a .ui-panelmenu-icon {
+  color: #ffffff !important;
+}
+
+.leftNav .ui-panelmenu .ui-panelmenu-content {
+  border: 0px !important;
+}
+
+.leftNav .ActiveRouteLink {
+  background: peachpuff;
+}
+
+.leftNav .ActiveRouteLinkNext {
+  background: lavender;
+}

@@ -123,7 +123,7 @@ const appRoutes: Routes = [
   { path: 'changepassword/:code', component: ForgotpasswordComponent },
   {
     path: 'menu',
-    component: Master2Component,
+    component: MasterComponent,
     children: [
       { path: 'dashboard', component: DashboardComponent },
       { path: 'holidays', component: HolidaysComponent },
