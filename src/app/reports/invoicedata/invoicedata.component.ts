@@ -37,6 +37,9 @@ export class InvoicedataComponent implements OnInit {
   @ViewChild('dt') dt: Table;
   _sortArray: string[];
 
+  tsStatus: { label: string; value: number; }[];
+  _selectedStatus: any;
+
   constructor(
     private timesysSvc: TimesystemService,
     private logSvc: ActivitylogService, // ActivityLog - Default
@@ -115,17 +118,22 @@ export class InvoicedataComponent implements OnInit {
       { label: 'All', value: 'A' }
     ];
     this.cols = [
-      { field: 'InvoiceDate', header: 'Invoice Date', align: 'center', width: '120px' },
-      { field: 'DivisionNumber', header: 'Division #', align: 'right', width: '100px' },
-      { field: 'CustomerNumber', header: 'Customer #', align: 'right', width: '100px' },
-      { field: 'ProductCode', header: 'Product Code', align: 'left', width: '150px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
-      { field: 'Amount', header: 'Amount', align: 'right', width: '100px' },
-      { field: 'StartDate', header: 'Start Date', align: 'center', width: '100px' },
-      { field: 'EndDate', header: 'End Date', align: 'center', width: '100px' },
-      { field: 'ClientName', header: 'Description', align: 'left', width: '250px' },
-      { field: 'PONumber', header: 'PO #', align: 'right', width: '120px' },
+      { field: 'InvoiceDate', header: 'Invoice Date', align: 'center', width: '10em' },
+      { field: 'DivisionNumber', header: 'Division #', align: 'right', width: '9em' },
+      { field: 'CustomerNumber', header: 'Customer #', align: 'right', width: '10em' },
+      { field: 'ProductCode', header: 'Product Code', align: 'left', width: '10em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '7em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '7em' },
+      { field: 'Amount', header: 'Amount', align: 'right', width: '10em' },
+      { field: 'StartDate', header: 'Start Date', align: 'center', width: '9em' },
+      { field: 'EndDate', header: 'End Date', align: 'center', width: '9em' },
+      { field: 'ClientName', header: 'Description', align: 'left', width: '15em' },
+      { field: 'PONumber', header: 'PO #', align: 'right', width: '9em' },
+    ];
+    this.tsStatus = [
+      { label: 'Submitted', value: 1 },
+      { label: 'Saved', value: 2 },
+      { label: 'Submitted & Saved', value: 3 },
     ];
     // tslint:disable-next-line:max-line-length
     this._sortArray = ['InvoiceDateSearch', 'DivisionNumber', 'CustomerNumber', 'ProductCode', 'Hours', 'Rate', 'Amount', 'StartDateSearch', 'EndDateSearch', 'ClientName', 'PONumber'];
@@ -163,6 +171,7 @@ export class InvoicedataComponent implements OnInit {
     let formattedStart = '';
     let formattedEnd = '';
     let invoicedate = '';
+    let tss = '';
 
     const divisionId = this.commonSvc.getAppSettingsValue('EbixDivision');
     const productCode = this.commonSvc.getAppSettingsValue('EbixProductCode');
@@ -181,6 +190,14 @@ export class InvoicedataComponent implements OnInit {
       selectedValue = this._selectedBillingCycle;
     }
 
+    if (this._selectedStatus === 3) {
+      tss = '1,0';
+    } else if (this._selectedStatus === 2) {
+      tss = '0';
+    } else {
+      tss = '1';
+    }
+
     let ActivityParams: any; // ActivityLog
     ActivityParams = {
       invoicedate: invoicedate,
@@ -190,12 +207,14 @@ export class InvoicedataComponent implements OnInit {
       productCode: productCode,
       selectedValue: selectedValue,
       formattedStart: formattedStart,
-      formattedEnd: formattedEnd
-    }
-    this.logSvc.ActionLog(PageNames.InvoiceDatabyCustomer, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+      formattedEnd: formattedEnd,
+      tss: tss,
+    };
+    this.logSvc.ActionLog(PageNames.InvoiceDatabyCustomer, '', 'Reports/Event', 'generateReport', 'Generate Report',
+      '', '', JSON.stringify(ActivityParams)); // ActivityLog
 
     this.timesysSvc
-      .getInvoiceData(invoicedate, start, end, divisionId, productCode, selectedValue, formattedStart, formattedEnd)
+      .getInvoiceData(invoicedate, start, end, divisionId, productCode, selectedValue, formattedStart, formattedEnd, tss)
       .subscribe(
         (data) => {
           this._reports = [];

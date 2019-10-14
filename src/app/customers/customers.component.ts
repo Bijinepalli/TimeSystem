@@ -128,9 +128,9 @@ export class CustomersComponent implements OnInit {
     ];
     this.selectedType = 'Active';
     this.cols = [
-      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-      { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
-      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '40em' },
+      { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '13em' },
+      { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: '30em' },
     ];
     this.selectedType = 'Active';
     this.getCustomers();
@@ -203,16 +203,16 @@ export class CustomersComponent implements OnInit {
   showCustomers(event: any) {
     if (this.selectedType === 'Both') {
       this.cols = [
-        { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
-        { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
-        { field: 'Inactive', header: 'Inactive' },
+        { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '40em' },
+        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '13em' },
+        { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: '30em' },
+        { field: 'Inactive', header: 'Inactive', align: 'left', width: '8em' },
       ];
     } else {
       this.cols = [
-        { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '200px' },
-        { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: 'auto' },
+        { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '40em' },
+        { field: 'CustomerNumber', header: 'Customer Number', align: 'right', width: '13em' },
+        { field: 'LeadBAName', header: 'Lead Business Analyst', align: 'left', width: '30em' },
       ];
     }
     this.clearControls();

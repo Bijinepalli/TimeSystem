@@ -294,12 +294,12 @@ export class HoursbyemployeeComponent implements OnInit {
       let _start = '';
       let _end = '';
       if (this._startDate !== undefined && this._startDate !== null) {
-        _start = this.datePipe.transform(this._startDate, this._DateFormat);
+        _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
         // this._startDate = this.datePipe.transform(dateValid, this._DisplayDateFormat);
         this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
       }
       if (this._endDate !== undefined && this._endDate !== null) {
-        _end = this.datePipe.transform(this._endDate, this._DateFormat);
+        _end = this.datePipe.transform(this._endDate, 'yyyy-MM-dd');
         // this._endDate = this.datePipe.transform(this._endDate, this._DisplayDateFormat);
         this._endDateSelect = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }

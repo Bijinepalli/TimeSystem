@@ -44,16 +44,7 @@
     <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
       (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
       <ng-template pTemplate="caption">
-        <!--<div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="30" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-           
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-          </div>
-        </div>-->
+        
         <div class="ui-g recordsBar">
           <div class="ui-g-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
           <div class="ui-g-5 ui-sm-12" style="text-align: left;">

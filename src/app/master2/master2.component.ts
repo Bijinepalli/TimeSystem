@@ -348,7 +348,7 @@ export class Master2Component implements OnInit {
 
   navigateTo() {
     this.selectInitialMenuItemBasedOnUrl(-1);
-    this.router.navigate(['/menu/dashboard'], { queryParams: { Id: -1 }, skipLocationChange: true });
+    this.router.navigate(['/menu/dashboard'], { queryParams: { Id: -1 }, skipLocationChange: false });
   }
 
   changePasswordClick() {

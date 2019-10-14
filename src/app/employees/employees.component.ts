@@ -470,36 +470,36 @@ export class EmployeesComponent implements OnInit {
   setCols() {
     if (this.selectedType === 2 && this.selectedSalaryType === 2) {
       this.cols = [
-        { field: 'Department', header: 'Department', align: 'left', width: '150px' },
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-        { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
-        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
+        { field: 'Department', header: 'Department', align: 'left', width: '10em' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '10em' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '10em' },
+        { field: 'Salaried', header: 'Salaried', align: 'center', width: '7.5em' },
+        { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '15em' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '7.5em' },
       ];
     } else {
       if (this.selectedType !== 2 && this.selectedSalaryType === 2) {
         this.cols = [
-          { field: 'Department', header: 'Department', align: 'left', width: '150px' },
-          { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-          { field: 'Salaried', header: 'Salaried', align: 'center', width: '130px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
+          { field: 'Department', header: 'Department', align: 'left', width: '10em' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: '10em' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: '10em' },
+          { field: 'Salaried', header: 'Salaried', align: 'center', width: '7.5em' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '15em' },
         ];
       } else if (this.selectedSalaryType !== 2 && this.selectedType === 2) {
         this.cols = [
-          { field: 'Department', header: 'Department', align: 'left', width: '150px' },
-          { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-          { field: 'Inactive', header: 'Inactive', align: 'center', width: '100px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
+          { field: 'Department', header: 'Department', align: 'left', width: '10em' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: '10em' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: '10em' },
+          { field: 'Inactive', header: 'Inactive', align: 'center', width: '7.5em' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '15em' },
         ];
       } else {
         this.cols = [
-          { field: 'Department', header: 'Department', align: 'left', width: '150px' },
-          { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-          { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '202px' },
+          { field: 'Department', header: 'Department', align: 'left', width: '10em' },
+          { field: 'LastName', header: 'Last Name', align: 'left', width: '10em' },
+          { field: 'FirstName', header: 'First Name', align: 'left', width: '10em' },
+          { field: 'PasswordExpiresOn', header: 'Password Expiry Date', align: 'center', width: '15em' },
         ];
       }
       this._sortArray = ['Department', 'LastName', 'FirstName', 'Salaried', 'PasswordExpiresOnSearch', 'Inactive'];

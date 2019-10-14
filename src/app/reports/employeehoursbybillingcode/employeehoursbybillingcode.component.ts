@@ -3,7 +3,7 @@ import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SortEvent } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes, PageNames } from 'src/app/model/objects';
+import { Clients, Projects, NonBillables, BillingCodesSpecial, BillingCodes, PageNames, Departments } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { environment } from 'src/environments/environment';
 import { CommonService } from 'src/app/service/common.service';
@@ -17,6 +17,7 @@ import { ActivitylogService } from 'src/app/service/activitylog.service';
   providers: [DatePipe]
 })
 export class EmployeehoursbybillingcodeComponent implements OnInit {
+  _Departments: Departments[] = [];
   billingCycle: SelectItem[];
   selectedbillingCycle: any;
   _startDate: Date;
@@ -43,6 +44,9 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   ParamSubscribe: any;
   IsSecure = false;
   @ViewChild('dt') dt: Table;
+  _selectedDepartment: Departments;
+  tsStatus: { label: string; value: number; }[];
+  _selectedStatus: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -149,6 +153,32 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     const year = today.getFullYear();
     this._startDate = new Date(year, month - 1, 1);
     this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    this.GetMethods();
+  }
+
+  GetMethods() {
+    this.getDepartments();
+    this.getTimeSystemStatus();
+  }
+
+  getTimeSystemStatus() {
+    this.tsStatus = [
+      { label: 'Submitted', value: 1 },
+      { label: 'Saved', value: 2 },
+      { label: 'Submitted & Saved', value: 3 },
+    ];
+  }
+
+  getDepartments() {
+    this.showSpinner = true;
+    this.timesysSvc.getDepartments('').subscribe(
+      (data) => {
+        if (data !== undefined && data !== null && data.length > 0) {
+          this._Departments = data;
+          this._selectedDepartment = data[0];
+        }
+        this.showSpinner = false;
+      });
   }
 
   selectAll() {
@@ -172,8 +202,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._displayCheckBoxes = [];
     const selectedType = 0;
     if (this.selectedbillingCycle < 3) {
-      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 
-      'showBillingCodes', '', '', ''); // ActivityLog
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'showBillingCodes',
+        'showBillingCodes', '', '', ''); // ActivityLog
       this.timesysSvc.getClients().subscribe(
         (data) => {
           this._clients = [];
@@ -219,6 +249,14 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._billingCodesSpecial.startDate = _start;
     this._billingCodesSpecial.endDate = _end;
     this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
+    this._billingCodesSpecial.department = this._selectedDepartment.Name;
+    if (this._selectedStatus === 3) {
+      this._billingCodesSpecial.timesheetStatus = '1,0';
+    } else if (this._selectedStatus === 2) {
+      this._billingCodesSpecial.timesheetStatus = '0';
+    } else {
+      this._billingCodesSpecial.timesheetStatus = '1';
+    }
     this.buildCols();
     if (this.selectedbillingCycle < 3) {
       if (this._selectcheckbox.length > 0) {
@@ -238,8 +276,9 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
           _selectedBillingCycle = 'A';
         }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
+        console.log(this._billingCodesSpecial);
         this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
-        'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+          'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
           (data) => {
             this.showTable(data);
@@ -248,7 +287,8 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
       }
     } else {
       this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
-      'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+        'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+      console.log(this._billingCodesSpecial);
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
@@ -274,6 +314,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this.cols = [
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: '30em' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: '20em' },
+      { field: 'Department', header: 'Department', align: 'left', width: '10em' },
       { field: 'TANDM', header: 'T & M', align: 'right', width: '10em' },
       { field: 'Project', header: 'Project', align: 'right', width: '15em' },
       { field: 'NonBill', header: 'NonBillable', align: 'right', width: '15em' },

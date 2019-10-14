@@ -15,7 +15,8 @@ import {
   DateArray,
   PeriodEndWithKeys,
   SOWUtilizationReport,
-  SOWMonthlyUtilizationReport
+  SOWMonthlyUtilizationReport,
+  ActivityLog
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -576,7 +577,7 @@ export class TimesystemService {
     return this.http.get<Holidays[]>(this.url + 'GetHolidayList', { params });
   }
   getInvoiceData(invoiceDate: string, startDate: string, endDate: string, divisionid: string, productcode: string,
-    selectedValue: string, formattedStart: string, formattedEnd: string) {
+    selectedValue: string, formattedStart: string, formattedEnd: string, tss: string) {
     const params = new HttpParams()
       .set('invoiceDate', invoiceDate)
       .set('startDate', startDate)
@@ -585,7 +586,8 @@ export class TimesystemService {
       .set('productcode', productcode)
       .set('billingcycle', selectedValue)
       .set('formattedStart', formattedStart)
-      .set('formattedEnd', formattedEnd);
+      .set('formattedEnd', formattedEnd)
+      .set('tss', tss);
     return this.http.get<Invoice[]>(this.url + 'GetInvoiceData', { params });
   }
   getNonBillableHourGroups(Id: string) {

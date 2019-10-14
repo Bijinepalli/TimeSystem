@@ -84,28 +84,40 @@
   </div>
 
   <div class="ui-g ui-sm-12" *ngIf="showReport">
-    <div class="ui-g-12 ui-g-nopad">
-      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
-        [scrollable]="true" (sortFunction)="customSort($event)" [customSort]="true">
-        <ng-template pTemplate="caption">
-          <!--<div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-lg-4 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-          <div class="ui-g-12 ui-md-6 ui-lg-8 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="30" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
+      (sortFunction)="customSort($event)" [customSort]="true">
+      <ng-template pTemplate="caption">
+        <div class="ui-g recordsBar">
+          <div class="ui-g-4 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+          <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+            <input type="text" pInputText placeholder="Global Filter"
+              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+          </div>
+          <div class="ui-g-3 ui-sm-12" style="text-align: left;">
             <button pButton pTooltip="Change your billing code selections" tooltipPosition="bottom"
               class="ui-button-warning" label="Change Codes" (click)="changeCodes()"></button>&nbsp;
             <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
               class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
           </div>
-        </div>-->
-          <div class="ui-g recordsBar">
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-3 ui-xl-2 recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-4 ui-xl-4 ui-xl-offset-2">
-              <input type="text" pInputText placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em">
+        </div>
+      </ng-template>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+            {{col.header}}
+            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+            </p-sortIcon>
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+            <div
+              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried' || col.header === 'Currently Associated'); else defaultColumn">
+              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
             </div>
             <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-5 ui-xl-4">
               <button pButton pTooltip="Change your billing code selections" tooltipPosition="bottom"

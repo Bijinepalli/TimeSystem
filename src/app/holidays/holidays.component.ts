@@ -145,9 +145,9 @@ export class HolidaysComponent implements OnInit {
     ];
 
     this.cols = [
-      { field: 'CalendarYear', header: 'Year', align: 'center', width: '100px' },
-      { field: 'HolidayDate', header: 'Date', align: 'center', width: '100px' },
-      { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: 'auto' },
+      { field: 'CalendarYear', header: 'Year', align: 'center', width: '7em' },
+      { field: 'HolidayDate', header: 'Date', align: 'center', width: '8em' },
+      { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: '20em' },
     ];
     this._sortArray = ['CalendarYear', 'HolidayDateSearch', 'HolidayName'];
 

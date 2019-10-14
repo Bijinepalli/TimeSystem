@@ -97,7 +97,7 @@
         <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
           tooltipPosition="top" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-          [(ngModel)]="_startDateSelect" [inputStyle]="{'width':'100px'}"></p-calendar>
+          [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
         <label class="label" style="padding:0px 10px">to</label>
         <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
           pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."

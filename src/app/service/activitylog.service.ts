@@ -66,4 +66,8 @@ export class ActivitylogService {
     }
   }
 
+  getActivityLog() {
+    return this.http.get<ActivityLog[]>(this.url + 'GetActivityLog');
+  }
+
 }

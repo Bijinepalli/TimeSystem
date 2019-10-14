@@ -1,202 +1,168 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Billing Codes <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="commonSvc.showHelp('ClientsSelect.htm')"></i>
-  </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad">
+    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+        Billing Codes <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('ClientsSelect.htm')"></i>
     </div>
-  </div>
+    <div class="ui-g-3 ui-md-2 ui-g-nopad">
+        <div class="ui-g-3 ui-md-6"></div>
+        <div class="ui-g-3 ui-md-4"></div>
+        <div class="ui-g-6 ui-md-2 ui-g-nopad">
+        </div>
+    </div>
 </div>
 <ng-container *ngIf="IsSecure">
-  <div class="ui-g" style="height:50px;">
-    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
-      <button pButton icon="fa fa-plus fa-1x"
-        pTooltip="Add a new Billing Code to the time and materials billable timesheet category" tooltipPosition="bottom"
-        class="ui-button-info" label="Add New Billing Code" *ngIf="!_HasEdit" (click)=addClient()></button>
-    </div>
-  </div>
-  <p-panel [toggleable]="true" header="Filter">
-    <div class="ui-g">
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <label class="label" style="padding:0px 10px;">Select:</label>
-        <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="showClients($event)"></p-selectButton>
-        <!-- pTooltip="Show billing codes that have this status" tooltipPosition="bottom" -->
-      </div>
-    </div>
-  </p-panel>
-  <div class="ui-g">&nbsp;</div>
-  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
-      No matching data for the selected criteria
-    </div>
-  </div>
-  <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <div class="ui-g-12 ui-g-nopad">
-      <div class="ui-table ui-widget">
-        <div class="ui-table-caption ui-widget-header">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} billing codes found</div>
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
-          </div>
+    <div class="ui-g" style="height:50px;">
+        <div class="ui-g-12" style="text-align: right;padding-right:0px;">
+            <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new Billing Code to the time and materials billable timesheet category" tooltipPosition="bottom" class="ui-button-info" label="Add New Billing Code" *ngIf="!_HasEdit" (click)=addClient()></button>
         </div>
-      </div>
-      <!-- <p-scrollPanel [style]="{width: '100%', height: '480px'}" *ngIf="_clients" styleClass="custombar1"> -->
-      <p-table #dt [columns]="cols" [value]="_clients" [responsive]="false" dataKey="Id" [paginator]="true" [rows]="20"
-        [scrollable]="true">
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-            <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
-              <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this billing code"
-                tooltipPosition="bottom" (click)="editClient(rowData)"></i>
-            </td>
-            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-              <div *ngIf="col.header.indexOf('Inactive') >= 0">
-                {{rowData[col.field] === true ? 'Yes' : 'No'}}
-              </div>
-
-              <div *ngIf="col.header.indexOf('Inactive') == -1">
-                {{rowData[col.field]}}
-              </div>
-            </td>
-            <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
-              <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon"
-                pTooltip="Delete this unused billing code" tooltipPosition="left" (click)="deleteClient(rowData)"></i>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <!-- </p-scrollPanel> -->
     </div>
-
-
-    <p-dialog [(visible)]="clientDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true"
-      [width]="500">
-      <p-header>
-        {{clientHdr}}
-        <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
-          style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
-          (click)="commonSvc.showHelp('ClientUpdate.htm')"></i>
-      </p-header>
-      <form [formGroup]="_frm">
+    <p-panel [toggleable]="true" header="Filter">
         <div class="ui-g">
-          <div class="ui-g-12" style="text-align:left" style="color:red;">
-            * marked fields are required to save the data.
-          </div>
+            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                <p-selectButton [options]="types" [(ngModel)]="selectedType" (onChange)="showClients($event)"></p-selectButton>
+                <!-- pTooltip="Show billing codes that have this status" tooltipPosition="bottom" -->
+            </div>
         </div>
-        <div class="ui-g">
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Billing Code <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x"
-              pTooltip="Billing code can only contain letters, numbers, apostrophe, space, hyphen, period and forward slash and should have maximum length of 15"
-              style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
-              <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Billing Code" formControlName="clientCode"
-                appendTo="body" pToolTip="Unique billing code that matches what's in the payroll system" maxlength="15"
-                pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$">
+    </p-panel>
+    <div class="ui-g">&nbsp;</div>
+    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+            No matching data for the selected criteria
+        </div>
+    </div>
+    <div class="ui-g" *ngIf="showReport && _recData > 0">
+        <div class="ui-g-12">
+            <!-- <p-scrollPanel [style]="{width: '100%', height: '480px'}" *ngIf="_clients" styleClass="custombar1"> -->
+            <p-table #dt [columns]="cols" [value]="_clients" [responsive]="false" dataKey="Id" [paginator]="true" [rows]="20" [scrollable]="true">
+                <ng-template pTemplate="caption">
+                    <div class="ui-g ui-g-nopad recordsBar">
+                        <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}} billing codes found</div>
+                        <div class="ui-g-12 ui-md-7 ui-lg-7 ui-sm-12 smLeft" style="text-align: right">
+                            <input type="text" pInputText size="30" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em"> &nbsp;
+                            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 5em" *ngIf="!_HasEdit">Edit</th>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                            </p-sortIcon>
+                        </th>
+                        <th style="width: 5em" *ngIf="!_HasEdit">Delete</th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
+                            <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this billing code" tooltipPosition="bottom" (click)="editClient(rowData)"></i>
+                        </td>
+                        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+                            <div *ngIf="col.header.indexOf('Inactive') >= 0">
+                                {{rowData[col.field] === true ? 'Yes' : 'No'}}
+                            </div>
 
-              <!-- maxlength="15" -->
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Billing Code Name <span class="mandatoryStar">* </span><br>
-              <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="Billing Code Name" formControlName="clientName"
-                appendTo="body" pToolTip="Unique billing code name that matches what's in the payroll system" maxlength="50">
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Billing Cycle <br>
-              <div style="height:5px"></div>
-              <p-dropdown appendTo="body" [options]="_billingCycle" placeholder="Select Billing Cycle"
-                formControlName="billingCycle" pToolTip="The billing cycle used for this billing code"
-                [style]="{'width':'99%'}"></p-dropdown>
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              PO Number <br>
-              <div style="height:5px"></div>
-              <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber"
-                appendTo="body" pToolTip="Purchase order number" maxlength="30">
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Customer Name <br>
-              <div style="height:5px"></div>
-              <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer"
-                formControlName="customerName" pToolTip="The customer to invoice for hours charged to this billing code"
-                [style]="{'width':'99%'}" (onChange)="getSOWByCustomerID('')"></p-dropdown>
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              SOW <br>
-              <div style="height:5px"></div>
-              <p-dropdown appendTo="body" [options]="_SOWs" placeholder="Select SOW" formControlName="SOW"
-                [style]="{'width':'99%'}"></p-dropdown>
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              Parent Company <br>
-              <div style="height:5px"></div>
-              <p-dropdown appendTo="body" [options]="_companyNames" placeholder="Select Company"
-                formControlName="parentCompany"
-                pToolTip="The company whose holiday schedule this billing code follows. Disabled if changing this would affect existing timesheets."
-                [style]="{'width':'99%'}"></p-dropdown>
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              <div style="height:5px"></div>
-              <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive"
-                [ngModelOptions]="{standalone: true}" pTooltip="Check to mark this billing code as inactive. It will not be allowed on new timesheets 
+                            <div *ngIf="col.header.indexOf('Inactive') == -1">
+                                {{rowData[col.field]}}
+                            </div>
+                        </td>
+                        <td style="width: 5em;text-align: center" *ngIf="!_HasEdit">
+                            <i *ngIf="rowData['InUse'] === false" class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this unused billing code" tooltipPosition="left" (click)="deleteClient(rowData)"></i>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <!-- </p-scrollPanel> -->
+        </div>
+
+        <p-dialog [(visible)]="clientDialog" [responsive]="true" blockScroll="true" showEffect="fade" [modal]="true" [width]="500">
+            <p-header>
+                {{clientHdr}}
+                <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle" (click)="commonSvc.showHelp('ClientUpdate.htm')"></i>
+            </p-header>
+            <form [formGroup]="_frm">
+                <div class="ui-g">
+                    <div class="ui-g-12" style="text-align:left" style="color:red;">
+                        * marked fields are required to save the data.
+                    </div>
+                </div>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            Billing Code <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x" pTooltip="Billing code can only contain letters, numbers, apostrophe, space, hyphen, period and forward slash and should have maximum length of 15"
+                                style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
+                            <div style="height:5px"></div>
+                            <input type="text" pInputText style="width:100%" placeholder="Billing Code" formControlName="clientCode" appendTo="body" pToolTip="Unique billing code that matches what's in the payroll system" maxlength="15" pattern="^[a-zA-Z0-9\040\047\046\055\056\057]*$">
+
+                            <!-- maxlength="15" -->
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            Billing Code Name <span class="mandatoryStar">* </span><br>
+                            <div style="height:5px"></div>
+                            <input type="text" pInputText style="width:100%" placeholder="Billing Code Name" formControlName="clientName" appendTo="body" pToolTip="Unique billing code name that matches what's in the payroll system" maxlength="50">
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            Billing Cycle <br>
+                            <div style="height:5px"></div>
+                            <p-dropdown appendTo="body" [options]="_billingCycle" placeholder="Select Billing Cycle" formControlName="billingCycle" pToolTip="The billing cycle used for this billing code" [style]="{'width':'99%'}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            PO Number <br>
+                            <div style="height:5px"></div>
+                            <input type="text" pInputText style="width:100%" placeholder="PO Number" formControlName="poNumber" appendTo="body" pToolTip="Purchase order number" maxlength="30">
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            Customer Name <br>
+                            <div style="height:5px"></div>
+                            <p-dropdown appendTo="body" [options]="_customerNames" placeholder="Select Customer" formControlName="customerName" pToolTip="The customer to invoice for hours charged to this billing code" [style]="{'width':'99%'}" (onChange)="getSOWByCustomerID('')"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            SOW <br>
+                            <div style="height:5px"></div>
+                            <p-dropdown appendTo="body" [options]="_SOWs" placeholder="Select SOW" formControlName="SOW" [style]="{'width':'99%'}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            Parent Company <br>
+                            <div style="height:5px"></div>
+                            <p-dropdown appendTo="body" [options]="_companyNames" placeholder="Select Company" formControlName="parentCompany" pToolTip="The company whose holiday schedule this billing code follows. Disabled if changing this would affect existing timesheets." [style]="{'width':'99%'}"></p-dropdown>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div style="height:5px"></div>
+                            <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive" [ngModelOptions]="{standalone: true}" pTooltip="Check to mark this billing code as inactive. It will not be allowed on new timesheets 
           and will remove the associated hours from all unsubmitted timesheets."></p-checkbox>
-            </div>
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
-            <div class="ui-g-12 ui-md-12 ui-lg-12">
-              <div style="height:5px"></div>
-              Created On: {{_selectedClient.CreatedOn | dateFormat: _DisplayDateFormat}}
-            </div>
-          </div>
-        </div>
-      </form>
-      <p-footer>
-        <div class="ui-g">
-          <div class="ui-g-12 ui-md-12 ui-lg-12">
-            <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveClient()"
-              [disabled]="hasFormErrors()"></button>
-            &nbsp;
-            <button pButton label="Cancel" (click)="cancelClient()" class="ui-button-danger"></button>
-          </div>
-        </div>
-      </p-footer>
-    </p-dialog>
+                        </div>
+                    </div>
+                    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-g-nopad" *ngIf="_IsEdit">
+                        <div class="ui-g-12 ui-md-12 ui-lg-12">
+                            <div style="height:5px"></div>
+                            Created On: {{_selectedClient.CreatedOn | dateFormat: _DisplayDateFormat}}
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <p-footer>
+                <div class="ui-g">
+                    <div class="ui-g-12 ui-md-12 ui-lg-12">
+                        <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveClient()" [disabled]="hasFormErrors()"></button> &nbsp;
+                        <button pButton label="Cancel" (click)="cancelClient()" class="ui-button-danger"></button>
+                    </div>
+                </div>
+            </p-footer>
+        </p-dialog>
 
-    <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}"
-      strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
+        <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>

@@ -170,7 +170,8 @@ export class EmployeehoursComponent implements OnInit {
       selectedType: this.selectedType.toString(),
       selectedhoursType: this.selectedhoursType.toString(),
     }
-    this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'showBillingCodes', 'showBillingCodes', 
+    '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     // if (this.selectedhoursType === '' && this.selectedType === '') {
     this.timesysSvc.getAllEmployee(this.selectedType.toString(), this.selectedhoursType.toString()).subscribe(
@@ -262,7 +263,8 @@ export class EmployeehoursComponent implements OnInit {
       this._billingCodesSpecial.startDate = _start;
       this._billingCodesSpecial.endDate = _end;
       this._billingCodesSpecial.includeTotals = this.showTotals === true ? 1 : 0;
-      this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+      this.logSvc.ActionLog(PageNames.EmployeeHours, '', 'Reports/Event', 'generateReport', 'Generate Report', 
+      '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
       this.timesysSvc.GetEmployeeHours(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
@@ -286,11 +288,11 @@ export class EmployeehoursComponent implements OnInit {
 
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '250px' },
-      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
-      { field: 'TANDM', header: 'T & M', align: 'right', width: '100px' },
-      { field: 'Project', header: 'Project', align: 'right', width: '101px' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '133px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '25em' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: '40em' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '10em' },
+      { field: 'Project', header: 'Project', align: 'right', width: '10em' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '10em' },
     ];
   }
   startOver() {

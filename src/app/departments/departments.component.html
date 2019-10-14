@@ -7,7 +7,7 @@
 </div>
 <ng-container *ngIf="IsSecure">
   <div class="ui-g" style="height:50px;">
-    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
+    <div class="ui-g-12" style="text-align: right;">
       <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Department" tooltipPosition="bottom"
         class="ui-button-info" label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
     </div>
@@ -18,67 +18,69 @@
     </div>
   </div>
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-table #dt [columns]="cols" [value]="_departmentList" [responsive]="false" dataKey="ID" [paginator]="true"
-      [rows]="10" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true"
-      [scrollable]="true">
-      <ng-template pTemplate="caption">
-        <div class="ui-g recordsBar">
-          <div class="ui-g-6 ui-sm-12 recordsFound">{{_recData}} departments found</div>
-          <div class="ui-g-5 ui-sm-12" style="text-align: left;">
-            <input type="text" pInputText placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+    <div class="ui-g-12 ui-g-nopad">
+      <p-table #dt [columns]="cols" [value]="_departmentList" [responsive]="false" dataKey="ID" [paginator]="true"
+        [rows]="10" [first]="_departmentsPageNo" (sortFunction)="customSort($event)" [customSort]="true"
+        [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g recordsBar ui-g-nopad">
+            <div class="ui-g-12 ui-lg-5 ui-md-5 ui-sm-12 ui-g-nopad recordsFound">{{_recData}} departments found</div>
+            <div class="ui-g-12 ui-lg-7 ui-md-7 ui-sm-12 ui-g-nopad smLeft" style="text-align: right;">
+                <input type="text" pInputText placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em">&nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+
+            </div>
+            <!-- <div class="ui-g-12 ui-lg-2 ui-md-12 ui-sm-12" style="text-align: left;">
+          </div> -->
           </div>
-          <div class="ui-g-1 ui-sm-12" style="text-align: left;">
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-          </div>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th style="width: 5em">Edit</th>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-          <th style="width: 5em">Delete</th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td style="width: 5em;text-align: center;">
-            <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
-              (click)="editDepartment(rowData)"></i>
-          </td>
-          <td *ngFor="let col of columns" [style.width]="col.width">
-            <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
-              <label (mouseenter)="showEmployees($event,rowData,op2)"
-                style="font-size:14px; color: blue; cursor: pointer;"><b>{{rowData[col.field]}}</b></label>
-              <ng-container>
-                <p-overlayPanel #op2 [showCloseIcon]="true" [dismissable]="true" appendTo="body">
-                  <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
-                    [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5"
-                    [scrollable]="true">
-                    <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field">
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns">
-            {{rowData[col.field]}}
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
-    </p-overlayPanel>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 5em">Edit</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+            <th style="width: 5em">Delete</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td style="width: 5em;text-align: center;">
+              <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update this department" tooltipPosition="bottom"
+                (click)="editDepartment(rowData)"></i>
+            </td>
+            <td *ngFor="let col of columns" [style.width]="col.width">
+              <div *ngIf="col.header === 'Employees Associated'; else defaultColumn" style="text-align: center">
+                <label (click)="showEmployees($event,rowData,op2)"
+                  style="font-size:14px; color: blue; cursor: pointer;"><b>{{rowData[col.field]}}</b></label>
+                <ng-container>
+                  <p-overlayPanel #op2 [showCloseIcon]="true" [dismissable]="true" appendTo="body">
+                    <p-table #dtemp [columns]="empcols" [value]="_deptEmployeesList" [responsive]="false" dataKey="Name"
+                      [first]="_deptEmployeePageNo" [style]="{width: '500px'}" [paginator]="true" [rows]="5"
+                      [scrollable]="true">
+                      <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns">
+              {{rowData[col.field]}}
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+      </p-overlayPanel>
 </ng-container>
 </div>
 <ng-template #defaultColumn>
@@ -93,6 +95,7 @@
 </tr>
 </ng-template>
 </p-table>
+</div>
 </div>
 <p-dialog [(visible)]="departmentDialog" [responsive]="true" showEffect="fade" [modal]="true" [width]="450"
   [closeOnEscape]="false" [closable]="false" blockScroll="true">

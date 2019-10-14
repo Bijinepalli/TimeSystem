@@ -4,11 +4,11 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('HoursByBillingCode.htm')"></i>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
+  <!--<div class="ui-g-3 ui-md-2 ui-g-nopad">
     <div class="ui-g-3 ui-md-6"></div>
     <div class="ui-g-3 ui-md-4"></div>
     <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
+  </div>-->
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
@@ -16,7 +16,7 @@
     <p-panel [toggleable]="true" header="Filter">
       <div class="ui-g">
         <div class="ui-g-12 ui-sm-12 label">
-          Billing Code Billing Cycle
+          Client Billing Cycle
         </div>
         <div class="ui-g-12 ui-sm-12 ui-lg-12">
           <p-selectButton [options]="billingCycle" [(ngModel)]="selectedbillingCycle">
@@ -24,24 +24,42 @@
         </div>
       </div>
       <div class="ui-g">
+        <div class="ui-g-12">
+          <label class="label">Select Department</label>
+        </div>
+        <div class="ui-g-12">
+          <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name"
+            pTooltip="Employee's Department" tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12">
+          <label class="label">Select Timesheet Status</label>
+        </div>
+        <div class="ui-g-12">
+          <p-dropdown [options]="tsStatus" [(ngModel)]="_selectedStatus" pTooltip="Timesheet Status"
+            tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+        </div>
+      </div>
+      <div class="ui-g">
         <div class="ui-g-12 ui-sm-12 ui-lg-12">
           <label class="label" style="padding:0px 0px;">Date Rage</label>
-        </div>  
+        </div>
         <div class="ui-g-12 ui-sm-12 ui-lg-12">
-            <label class="label" style="padding:0px 0px;">From:</label>&nbsp;
+          <label class="sublabel" style="padding:0px 0px;">From:</label>&nbsp;
           <p-calendar appendTo="body" [readonlyInput]="true"
             pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
             tooltipPosition="top" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
             [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}">
           </p-calendar>
-          <label class="label" style="padding:0px 10px;">to</label>
+          <label class="sublabel" style="padding:0px 10px;">to</label>
           <p-calendar appendTo="body" [readonlyInput]="true"
             pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
             tooltipPosition="top" [(ngModel)]="_endDate" dateFormat="mm-dd-yy" [monthNavigator]="true"
             showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [inputStyle]="{'width':'100px'}">
           </p-calendar>
         </div>
-        <div class="ui-g-12 ui-lg-4 label" style="text-align: left">
+        <div class="ui-g-12 ui-lg-4 sublabel" style="text-align: left">
           <p-checkbox binary="true" label="Total by Billing Code"
             pTooltip="Check this option to include a total of hours for each billing code" tooltipPosition="bottom"
             [(ngModel)]="showTotals" binary="true"></p-checkbox>
@@ -84,11 +102,11 @@
       <p-header>
         <h3 class="first">{{_selectString}}</h3>
       </p-header>
-      <p-scrollPanel [style]="{height: '400px'}">
+      <p-scrollPanel [style]="{height: '200px'}" appendTo="body">
         <div class="ui-g" style="margin-bottom:10px">
           <div class="ui-g-4 ui-sm-12" style="width:33em" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label"
-              [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
+              [(ngModel)]="_selectcheckbox" (click)="selectcheck()" [style]="{'z-index':'100'}"></p-checkbox>
           </div>
         </div>
       </p-scrollPanel>
@@ -115,17 +133,6 @@
     <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID"
       (sortFunction)="customSort($event)" [customSort]="true">
       <ng-template pTemplate="caption">
-        <!--<div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows...</div>
-            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
-          </div>-->
         <div class="ui-g recordsBar">
           <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
           <div class="ui-g-5 ui-sm-12" style="text-align: left;">

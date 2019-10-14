@@ -4,26 +4,20 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('ViewTimesheets.htm')"></i>
   </div>
-  <br>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
 </div>
 <br>
 
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-12">
-        <label class="label" style="padding-right:10px;">Select a Pay Period :</label>
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+        <label class="label">Select a Pay Period</label>
+      </div>
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
         <p-dropdown [options]="_periodEnds" placeholder="Select Period" [(ngModel)]="selectedPeriodEnd"
           pTooltip="Select the pay period end date to create the report" (onChange)="getCustomers()"></p-dropdown>
       </div>
-    </div>
-    <div class="ui-g">
-      <div class="ui-g-12 ui-md-4">
+      <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-4">
         <label class="label">Select Customer</label>
         <p-listbox [options]="_customers" *ngIf="_customers.length > 0" placeholder="Select Customer"
           [(ngModel)]="selectedCustomer" (onChange)="getClients()" multiple="true" checkbox="true" filter="true"
@@ -37,7 +31,7 @@
           </div>
         </ng-container>
       </div>
-      <div class="ui-g-12 ui-md-4">
+      <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-4">
         <label class="label">Select Billing Code</label>
         <p-listbox [options]="_clients" *ngIf="_clients.length > 0" placeholder="Select Billing Code"
           [(ngModel)]="selectedClient" (onChange)="getEmployees()" multiple="true" checkbox="true" filter="true"
@@ -51,7 +45,7 @@
           </div>
         </ng-container>
       </div>
-      <div class="ui-g-12 ui-md-4">
+      <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-4">
         <label class="label">Select Employee</label>
         <p-listbox [options]="_Employees" *ngIf="_Employees.length > 0" placeholder="Select Employee"
           [(ngModel)]="selectedEmployee" multiple="true" checkbox="true" filter="true"
@@ -67,7 +61,7 @@
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div>
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" [disabled]="!( (selectedDate!=='') &&
            (selectedCustomer && selectedCustomer.length > 0)  && 
@@ -90,14 +84,13 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport">
-    <div class="ui-g-12">
+    <div class="ui-g-12 ui-g-nopad">
       <p-table #dt [responsive]="false" class="tablePadding">
         <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-4 ui-g-nopad recordsFound">
-              {{_recData}} timesheets found
-            </div>
-            <div class="ui-g-12 ui-md-8 ui-g-nopad" style="text-align: right;">
+          <div class="ui-g recordsBar">
+            <div class="ui-g-5 ui-sm-12 recordsFound">
+              {{_recData}} timesheets found</div>
+            <div class="ui-g-3 ui-sm-12" style="text-align: left;">
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
                 class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
               <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
@@ -108,7 +101,8 @@
           </div>
         </ng-template>
       </p-table>
-      <p-scrollPanel [style]="{width: '100%', height: '650px'}" styleClass="custombar1">
+      <p-scrollPanel [style]="{width: '100%', height: '650px'}" styleClass="custombar1"
+        *ngIf="_timeSheetHTMLArr && _timeSheetHTMLArr.length > 0 && _timeSheetHTML">
         <div class="ui-g-12 ui-g-nopad" *ngIf="_timeSheetHTML" [innerHTML]="_timeSheetHTML | sanitizeHtmlString"
           #dtTimesheet>
         </div>
