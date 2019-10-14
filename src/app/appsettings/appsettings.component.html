@@ -1,72 +1,64 @@
 <ng-container *ngIf="IsSecure">
-  <div class="ui-g">
     <form [formGroup]="appSettingsFormGroup" (ngSubmit)="saveAppSettings()" *ngIf="appSettingsFormGroup">
-      <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}"> -->
-      <p-table #dt [columns]="cols" [value]="_appsettings" [rows]="20" [responsive]="false" dataKey="Id"
-        [scrollable]="true" scrollHeight="550px">
-        <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}"> -->
+                <p-table #dt [columns]="cols" [value]="_appsettings" [rows]="20" [responsive]="false" dataKey="Id" [scrollable]="true">
+                    <ng-template pTemplate="caption">
+                        <div class="ui-g ui-g-nopad recordsBar">
+                            <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}}</div>
+                            <div class="ui-g-12 ui-md-7 ui-lg-7 ui-sm-12 smLeft" style="text-align: right">
+                                <input type="text" pInputText size="30" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em"> &nbsp;
+                                <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                            </div>
+                        </div>
+                    </ng-template>
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th style="width: 3em">
+                            </th>
+                            <th style="width: 20em">Type</th>
+                            <th style="width: 20em">Data Key</th>
+                            <th style="width: 20em">Description</th>
+                            <th style="width: 20em">Value</th>
+                        </tr>
+                    </ng-template>
+                    <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                        <tr [pSelectableRow]="rowData">
+                            <td style="width: 3em">
+                                <p-checkbox binary="true" formControlName="chkAppSetting_{{rowData.Id}}" (onChange)="toggleControls(rowData.Id)"></p-checkbox>
+                            </td>
+                            <td style="width: 20em;word-break: break-word;">
+                                {{rowData.Type}}
+                            </td>
+                            <td style="width: 20em;word-break: break-word;">
+                                {{rowData.DataKey}}
+                            </td>
+                            <td style="width: 20em;word-break: break-word;">
+                                {{rowData.Description}}
+                            </td>
+                            <td style="width: 20em;word-break: break-word;">
+                                <div *ngIf="_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1">
+                                    <input type="text" pInputText style="width:100%" required [value]="rowData.Value" formControlName="txtAppSettingVal_{{rowData.Id}}">
+                                </div>
+                                <div *ngIf="!(_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1)">
+                                    <input type="hidden" [value]="rowData.Value" formControlName="hdnAppSettingVal_{{rowData.Id}}"> {{rowData.Value}}
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+                <!-- </p-scrollPanel> -->
+                <p-footer>
+                    <div class="ui-g" style="text-align: right">
+                        <div class="ui-g-12 ui-md-12">
+                            <button pButton label="Save" class="ui-button-success" type="submit" [disabled]="hasFormErrors()"></button> &nbsp;
+                            <button pButton label="Cancel" (click)="CancelClick()" class="ui-button-danger"></button>
+                        </div>
+                    </div>
+                </p-footer>
             </div>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th style="width: 3em">
-            </th>
-            <th style="width: 200px">Type</th>
-            <th style="width: 200px">Data Key</th>
-            <th style="width: 200px">Description</th>
-            <th style="width: auto">Value</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td style="width: 3em">
-              <p-checkbox binary="true" formControlName="chkAppSetting_{{rowData.Id}}"
-                (onChange)="toggleControls(rowData.Id)"></p-checkbox>
-            </td>
-            <td style="width: 200px;word-break: break-word;">
-              {{rowData.Type}}
-            </td>
-            <td style="width: 200px;word-break: break-word;">
-              {{rowData.DataKey}}
-            </td>
-            <td style="width: 200px;word-break: break-word;">
-              {{rowData.Description}}
-            </td>
-            <td style="width: auto;word-break: break-word;">
-              <div
-                *ngIf="_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1">
-                <input type="text" pInputText style="width:100%" required [value]="rowData.Value"
-                  formControlName="txtAppSettingVal_{{rowData.Id}}">
-              </div>
-              <div
-                *ngIf="!(_appsettingsselection!==undefined&&_appsettingsselection!==null&&_appsettingsselection.length>0&&_appsettingsselection.indexOf(rowData.Id)>-1)">
-                <input type="hidden" [value]="rowData.Value" formControlName="hdnAppSettingVal_{{rowData.Id}}">
-                {{rowData.Value}}
-              </div>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <!-- </p-scrollPanel> -->
-      <p-footer>
-        <div class="ui-g" style="text-align: right">
-          <div class="ui-g-12 ui-md-12">
-            <button pButton label="Save" class="ui-button-success" type="submit" [disabled]="hasFormErrors()"></button>
-            &nbsp;
-            <button pButton label="Cancel" (click)="CancelClick()" class="ui-button-danger"></button>
-          </div>
         </div>
-      </p-footer>
     </form>
-  </div>
 </ng-container>
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>

@@ -1,115 +1,101 @@
 <ng-container *ngIf="IsSecure">
-  <form [formGroup]="pageFormgroup" *ngIf="pageFormgroup">
-    <div class="ui-g">
-      <div class="ui-g-12">
-        <div class="ui-g-12 ui-md-1" style="width: 4.5%; text-align: right; padding-top: 12px;">Role </div>
-        <div class="ui-g-12 ui-md-2">
-          <p-dropdown [options]="_roles" formControlName="roleDrp" placeholder="Please select a Role"
-            (onChange)="onRoleChange($event)"></p-dropdown>
-        </div>
-      </div>
-      <div class="ui-g-12" *ngIf="_showGrid">
-        <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}"> -->
-        <p-table #dt [columns]="cols" [value]="_pages" [(selection)]="_selectedPages" [responsive]="false" dataKey="ID"
-          [scrollable]="true" scrollHeight="550px">
-          <ng-template pTemplate="caption">
-            <div class="ui-g ui-g-nopad recordsBar">
-              <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}}</div>
-              <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-                <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-                <input type="text" pInputText size="50" placeholder="Global Filter"
-                  (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-                <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-              </div>
-            </div>
-          </ng-template>
-          <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width:3em;"></th>
-              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-                {{col.header}}
-                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                  ariaLabelDesc="Activate to sort in descending order"
-                  ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-            <tr [pSelectableRow]="rowData">
-              <td style="width:3em;text-align: center;">
-                <p-checkbox binary="true" formControlName="chkPage_{{rowData['ID']}}"
-                  (onChange)="toggleControls(rowData['ID'])">
-                </p-checkbox>
-              </td>
-              <td *ngFor="let col of columns" style="word-break: break-word;" [style.text-align]="col.align"
-                [style.width]="col.width">
-                <div *ngIf="col.header === 'Edit'; else columnName" style="text-align:center">
-                  <div *ngIf="rowData.HasEdit === 1" style="text-align:center">
-                    <p-inputSwitch id="Edit{{rowData['ID']}}" formControlName="editSwitch_{{rowData['ID']}}">
-                    </p-inputSwitch>
-                    <i class="fa fa-gear fa-2x" style="float:right;color: #007ad9;margin-left: -2em;cursor:pointer;"
-                      *ngIf="(rowData['PageName'] === 'Employees') && getEditStatus(rowData['ID'])"
-                      (click)="opSup.show($event)"></i>
-                    <p-overlayPanel #opSup [showCloseIcon]="true" [dismissable]="true" appendTo="body">
-
-                      <!-- <p-scrollPanel [style]="{height: '310px'}"> -->
-                      <p-table [columns]="colsSections" [value]="rowData.Sections"
-                        [(selection)]="_selectedPagesSections" [style]="{width: '500px'}" [responsive]="false"
-                        dataKey="ID" [paginator]="true" [rows]="5" [scrollable]="true" scrollHeight="310px">
-                        <ng-template pTemplate="header" let-columns>
-            <tr>
-              <th style="width:3em;"></th>
-              <th *ngFor="let col of columns">
-                {{col.header}}
-              </th>
-            </tr>
-          </ng-template>
-          <ng-template pTemplate="body" let-rowDataSections let-expanded="expanded" let-columns="columns">
-            <tr [pSelectableRow]="rowDataSections">
-              <td style="width:3em;text-align: center">
-                <p-checkbox binary="true" formControlName="chkPageSection_{{rowData['ID']}}_{{rowDataSections['ID']}}"
-                  (onChange)="toggleControlsSection(rowData['ID'],rowDataSections['ID'])">
-                </p-checkbox>
-              </td>
-              <td *ngFor="let col of columns">
-                <div *ngIf="col.header === 'Edit'; else columnName" style="text-align:center">
-                  <div *ngIf="rowDataSections.HasEdit === 1" style="text-align:center">
-                    <p-inputSwitch id="EditSection_{{rowData['ID']}}_{{rowDataSections['ID']}}"
-                      formControlName="editSwitchSection_{{rowData['ID']}}_{{rowDataSections['ID']}}">
-                    </p-inputSwitch>
-                  </div>
+    <form [formGroup]="pageFormgroup" *ngIf="pageFormgroup">
+        <div class="ui-g">
+            <div class="ui-g-12">
+                <div class="ui-g-12 ui-md-1" style="width: 4.5%; text-align: right; padding-top: 12px;">Role </div>
+                <div class="ui-g-12 ui-md-2">
+                    <p-dropdown [options]="_roles" formControlName="roleDrp" placeholder="Please select a Role" (onChange)="onRoleChange($event)"></p-dropdown>
                 </div>
-                <ng-template #columnName>
-                  {{rowDataSections[col.field]}}
-                </ng-template>
-              </td>
-            </tr>
-          </ng-template>
-        </p-table>
-        <!-- </p-scrollPanel> -->
+            </div>
+            <div class="ui-g-12" *ngIf="_showGrid">
+                <div class="ui-g-12">
+                    <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}"> -->
+                    <p-table #dt [columns]="cols" [value]="_pages" [(selection)]="_selectedPages" [responsive]="false" dataKey="ID" [scrollable]="true" scrollHeight="550px">
+                        <ng-template pTemplate="caption">
+                            <div class="ui-g ui-g-nopad recordsBar">
+                                <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}}</div>
+                                <div class="ui-g-12 ui-md-7 ui-lg-7 ui-sm-12 smLeft" style="text-align: right">
+                                    <input type="text" pInputText size="30" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em"> &nbsp;
+                                    <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                                </div>
+                            </div>
+                        </ng-template>
+                        <ng-template pTemplate="header" let-columns>
+                            <tr>
+                                <th style="width:3em;"></th>
+                                <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                                    {{col.header}}
+                                    <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order"></p-sortIcon>
+                                </th>
+                            </tr>
+                        </ng-template>
+                        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                            <tr [pSelectableRow]="rowData">
+                                <td style="width:3em;text-align: center;">
+                                    <p-checkbox binary="true" formControlName="chkPage_{{rowData['ID']}}" (onChange)="toggleControls(rowData['ID'])">
+                                    </p-checkbox>
+                                </td>
+                                <td *ngFor="let col of columns" style="word-break: break-word;" [style.text-align]="col.align" [style.width]="col.width">
+                                    <div *ngIf="col.header === 'Edit'; else columnName" style="text-align:center">
+                                        <div *ngIf="rowData.HasEdit === 1" style="text-align:center">
+                                            <p-inputSwitch id="Edit{{rowData['ID']}}" formControlName="editSwitch_{{rowData['ID']}}">
+                                            </p-inputSwitch>
+                                            <i class="fa fa-gear fa-2x" style="float:right;color: #007ad9;margin-left: -2em;cursor:pointer;" *ngIf="(rowData['PageName'] === 'Employees') && getEditStatus(rowData['ID'])" (click)="opSup.show($event)"></i>
+                                            <p-overlayPanel #opSup [showCloseIcon]="true" [dismissable]="true" appendTo="body">
 
-        </p-overlayPanel>
+                                                <!-- <p-scrollPanel [style]="{height: '310px'}"> -->
+                                                <p-table [columns]="colsSections" [value]="rowData.Sections" [(selection)]="_selectedPagesSections" [style]="{width: '500px'}" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="5" [scrollable]="true" scrollHeight="310px">
+                                                    <ng-template pTemplate="header" let-columns>
+                                                        <tr>
+                                                            <th style="width:3em;"></th>
+                                                            <th *ngFor="let col of columns">
+                                                                {{col.header}}
+                                                            </th>
+                                                        </tr>
+                                                    </ng-template>
+                                                    <ng-template pTemplate="body" let-rowDataSections let-expanded="expanded" let-columns="columns">
+                                                        <tr [pSelectableRow]="rowDataSections">
+                                                            <td style="width:3em;text-align: center">
+                                                                <p-checkbox binary="true" formControlName="chkPageSection_{{rowData['ID']}}_{{rowDataSections['ID']}}" (onChange)="toggleControlsSection(rowData['ID'],rowDataSections['ID'])">
+                                                                </p-checkbox>
+                                                            </td>
+                                                            <td *ngFor="let col of columns">
+                                                                <div *ngIf="col.header === 'Edit'; else columnName" style="text-align:center">
+                                                                    <div *ngIf="rowDataSections.HasEdit === 1" style="text-align:center">
+                                                                        <p-inputSwitch id="EditSection_{{rowData['ID']}}_{{rowDataSections['ID']}}" formControlName="editSwitchSection_{{rowData['ID']}}_{{rowDataSections['ID']}}">
+                                                                        </p-inputSwitch>
+                                                                    </div>
+                                                                </div>
+                                                                <ng-template #columnName>
+                                                                    {{rowDataSections[col.field]}}
+                                                                </ng-template>
+                                                            </td>
+                                                        </tr>
+                                                    </ng-template>
+                                                </p-table>
+                                                <!-- </p-scrollPanel> -->
 
-      </div>
-    </div>
-    <ng-template #columnName>
-      {{rowData[col.field]}}
-    </ng-template>
-    </td>
-    </tr>
-    </ng-template>
-    </p-table>
-    <!-- </p-scrollPanel> -->
-    </div>
-    </div>
-    <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
-      <div class="ui-g-12 ui-md-12 ui-lg-12">
-        <button pButton class="ui-button-success" label="Save" (click)="savePages()"></button>
-        &nbsp;
-        <button pButton label="Cancel" (click)="cancelPages()" class="ui-button-danger"></button>
-      </div>
-    </div>
-  </form>
+                                            </p-overlayPanel>
+
+                                        </div>
+                                    </div>
+                                    <ng-template #columnName>
+                                        {{rowData[col.field]}}
+                                    </ng-template>
+                                </td>
+                            </tr>
+                        </ng-template>
+                    </p-table>
+                </div>
+                <!-- </p-scrollPanel> -->
+            </div>
+        </div>
+        <div class="ui-g" *ngIf="_showGrid" style="width: 100%; text-align: right">
+            <div class="ui-g-12 ui-md-12 ui-lg-12">
+                <button pButton class="ui-button-success" label="Save" (click)="savePages()"></button> &nbsp;
+                <button pButton label="Cancel" (click)="cancelPages()" class="ui-button-danger"></button>
+            </div>
+        </div>
+    </form>
 </ng-container>
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>

@@ -164,11 +164,11 @@ export class ClientsComponent implements OnInit {
     ];
 
     this.cols = [
-      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '400px' },
-      { field: 'Key', header: 'Code', align: 'left', width: '200px' },
-      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '350px' },
-      { field: 'SOWName', header: 'SOW Name', width: '200px' },
-      { field: 'PONumber', header: 'PO#', align: 'left', width: '150px' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '30em' },
+      { field: 'Key', header: 'Code', align: 'left', width: '15em' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '27em' },
+      { field: 'SOWName', header: 'SOW Name', width: '15em' },
+      { field: 'PONumber', header: 'PO#', align: 'left', width: '8em' },
     ];
 
     this._billingCodes = new BillingCode();

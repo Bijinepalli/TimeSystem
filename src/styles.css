@@ -1,243 +1,234 @@
 /* You can add global styles to this file, and also import other style files */
+
 @import "assets/styles/scrollbar.css";
 @import "assets/styles/leftNav.css";
-
 body {
-  background-color: #f5f7f8 !important;
-  margin: 0px;
-  top: 100px;
-  font-size: 1em !important;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  color: steelblue;
+    background-color: #f5f7f8 !important;
+    margin: 0px;
+    top: 100px;
+    font-size: 1em !important;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: steelblue;
 }
 
 .positionMiddle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
+
 /* Override color for alert box*/
+
 .alertHeader {
-  background-color: indianred;
-  width: 100%
+    background-color: indianred;
+    width: 100%
 }
 
 :host ::ng-deep.ui-toast-message.ui-toast-message-error {
-  background-color: #ffffff !important;
-  padding: 0px !important;
+    background-color: #ffffff !important;
+    padding: 0px !important;
 }
 
 :host ::ng-deep .alertToast .ui-toast-message-content {
-  padding: 0px !important;
+    padding: 0px !important;
 }
 
 :host ::ng-deep .error-toast .ui-toast-message-content {
-  padding: 0px !important;
+    padding: 0px !important;
 }
 
 .mainHeader {
-  font-size: 24px;
-  color: dodgerblue;
-  background-color: aliceblue;
-  border-right: 0px;
-  border-left: 0px;
-  box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.3);
-  margin-top: 10px;
+    font-size: 24px;
+    color: dodgerblue;
+    background-color: aliceblue;
+    border-right: 0px;
+    border-left: 0px;
+    box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.3);
+    margin-top: 10px;
 }
 
-
-.label
-{
+.label {
     padding-top: 13px;
     text-align: right;
     color: #329AFF;
 }
-.sublabel
-{
+
+.sublabel {
     /* font-weight: bold; */
     padding-top: 13px;
     color: black;
 }
 
 .checkboxLabel .ui-chkbox-label {
-  color: red !important;
+    color: red !important;
 }
 
 .editIcon {
-  cursor: pointer;
-  color: green;
+    cursor: pointer;
+    color: green;
 }
 
 .deleteIcon {
-  cursor: pointer;
-  color: red;
+    cursor: pointer;
+    color: red;
 }
 
 .viewIcon {
-  cursor: pointer;
-  color: #007ad9;
+    cursor: pointer;
+    color: #007ad9;
 }
 
 .helpClass {
-  height: 43px;
-  text-align: center;
-  color: dodgerblue !important;
+    height: 43px;
+    text-align: center;
+    color: dodgerblue !important;
 }
 
 .helpDisplayClass {
-  color: black;
-  font-size: 10pt;
+    color: black;
+    font-size: 10pt;
 }
 
 .recordsFound {
-  color: white;
-  text-align: left;
-  vertical-align: middle;
-  font-weight: normal;
-  padding: 0.4em 0em 0.4em 0em;
+    color: white;
+    text-align: left;
+    vertical-align: middle;
+    font-weight: normal;
+    padding: 0.4em 0em 0.4em 0em;
 }
 
 .recordsBar {
-  background-color: #333333;
-  padding: 2px;
+    background-color: #333333;
+    padding: 2px;
 }
 
 .mandatoryStar {
-  color: red !important;
+    color: red !important;
 }
 
 .NoDataMessage {
-  color: red !important;
-  font-weight: 400 !important;
-  padding: 14px !important;
-  text-align: left !important;
+    color: red !important;
+    font-weight: 400 !important;
+    padding: 14px !important;
+    text-align: left !important;
 }
 
 .NoDataStrip {
-  background: #e7e7e7 !important;
-  border: 0px !important;
+    background: #e7e7e7 !important;
+    border: 0px !important;
 }
 
 .successBlock {
-  padding: 15px;
-  background-color: #ffffff;
-  color: green;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  border: 1px solid lightgreen;
+    padding: 15px;
+    background-color: #ffffff;
+    color: green;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    border: 1px solid lightgreen;
 }
 
 .errorBlock {
-  padding: 15px;
-  background-color: #ffffff;
-  color: crimson;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  border: 1px solid #ffaebe;
+    padding: 15px;
+    background-color: #ffffff;
+    color: crimson;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    border: 1px solid #ffaebe;
 }
 
 .warningBlock {
-  padding: 15px;
-  background-color: #ffffff;
-  color: green;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  border: 1px solid lightgreen;
+    padding: 15px;
+    background-color: #ffffff;
+    color: green;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    border: 1px solid lightgreen;
 }
 
 .errorBlockHeader {
-  padding: 7px;
-  background-color: #ffffff;
-  color: crimson;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  border: 1px solid #ffaebe;
+    padding: 7px;
+    background-color: #ffffff;
+    color: crimson;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    border: 1px solid #ffaebe;
 }
 
 .warningBlockHeader {
-  padding: 7px;
-  background-color: #ffffff;
-  color: green;
-  -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2),
-    0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14),
-    0 2px 1px -1px rgba(0, 0, 0, 0.12);
-  border: 1px solid lightgreen;
+    padding: 7px;
+    background-color: #ffffff;
+    color: green;
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 0 rgba(0, 0, 0, 0.14), 0 2px 1px -1px rgba(0, 0, 0, 0.12);
+    border: 1px solid lightgreen;
 }
 
 .ui-sidebar.sidebarHelp {
-  background-color: #fbfcc5 !important;
-  color: black !important;
-  width: 400px;
+    background-color: #fbfcc5 !important;
+    color: black !important;
+    width: 400px;
 }
 
 .ui-dialog-titlebar.ui-widget-header {
-  background-color: black !important;
-  color: white !important;
+    background-color: black !important;
+    color: white !important;
 }
 
 .dialogHeader .ui-dialog-titlebar.ui-widget-header {
-  background-color: lightgreen !important;
-  color: #0078d7 !important;
+    background-color: lightgreen !important;
+    color: #0078d7 !important;
 }
 
 body .ui-panel .ui-panel-content {
-  padding: 0.571em 1em;
-  border: 1px solid !important;
-  background-color: #e7e7e7 !important;
-  color: #dedede;
-  padding: 0.571em 1em;
+    padding: 0.571em 1em;
+    border: 1px solid !important;
+    background-color: #e7e7e7 !important;
+    color: #dedede;
+    padding: 0.571em 1em;
 }
 
 .ui-panel .ui-panel-footer {
-  border-width: 1px 0 0;
-  padding: 0.25em 0.5em;
-  text-align: left !important;
+    border-width: 1px 0 0;
+    padding: 0.25em 0.5em;
+    text-align: left !important;
 }
 
 .panelEmpBilling .ui-panel .ui-panel-content {
-  color: black !important;
+    color: black !important;
 }
 
 .tablePadding .ui-table {
-  padding-right: 9px !important;
+    padding-right: 9px !important;
 }
 
 .ui-table .ui-paginator-bottom {
-  border: 0 !important;
+    border: 0 !important;
 }
 
 @media screen and (min-width: 1440px) and (max-width: 1900px) {
-  .drpFS .ui-dropdown .ui-dropdown-label {
-    font-size: 12px !important;
-  }
-  .drpFS .ui-dropdown-panel .ui-dropdown-item {
-    font-size: 12px !important;
-  }
+    .drpFS .ui-dropdown .ui-dropdown-label {
+        font-size: 12px !important;
+    }
+    .drpFS .ui-dropdown-panel .ui-dropdown-item {
+        font-size: 12px !important;
+    }
 }
 
 @media only screen and (max-width: 800px) {
-  .smLeft {
-    text-align: left !important;
-  }
+    .smLeft {
+        text-align: left !important;
+    }
+    .smRight {
+        text-align: right !important;
+    }
+    .smCenter {
+        text-align: center !important;
+    }
 }

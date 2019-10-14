@@ -116,9 +116,9 @@ export class AccessrightsComponent implements OnInit {
       { label: 'Program Manager', value: 'P' },
     ];
     this.cols = [
-      { field: 'ModuleName', header: 'Module' },
-      { field: 'PageName', header: 'Page Name' },
-      { field: 'HasEdit', header: 'Edit' },
+      { field: 'ModuleName', header: 'Module', width: '20em' },
+      { field: 'PageName', header: 'Page Name', width: '20em' },
+      { field: 'HasEdit', header: 'Edit', width: '10em' },
     ];
     this.colsSections = [
       { field: 'ModuleName', header: 'Action/Section' },
@@ -252,7 +252,8 @@ export class AccessrightsComponent implements OnInit {
       }
     }
     this.logSvc.ActionLog(PageNames.Configuration,
-      'Page Settings', 'Pages/Event', 'savePages', 'Save Pages', '', '{"PhysicalPath":"app/accessrights"}', JSON.stringify(allSelections)); // ActivityLog
+      'Page Settings', 'Pages/Event', 'savePages', 'Save Pages', '',
+      '{"PhysicalPath":"app/accessrights"}', JSON.stringify(allSelections)); // ActivityLog
 
     this.timesysSvc.InsertAccessRights(allSelections)
       .subscribe(

@@ -123,9 +123,9 @@ export class ProjectsComponent implements OnInit {
     this._selectedStatus = '1';
 
     this.cols = [
-      { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
-      { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
+      { field: 'ProjectName', header: 'Project Name', align: 'left', width: '60em' },
+      { field: 'Key', header: 'Code', align: 'left', width: '18em' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '11em' },
     ];
     this._sortArray = ['ProjectName', 'Key', 'CreatedOnSearch'];
     this.addControls();
@@ -156,16 +156,16 @@ export class ProjectsComponent implements OnInit {
     this.showSpinner = true;
     if (this._selectedStatus === '2') {
       this.cols = [
-        { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
-        { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-        { field: 'Inactive', header: 'Inactive', align: 'center', width: '120px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+        { field: 'ProjectName', header: 'Project Name', align: 'left', width: '60em' },
+        { field: 'Key', header: 'Code', align: 'left', width: '18em' },
+        { field: 'Inactive', header: 'Inactive', align: 'center', width: '11em' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '11em' },
       ];
     } else {
       this.cols = [
-        { field: 'ProjectName', header: 'Project Name', align: 'left', width: 'auto' },
-        { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '120px' },
+        { field: 'ProjectName', header: 'Project Name', align: 'left', width: '60em' },
+        { field: 'Key', header: 'Code', align: 'left', width: '18em' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '11em' },
       ];
     }
     this._sortArray = ['ProjectName', 'Key', 'Inactive', 'CreatedOnSearch'];
