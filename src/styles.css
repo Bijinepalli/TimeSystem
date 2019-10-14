@@ -47,10 +47,18 @@ body {
   margin-top: 10px;
 }
 
-.label {
-  padding-top: 13px;
-  text-align: right;
-  color: black;
+
+.label
+{
+    padding-top: 13px;
+    text-align: right;
+    color: #329AFF;
+}
+.sublabel
+{
+    /* font-weight: bold; */
+    padding-top: 13px;
+    color: black;
 }
 
 .checkboxLabel .ui-chkbox-label {

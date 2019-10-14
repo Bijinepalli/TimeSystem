@@ -18,11 +18,11 @@
         <label class="label">Date Range</label>
       </div>
       <div class="ui-g-12">
-        <label class="label">From </label>&nbsp;
+        <label class="sublabel">From </label>&nbsp;
         <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" dateFormat="mm-dd-yy" [(ngModel)]="_startDate"
           [inputStyle]="{'width':'100px'}"></p-calendar>
-        <label class="label" style="padding:0px 10px">to</label>
+        <label class="sublabel" style="padding:0px 10px">to</label>
         <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true"
           showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate"
           [inputStyle]="{'width':'100px'}"></p-calendar>

@@ -24,6 +24,13 @@
           pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="top"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
+      <div class="ui-g-12">
+        <label class="label">Select Timesheet Status</label>
+      </div>
+      <div class="ui-g-12">
+        <p-dropdown [options]="tsStatus" [(ngModel)]="_selectedStatus" pTooltip="Timesheet Status"
+          tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+      </div>
       <div class="ui-g-12 ui-sm-12">
         <label class="label">Date Range</label>
       </div>
@@ -63,13 +70,15 @@
       <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
         (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
         <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-lg-4 ui-md-3 ui-sm-12 ui-g-nopad recordsFound">{{_recData}} rows matching</div>
-            <div class="ui-g-12 ui-lg-8 ui-md-9 ui-sm-12 ui-g-nopad smLeft" style="text-align: right;">
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em;"> &nbsp;
-              <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-warning"
-                label="Start Over" (click)="startOver()"></button> &nbsp;
+          <div class="ui-g recordsBar">
+            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} rows matching</div>
+            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+              <input type="text" pInputText placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+            </div>
+            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
+                <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
           </div>
