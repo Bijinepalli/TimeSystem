@@ -20,7 +20,7 @@
 #sidenav,
 #sidenav-mini {
   height: 100%;
-  position: relative;
+  /* position: relative; */
   padding-left: 0px;
   background-color: white !important;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, .3);
@@ -29,7 +29,7 @@
 }
 
 #content-body {
-  position: relative;
+  /* position: relative; */
   left: 0px;
   margin-bottom: 30px;
 }
