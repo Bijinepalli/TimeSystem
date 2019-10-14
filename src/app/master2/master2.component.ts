@@ -255,7 +255,7 @@ export class Master2Component implements OnInit {
     } else {
       queryParamsNew = { Id: -999, TS: _np };
     }
-    this.router.navigate([path], { queryParams: queryParamsNew, skipLocationChange: true });
+    this.router.navigate([path], { queryParams: queryParamsNew, skipLocationChange: false });
     this.selectInitialMenuItemBasedOnUrl(queryParamsNew.Id);
   }
 
@@ -348,7 +348,7 @@ export class Master2Component implements OnInit {
 
   navigateTo() {
     this.selectInitialMenuItemBasedOnUrl(-1);
-    this.router.navigate(['/menu/dashboard'], { queryParams: { Id: -1 }, skipLocationChange: true });
+    this.router.navigate(['/menu/dashboard'], { queryParams: { Id: -1 }, skipLocationChange: false });
   }
 
   changePasswordClick() {

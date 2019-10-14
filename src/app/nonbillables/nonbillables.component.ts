@@ -119,9 +119,9 @@ export class NonbillablesComponent implements OnInit {
     this._selectedStatus = '1';
 
     this.cols = [
-      { field: 'ProjectName', header: 'Non-Billable Item Name', align: 'left', width: 'auto' },
-      { field: 'Key', header: 'Code', align: 'left', width: '250px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
+      { field: 'ProjectName', header: 'Non-Billable Item Name', align: 'left', width: '45em' },
+      { field: 'Key', header: 'Code', align: 'left', width: '15em' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '10em' },
     ];
     this._sortArray = ['ProjectName', 'Key', 'CreatedOnSearch'];
     this.addControls();

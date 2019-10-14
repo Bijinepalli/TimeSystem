@@ -109,13 +109,13 @@ export class MailsComponent implements OnInit {
 
   Initialisations() {
     this.cols = [
-      { field: 'EmailType', header: 'Email Type', align: 'left', width: 'auto' },
-      { field: 'Subject', header: 'Subject', align: 'left', width: 'auto' },
-      { field: 'Body', header: 'Body', align: 'left', width: 'auto' },
-      { field: 'HighPriority', header: 'Is High Priority', align: 'center', width: 'auto' },
-      { field: 'SubjectIsTemplate', header: 'Is Subject Template', align: 'center', width: 'auto' },
-      { field: 'BodyIsTemplate', header: 'Is Body Template', align: 'center', width: 'auto' },
-      { field: 'AddSignature', header: 'Is Signature Added', align: 'center', width: 'auto' },
+      { field: 'EmailType', header: 'Email Type', align: 'left', width: '14em' },
+      { field: 'Subject', header: 'Subject', align: 'left', width: '14em' },
+      { field: 'Body', header: 'Body', align: 'left', width: '15em' },
+      { field: 'HighPriority', header: 'Is High Priority', align: 'center', width: '11em' },
+      { field: 'SubjectIsTemplate', header: 'Is Subject Template', align: 'center', width: '14em' },
+      { field: 'BodyIsTemplate', header: 'Is Body Template', align: 'center', width: '12em' },
+      { field: 'AddSignature', header: 'Is Signature Added', align: 'center', width: '13em' },
     ];
     this.getEmails();
     this.addControls();
