@@ -96,7 +96,7 @@ body {
   text-align: left;
   vertical-align: middle;
   font-weight: normal;
-  padding-top: 1em;
+  padding: 0.4em 0em 0.4em 0em;
 }
 
 .recordsBar {

@@ -66,7 +66,7 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <div class="ui-g-12">
+    <div class="ui-g-12 ui-g-nopad">
       <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
         (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
         <ng-template pTemplate="caption">
@@ -77,6 +77,8 @@
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
             </div>
             <div class="ui-g-2 ui-sm-12" style="text-align: left;">
+                <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
           </div>

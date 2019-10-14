@@ -7,7 +7,6 @@
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
       <div class="ui-g-12 ui-sm-12">
@@ -25,7 +24,7 @@
           pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
           tooltipPosition="top" [inputStyle]="{'width':'100px'}">></p-calendar>
       </div>
-      <div class="ui-g-12 ui-sm-12">
+      <div class="ui-g-12 ui-md-12 ui-lg-6 ui-sm-12" style="padding-top: 13px">
         <p-checkbox binary="true" label="" [(ngModel)]="_showAll" binary="true"></p-checkbox>
         <label class="label" style="padding:0px 10px;">Include Employees With No Rates</label>
       </div>
@@ -38,9 +37,7 @@
       </div>
     </p-footer>
   </p-panel>
-
   <div class="ui-g">&nbsp;</div>
-
   <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
     <div class="ui-g-12 ui-sm-12 NoDataMessage">
       No matching data for the selected criteria
@@ -48,17 +45,15 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <div class="ui-g-12">
+    <div class="ui-g-12 ui-g-nopad">
       <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
         (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
         <ng-template pTemplate="caption">
-          <div class="ui-g recordsBar">
-            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
-              <input type="text" pInputText placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
-            </div>
-            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-lg-4 ui-md-4 ui-sm-12 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-12 ui-lg-8 ui-md-8 ui-sm-12 ui-g-nopad smLeft" style="text-align: right;">
+              <input type="text" pInputText size="30" placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em;"> &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
           </div>

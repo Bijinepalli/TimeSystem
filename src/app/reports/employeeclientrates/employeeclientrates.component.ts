@@ -158,8 +158,8 @@ export class EmployeeclientratesComponent implements OnInit {
       startDate: _start,
       endDate: _end,
     }
-    this.logSvc.ActionLog(PageNames.EmployeeBillingCodeRates, '', 'Reports/Event', 'generateReport', 'Generate Report', 
-    '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeBillingCodeRates, '', 'Reports/Event', 'generateReport', 'Generate Report',
+      '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._billingCodesSpecial = new BillingCodesSpecial();
     this._billingCodesSpecial.startDate = _start;
     this._billingCodesSpecial.endDate = _end;
@@ -190,7 +190,7 @@ export class EmployeeclientratesComponent implements OnInit {
       { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '30em' },
       { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '15em' },
       { field: 'Rate', header: 'Rate', align: 'right', width: '10em' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '10em' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '12em' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'EmployeeID', 'ClientName', 'ClientID', 'Rate', 'EffectiveDateSearch'];
   }
