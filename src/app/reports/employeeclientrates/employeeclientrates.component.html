@@ -4,21 +4,17 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('ListEmployeeClientRates.htm')"></i>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
 </div>
-
 <br>
-
 <ng-container *ngIf="IsSecure">
 
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-3 ui-lg-4">
-        <label class="label" style="padding:0px 10px;"> Date From:</label>
+      <div class="ui-g-12 ui-sm-12">
+        <label class="label">Date Range</label>
+      </div>
+      <div class="ui-g-12 ui-sm-12">
+        <label class="label">From</label>&nbsp;
         <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" [monthNavigator]="true"
           showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
@@ -29,13 +25,13 @@
           pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
           tooltipPosition="top" [inputStyle]="{'width':'100px'}">></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-4" style="padding-top: 13px">
+      <div class="ui-g-12 ui-sm-12">
         <p-checkbox binary="true" label="" [(ngModel)]="_showAll" binary="true"></p-checkbox>
         <label class="label" style="padding:0px 10px;">Include Employees With No Rates</label>
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div>
         <button pButton pTooltip="Generate Report" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" (click)=generateReport()
           pTooltip="Show the employee - billing code rates that match your choices" tooltipPosition="bottom"></button>
@@ -46,54 +42,57 @@
   <div class="ui-g">&nbsp;</div>
 
   <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    <div class="ui-g-12 ui-sm-12 NoDataMessage">
       No matching data for the selected criteria
     </div>
   </div>
 
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
-      (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
-      <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-          <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-            <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-            <input type="text" pInputText size="30" placeholder="Global Filter"
-              (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-          </div>
-        </div>
-      </ng-template>
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-            {{col.header}}
-            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-              ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-            </p-sortIcon>
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-            <div
-              *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
-              <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
+    <div class="ui-g-12">
+      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
+        (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g recordsBar">
+            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+              <input type="text" pInputText placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
             </div>
-            <ng-template #defaultColumn>
-              <div *ngIf="(col.field === 'EffectiveDate'); else nondatecol">
-                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+              <div
+                *ngIf="(col.header === 'Inactive' || col.header === 'InactiveRel'  || col.header === 'Salaried'); else defaultColumn">
+                <label>{{rowData[col.field]=='0'?'No':'Yes'}} </label>
               </div>
-              <ng-template #nondatecol>
-                {{rowData[col.field]}}
+              <ng-template #defaultColumn>
+                <div *ngIf="(col.field === 'EffectiveDate'); else nondatecol">
+                  <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                </div>
+                <ng-template #nondatecol>
+                  {{rowData[col.field]}}
+                </ng-template>
               </ng-template>
-            </ng-template>
-          </td>
-        </tr>
-      </ng-template>
-    </p-table>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
   </div>
 </ng-container>
 

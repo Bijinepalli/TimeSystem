@@ -158,7 +158,8 @@ export class EmployeeclientratesComponent implements OnInit {
       startDate: _start,
       endDate: _end,
     }
-    this.logSvc.ActionLog(PageNames.EmployeeBillingCodeRates, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeBillingCodeRates, '', 'Reports/Event', 'generateReport', 'Generate Report', 
+    '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._billingCodesSpecial = new BillingCodesSpecial();
     this._billingCodesSpecial.startDate = _start;
     this._billingCodesSpecial.endDate = _end;
@@ -183,13 +184,13 @@ export class EmployeeclientratesComponent implements OnInit {
 
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '130px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '130px' },
-      { field: 'EmployeeID', header: 'Employee ID', align: 'right', width: '140px' },
-      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: 'auto' },
-      { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '155px' },
-      { field: 'Rate', header: 'Rate', align: 'right', width: '85px' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+      { field: 'EmployeeID', header: 'Employee ID', align: 'right', width: '10em' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '30em' },
+      { field: 'ClientID', header: 'Billing Code ID', align: 'right', width: '15em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '10em' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '10em' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'EmployeeID', 'ClientName', 'ClientID', 'Rate', 'EffectiveDateSearch'];
   }
