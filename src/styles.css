@@ -88,8 +88,7 @@ body {
   text-align: left;
   vertical-align: middle;
   font-weight: normal;
-  padding-top: 5px;
-  padding-left: 10px;
+  padding-top: 1em;
 }
 
 .recordsBar {
@@ -226,5 +225,11 @@ body .ui-panel .ui-panel-content {
   }
   .drpFS .ui-dropdown-panel .ui-dropdown-item {
     font-size: 12px !important;
+  }
+}
+
+@media only screen and (max-width: 800px) {
+  .smLeft {
+    text-align: left !important;
   }
 }
