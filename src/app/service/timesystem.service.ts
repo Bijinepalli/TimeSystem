@@ -15,7 +15,8 @@ import {
   DateArray,
   PeriodEndWithKeys,
   SOWUtilizationReport,
-  SOWMonthlyUtilizationReport
+  SOWMonthlyUtilizationReport,
+  ActivityLog
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
