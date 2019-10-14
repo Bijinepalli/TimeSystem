@@ -224,6 +224,7 @@ export class BillingCodes {
     PeriodEndSearch?: string;
     WeekEndSearch?: string;
     CalendarDateSearch?: string;
+    Department?: string;
 }
 export class BillingCodesSpecial {
     value?: string;
@@ -236,6 +237,8 @@ export class BillingCodesSpecial {
     billingCycle?: string;
     includeTotals?: number;
     includePeriodEnd?: number;
+    department?: string;
+    timesheetStatus?: string;
 }
 // export class Invoice {
 //     LastName?: string;

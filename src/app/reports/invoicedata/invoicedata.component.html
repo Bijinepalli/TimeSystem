@@ -24,9 +24,16 @@
           pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="top"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
+      <div class="ui-g-12">
+        <label class="label">Select Timesheet Status</label>
+      </div>
+      <div class="ui-g-12">
+        <p-dropdown [options]="tsStatus" [(ngModel)]="_selectedStatus" pTooltip="Timesheet Status"
+          tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+      </div>
       <div class="ui-g-12 ui-sm-12">
-          <label class="label">Date Range</label>
-        </div>
+        <label class="label">Date Range</label>
+      </div>
       <div class="ui-g-12 ui-sm-12">
         <label class="label">From</label>&nbsp;
         <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
@@ -64,15 +71,15 @@
         (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
         <ng-template pTemplate="caption">
           <div class="ui-g recordsBar">
-              <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} rows matching</div>
-              <div class="ui-g-5 ui-sm-12" style="text-align: left;">
-                <input type="text" pInputText placeholder="Global Filter"
-                  (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
-              </div>
-              <div class="ui-g-2 ui-sm-12" style="text-align: left;">
-                <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-              </div>
+            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} rows matching</div>
+            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+              <input type="text" pInputText placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
             </div>
+            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            </div>
+          </div>
         </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr>
