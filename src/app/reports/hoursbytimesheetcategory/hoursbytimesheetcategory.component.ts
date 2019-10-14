@@ -153,7 +153,8 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     //   this._billingCodesSpecial.startDate = '';
     //   this._billingCodesSpecial.endDate = '';
     // }
-    this.logSvc.ActionLog(PageNames.HoursbyTimesheetCategory, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.HoursbyTimesheetCategory, '', 'Reports/Event', 'generateReport', 'Generate Report', '',
+     '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
     this.timesysSvc.ListEmployeeHoursByTimeSheetCategory(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);
@@ -172,11 +173,11 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '200px' },
-      { field: 'BillingName', header: 'Billing Code', align: 'left', width: 'auto' },
-      { field: 'TANDM', header: 'T & M', align: 'right', width: '100px' },
-      { field: 'Project', header: 'Project', align: 'right', width: '101px' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '133px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '20em' },
+      { field: 'BillingName', header: 'Billing Code', align: 'left', width: '20em' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '10em' },
+      { field: 'Project', header: 'Project', align: 'right', width: '10em' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '10em' },
     ];
   }
   customSort(event: SortEvent) {

@@ -130,10 +130,10 @@ export class PendingtimesheetsComponent implements OnInit {
     this.showSpinner = true;
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: 'auto' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: 'auto' },
-      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '200px' },
-      { field: 'Status', header: 'Status', align: 'left', width: '200px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '20em' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '20em' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '10em' },
+      { field: 'Status', header: 'Status', align: 'left', width: '10em' },
     ];
     this._sortArray = ['LastName', 'FirstName', 'PeriodEndSearch', 'Status'];
     this.ccFinance = true;

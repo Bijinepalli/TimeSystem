@@ -128,13 +128,13 @@ export class EmployeelogindataComponent implements OnInit {
     this.showSpinner = true;
     this.resetSort();
     this.cols = [
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-      { field: 'LoginID', header: 'Login ID', align: 'left', width: '200px' },
-      { field: 'DecryptedPassword', header: 'Password', align: 'left', width: 'auto' },
-      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
-      { field: 'Salaried', header: 'Salaried', align: 'center', width: '110px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+      { field: 'LoginID', header: 'Login ID', align: 'left', width: '15em' },
+      { field: 'DecryptedPassword', header: 'Password', align: 'left', width: '15em' },
+      { field: 'EmailAddress', header: 'Email Address', align: 'left', width: '20em' },
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '10em' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
     ];
     this.showReport = false;
     let _InActive = '';
@@ -152,7 +152,8 @@ export class EmployeelogindataComponent implements OnInit {
       _InActive: _InActive,
       _Salaried: _Salaried,
     }
-    this.logSvc.ActionLog(PageNames.EmployeeLoginData, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeLoginData, '', 'Reports/Event', 'generateReport', 'Generate Report', 
+    '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.getAllEmployee(_InActive, _Salaried)
       .subscribe(
         (data) => {

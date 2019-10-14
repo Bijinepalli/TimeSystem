@@ -115,17 +115,17 @@ export class InvoicedataComponent implements OnInit {
       { label: 'All', value: 'A' }
     ];
     this.cols = [
-      { field: 'InvoiceDate', header: 'Invoice Date', align: 'center', width: '120px' },
-      { field: 'DivisionNumber', header: 'Division #', align: 'right', width: '100px' },
-      { field: 'CustomerNumber', header: 'Customer #', align: 'right', width: '100px' },
-      { field: 'ProductCode', header: 'Product Code', align: 'left', width: '150px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
-      { field: 'Amount', header: 'Amount', align: 'right', width: '100px' },
-      { field: 'StartDate', header: 'Start Date', align: 'center', width: '100px' },
-      { field: 'EndDate', header: 'End Date', align: 'center', width: '100px' },
-      { field: 'ClientName', header: 'Description', align: 'left', width: '250px' },
-      { field: 'PONumber', header: 'PO #', align: 'right', width: '120px' },
+      { field: 'InvoiceDate', header: 'Invoice Date', align: 'center', width: '10em' },
+      { field: 'DivisionNumber', header: 'Division #', align: 'right', width: '9em' },
+      { field: 'CustomerNumber', header: 'Customer #', align: 'right', width: '10em' },
+      { field: 'ProductCode', header: 'Product Code', align: 'left', width: '10em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '7em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '7em' },
+      { field: 'Amount', header: 'Amount', align: 'right', width: '10em' },
+      { field: 'StartDate', header: 'Start Date', align: 'center', width: '9em' },
+      { field: 'EndDate', header: 'End Date', align: 'center', width: '9em' },
+      { field: 'ClientName', header: 'Description', align: 'left', width: '15em' },
+      { field: 'PONumber', header: 'PO #', align: 'right', width: '9em' },
     ];
     // tslint:disable-next-line:max-line-length
     this._sortArray = ['InvoiceDateSearch', 'DivisionNumber', 'CustomerNumber', 'ProductCode', 'Hours', 'Rate', 'Amount', 'StartDateSearch', 'EndDateSearch', 'ClientName', 'PONumber'];

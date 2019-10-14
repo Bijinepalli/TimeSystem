@@ -185,17 +185,17 @@ export class PayrollComponent implements OnInit {
   }
   buildCols() {
     this.cols = [
-      { field: 'Salaried', header: 'Salaried', align: 'center', width: '80px' },
-      { field: 'EmployeeNumber', header: 'Employee Number', align: 'left', width: '155px' },
-      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: '200px' },
-      { field: 'Worked', header: 'Worked', align: 'right', width: '80px' },
-      { field: 'HolidayHours', header: 'Holiday Hours', align: 'right', width: '124px' },
-      { field: 'PTOHours', header: 'PTO Hours', align: 'right', width: '100px' },
-      { field: 'IPayHours', header: 'IPay Hours', align: 'right', width: '105px' },
-      { field: 'HoursPaid', header: 'Hours Paid', align: 'right', width: '105px' },
-      { field: 'NonBillableHours', header: 'Non-Billable Hours', align: 'right', width: '160px' },
-      { field: 'TotalHours', header: 'Total Hours', align: 'right', width: '110px' },
-      { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '200px' }
+      { field: 'Salaried', header: 'Salaried', align: 'center', width: '8em' },
+      { field: 'EmployeeNumber', header: 'Employee Number', align: 'left', width: '10em' },
+      { field: 'EmployeeName', header: 'Employee Name', align: 'left', width: '20em' },
+      { field: 'Worked', header: 'Worked', align: 'right', width: '8em' },
+      { field: 'HolidayHours', header: 'Holiday Hours', align: 'right', width: '8em' },
+      { field: 'PTOHours', header: 'PTO Hours', align: 'right', width: '8em' },
+      { field: 'IPayHours', header: 'IPay Hours', align: 'right', width: '8em' },
+      { field: 'HoursPaid', header: 'Hours Paid', align: 'right', width: '8em' },
+      { field: 'NonBillableHours', header: 'Non-Billable Hours', align: 'right', width: '8em' },
+      { field: 'TotalHours', header: 'Total Hours', align: 'right', width: '8em' },
+      { field: 'HasOutstandingTimesheets', header: 'Has Outstanding Timesheets', align: 'center', width: '10em' }
     ];
   }
   startOver() {

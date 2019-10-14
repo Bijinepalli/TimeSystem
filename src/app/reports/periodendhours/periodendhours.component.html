@@ -4,11 +4,6 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('PeriodEndHours.htm')"></i>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
@@ -30,16 +25,16 @@
   </div>
   <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-4">
-        <label class="label" style="padding:0px 10px;">Select a Pay Period :</label>
+      <div class="ui-g-12 ui-sm-12">
+        <label class="label">Select a Pay Period</label>
+      </div>
+      <div class="ui-g-12 ui-sm-12">
         <p-dropdown [options]="dates" placeholder="Select Period" [(ngModel)]="selectedDate"
           pTooltip="Select the pay period end date to create the report"></p-dropdown>
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
-        <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-          label="Start Over" (click)=startOver()></button> &nbsp; -->
+      <div>
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" [disabled]="!(this.selectedDate!=='')"
           (click)="generateReport($event)"></button>&nbsp;
@@ -59,25 +54,23 @@
   </div>
 
   <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <div class="ui-g-12 ui-g-nopad">
-      <div class="ui-table ui-widget">
-        <div class="ui-table-caption ui-widget-header">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+    <div class="ui-g-12">
+      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g recordsBar">
+            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+              <input type="text" pInputText placeholder="Global Filter"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+            </div>
+            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
+              &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
           </div>
-        </div>
-      </div>
-      <!-- <p-scrollPanel [style]="{width: '100%',height:'460px'}" styleClass="custombar1"> -->
-      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [scrollable]="true"
-        scrollHeight="460px">
+        </ng-template>
         <ng-template pTemplate="header" let-columns>
           <tr>
             <th style="width: 4em">View</th>
@@ -106,7 +99,6 @@
           </tr>
         </ng-template>
       </p-table>
-      <!-- </p-scrollPanel> -->
     </div>
   </div>
 </ng-container>
