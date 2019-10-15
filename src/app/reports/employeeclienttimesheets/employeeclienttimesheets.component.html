@@ -85,7 +85,7 @@
 
   <div class="ui-g" *ngIf="showReport">
     <div class="ui-g-12 ui-g-nopad">
-      <p-table #dt [responsive]="false" class="tablePadding">
+      <!-- <p-table #dt [responsive]="false" class="tablePadding">
         <ng-template pTemplate="caption">
           <div class="ui-g recordsBar">
             <div class="ui-g-5 ui-sm-12 recordsFound">
@@ -100,13 +100,42 @@
             </div>
           </div>
         </ng-template>
+      </p-table> -->
+      <!-- <p-scrollPanel [style]="{width: '100%', height: '650px'}" styleClass="custombar1"
+        *ngIf="_timeSheetHTMLArr && _timeSheetHTMLArr.length > 0 && _timeSheetHTML"> -->
+
+      <p-table #dtTimesheet [value]="_timeSheetHTMLArr" [responsive]="false" [paginator]="true" [rows]="1"
+        [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g recordsBar">
+            <div class="ui-g-5 ui-sm-12 recordsFound">
+              {{_recData}} timesheets found</div>
+            <div class="ui-g-3 ui-sm-12" style="text-align: left;">
+              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+              <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
+                (click)="exportClick()"></button>&nbsp;
+              <button pButton pTooltip="Send Mail" tooltipPosition="bottom" icon="fa fa-envelope" label="Send Mail"
+                (click)="sendTimesheetMail()"></button>&nbsp;
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded">
+          <tr [pSelectableRow]="rowData">
+            <td [innerHTML]="rowData['value'] | sanitizeHtmlString" style="width:100em;">
+              <!-- <div >
+              </div> -->
+            </td>
+          </tr>
+        </ng-template>
       </p-table>
-      <p-scrollPanel [style]="{width: '100%', height: '650px'}" styleClass="custombar1"
-        *ngIf="_timeSheetHTMLArr && _timeSheetHTMLArr.length > 0 && _timeSheetHTML">
-        <div class="ui-g-12 ui-g-nopad" *ngIf="_timeSheetHTML" [innerHTML]="_timeSheetHTML | sanitizeHtmlString"
+
+      <!-- <div class="ui-g-12 ui-g-nopad" *ngIf="_timeSheetHTML" [innerHTML]="_timeSheetHTML | sanitizeHtmlString"
           #dtTimesheet>
-        </div>
-      </p-scrollPanel>
+        </div> -->
+
+
+      <!-- </p-scrollPanel> -->
     </div>
   </div>
 

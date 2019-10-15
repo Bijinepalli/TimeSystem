@@ -152,7 +152,7 @@
 
 .logo-env .logo {
   float: left;
-  font-size: 12px!important;
+  font-size: 12px !important;
 }
 
 .logo-env .settings-icon {
@@ -178,4 +178,13 @@
 .heightFillAvailable {
   max-height: -moz-available;
   max-height: -webkit-fill-available;
+}
+
+.footerCopyRight {
+  position: fixed;
+  bottom: 0px;
+  text-align: center;
+  color: white;
+  background: black;
+  box-shadow: 0 0px 5px 1px rgba(0, 0, 0, 0.3);
 }
