@@ -150,10 +150,10 @@ export class EmployeetimesheetsComponent implements OnInit {
     this.cols = [
       { field: 'PeriodEnd', header: 'PeriodEnd', align: 'center', width: '10em' },
       { field: 'Submitted', header: 'Submitted', align: 'center', width: '10em' },
-      { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: '8em' },
+      { field: 'SubmitDate', header: 'Date Submitted', align: 'center', width: '15em' },
       { field: 'Resubmitted', header: 'Resubmitted', align: 'center', width: '10em' },
       { field: 'SemiMonthly', header: 'Semi-Monthly', align: 'center', width: '10em' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '7em' },
     ];
     this._sortArray = ['PeriodEndSearch', 'Submitted', 'SubmitDateSearch', 'Resubmitted', 'SemiMonthly', 'Hours'];
   }

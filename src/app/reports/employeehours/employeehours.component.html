@@ -1,5 +1,5 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+  <div class="ui-g-12 ui-md-12 ui-lg-12 ui-sm-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Employee Hours <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('EmployeeHours.htm')"></i>
@@ -9,16 +9,16 @@
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
     <div class="ui-g">
-      <div class="ui-g-12 ui-sm-12">
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
         <label class="label">Select Status</label>
       </div>
-      <div class="ui-g-12 ui-sm-12">
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
         <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
       </div>
-      <div class="ui-g-12 ui-sm-12">
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
         <label class="label">Select Hours Type</label>
       </div>
-      <div class="ui-g-12 ui-sm-12">
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
         <p-selectButton [options]="hoursType" [(ngModel)]="selectedhoursType"></p-selectButton>
       </div>
     </div>
@@ -36,7 +36,7 @@
     </div>
   </div>
   <div class="ui-g  ui-g-nopad">
-    <div class="ui-g-12 ui-sm-12 ui-md-12">
+    <div class="ui-g-12 ui-lg-12 ui-sm-12 ui-md-12">
       <p-checkbox *ngIf="showBillingCodeList" pTooltip="Select/Clear All" tooltipPosition="bottom" binary="true"
         label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()"></p-checkbox>
     </div>
@@ -48,7 +48,7 @@
       </p-header>
       <p-scrollPanel [style]="{height: '200px'}">
         <div class="ui-g">
-          <div class="ui-g-4 ui-sm-12" *ngFor="let _dcb of _displayCheckBoxes">
+          <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" pTooltip="Select the employees to appear in the report"
               tooltipPosition="bottom" [value]="_dcb.value" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
               (click)="selectcheck()"></p-checkbox>
@@ -61,26 +61,26 @@
     </p-panel>
   </div>
   <div class="ui-g" style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showBillingCodeList">
-    <div class="ui-g-12 ui-sm-12">
+    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
       Date Range
     </div>
-    <div class="ui-g-12 ui-sm-12">
-      <label class="label">From</label>&nbsp;
+    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+      <label class="sublabel">From</label>&nbsp;
       <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
         pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
         tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
         [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
-      <label class="label" style="padding:0px 10px">to</label>
+      <label class="sublabel" style="padding:0px 10px">to</label>
       <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
         pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset"
         tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
         [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
     </div>
-    <div class="ui-g-12 ui-sm-12">
+    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
       <p-checkbox binary="true" label="Show Totals In Report" pTooltip="Check to include totals in the report"
         tooltipPosition="top" [(ngModel)]="showTotals" binary="true"></p-checkbox>
     </div>
-    <div class="ui-g-12 ui-sm-12">
+    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
       <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
         [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>&nbsp;
       <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
@@ -88,10 +88,10 @@
     </div>
   </div>
   <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0 && changeCodeList">
-    <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 NoDataMessage">
+    <div class="ui-g-12 ui-sm-12 ui-md-9 ui-lg-10 NoDataMessage">
       No matching data for the selected criteria
     </div>
-    <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
+    <div class="ui-g-12 ui-sm-12 ui-md-3 ui-lg-2 smLeft" style="text-align: right">
       <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
         class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
     </div>
@@ -102,12 +102,12 @@
         (sortFunction)="customSort($event)" [customSort]="true" [scrollable]="true">
         <ng-template pTemplate="caption">
           <div class="ui-g recordsBar">
-            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
+            <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
               <input type="text" pInputText placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+                (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
             </div>
-            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
+            <div class="ui-g-12 ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
                 class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
               &nbsp;
