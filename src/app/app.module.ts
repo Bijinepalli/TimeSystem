@@ -113,6 +113,7 @@ import { SowutilizationreportComponent } from './reports/sowutilizationreport/so
 import { SowmonthlyutilizationreportComponent } from './reports/sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 import { SowtotalreportComponent } from './reports/sowtotalreport/sowtotalreport.component';
 import { ActivitylogreportComponent } from './reports/activitylogreport/activitylogreport.component';
+import { EmployeehoursbybillingcodewithrateComponent } from './reports/employeehoursbybillingcodewithrate/employeehoursbybillingcodewithrate.component';
 // import { TreeNode } from '@angular/router/src/utils/tree';
 // import { TreeNode } from '@angular/api';
 
@@ -153,6 +154,7 @@ const appRoutes: Routes = [
       { path: 'hoursbyemployee', component: HoursbyemployeeComponent },
       { path: 'weeklyhoursbyemployee', component: WeeklyhoursbyemployeeComponent },
       { path: 'employeehoursbybillingcode', component: EmployeehoursbybillingcodeComponent },
+      { path: 'employeehoursbybillingcodewithrate', component: EmployeehoursbybillingcodewithrateComponent },
       { path: 'employeeclientrates', component: EmployeeclientratesComponent },
       { path: 'hoursbytimesheetcategory', component: HoursbytimesheetcategoryComponent },
       { path: 'pendingtimesheets', component: PendingtimesheetsComponent },
@@ -283,6 +285,7 @@ const appRoutes: Routes = [
     SowmonthlyutilizationreportComponent,
     SowtotalreportComponent,
     ActivitylogreportComponent,
+    EmployeehoursbybillingcodewithrateComponent,
   ],
   imports: [
     BrowserAnimationsModule,
