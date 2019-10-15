@@ -39,7 +39,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
   _recData = 0;
 
   _timeSheetHTML = '';
-  _timeSheetHTMLArr: string[] = [];
+  _timeSheetHTMLArr: any[] = [];
   @ViewChild('dtTimesheet') dtTimesheet: ElementRef;
 
   constructor(
@@ -286,7 +286,7 @@ export class EmployeeclienttimesheetsComponent implements OnInit {
           (data) => {
             this._timeSheetHTMLArr = [];
             if (data !== undefined && data !== null && data.length > 0) {
-              this._timeSheetHTMLArr = data;
+              this._timeSheetHTMLArr = data.map(m => ({ value: m.toString() }));
               this._timeSheetHTML = '';
               this._recData = data.length;
               this.showReport = false;
