@@ -53,6 +53,10 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   @ViewChild('dtUtilizationReport') dtUtilizationReport: ElementRef;
   IsSecure: boolean;
+  _tsStatus: { label: string; value: number; }[];
+  _Frequency: { label: string; value: number; }[];
+  _selectedStatus: any;
+  _selectedFrequency: any;
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -185,6 +189,27 @@ export class EmployeeutilizationreportComponent implements OnInit {
 
   GetMethods() {
     this.getDepartments();
+    this.getStatusAndFrequency();
+  }
+
+  getStatusAndFrequency() {
+    this._tsStatus = [
+      { label: 'Submitted', value: 1 },
+      { label: 'Saved', value: 2 },
+      { label: 'Submitted & Saved', value: 3 },
+    ];
+
+    this._Frequency = [
+      { label: 'Weekly', value: 1 },
+      { label: 'Bi-Weekly', value: 2 },
+      { label: 'Monthly', value: 3 },
+      { label: 'Quarterly', value: 4 },
+      { label: 'Halfyearly', value: 5 },
+      { label: 'Yearly', value: 6 },
+    ];
+
+    this._selectedStatus = 1;
+    this._selectedFrequency = 1;
   }
 
   getDepartments() {
@@ -213,7 +238,8 @@ export class EmployeeutilizationreportComponent implements OnInit {
       selectedType: this.selectedType,
       _selectedDepartment: this._selectedDepartment,
     }
-    this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'showEmployees', 'showEmployees', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'showEmployees', 'showEmployees',
+      '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this.timesysSvc.departmentEmployee_Get(this._selectedDepartment.Id.toString()).subscribe(
       (data) => {
         this.showFilters = false;
@@ -263,6 +289,8 @@ export class EmployeeutilizationreportComponent implements OnInit {
     if (this._selectcheckbox.length > 0) {
       let _start = '';
       let _end = '';
+      let _status = '';
+      let _frequency = '';
 
       if (this._startDate !== null && this._startDate !== '') {
         _start = this.datePipe.transform(this._startDate, 'yyyy-MM-dd');
@@ -274,23 +302,26 @@ export class EmployeeutilizationreportComponent implements OnInit {
         // this._endDate = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
         this._endDateVal = this.datePipe.transform(this._endDate, 'MM-dd-yyyy');
       }
+      _status = this._selectedStatus;
+      _frequency = this._selectedFrequency;
       let ActivityParams: any; // ActivityLog
       ActivityParams = {
         _selectcheckbox: this._selectcheckbox,
         _selectedDepartment: this._selectedDepartment,
         _start: _start,
         _end: _end,
-      }
-      this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'generateReport', 'Generate Report', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+        _status: _status,
+        _frequency: _frequency,
+      };
+      this.logSvc.ActionLog(PageNames.EmployeeUtilizationReport, '', 'Reports/Event', 'generateReport', 'Generate Report',
+        '', '', JSON.stringify(ActivityParams)); // ActivityLog
       if (this._startDate > this._endDate) {
         this.showSpinner = false;
       } else {
         this.timesysSvc.GetEmployeeUtilitizationReport(
           this._selectcheckbox.join(),
           this._selectedDepartment.Id.toString(),
-          _start,
-          _end,
-          '8').subscribe(
+          _start, _end, '8', _status, _frequency).subscribe(
             (data) => {
               if (data !== undefined && data !== null) {
                 this._UtilizationReportDetails = data;

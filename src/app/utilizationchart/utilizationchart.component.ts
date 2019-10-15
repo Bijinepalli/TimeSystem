@@ -273,7 +273,7 @@ export class UtilizationchartComponent implements OnInit {
         '',
         this._startDate,
         this._endDate,
-        '8').subscribe(
+        '8', '1', '1').subscribe(
           (data) => {
             if (data !== undefined && data !== null) {
               this._UtilizationReportDetails = data;
