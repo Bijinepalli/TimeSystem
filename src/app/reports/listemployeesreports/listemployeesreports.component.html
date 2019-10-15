@@ -8,29 +8,27 @@
 <ng-container *ngIf="IsSecure">
     <p-panel [toggleable]="true" header="Filter">
         <div class="ui-g">
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <label class="label" style="padding-bottom: 2em;">Status</label><br>
                 <p-selectButton [options]="_status" [(ngModel)]="_statusselected"></p-selectButton>
             </div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <label class="label">Paid</label><br>
                 <p-selectButton [options]="_paid" [(ngModel)]="_paidselected"></p-selectButton>
             </div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <label class="label">IPay</label><br>
                 <p-selectButton [options]="_Ipay" [(ngModel)]="_Ipayselected"></p-selectButton>
             </div>
-        </div>
-        <div class="ui-g">
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <label class="label">TimeSheets</label><br>
                 <p-selectButton [options]="_timesheets" [(ngModel)]="_timesheetsselected"></p-selectButton>
             </div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <label class="label">Holidays</label><br>
                 <p-selectButton [options]="_holidays" [(ngModel)]="_holidaysselected"></p-selectButton>
             </div>
-            <div class="ui-g-12 ui-md-4 ui-lg-4">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
                 <label class="label">Hire Date</label><br>
                 <label class="sublabel">From</label>&nbsp;
                 <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_startDate" pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset"
