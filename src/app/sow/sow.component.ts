@@ -162,7 +162,7 @@ export class SowComponent implements OnInit {
       { field: 'CustomerName', header: 'Customer', align: 'left', width: '11em' },
       { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: '10em' },
       { field: 'SOWName', header: 'SOW Name', align: 'left', width: '15em' },
-      { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '15em' },
+      { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '14em' },
       { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '5em' },
       { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '10em' },
       { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '10em' },
@@ -172,7 +172,7 @@ export class SowComponent implements OnInit {
       { field: 'Hours', header: 'Hours', align: 'right', width: '6em' },
       { field: 'Originate', header: 'Originate', align: 'left', width: '7em' },
       { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '8em' },
-      { field: 'Status', header: 'Status', align: 'left', width: '8em' },
+      { field: 'Status', header: 'Status', align: 'left', width: '7em' },
       { field: 'SOWType', header: 'SOW Type', align: 'left', width: '6em' },
       { field: 'Notes', header: 'Notes', align: 'left', width: '15em' },
     ];
