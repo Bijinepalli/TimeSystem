@@ -1,115 +1,98 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Invoice Data by Customer Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="commonSvc.showHelp('InvoiceDataByCustomer.htm')"></i>
-  </div>
+    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+        Invoice Data by Customer Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('InvoiceDataByCustomer.htm')"></i>
+    </div>
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-  <p-panel [toggleable]="true" header="Filter" *ngIf="!showReport">
-    <div class="ui-g">
-      <div class="ui-g-12 ui-sm-12">
-        <label class="label">Billing Code Billing Cycle</label>
-      </div>
-      <div class="ui-g-12 ui-sm-12">
-        <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle"></p-selectButton>
-      </div>
-      <div class="ui-g-12 ui-sm-12">
-        <label class="label">Invoice Date</label>
-      </div>
-      <div class="ui-g-12 ui-sm-12">
-        <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
-          pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="top"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
-      </div>
-      <div class="ui-g-12">
-        <label class="label">Select Timesheet Status</label>
-      </div>
-      <div class="ui-g-12">
-        <p-dropdown [options]="tsStatus" [(ngModel)]="_selectedStatus" pTooltip="Timesheet Status"
-          tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
-      </div>
-      <div class="ui-g-12 ui-sm-12">
-        <label class="label">Date Range</label>
-      </div>
-      <div class="ui-g-12 ui-sm-12">
-        <label class="label">From</label>&nbsp;
-        <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
-          pTooltip="Enter a starting date. Defaults to first day of the current month" tooltipPosition="top"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
-        <label class="label" style="padding:0px 10px;">to</label>
-        <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true"
-          [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body"
-          pTooltip="Enter the end date. Defaults to the last day of the current month." tooltipPosition="top"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
-      </div>
-    </div>
-    <p-footer>
-      <div>
-        <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info"
-          label="Generate Report" (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
-      </div>
-    </p-footer>
-  </p-panel>
-
-  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-10 ui-sm-12 NoDataMessage">
-      No matching data for the selected criteria
-    </div>
-    <div class="ui-g-2 ui-sm-12">
-      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-        class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
-    </div>
-  </div>
-
-  <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <div class="ui-g-12 ui-g-nopad">
-      <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20"
-        (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
-        <ng-template pTemplate="caption">
-          <div class="ui-g recordsBar">
-            <div class="ui-g-5 ui-sm-12 recordsFound">{{_recData}} rows matching</div>
-            <div class="ui-g-5 ui-sm-12" style="text-align: left;">
-              <input type="text" pInputText placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+    <p-panel [toggleable]="true" header="Filter" *ngIf="!showReport">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-sm-12">
+                <label class="label">Billing Code Billing Cycle</label>
             </div>
-            <div class="ui-g-2 ui-sm-12" style="text-align: left;">
-                <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            <div class="ui-g-12 ui-sm-12">
+                <p-selectButton [options]="_billingCycle" [(ngModel)]="_selectedBillingCycle"></p-selectButton>
             </div>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-              <div
-                *ngIf="(col.field === 'InvoiceDate' || col.field === 'StartDate' || col.field === 'EndDate'); else nondatecol">
-                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                <!-- <label>{{rowData[col.field]}} </label> -->
-              </div>
-              <ng-template #nondatecol>
-                {{rowData[col.field]}}
-              </ng-template>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
+            <div class="ui-g-12 ui-sm-12">
+                <label class="label">Invoice Date</label>
+            </div>
+            <div class="ui-g-12 ui-sm-12">
+                <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="top"
+                    [inputStyle]="{'width':'100px'}"></p-calendar>
+            </div>
+            <div class="ui-g-12">
+                <label class="label">Select Timesheet Status</label>
+            </div>
+            <div class="ui-g-12">
+                <p-dropdown [options]="tsStatus" [(ngModel)]="_selectedStatus" pTooltip="Timesheet Status" tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-sm-12">
+                <label class="label">Date Range</label>
+            </div>
+            <div class="ui-g-12 ui-sm-12">
+                <label class="label">From</label>&nbsp;
+                <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter a starting date. Defaults to first day of the current month"
+                    tooltipPosition="top" [inputStyle]="{'width':'100px'}"></p-calendar>
+                <label class="label" style="padding:0px 10px;">to</label>
+                <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter the end date. Defaults to the last day of the current month."
+                    tooltipPosition="top" [inputStyle]="{'width':'100px'}"></p-calendar>
+            </div>
+        </div>
+        <p-footer>
+            <div>
+                <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
+            </div>
+        </p-footer>
+    </p-panel>
+
+    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+        <div class="ui-g-10 ui-sm-12 NoDataMessage">
+            No matching data for the selected criteria
+        </div>
+        <div class="ui-g-2 ui-sm-12">
+            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
+        </div>
     </div>
-  </div>
+
+    <div class="ui-g" *ngIf="showReport && _recData > 0">
+        <div class="ui-g-12 ui-g-nopad">
+            <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [paginator]="true" [rows]="20" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
+                <ng-template pTemplate="caption">
+                    <div class="ui-g recordsBar">
+                        <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+                        <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
+                            <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
+                        </div>
+                        <div class="ui-g-12 ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
+                            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button> &nbsp;
+                            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                            </p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+                            <div *ngIf="(col.field === 'InvoiceDate' || col.field === 'StartDate' || col.field === 'EndDate'); else nondatecol">
+                                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                                <!-- <label>{{rowData[col.field]}} </label> -->
+                            </div>
+                            <ng-template #nondatecol>
+                                {{rowData[col.field]}}
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+    </div>
 </ng-container>
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
