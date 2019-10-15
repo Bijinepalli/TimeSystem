@@ -183,11 +183,11 @@ export class HoursbyemployeeComponent implements OnInit {
     ];
     this.selectedbreakOut = 0;
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '175px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '175px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
-      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '220px' },
+      { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em'  },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '15em' },
+      { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '15em' },
     ];
     const today = new Date();
     const month = today.getMonth();

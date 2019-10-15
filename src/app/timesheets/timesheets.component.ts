@@ -211,6 +211,7 @@ export class TimesheetsComponent implements OnInit {
         (data) => {
           this.timesysSvc.getDatebyPeriod().subscribe(
             (data1) => {
+              console.log(data);
               this._timePeriods = [];
               this.selectTimePeriod = null;
               if (data !== undefined && data !== null && data.length > 0) {
