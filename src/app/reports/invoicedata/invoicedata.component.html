@@ -59,7 +59,7 @@
                     <div class="ui-g recordsBar">
                         <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
                         <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
-                            <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
+                            <input type="text" pInputText placeholder="Global Filter" class="smSearchWidth" (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
                         </div>
                         <div class="ui-g-12 ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
                             <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button> &nbsp;

@@ -36,7 +36,7 @@
                     <div class="ui-g ui-g-nopad recordsBar">
                         <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}} non-billable items found</div>
                         <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 smLeft" style="text-align: right">
-                            <input type="text" pInputText size="30" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em"> &nbsp;
+                            <input type="text" pInputText size="30" placeholder="Global Filter" class="smSearchWidth" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em"> &nbsp;
                         </div>
                         <div class="ui-g-12 ui-md-2 ui-lg-2 ui-sm-12 smLeft" style="text-align: right">
                             <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
