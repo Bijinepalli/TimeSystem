@@ -137,12 +137,12 @@
         [globalFilterFields]="_sortArray">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-3 ui-xl-2 recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-4 ui-xl-4 ui-xl-offset-2">
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-2 ui-xl-4 recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-4 ui-xl-3">
               <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em"> &nbsp;
             </div>
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-5 ui-xl-4">
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-5 smLeft" style="text-align: right;">
               <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
                 class="ui-button-warning" label="Change Report" (click)="changeCodes()"></button>&nbsp;
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
