@@ -192,22 +192,22 @@ export class SowutilizationreportComponent implements OnInit {
     this.lstDetails = [];
     this.lstSOWAnalysis = [];
     this.cols = [
-      { field: 'CustomerName', header: 'Customer', align: 'left', width: '150px' },
-      { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: '150px' },
-      { field: 'SOWName', header: 'SOW Name', align: 'left', width: '150px' },
-      { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '150px' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
-      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
-      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '90px' },
-      { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: '150px' },
-      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: '100px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '80px' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: '90px' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '110px' },
-      { field: 'Status', header: 'Status', align: 'left', width: '90px' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '80px' },
-      { field: 'Notes', header: 'Notes', align: 'left', width: '200px' },
-      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '60px' },
+      { field: 'CustomerName', header: 'Customer', align: 'left', width: '12em' },
+      { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: '12em' },
+      { field: 'SOWName', header: 'SOW Name', align: 'left', width: '12em' },
+      { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '12em' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '8em' },
+      { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '8em' },
+      { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '8em' },
+      { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: '12em' },
+      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: '8em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '7em' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: '8em' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '8em' },
+      { field: 'Status', header: 'Status', align: 'left', width: '7em' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '7em' },
+      { field: 'Notes', header: 'Notes', align: 'left', width: '17em' },
+      { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '5em' },
     ];
     // this.scrollableCols = [
 
@@ -230,25 +230,25 @@ export class SowutilizationreportComponent implements OnInit {
     // { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '150px' }
     // ];
 
-    this.frozenCols = [{ field: 'CustomerName', header: 'Customer', align: 'left', width: '150px' },
-    { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: '150px' },
-    { field: 'SOWName', header: 'SOW Name', align: 'left', width: '150px' },
-    { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '150px' },
-    { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '100px' },
-    { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '100px' },
-    { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '100px' },
-    { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '90px' },
-    { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: 'auto' },
+    this.frozenCols = [{ field: 'CustomerName', header: 'Customer', align: 'left', width: '12em' },
+    { field: 'LeadBAName', header: 'Lead BA', align: 'left', width: '12em' },
+    { field: 'SOWName', header: 'SOW Name', align: 'left', width: '12em' },
+    { field: 'SOWNumber', header: 'SOW Number', align: 'left', width: '12em' },
+    { field: 'SOWFileName', header: 'SOW File', align: 'center', width: '8em' },
+    { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '8em' },
+    { field: 'ExpirationDate', header: 'Expiration Date', align: 'center', width: '8em' },
+    { field: 'CurrencyType', header: 'Currency Type', align: 'center', width: '7em' },
+    { field: 'TotalContractValue', header: 'Total Contract', align: 'right', width: '10em' },
     ];
 
     this.scrollableCols = [
-      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: '150px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '150px' },
-      { field: 'Originate', header: 'Originate', align: 'left', width: '150px' },
-      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '150px' },
-      { field: 'Status', header: 'Status', align: 'left', width: '100px' },
-      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '100px' },
-      { field: 'Notes', header: 'Notes', align: 'left', width: 'auto' },
+      { field: 'InvoiceFrequency', header: 'Invoice Frequency', align: 'left', width: '12em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '12em' },
+      { field: 'Originate', header: 'Originate', align: 'left', width: '12em' },
+      { field: 'OpportunityType', header: 'Opportunity Type', align: 'left', width: '12em' },
+      { field: 'Status', header: 'Status', align: 'left', width: '8em' },
+      { field: 'SOWType', header: 'SOW Type', align: 'left', width: '8em' },
+      { field: 'Notes', header: 'Notes', align: 'left', width: '10em' },
     ];
 
 

@@ -1,84 +1,72 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    SOW Utilization Summary Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="commonSvc.showHelp('SOWUtilizationReport.htm')"></i>
-  </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
+    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+        SOW Utilization Summary Report <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('SOWUtilizationReport.htm')"></i>
+    </div>
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
 
-  <div class="ui-g">&nbsp;</div>
-  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
-      No matching data for the selected criteria
-    </div>
-  </div>
-
-  <div class="ui-g" *ngIf="showReport && _recData > 0">
-    <div class="ui-g-12 ui-g-nopad">
-      <div class="ui-table ui-widget">
-        <div class="ui-table-caption ui-widget-header">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{ _recData }} SOWs found</div>
-            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
-          </div>
+    <div class="ui-g">&nbsp;</div>
+    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
+            No matching data for the selected criteria
         </div>
-      </div>
-      <!-- <p-scrollPanel [style]="{width: '100%',height:'500px'}" styleClass="custombar1"> -->
-      <p-table #dt [columns]="cols" [value]="lstSOWAnalysis" [responsive]="false" dataKey="SOWID" [scrollable]="true">
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th style="width: 4em">View</th>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td style="width: 4em;text-align: center;">
-              <i class="fa fa-eye fa-150x viewIcon" pTooltip="View this SOW Detail Report" tooltipPosition="bottom"
-                (click)="viewSOWUtilization(rowData)"></i>
-            </td>
-            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
-              style="word-wrap: break-word">
-              <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
-                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-              </div>
-              <ng-template #nondatecol>
-                <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
-                  <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank"
-                    class="HypExternal" title="{{rowData[col.field]}}">
-                    <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
-                  </a>
-                </div>
-                <ng-template #defaultcol>
-                  <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
-                    <label>{{rowData[col.field] | currency}} </label>
-                  </div>
-                  <ng-template #othercol>
-                    {{rowData[col.field]}}
-                  </ng-template>
-                </ng-template>
-              </ng-template>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-      <!-- </p-scrollPanel> -->
     </div>
-  </div>
+
+    <div class="ui-g" *ngIf="showReport && _recData > 0">
+        <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-table ui-widget">
+                <div class="ui-table-caption ui-widget-header">
+                    <div class="ui-g ui-g-nopad recordsBar">
+                        <div class="ui-g-12 ui-md-10 ui-lg-10 ui-sm-12 recordsFound">{{_recData}} SOWs found</div>
+                        <div class="ui-g-12 ui-md-2 ui-lg-2 ui-sm-12 smLeft" style="text-align: right">
+                            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <p-scrollPanel [style]="{width: '100%',height:'500px'}" styleClass="custombar1"> -->
+            <p-table #dt [columns]="cols" [value]="lstSOWAnalysis" [responsive]="false" dataKey="SOWID" [scrollable]="true">
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <th style="width: 4em">View</th>
+                        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                            {{col.header}}
+                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                            </p-sortIcon>
+                        </th>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <td style="width: 4em;text-align: center;">
+                            <i class="fa fa-eye fa-150x viewIcon" pTooltip="View this SOW Detail Report" tooltipPosition="bottom" (click)="viewSOWUtilization(rowData)"></i>
+                        </td>
+                        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align" style="word-wrap: break-word">
+                            <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
+                                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                            </div>
+                            <ng-template #nondatecol>
+                                <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
+                                    <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank" class="HypExternal" title="{{rowData[col.field]}}">
+                                        <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
+                                    </a>
+                                </div>
+                                <ng-template #defaultcol>
+                                    <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
+                                        <label>{{rowData[col.field] | currency}} </label>
+                                    </div>
+                                    <ng-template #othercol>
+                                        {{rowData[col.field]}}
+                                    </ng-template>
+                                </ng-template>
+                            </ng-template>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <!-- </p-scrollPanel> -->
+        </div>
+    </div>
 </ng-container>
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
