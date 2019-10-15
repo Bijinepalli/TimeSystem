@@ -160,14 +160,14 @@ export class BillablehoursComponent implements OnInit {
       { label: 'Project', value: 1 },
     ];
     this.cols = [
-      { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'Key', header: 'Code', align: 'left', width: '200px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '110px' },
-      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '200px' },
-      { field: 'CalendarDate', header: 'Date', align: 'center', width: '100px' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '126px' },
-      { field: 'FirstName', header: 'First Name', align: 'left', width: '130px' },
-      { field: 'Hours', header: 'Hours', align: 'right', width: '95px' },
+      { field: 'Name', header: 'Name', align: 'left', width: '15em' },
+      { field: 'Key', header: 'Code', align: 'left', width: '10em' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '5em' },
+      { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '5em' },
+      { field: 'CalendarDate', header: 'Date', align: 'center', width: '10em' },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
+      { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+      { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
     ];
     this._sortArray = ['Name', 'Key', 'Inactive', 'InactiveRel', 'LastName', 'FirstName', 'Hours', 'CalendarDateSearch'];
     this.selectedType = 0;

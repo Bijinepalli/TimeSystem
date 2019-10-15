@@ -4,11 +4,6 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('ViewNonBillableHours.htm')"></i>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
@@ -27,31 +22,36 @@
   </div>
   <p-panel [toggleable]="true" header="Filter">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-5 ui-lg-12">
-        <label class="label" style="padding:0px 10px;">Report Type:</label>
-        <p-selectButton [options]="reportType" [(ngModel)]="selectedReportType"></p-selectButton>
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+        <label class="label" style="padding:0px 10px;">Report Type</label>
         <!-- pTooltip="Show the hours for this type of non-billable work"
           tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-4">
-        <label class="label" style="padding:0px 10px;">Date From :</label>
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+        <p-selectButton [options]="reportType" [(ngModel)]="selectedReportType"></p-selectButton>
+      </div>
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+        <label class="label" style="padding:0px 10px;">Date Range </label>
+      </div>
+      <div class="ui-g-12 ui-sm-12 ui-md-8 ui-lg-6 ui-xl-5">
+        <label class="sublabel" style="padding:0px 10px;">From :</label>
         <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date"
           tooltipPosition="top" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"
           yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body" [inputStyle]="{'width':'100px'}"></p-calendar>
-        <label class="label" style="padding:0px 10px;">to</label>
+        <label class="sublabel" style="padding:0px 10px;">to</label>
         <p-calendar [(ngModel)]="endDate" [readonlyInput]="true"
           pTooltip="Enter the end date in the same year as the start date" tooltipPosition="top" showButtonBar="true"
           [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"
           [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
-      <div class="ui-g-12 ui-md-2 ui-lg-2" style="padding-top: 13px">
+      <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-6 ui-xl-7" style="padding-top: 13px">
         <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report"
           tooltipPosition="bottom" binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show
           Totals</label>
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div style="text-align: left">
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" (click)=generateReport() [disabled]="!(this.selectedCode!=='')"></button>
       </div>
@@ -70,9 +70,9 @@
       <div class="ui-table ui-widget">
         <div class="ui-table-caption ui-widget-header">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+            <div class="ui-g-12 ui-md-12 ui-lg-3 ui-xl-4 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-12 ui-md-12 ui-lg-9 ui-xl-8 ui-g-nopad smLeft" style="text-align: right">
+              <!-- <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i> -->
               <input type="text" pInputText size="30" placeholder="Global Filter"
                 (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
@@ -81,6 +81,7 @@
         </div>
       </div>
       <!-- <p-scrollPanel [style]="{width: '100%',height:'650px'}" styleClass="custombar1"> -->
+      <div class="ui-g-12 ui-g-nopad">
         <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [scrollable]="true">
           <ng-template pTemplate="header" let-columns>
             <tr>
@@ -104,6 +105,7 @@
             </tr>
           </ng-template>
         </p-table>
+      </div>
       <!-- </p-scrollPanel> -->
     </div>
   </div>
