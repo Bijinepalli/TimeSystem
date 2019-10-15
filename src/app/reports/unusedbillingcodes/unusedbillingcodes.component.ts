@@ -150,10 +150,10 @@ export class UnusedbillingcodesComponent implements OnInit {
     this.selectedCodeType = 0;
     this.selectedUsageType = 1;
     this.cols = [
-      { field: 'Key', header: 'Code', align: 'left', width: 'auto' },
-      { field: 'ProjectName', header: 'Name', align: 'left', width: 'auto' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '108px' },
-      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '250px' },
+      { field: 'Key', header: 'Code', align: 'left', width: '25em' },
+      { field: 'ProjectName', header: 'Name', align: 'left', width: '25em' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '15em' },
+      { field: 'CreatedOn', header: 'Created On', align: 'center', width: '15em' },
     ];
     this._sortArray = ['Key', 'ProjectName', 'Inactive', 'CreatedOnSearch'];
     this.showSpinner = false;
