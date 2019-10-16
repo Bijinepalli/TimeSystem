@@ -408,20 +408,33 @@ export class TimesystemService {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListWeekEndClientHoursByClientByEmployee', body, httpOptions);
   }
-  ListEmployeeHoursByBillingCode(billingCodesSpecial: BillingCodesSpecial) {
-    const body = JSON.stringify(billingCodesSpecial);
-    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
-  }
 
   ListEmployeeHoursByTimeSheetCategory(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByTimeSheetCategory', body, httpOptions);
+  }
+  
+  ListEmployeeHoursByBillingCode(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
   }
 
   ListEmployeeHoursByBillingCodeClientOnly(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodeClientOnly', body, httpOptions);
   }
+
+  ListEmployeeHoursByBillingCodewithRate(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodewithRate', body, httpOptions);
+  }
+
+  ListEmployeeHoursByBillingCodeClientOnlywithRate(billingCodesSpecial: BillingCodesSpecial) {
+    const body = JSON.stringify(billingCodesSpecial);
+    return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCodeClientOnlywithRate', body, httpOptions);
+  }
+
+
   ListEmployeeClientRates(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<Invoice[]>(this.url + 'ListEmployeeClientRates', body, httpOptions);

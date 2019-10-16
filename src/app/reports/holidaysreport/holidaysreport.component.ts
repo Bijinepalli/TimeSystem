@@ -106,10 +106,10 @@ export class HolidaysreportComponent implements OnInit {
     this._DateFormat = this.commonSvc.getAppSettingsValue('DateFormat').toString();
     this._DisplayDateFormat = this.commonSvc.getAppSettingsValue('DisplayDateFormat').toString();
     this.cols = [
-      { field: 'CalendarYear', header: 'Year', align: 'center', width: '4em' },
+      { field: 'CalendarYear', header: 'Year', align: 'center', width: '6em' },
       { field: 'CompanyName', header: 'Company Name', align: 'left', width: '20em' },
       { field: 'HolidayName', header: 'Holiday Name', align: 'left', width: '20em' },
-      { field: 'HolidayDate', header: 'Holiday Date', align: 'center', width: '6em' },
+      { field: 'HolidayDate', header: 'Holiday Date', align: 'center', width: '8em' },
       { field: 'HolidayDateSearch', header: 'Holiday Date Search', align: 'center', width: '6em' },
     ];
     this._sortArray = ['CalendarYear', 'CompanyName', 'HolidayName', 'HolidayDateSearch'];

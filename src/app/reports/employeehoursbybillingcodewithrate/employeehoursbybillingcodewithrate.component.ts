@@ -15,6 +15,7 @@ import { ActivitylogService } from 'src/app/service/activitylog.service';
   templateUrl: './employeehoursbybillingcodewithrate.component.html',
   styleUrls: ['./employeehoursbybillingcodewithrate.component.css']
 })
+
 export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
   _Departments: Departments[] = [];
   billingCycle: SelectItem[];
@@ -51,6 +52,8 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
     private timesysSvc: TimesystemService,
     private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
+    private msgSvc: MessageService,
+    private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     public commonSvc: CommonService,
@@ -81,7 +84,7 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -199,7 +202,7 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
     this._displayCheckBoxes = [];
     const selectedType = 0;
     if (this.selectedbillingCycle < 3) {
-      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'showBillingCodes',
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports/Event', 'showBillingCodes',
         'showBillingCodes', '', '', ''); // ActivityLog
       this.timesysSvc.getClients().subscribe(
         (data) => {
@@ -273,20 +276,18 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
           _selectedBillingCycle = 'A';
         }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
-        console.log(this._billingCodesSpecial);
-        this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
+        this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports/Event', 'generateReport',
           'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
-        this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
+        this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnlywithRate(this._billingCodesSpecial).subscribe(
           (data) => {
             this.showTable(data);
           }
         );
       }
     } else {
-      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
+      this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports/Event', 'generateReport',
         'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
-      console.log(this._billingCodesSpecial);
-      this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
+      this.timesysSvc.ListEmployeeHoursByBillingCodewithRate(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);
         }

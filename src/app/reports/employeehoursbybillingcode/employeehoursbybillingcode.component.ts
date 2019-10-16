@@ -16,6 +16,7 @@ import { ActivitylogService } from 'src/app/service/activitylog.service';
   styleUrls: ['./employeehoursbybillingcode.component.css'],
   providers: [DatePipe]
 })
+
 export class EmployeehoursbybillingcodeComponent implements OnInit {
   _Departments: Departments[] = [];
   billingCycle: SelectItem[];
@@ -52,8 +53,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     private timesysSvc: TimesystemService,
     private logSvc: ActivitylogService, // ActivityLog - Default
     private router: Router,
-    private msgSvc: MessageService,
-    private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     private route: ActivatedRoute,
     public commonSvc: CommonService,
