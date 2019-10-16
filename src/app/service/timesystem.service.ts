@@ -697,13 +697,16 @@ export class TimesystemService {
     return this.http.get<BillingCodes[]>(this.url + 'GetRevenueReports', { params });
   }
 
-  GetEmployeeUtilitizationReport(EmployeeID: string, DepartmentID: string, FromDate: string, ToDate: string, WorkingHours: string) {
+  GetEmployeeUtilitizationReport(EmployeeID: string, DepartmentID: string, FromDate: string, ToDate: string, WorkingHours: string,
+    Status: string, Frequency: string) {
     const params = new HttpParams()
       .set('EmployeeID', EmployeeID)
       .set('DepartmentID', DepartmentID)
       .set('FromDate', FromDate)
       .set('ToDate', ToDate)
-      .set('WorkingHours', WorkingHours);
+      .set('WorkingHours', WorkingHours)
+      .set('Status', Status)
+      .set('Frequency', Frequency);
     return this.http.get<EmployeeUtilityReport>(this.url + 'GetEmployeeUtilitizationReport', { params });
   }
   getEmployeesBySupervisor(employeeId: string) {
