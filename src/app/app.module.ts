@@ -113,6 +113,7 @@ import { SowutilizationreportComponent } from './reports/sowutilizationreport/so
 import { SowmonthlyutilizationreportComponent } from './reports/sowmonthlyutilizationreport/sowmonthlyutilizationreport.component';
 import { SowtotalreportComponent } from './reports/sowtotalreport/sowtotalreport.component';
 import { ActivitylogreportComponent } from './reports/activitylogreport/activitylogreport.component';
+// tslint:disable-next-line: max-line-length
 import { EmployeehoursbybillingcodewithrateComponent } from './reports/employeehoursbybillingcodewithrate/employeehoursbybillingcodewithrate.component';
 // import { TreeNode } from '@angular/router/src/utils/tree';
 // import { TreeNode } from '@angular/api';
