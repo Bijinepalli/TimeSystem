@@ -689,6 +689,7 @@ export enum PageNames {
     RevenueReport = 'Billing Code Related/Revenue Report',
     ListBillingCodes = 'Billing Code Related/List Billing Codes',
     EmployeeHoursbyBillingCode = 'Billing Code Related/Employee Hours by Billing Code',
+    EmployeeHoursbyBillingCodewithRate = 'Billing Code Related/Employee Hours by Billing Code with Rate',
     EmployeesbyBillingCode = 'Billing Code Related/Employees by Billing Code',
     HoursbyEmployee = 'Billing Code Related/Hours by Employee',
     WeeklyHoursbyEmployee = 'Billing Code Related/Weekly Hours by Employee',
