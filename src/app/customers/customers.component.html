@@ -2,11 +2,6 @@
     <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
         Customers <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('CustomerSelect.htm')"></i>
     </div>
-    <div class="ui-g-3 ui-md-2 ui-g-nopad">
-        <div class="ui-g-3 ui-md-6"></div>
-        <div class="ui-g-3 ui-md-4"></div>
-        <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-    </div>
 </div>
 <ng-container *ngIf="IsSecure">
     <div class="ui-g" style="height:50px;">
@@ -30,7 +25,7 @@
         </div>
     </div>
     <div class="ui-g" *ngIf="showReport && _recData > 0">
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-g-nopad">
             <p-table #dt [columns]="cols" [value]="_customers" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" [scrollable]="true">
                 <ng-template pTemplate="caption">
 

@@ -1,76 +1,68 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    Company Holiday Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="commonSvc.showHelp('ViewHolidays.htm')"></i>
-  </div>
+    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+        Company Holiday Listing <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('ViewHolidays.htm')"></i>
+    </div>
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-  <p-panel [toggleable]="true" header="Filter">
-    <div class="ui-g">
-      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12 label" style="text-align: left;">Calendar Year
-      </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
-        <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="top"
-          [(ngModel)]="selectedYear" (onChange)="generateReport()"></p-dropdown>
-      </div>
-    </div>
-  </p-panel>
-  <div class="ui-g">&nbsp;</div>
-  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
-      No matching data for the selected criteria
-    </div>
-  </div>
-  <div class="ui-g" *ngIf="showReport  && _recData > 0">
-    <div class="ui-g-12 ui-g-nopad">
-      <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}" class="custombar1"> -->
-      <p-table #dt [columns]="cols" [value]="_holidayList" [(selection)]="_selectedHolidays" [responsive]="false"
-        [scrollable]="true" dataKey="ID" (sortFunction)="customSort($event)" [customSort]="true"
-        [globalFilterFields]="_sortArray">
-        <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-12 ui-lg-3 ui-xl-4  ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-md-12 ui-lg-9 ui-xl-8   ui-g-nopad smLeft" style="text-align: right">
-              <!-- <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i> -->
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+    <p-panel [toggleable]="true" header="Filter">
+        <div class="ui-g">
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12 label" style="text-align: left;">Calendar Year
             </div>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <ng-container *ngFor="let col of columns">
-              <th *ngIf="col.field!=='HolidayDateSearch'" [pSortableColumn]="col.field" [style.width]="col.width">
-                {{col.header}}
-                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                  ariaLabelDesc="Activate to sort in descending order"
-                  ariaLabelAsc="Activate to sort in ascending order">
-                </p-sortIcon>
-              </th>
-            </ng-container>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <ng-container *ngFor="let col of columns">
-              <td *ngIf="col.field!=='HolidayDateSearch'" [style.width]="col.width" [style.text-align]="col.align">
-                <div *ngIf="col.header === 'Holiday Date'; else nondatecol">
-                  <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                </div>
-                <ng-template #nondatecol>
-                  {{rowData[col.field]}}
-                </ng-template>
-              </td>
-            </ng-container>
-          </tr>
-        </ng-template>
-      </p-table>
-      <!-- </p-scrollPanel> -->
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                <p-dropdown [options]="_years" pTooltip="Select the year to view holiday dates for" tooltipPosition="top" [(ngModel)]="selectedYear" (onChange)="generateReport()"></p-dropdown>
+            </div>
+        </div>
+    </p-panel>
+    <div class="ui-g">&nbsp;</div>
+    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+        <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
+            No matching data for the selected criteria
+        </div>
     </div>
-  </div>
+    <div class="ui-g" *ngIf="showReport  && _recData > 0">
+        <div class="ui-g-12 ui-g-nopad">
+            <!-- <p-scrollPanel [style]="{width: '100%', height: '550px'}" class="custombar1"> -->
+            <p-table #dt [columns]="cols" [value]="_holidayList" [(selection)]="_selectedHolidays" [responsive]="false" [scrollable]="true" dataKey="ID" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
+                <ng-template pTemplate="caption">
+                    <div class="ui-g ui-g-nopad recordsBar">
+                        <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+                        <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 smLeft" style="text-align: right;">
+                            <input type="text" pInputText placeholder="Global Filter" class="smSearchWidth" (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
+                        </div>
+                        <div class="ui-g-12 ui-md-2 ui-lg-2 ui-sm-12 smLeft" style="text-align: right">
+                            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+                        </div>
+                    </div>
+                </ng-template>
+                <ng-template pTemplate="header" let-columns>
+                    <tr>
+                        <ng-container *ngFor="let col of columns">
+                            <th *ngIf="col.field!=='HolidayDateSearch'" [pSortableColumn]="col.field" [style.width]="col.width">
+                                {{col.header}}
+                                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+                                </p-sortIcon>
+                            </th>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                    <tr [pSelectableRow]="rowData">
+                        <ng-container *ngFor="let col of columns">
+                            <td *ngIf="col.field!=='HolidayDateSearch'" [style.width]="col.width" [style.text-align]="col.align">
+                                <div *ngIf="col.header === 'Holiday Date'; else nondatecol">
+                                    <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+                                </div>
+                                <ng-template #nondatecol>
+                                    {{rowData[col.field]}}
+                                </ng-template>
+                            </td>
+                        </ng-container>
+                    </tr>
+                </ng-template>
+            </p-table>
+            <!-- </p-scrollPanel> -->
+        </div>
+    </div>
 </ng-container>
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
