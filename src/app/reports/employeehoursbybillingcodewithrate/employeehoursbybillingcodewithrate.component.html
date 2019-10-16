@@ -102,11 +102,11 @@
       <p-header>
         <h3 class="first">{{_selectString}}</h3>
       </p-header>
-      <p-scrollPanel [style]="{height: '200px'}" appendTo="body">
+      <p-scrollPanel [style]="{height: '400px'}">
         <div class="ui-g" style="margin-bottom:10px">
           <div class="ui-g-4 ui-sm-12" style="width:33em" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label"
-              [(ngModel)]="_selectcheckbox" (click)="selectcheck()" [style]="{'z-index':'100'}"></p-checkbox>
+              [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
           </div>
         </div>
       </p-scrollPanel>
