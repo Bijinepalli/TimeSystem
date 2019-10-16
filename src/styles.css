@@ -39,6 +39,20 @@ body {
   padding: 0px !important;
 }
 
+::ng-deep p-dialog .ui-dialog {
+  overflow: scroll;
+  max-height: 85%;
+}
+
+.c-dialog-overflow {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  overflow-y: scroll;
+}
+
 .mainHeader {
   font-size: 20px;
   color: dodgerblue;
@@ -248,34 +262,41 @@ body .ui-panel .ui-panel-content {
 }
 
 @media only screen and (max-width: 800px) {
-    .smLeft {
-        text-align: left !important;
-    }
-    .smRight {
-        text-align: right !important;
-    }
-    .smCenter {
-        text-align: center !important;
-    }
-    /* .smSearchLeft {
+  .smLeft {
+    text-align: left !important;
+  }
+
+  .smRight {
+    text-align: right !important;
+  }
+
+  .smCenter {
+    text-align: center !important;
+  }
+
+  /* .smSearchLeft {
         text-align: left !important;
     } */
 }
 
 @media only screen and (min-width: 640px) and (max-width: 1250px) {
-    .smLeft {
-        text-align: left !important;
-    }
-    .smRight {
-        text-align: right !important;
-    }
-    .smCenter {
-        text-align: center !important;
-    }
-    .smSearchWidth {
-        width: 15em !important;
-    }
+  .smLeft {
+    text-align: left !important;
+  }
+
+  .smRight {
+    text-align: right !important;
+  }
+
+  .smCenter {
+    text-align: center !important;
+  }
+
+  .smSearchWidth {
+    width: 15em !important;
+  }
 }
+
 /* @media only screen and (min-width: 200px) {
     .smSearchWidth {
         width: 25em !important;
