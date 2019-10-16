@@ -84,13 +84,13 @@
     </div>
     <div class="ui-g-12">
       <label class="sublabel">From</label>&nbsp;
-      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date"
-        tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+      <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+        [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2030"
         [(ngModel)]="_startDate" [inputStyle]="{'width':'8em'}" [maxDate]="_todayDate"></p-calendar>
-      <label class="sublabel" style="padding:0px 10px">to</label>
-      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date"
-        tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-        [(ngModel)]="_endDate" [inputStyle]="{'width':'8em'}" [minDate]="_startDate"></p-calendar>
+      <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
+      <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+        [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2030" [(ngModel)]="_endDate"
+        [inputStyle]="{'width':'8em'}" [minDate]="_startDate"></p-calendar>
     </div>
     <div class="ui-g-12">
       <label class="label">Select Timesheet Status</label>

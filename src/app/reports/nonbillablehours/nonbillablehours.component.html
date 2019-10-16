@@ -34,15 +34,14 @@
         <label class="label" style="padding:0px 10px;">Date Range </label>
       </div>
       <div class="ui-g-12 ui-sm-12 ui-md-8 ui-lg-6 ui-xl-5">
-        <label class="sublabel" style="padding:0px 10px;">From :</label>
-        <p-calendar [(ngModel)]="startDate" [readonlyInput]="true" pTooltip="Enter a starting date"
-          tooltipPosition="top" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true"
-          yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body" [inputStyle]="{'width':'100px'}"></p-calendar>
-        <label class="sublabel" style="padding:0px 10px;">to</label>
-        <p-calendar [(ngModel)]="endDate" [readonlyInput]="true"
-          pTooltip="Enter the end date in the same year as the start date" tooltipPosition="top" showButtonBar="true"
-          [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" appendTo="body"
-          [inputStyle]="{'width':'100px'}"></p-calendar>
+        <label class="sublabel" style="padding:0px 10px;">From</label>
+        <p-calendar [(ngModel)]="startDate" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
+          showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+          dateFormat="mm-dd-yy" [inputStyle]="{'width':'100px'}"></p-calendar>
+        <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
+        <p-calendar [(ngModel)]="endDate" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
+          showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
+          dateFormat="mm-dd-yy" [inputStyle]="{'width':'100px'}"></p-calendar>
       </div>
       <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-6 ui-xl-7" style="padding-top: 13px">
         <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report"

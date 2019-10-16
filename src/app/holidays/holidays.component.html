@@ -97,7 +97,7 @@
                     <div class="ui-g-12 ui-md-12">
                         Date <span class="mandatoryStar">* </span> (mm-dd-yyyy)<br>
                         <div style="height:5px"></div>
-                        <p-calendar [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate" appendTo="body" pTooltip="Select the date for the holiday" tooltipPosition="top"></p-calendar>
+                        <p-calendar [showIcon]="true" [showOnFocus]="false" yearRange="2000:2030" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="holidayDate" appendTo="body"></p-calendar>
                     </div>
                 </div>
             </div>

@@ -301,19 +301,19 @@ export class WeeklyhoursbyemployeeComponent implements OnInit {
   buildCols() {
     if (this.selectedbreakOut.toString() === '0') {
       this.cols = [
-        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-        { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '100px' },
+        { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '12em' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '12em' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
+        { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '10em' },
       ];
     } else {
       this.cols = [
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '120px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '120px' },
-        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '75px' },
-        { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '100px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '12em' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '12em' },
+        { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
+        { field: 'WeekEnd', header: 'Week Ending', align: 'center', width: '10em' },
       ];
     }
     this._sortArray = ['Name', 'LastName', 'FirstName', 'Hours', 'WeekEndSearch'];

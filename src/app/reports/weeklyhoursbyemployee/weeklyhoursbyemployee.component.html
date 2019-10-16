@@ -1,5 +1,5 @@
 <div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+  <div class="ui-g-12 ui-md-12 ui-lg-12 ui-sm-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
     Weekly Time & Material Hours By Employee <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('WeeklyHoursByEmployees.htm')"></i>
@@ -68,34 +68,35 @@
 
   <div style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showBillingCodeList">
     <div class="ui-g" style="padding-top: 5px">
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-3">
-        Billing Code/Employee Assignment Status:
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+        Billing Code/Employee Assignment Status
         <!-- pTooltip="You can include billing codes that are currently assigned to employees or those that were assigned but are now inactive, or both."
           tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-3">
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
         <p-selectButton [options]="assignStatus" [(ngModel)]="selectedassignStatus"></p-selectButton>
       </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-2">
-        Break Out By:
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+        Break Out By
         <!-- pTooltip="You can have the report break by billing code then employee or by employee then billing code."
           tooltipPosition="bottom" -->
       </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-4">
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
         <p-selectButton [options]="breakOut" [(ngModel)]="selectedbreakOut"></p-selectButton>
       </div>
     </div>
 
     <div class="ui-g">
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-3">
-        Date Range From:
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+        Date Range
       </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-9">
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+          <label class="sublabel" style="padding-right:10px">From</label>
         <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
           pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
           tooltipPosition="top" [(ngModel)]="_startDate" [monthNavigator]="true" showButtonBar="true"
           [yearNavigator]="true" yearRange="1900:2100" [inputStyle]="{'width':'100px'}"></p-calendar>
-        <label class="label" style="padding:0px 10px">to</label>
+        <label class="sublabel" style="padding:0px 10px">to</label>
         <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
           pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
           tooltipPosition="top" [(ngModel)]="_endDate" [monthNavigator]="true" showButtonBar="true"
@@ -107,22 +108,25 @@
     <div class="ui-g-12 ui-md-1">
         <p-checkbox binary="true" label="Show Totals" [(ngModel)]="showTotals"></p-checkbox>
     </div> -->
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-3">
+      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
         <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info"
           label="Generate Report" [disabled]="!(this._selectcheckbox.length>0)" (click)=generateReport()></button>
-      </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-9">
-        <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+          &nbsp;
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
           class="ui-button-warning" label="Start Over" (click)=startOver()></button>
       </div>
+      <!-- <div class="ui-g-12 ui-sm-12 ui-md-6 ui-lg-6 ui-xl-9">
+          <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+          class="ui-button-warning" label="Start Over" (click)=startOver()></button>
+      </div> -->
     </div>
   </div>
 
   <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0 && changeCodeList">
-    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+    <div class="ui-g-12 ui-md-7 ui-lg-8 ui-sm-12 NoDataMessage">
       No matching data for the selected criteria
     </div>
-    <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
+    <div class="ui-g-12 ui-md-5 ui-lg-4 ui-sm-12 smLeft" style="text-align: right">
       <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
         class="ui-button-warning" label="Change Report" (click)="changeCodes()"></button>&nbsp;
       <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
@@ -137,12 +141,12 @@
         [globalFilterFields]="_sortArray">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-2 ui-xl-4 recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-4 ui-xl-3">
-              <input type="text" pInputText size="30" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:15em"> &nbsp;
+            <div class="ui-g-12 ui-lg-2 ui-md-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
+            <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
+              <input type="text" pInputText size="30" placeholder="Global Filter" class="smSearchWidth"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em"> &nbsp;
             </div>
-            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-5 smLeft" style="text-align: right;">
+            <div class="ui-g-12 ui-lg-6 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
               <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
                 class="ui-button-warning" label="Change Report" (click)="changeCodes()"></button>&nbsp;
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
