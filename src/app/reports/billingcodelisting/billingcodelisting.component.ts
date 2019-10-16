@@ -196,11 +196,11 @@ export class BillingcodelistingComponent implements OnInit {
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '150px' },
         { field: 'CompanyName', header: 'Company Name', align: 'left', width: '250px' },*/
         { field: 'Key', header: 'Code', align: 'left', width: '20em' },
-        { field: 'ClientName', header: 'Name', align: 'left', width: '20em' },
+        { field: 'ClientName', header: 'Name', align: 'left', width: '25em' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
-        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '15em' },
+        { field: 'CreatedOn', header: 'Created On', align: 'center', width: '12em' },
         { field: 'BillingCycle', header: 'Billing Cycle', align: 'center', width: '10em' },
-        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '25em' },
+        { field: 'CompanyName', header: 'Company Name', align: 'left', width: '15em' },
       ];
     } else if (type === '1') {
       this.cols = [
@@ -213,7 +213,7 @@ export class BillingcodelistingComponent implements OnInit {
     } else if (type === '2') {
       this.cols = [
         { field: 'Key', header: 'Code', align: 'left', width: '20em' },
-        { field: 'ProjectName', header: 'Name', align: 'left', width: '55em' },
+        { field: 'ProjectName', header: 'Name', align: 'left', width: '40em' },
         { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
         { field: 'CreatedOn', header: 'Created On', align: 'center', width: '15em' },
       ];
