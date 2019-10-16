@@ -17,8 +17,8 @@
                 <label class="label">Invoice Date</label>
             </div>
             <div class="ui-g-12 ui-sm-12">
-                <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" pTooltip="Enter an invoice date. Defaults to current date." tooltipPosition="top"
-                    [inputStyle]="{'width':'10em'}"></p-calendar>
+                <p-calendar [(ngModel)]="_invoiceDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" [showIcon]="true" [showOnFocus]="false" pTooltip="Enter an invoice date. Defaults to current date."
+                    tooltipPosition="top" [inputStyle]="{'width':'7em'}"></p-calendar>
             </div>
             <div class="ui-g-12">
                 <label class="label">Select Timesheet Status</label>
@@ -30,10 +30,10 @@
                 <label class="label">Date Range</label>
             </div>
             <div class="ui-g-12 ui-sm-12">
-                <label class="label">From</label>&nbsp;
-                <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" [inputStyle]="{'width':'10em'}"></p-calendar>
-                <label class="label" style="padding:0px 10px;">to</label>
-                <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" AppendTo="body" [inputStyle]="{'width':'10em'}"></p-calendar>
+                <label class="sublabel">From</label>&nbsp;
+                <p-calendar [(ngModel)]="_startDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [showIcon]="true" [showOnFocus]="false" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" [inputStyle]="{'width':'7em'}"></p-calendar>
+                <label class="sublabel" style="padding-left:40px;padding-right:10px;">&nbsp;to&nbsp;</label>
+                <p-calendar [(ngModel)]="_endDate" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [showIcon]="true" [showOnFocus]="false" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" [inputStyle]="{'width':'7em'}"></p-calendar>
             </div>
         </div>
         <p-footer>
@@ -59,7 +59,7 @@
                     <div class="ui-g recordsBar">
                         <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 recordsFound">{{_recData}} matching rows</div>
                         <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
-                            <input type="text" pInputText placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
+                            <input type="text" pInputText placeholder="Global Filter" class="smSearchWidth" (input)="dt.filterGlobal($event.target.value, 'contains')" class="smSearchWidth" style="width:25em">
                         </div>
                         <div class="ui-g-12 ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
                             <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button> &nbsp;

@@ -12,11 +12,11 @@
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-  <div *ngIf="!showBillingCodeList && !changeCodeList">
+  <div *ngIf="!showBillingCodeList && !changeCodeList" class="ui-g-6 ui-sm-12 ui-md-8">
     <p-panel [toggleable]="true" header="Filter">
       <div class="ui-g">
-        <div class="ui-g-12 ui-sm-12 label">
-          Client Billing Cycle
+        <div class="ui-g-12 ui-sm-12">
+          <label class="label">Client Billing Cycle</label>
         </div>
         <div class="ui-g-12 ui-sm-12 ui-lg-12">
           <p-selectButton [options]="billingCycle" [(ngModel)]="selectedbillingCycle">

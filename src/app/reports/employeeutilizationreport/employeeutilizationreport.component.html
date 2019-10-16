@@ -4,25 +4,28 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('EmployeeUtilizationReport.htm')"></i>
   </div>
- 
+
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
   <p-panel [toggleable]="true" header="Filter" *ngIf="showFilters">
     <div class="ui-g">
-      <div class="ui-g-12 ui-md-3 ui-lg-3">
-        <label class="label" style="padding:0px 10px;">Select Department:</label>
+      <div class="ui-g-12">
+        <label class="label">Select Department</label>
+      </div>
+      <div class="ui-g-12">
         <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name"
           pTooltip="Employee's Department" tooltipPosition="right" [style]="{'width':'300px;'}"></p-dropdown>
       </div>
-      <div class="ui-g-12 ui-md-3 ui-lg-4">
-        <label class="label" style="padding:0px 10px;">Select:</label>
+      <div class="ui-g-12">
+        <label class="label">Select Status</label>
+      </div>
+      <div class="ui-g-12">
         <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
-        <!-- pTooltip="Show employees that have this status" tooltipPosition="bottom" -->
       </div>
     </div>
     <p-footer>
-      <div style="text-align: right">
+      <div>
         <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom"
           class="ui-button-info" label="Show Employees" (click)=showEmployees()></button>
       </div>
@@ -31,17 +34,17 @@
 
   <div class="ui-g"
     *ngIf="showDepartmentName && !(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
-    <div class="ui-g-12 ui-md-2" style="text-align: left;">
+    <div class="ui-g-12">
       <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
         Department : {{_selectedDepartment.Name}}
       </ng-container>
     </div>
-    <div class="ui-g-12 ui-md-6" style="text-align: left;">
+    <div class="ui-g-12">
       <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
         Date Range From: {{_startDateVal}} <label class="label" style="padding:0px 10px">to</label> {{_endDateVal}}
       </ng-container>
     </div>
-    <div class="ui-g-12 ui-md-4" align="right">
+    <div class="ui-g-12">
       <ng-container *ngIf="showDateRangeValues">
         <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
           class="ui-button-warning" label="Start Over" (click)=startOver()></button>
@@ -76,26 +79,38 @@
   </div>
 
   <div class="ui-g" style="padding-top: 5px;border: solid 1px #b3b3b3;" *ngIf="showSelectList">
-    <div class="ui-g-12 ui-md-6">
-      Date Range From:
-      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
-        pTooltip="Enter a starting date"
-        tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-        [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}" [maxDate]="_todayDate"></p-calendar>
-      <!-- [disabledDays]="[1,2,3,4,5,6]" -->
-      <label class="label" style="padding:0px 10px">to</label>
-      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy"
-        pTooltip="Enter the end date"
-        tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-        [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}" [minDate]="_startDate"></p-calendar>
-      <!-- [disabledDays]="[0,1,2,3,4,5]" -->
-      <!-- [maxDate]="_todayDate" -->
+    <div class="ui-g-12">
+      <label class="label">Date Range</label>
     </div>
-    <div class="ui-g-12 ui-md-6" align="right">
+    <div class="ui-g-12">
+      <label class="sublabel">From</label>&nbsp;
+      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter a starting date"
+        tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+        [(ngModel)]="_startDate" [inputStyle]="{'width':'8em'}" [maxDate]="_todayDate"></p-calendar>
+      <label class="sublabel" style="padding:0px 10px">to</label>
+      <p-calendar appendTo="body" [readonlyInput]="true" dateFormat="mm-dd-yy" pTooltip="Enter the end date"
+        tooltipPosition="top" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
+        [(ngModel)]="_endDate" [inputStyle]="{'width':'8em'}" [minDate]="_startDate"></p-calendar>
+    </div>
+    <div class="ui-g-12">
+      <label class="label">Select Timesheet Status</label>
+    </div>
+    <div class="ui-g-12">
+      <p-dropdown [options]="_tsStatus" [(ngModel)]="_selectedStatus" pTooltip="Timesheet Status"
+        tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+    </div>
+    <div class="ui-g-12">
+      <label class="label">Select Frequency</label>
+    </div>
+    <div class="ui-g-12">
+      <p-dropdown [options]="_Frequency" [(ngModel)]="_selectedFrequency" pTooltip="Report Frequency"
+        tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
+    </div>
+    <div class="ui-g-12">
       <button pButton pTooltip="Run the report" tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
         [disabled]="!(this._selectcheckbox.length>0) || !(_startDate !== '' && _endDate !== '' && (_startDate <= _endDate))"
         (click)=generateReport()></button>
-      &nbsp; &nbsp; &nbsp;
+      &nbsp;
       <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
         class="ui-button-warning" label="Start Over" (click)=startOver()></button>
     </div>
@@ -125,16 +140,10 @@
             </div>
           </div>
           <div class="ui-g-12 ui-md-7 ui-lg-4 ui-g-nopad" style="text-align: right;">
-            <!-- <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-          <input type="text" pInputText size="50" placeholder="Global Filter" (input)="dt.filterGlobal($event.target.value, 'contains')"
-            style="width:auto"> &nbsp; -->
-            <!-- <button pButton pTooltip="Change your selected Employees" tooltipPosition="bottom" class="ui-button-warning"
-            label="Change Employees" (click)="changeEmployees()"></button>&nbsp; -->
             <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
               class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
             <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
               (click)="exportClick()"></button>&nbsp;
-            <!-- <a pButton icon="fa fa-table" href="{{ExportFilePath}}" label="Export"></a> -->
           </div>
         </div>
       </ng-template>
