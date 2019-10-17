@@ -154,7 +154,7 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
     //   this._billingCodesSpecial.endDate = '';
     // }
     this.logSvc.ActionLog(PageNames.HoursbyTimesheetCategory, '', 'Reports/Event', 'generateReport', 'Generate Report', '',
-     '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
+      '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
     this.timesysSvc.ListEmployeeHoursByTimeSheetCategory(this._billingCodesSpecial).subscribe(
       (data) => {
         this.showTable(data);
@@ -164,11 +164,11 @@ export class HoursbytimesheetcategoryComponent implements OnInit {
   showTable(data: BillingCodes[]) {
     this._reports = [];
     this._recData = 0;
-    if (data !== undefined && data !== null) {
+    if (data !== undefined && data !== null && data.length > 0) {
       this._reports = data;
-      this._recData = this._reports.length;
+      this._recData = this._reports[0].RowCount;
+      this.showReport = true;
     }
-    this.showReport = true;
     this.showSpinner = false;
   }
   buildCols() {
