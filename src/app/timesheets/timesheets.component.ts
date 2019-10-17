@@ -93,7 +93,6 @@ export class TimesheetsComponent implements OnInit {
       (dataEmp) => {
         if (dataEmp !== undefined && dataEmp !== null && dataEmp.length > 0) {
           this._employee = dataEmp;
-          console.log(this._employee);
           // tslint:disable-next-line:max-line-length
           if (this._employee.length > 0 && this._employee[0].IsTimesheetVerficationNeeded && this._employee[0].Supervisor !== '' && this._employee[0].SupervisorId > 0) {
             this._showEmptyTimesheet = false;
@@ -211,7 +210,6 @@ export class TimesheetsComponent implements OnInit {
         (data) => {
           this.timesysSvc.getDatebyPeriod().subscribe(
             (data1) => {
-              console.log(data);
               this._timePeriods = [];
               this.selectTimePeriod = null;
               if (data !== undefined && data !== null && data.length > 0) {

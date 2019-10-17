@@ -567,7 +567,6 @@ export class TimesystemService {
   }
   TimeLineAndTimeCell_DeleteAndInsert(_inputData: TimeSheetSubmit) {
     const body = JSON.stringify(_inputData);
-    console.log(body);
     return this.http.post<LoginErrorMessage>(this.url + 'TimeLineAndTimeCell_DeleteAndInsert', body, httpOptions);
   }
   getBillableHours(code: string, key: string, codeInactive: string, assignInactive: string, startDate: string, endDate: string) {
