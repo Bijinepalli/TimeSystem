@@ -84,7 +84,8 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports', 'OnInit', 'Initialisation', 
+    '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -312,10 +313,12 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
     this.cols = [
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: '30em' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: '20em' },
-      { field: 'Department', header: 'Department', align: 'left', width: '10em' },
-      { field: 'TANDM', header: 'T & M', align: 'right', width: '10em' },
-      { field: 'Project', header: 'Project', align: 'right', width: '15em' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '15em' },
+      { field: 'Department', header: 'Department', align: 'left', width: '7em' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '7em' },
+      { field: 'Project', header: 'Project', align: 'right', width: '7em' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '7em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '7em' },
+      { field: 'Amount', header: 'Total Billable Amount', align: 'right', width: '10em' },
     ];
   }
   startOver() {
