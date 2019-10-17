@@ -900,7 +900,9 @@ export class MaintaintimesheetComponent implements OnInit {
     this._errorHourlyNonBillHolidayArray = [];
     this._errorHourlyNonBillHolidayArrayRow = [];
     for (let i = 0; i < this._DateArray.length; i++) {
-      const dateHoliday = this._holidays.find(P => P.HolidayDate === this._DateArray[i]);
+      const dtHolidaDateNew = new Date(this._DateArray[i]);
+      const dtHolidaDateNewTransform = this.datePipe.transform(dtHolidaDateNew, 'yyyy-MM-dd');
+      const dateHoliday = this._holidays.find(P => P.HolidayDate === dtHolidaDateNewTransform);
       if (this._timeNONbill.length > 0) {
         if (dateHoliday === undefined
           && this.timeSheetForm.get('txtNonBillHours_' + rowId + '_' + i).value !== '') {
