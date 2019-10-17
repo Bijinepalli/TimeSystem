@@ -22,26 +22,21 @@
                 <label class="label">Report Type</label>
                 <!-- pTooltip="Show the hours for this type of non-billable work"
           tooltipPosition="bottom" -->
-      </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
-        <p-selectButton [options]="reportType" [(ngModel)]="selectedReportType"></p-selectButton>
-      </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
-        <label class="label" style="padding:0px 10px;">Date Range </label>
-      </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-8 ui-lg-6 ui-xl-5">
-        <label class="sublabel" style="padding:0px 1em;">From</label>
-        <p-calendar [(ngModel)]="startDate" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
-          showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
-          dateFormat="mm-dd-yy" [inputStyle]="{'width':'7em'}"></p-calendar>
-        <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
-        <p-calendar [(ngModel)]="endDate" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
-          showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030"
-          dateFormat="mm-dd-yy" [inputStyle]="{'width':'7em'}"></p-calendar>
-      </div>
-      <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-6 ui-xl-7" style="padding-top: 13px">
-        <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report"
-          tooltipPosition="bottom" binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show
+            </div>
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                <p-selectButton [options]="reportType" [(ngModel)]="selectedReportType"></p-selectButton>
+            </div>
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
+                <label class="label" style="padding:0px 10px;">Date Range </label>
+            </div>
+            <div class="ui-g-12 ui-sm-12 ui-md-8 ui-lg-6 ui-xl-5">
+                <label class="sublabel" style="padding:0px 1em;">From</label>
+                <p-calendar [(ngModel)]="startDate" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" [inputStyle]="{'width':'7em'}"></p-calendar>
+                <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
+                <p-calendar [(ngModel)]="endDate" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" showButtonBar="true" [monthNavigator]="true" [yearNavigator]="true" yearRange="2000:2030" dateFormat="mm-dd-yy" [inputStyle]="{'width':'7em'}"></p-calendar>
+            </div>
+            <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-6 ui-xl-7" style="padding-top: 13px">
+                <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom" binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show
           Totals</label>
             </div>
         </div>
@@ -60,7 +55,7 @@
     </div>
 
     <div class="ui-g" *ngIf="showReport && _recData > 0">
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-g-nopad">
             <!-- <p-scrollPanel [style]="{width: '100%',height:'650px'}" styleClass="custombar1"> -->
             <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [scrollable]="true" [scrollable]="true">
                 <ng-template pTemplate="caption">

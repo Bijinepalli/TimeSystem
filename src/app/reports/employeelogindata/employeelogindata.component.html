@@ -38,7 +38,7 @@
         </div>
     </div>
     <div class="ui-g" *ngIf="showReport">
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-g-nopad">
             <p-table #dt [columns]="cols" [value]="_listEmployeeLoginData" [paginator]="true" [rows]="20" [responsive]="false" dataKey="ID" [scrollable]="true">
                 <ng-template pTemplate="caption">
                     <div class="ui-g ui-g-nopad recordsBar">
