@@ -46,6 +46,7 @@ export class BillablehoursComponent implements OnInit {
   _DisplayDateFormat: any;
   IsSecure = false;
   _sortArray: string[];
+  _buttonLabel = 'Show Billing Codes';
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -302,6 +303,15 @@ export class BillablehoursComponent implements OnInit {
       this.dt.sortOrder = 0;
       this.dt.sortField = '';
       this.dt.reset();
+    }
+  }
+  typeClick(evnt) {
+    if (evnt.value === 0) {
+      this._buttonLabel = 'Show Billing Codes';
+    } else if (evnt.value === 1) {
+      this._buttonLabel = 'Show Projects';
+    } else if (evnt.value === 2) {
+      this._buttonLabel = 'Show Non-Billables';
     }
   }
 }
