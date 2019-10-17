@@ -48,6 +48,7 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
   _selectedDepartment: Departments;
   tsStatus: { label: string; value: number; }[];
   _selectedStatus: any;
+  reportNote: string = 'the submitted';
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -251,10 +252,13 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._billingCodesSpecial.department = this._selectedDepartment.Name;
     if (this._selectedStatus === 3) {
       this._billingCodesSpecial.timesheetStatus = '1,0';
+      this.reportNote = 'both the saved and submitted';
     } else if (this._selectedStatus === 2) {
       this._billingCodesSpecial.timesheetStatus = '0';
+      this.reportNote = 'the saved';
     } else {
       this._billingCodesSpecial.timesheetStatus = '1';
+      this.reportNote = 'the submitted';
     }
     this.buildCols();
     if (this.selectedbillingCycle < 3) {
@@ -326,13 +330,13 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.showSpinner = false;
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1);
-    this._endDate = null;
-    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    this._endDateSelect = '';
+    // const today = new Date();
+    // const month = today.getMonth();
+    // const year = today.getFullYear();
+    // this._startDate = new Date(year, month - 1, 1);
+    // this._endDate = null;
+    // this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    // this._endDateSelect = '';
     this.resetSort();
   }
 

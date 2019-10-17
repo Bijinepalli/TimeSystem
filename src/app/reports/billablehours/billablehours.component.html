@@ -7,7 +7,7 @@
 <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
     <div class="ui-g">
         <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12 ui-xl-12">
-            <p-selectButton [options]="billingType" [(ngModel)]="selectedBillingType"></p-selectButton>
+            <p-selectButton #typeB [options]="billingType" [(ngModel)]="selectedBillingType" (onChange)="typeClick(typeB)"></p-selectButton>
             <!-- pTooltip="Show this type of billing code on the report"
       tooltipPosition="bottom" -->
         </div>
@@ -18,7 +18,7 @@
     </div>
     <p-footer>
         <div style="text-align: left">
-            <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info" label="Show Billing Codes" (click)=showBillingCodes()></button>
+            <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info" [label]="_buttonLabel" (click)=showBillingCodes()></button>
         </div>
     </p-footer>
 </p-panel>

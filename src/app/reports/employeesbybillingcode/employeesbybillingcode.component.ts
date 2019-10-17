@@ -41,6 +41,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   IsSecure = false;
   _DateFormat: any;
   _DisplayDateFormat: any;
+  _buttonLabel = 'Show Billing Codes';
   @ViewChild('dt') dt: Table;
 
   constructor(
@@ -173,8 +174,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       selectedType: this.selectedType,
       selectedBillingType: this.selectedBillingType,
     }
-    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 
-    'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes',
+      'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
@@ -326,6 +327,15 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       this.dt.sortOrder = 0;
       this.dt.sortField = '';
       this.dt.reset();
+    }
+  }
+  typeClick(evnt) {
+    if (evnt.value === 0) {
+      this._buttonLabel = 'Show Billing Codes';
+    } else if (evnt.value === 1) {
+      this._buttonLabel = 'Show Projects';
+    } else if (evnt.value === 2) {
+      this._buttonLabel = 'Show Non-Billables';
     }
   }
 }
