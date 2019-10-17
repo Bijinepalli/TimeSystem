@@ -244,15 +244,15 @@
           <div class="ui-g-12 ui-lg-5">
             Hire Date (mm-dd-yyyy) <br>
             <div style="height:5px"></div>
-            <p-calendar appendTo="body" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
-              dateFormat="mm-dd-yy" formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"
+            <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+              formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"
               [maxDate]="_frmEmployee.controls['frmStartDate'].value"></p-calendar>
           </div>
           <div class="ui-g-12 ui-lg-5">
             Start Date (mm-dd-yyyy) <br>
             <div style="height:5px"></div>
-            <p-calendar appendTo="body" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
-              dateFormat="mm-dd-yy" formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"
+            <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+              formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"
               [minDate]="_frmEmployee.controls['frmHireDate'].value"></p-calendar>
           </div>
           <div class="ui-g-12 ui-lg-2" *ngIf="lblTerminationDate">
@@ -379,7 +379,7 @@
           <div class="ui-g-12 ui-md-12">
             Termination Date (mm-dd-yyyy) <br>
             <div style="height:5px"></div>
-            <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
+            <p-calendar [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
               [showOnFocus]="false" [maxDate]="today" [readonlyInput]="true" dateFormat="mm-dd-yy"
               formControlName="frmTerminateEmployeeDate">
             </p-calendar>
@@ -620,8 +620,8 @@
             Effective Date <span class="mandatoryStar">* </span>
           </div>
           <div class="ui-g-12">
-            <p-calendar [showIcon]="false" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
-              formControlName="frmEffectiveDate" appendTo="body">
+            <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+              formControlName="frmEffectiveDate">
             </p-calendar>
             (mm-dd-yyyy)
           </div>

@@ -4,28 +4,16 @@
       style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
       (click)="commonSvc.showHelp('')"></i>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-  </div>
 </div>
 <br>
 
-<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0 && changeCodeList">
+<div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport === false && _recData === 0">
   <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
     No matching data for the selected criteria
-  </div>
-  <div class="ui-g-12 ui-md-6 ui-lg-6" style="text-align: right">
-    <button pButton pTooltip="Change your billing code and detail selections" tooltipPosition="bottom"
-      class="ui-button-warning" label="Change Codes" (click)="changeCodes()"></button>&nbsp;
-    <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning"
-      label="Start Over" (click)="startOver()"></button>
   </div>
 </div>
 
 <div class="ui-g-12" *ngIf="showReport">
-  <!-- <p-scrollPanel [style]="{width: '100%', height: '650px'}" styleClass="custombar1"> -->
   <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" [globalFilterFields]="_sortArray"
     [scrollable]="true">
     <ng-template pTemplate="caption">
@@ -59,7 +47,6 @@
       </tr>
     </ng-template>
   </p-table>
-  <!-- </p-scrollPanel> -->
 </div>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
   fill="#EEEEEE"></p-progressSpinner>
