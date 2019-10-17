@@ -103,14 +103,12 @@ export class DepartmentsComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.showSpinner = true;
     this.maxDate = new Date();
 
     const invalidDate = new Date();
     invalidDate.setDate(this.maxDate.getDate() - 1);
     this.invalidDates = [this.maxDate, invalidDate];
-    console.log(this.invalidDates);
-
-    this.showSpinner = true;
     this.logSvc.ActionLog(PageNames.Departments, '', 'Pages', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
@@ -242,8 +240,8 @@ export class DepartmentsComponent implements OnInit {
 
 
   editDepartment(data: Departments) {
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'editDepartment', 'Edit Department', '', 
-    '', JSON.stringify(data)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'editDepartment', 'Edit Department', '',
+      '', JSON.stringify(data)); // ActivityLog
     this._IsEditDepartment = true;
     this._selectedDepartment = new Departments();
     this._selectedDepartment.Id = data.Id;
@@ -259,8 +257,8 @@ export class DepartmentsComponent implements OnInit {
   }
 
   showEmployees(event, dataRow: Departments, overlaypanel: OverlayPanel) {
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'showEmployees', 'Show Employees', '', 
-    '', JSON.stringify(dataRow)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'showEmployees', 'Show Employees', '',
+      '', JSON.stringify(dataRow)); // ActivityLog
     this.deptEmployeeHdr = 'Employees associated with department';
     this._deptEmployeePageNo = 0;
     if (this.previousOPs !== undefined && this.previousOPs !== null && this.previousOPs.length > 0) {
@@ -324,8 +322,8 @@ export class DepartmentsComponent implements OnInit {
 
   SaveDepartmentSPCall() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'SaveDepartment', 'Save Department', 
-    '', '', JSON.stringify(this._selectedDepartment)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'SaveDepartment', 'Save Department',
+      '', '', JSON.stringify(this._selectedDepartment)); // ActivityLog
     this.timesysSvc.Department_InsertOrUpdate(this._selectedDepartment)
       .subscribe(
         (outputData) => {
@@ -353,8 +351,8 @@ export class DepartmentsComponent implements OnInit {
   }
 
   deleteDepartment(dataRow: Departments) {
-    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'deleteDepartment', 'Delete Department', '', 
-    '', JSON.stringify(dataRow)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.Departments, '', 'Pages/Event', 'deleteDepartment', 'Delete Department', '',
+      '', JSON.stringify(dataRow)); // ActivityLog
     this.confSvc.confirm({
       message: 'Are you sure you want to delete ' + dataRow.Name + '?',
       header: 'Confirmation',

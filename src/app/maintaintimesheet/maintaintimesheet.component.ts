@@ -124,7 +124,6 @@ export class MaintaintimesheetComponent implements OnInit {
     });
     this.defaultControlsToForm();
     this.getTimesheetTimeLineTimeCellDetails();
-    // console.log(this._IsTimeSheetSubmitted, this._isTimesheetView, this._isTimesheetRejected);
   }
 
   // This method is used to get Employee Details
@@ -198,8 +197,6 @@ export class MaintaintimesheetComponent implements OnInit {
                   this.showSpinner = false;
                   this._errorMessage = 'Problem exists with this timesheet please contact administrator.<br/>';
                 }
-                console.log(this._timeSheetEntries[0].Id + '--TimesheetID');
-                console.log(this._timeSheetEntries[0].ApprovalStatus + '--ApprStatus');
                 if (this._timeSheetEntries[0].ApprovalStatus === '1') {
                   this._isTimesheetPending = true;
                 }
@@ -277,11 +274,12 @@ export class MaintaintimesheetComponent implements OnInit {
   getAllWantedDetailsOnLoad(timeSheetUserId: string, selectPeriodEndDate: string) {
     this.timesysSvc.getAllWantedDetailsOnLoad(timeSheetUserId, selectPeriodEndDate).subscribe(
       (wholeData) => {
-        this._timePeriodsOnLoad = wholeData[0];
-        this._timeSheetForApprovalsOnLoad = wholeData[1];
-        this._timeSheetUsersSupervisor = wholeData[2];
-        this._daysNDates = wholeData[3];
-        // console.log(this._daysNDates);
+        if (wholeData !== undefined && wholeData !== null && wholeData.length > 0) {
+          this._timePeriodsOnLoad = wholeData[0];
+          this._timeSheetForApprovalsOnLoad = wholeData[1];
+          this._timeSheetUsersSupervisor = wholeData[2];
+          this._daysNDates = wholeData[3];
+        }
         this.getPeriodDates(selectPeriodEndDate);
       });
   }
@@ -961,8 +959,6 @@ export class MaintaintimesheetComponent implements OnInit {
     if (this._errorHourlyNonBillHolidayArray.length > 0) {
       this._errorMessage += 'You cannot enter more than 8 hours of holiday time per day. (Section: Non-Billable)<br/>';
     }
-    // console.log('Row');
-    // console.log(this._errorHourlyNonBillHolidayArray, this._errorHourlyNonBillHolidayArrayRow);
   }
   getHolidayNPTOErrors(HolidayNPtoRowIds: string) {
     let countError = 0;
@@ -1106,7 +1102,6 @@ export class MaintaintimesheetComponent implements OnInit {
         }
       }
     }
-    // console.log(weekEndTandMCountWarning);
     let weekDayErrors = '';
     if (weekEndTandMCountWarning > 0) {
       this._warningMessage += 'You entered hours on the weekend. Is this correct? (Section: Time & Materials)<br/>';
@@ -1347,7 +1342,6 @@ export class MaintaintimesheetComponent implements OnInit {
     } else {
       timeSheetSubmit.timeSheet.Comments = '';
     }
-    // console.log(this.timeSheetForm.get('txtUserComments').value + '-test');
     timeSheetSubmit.timeSheet.EmployeeId = +sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId');
     // tslint:disable-next-line:max-line-length
     if (this._employee !== undefined && this._employee[0].IsTimesheetVerficationNeeded && this._supervisor !== undefined && this._supervisor.length > 0) {
@@ -1849,7 +1843,6 @@ export class MaintaintimesheetComponent implements OnInit {
       this.dtTimesheet.nativeElement.attributes['tableexport-key'].value : 'tableexport-1';
     if (tblExport.getExportData()[key] !== undefined && tblExport.getExportData()[key] !== null) {
       const objCSV = tblExport.getExportData()[key].csv;
-      console.log(objCSV);
       tblExport.export2file(
         '\n' +
         exHeader +
