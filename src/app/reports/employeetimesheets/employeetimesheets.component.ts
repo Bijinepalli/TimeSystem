@@ -222,7 +222,7 @@ export class EmployeetimesheetsComponent implements OnInit {
           this.showReport = true;
           this.showSpinner = false;
           this.changeCodeList = true;
-          this.showBillingCodeList = false;
+          this.showBillingCodeList = true;
         }
       );
   }

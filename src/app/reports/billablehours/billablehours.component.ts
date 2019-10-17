@@ -46,8 +46,8 @@ export class BillablehoursComponent implements OnInit {
   _DisplayDateFormat: any;
   IsSecure = false;
   _sortArray: string[];
-  _buttonLabel = 'Show Billing Codes';
-
+  _buttonLabel = '';
+  _buttonTooltip = '';
   constructor(
     private timesysSvc: TimesystemService,
     private logSvc: ActivitylogService, // ActivityLog - Default
@@ -116,6 +116,8 @@ export class BillablehoursComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this._buttonLabel = 'Show Billing Codes';
+    this._buttonTooltip = 'Show the billing codes that match your choices';
     this.types = [];
     this.selectedType = 0;
     this.assignStatus = [];
@@ -308,10 +310,13 @@ export class BillablehoursComponent implements OnInit {
   typeClick(evnt) {
     if (evnt.value === 0) {
       this._buttonLabel = 'Show Billing Codes';
+      this._buttonTooltip = 'Show the billing codes that match your choices';
     } else if (evnt.value === 1) {
       this._buttonLabel = 'Show Projects';
+      this._buttonTooltip = 'Show the Projects that match your choices';
     } else if (evnt.value === 2) {
       this._buttonLabel = 'Show Non-Billables';
+      this._buttonTooltip = 'Show the Non-Billables that match your choices';
     }
   }
 }

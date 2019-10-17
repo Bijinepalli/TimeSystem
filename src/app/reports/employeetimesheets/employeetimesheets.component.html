@@ -30,7 +30,7 @@
     </p-footer>
   </p-panel>
   <div class="ui-g" *ngIf="showBillingCodeList">
-    <div class="ui-g-12" style="padding-top: 5px">
+    <div class="ui-g-12 ui-g-nopad" style="padding-top: 5px">
       <p-panel [toggleable]="false" header="Filter {{_codeType}} data">
         <div class="ui-g">
           <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
@@ -47,8 +47,8 @@
             <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom"
               class="ui-button-info" label="Generate Report" [disabled]="!(this.selectedCode!=='')"
               (click)=generateReport()></button>&nbsp;
-            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-              class="ui-button-warning" label="Start Over" (click)=startOver()></button> &nbsp;
+            <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+              class="ui-button-warning" label="Start Over" (click)=startOver()></button> &nbsp; -->
           </div>
         </p-footer>
       </p-panel>
@@ -70,7 +70,7 @@
     <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
       Employee Name: {{selectedEmployeeName}}
     </div>
-    <div class="ui-g-12">
+    <div class="ui-g-12 ui-g-nopad">
       <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false"
         dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray"
         [scrollable]="true">
@@ -84,8 +84,7 @@
             </div>
             <div class="ui-g-12  ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
-              &nbsp;
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button> &nbsp;
               <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
             </div>
           </div>

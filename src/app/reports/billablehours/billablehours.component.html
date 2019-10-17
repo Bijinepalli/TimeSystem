@@ -18,7 +18,7 @@
     </div>
     <p-footer>
         <div style="text-align: left">
-            <button pButton pTooltip="Show the billing codes that match your choices" tooltipPosition="bottom" class="ui-button-info" [label]="_buttonLabel" (click)=showBillingCodes()></button>
+            <button pButton [pTooltip]="_buttonTooltip" tooltipPosition="bottom" class="ui-button-info" [label]="_buttonLabel" (click)=showBillingCodes()></button>
         </div>
     </p-footer>
 </p-panel>
