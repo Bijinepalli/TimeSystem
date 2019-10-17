@@ -244,15 +244,15 @@
           <div class="ui-g-12 ui-lg-5">
             Hire Date (mm-dd-yyyy) <br>
             <div style="height:5px"></div>
-            <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-              formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"
+            <p-calendar appendTo="body" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
+              dateFormat="mm-dd-yy" formControlName="frmHireDate" [inputStyle]="{'width':'90%'}"
               [maxDate]="_frmEmployee.controls['frmStartDate'].value"></p-calendar>
           </div>
           <div class="ui-g-12 ui-lg-5">
             Start Date (mm-dd-yyyy) <br>
             <div style="height:5px"></div>
-            <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy"
-              formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"
+            <p-calendar appendTo="body" [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true"
+              dateFormat="mm-dd-yy" formControlName="frmStartDate" [inputStyle]="{'width':'90%'}"
               [minDate]="_frmEmployee.controls['frmHireDate'].value"></p-calendar>
           </div>
           <div class="ui-g-12 ui-lg-2" *ngIf="lblTerminationDate">
@@ -261,51 +261,51 @@
             <div style="height:5px"></div>
             <label appendTo="body">{{lblTerminationDate| dateFormat: _DisplayDateFormat}}</label>
           </div>
-          <div class="ui-g-12 ui-lg-6">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Salaried Employee" [(ngModel)]="chkSalaried"
               [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee is paid by salary and is not paid on an hourly basis"></p-checkbox>
           </div>
-          <div class="ui-g-12 ui-lg-6">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Employee Must Submit Timesheets"
               [(ngModel)]="chkSubmitsTime" [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee is required to submit timesheets">
             </p-checkbox>
           </div>
-          <div class="ui-g-12 ui-lg-6">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Employee is Eligible for Incentive Pay"
               [(ngModel)]="chkIPayEligible" [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee is eligible to receive IPay (Incentive Pay)"></p-checkbox>
           </div>
-          <div class="ui-g-12 ui-lg-6">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Employee follows company holiday schedule"
               [(ngModel)]="chkCompanyHolidays" [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee follows the VERTEX holiday schedule"></p-checkbox>
           </div>
-          <div class="ui-g-12 ui-lg-6" *ngIf="false">
+          <div class="ui-g-12 ui-lg-5" *ngIf="false">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Send Email Alert When Pay Stub is Available"
               [(ngModel)]="chkPayAvailableAlert" [ngModelOptions]="{standalone: true}"
               pToolTip="Checking this box means the employee will be send an email notice each time their pay stub is available online">
             </p-checkbox>
           </div>
-          <div class="ui-g-12 ui-lg-6">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Company Officer" [(ngModel)]="chkOfficer"
               [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee is an officer of the company. This is uncommon."></p-checkbox>
           </div>
-          <div class="ui-g-12 ui-md-7 ui-lg-7">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Company Supervisor" [(ngModel)]="chkSupervisor"
               [disabled]="SupEmpCnt>0" [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee is a supervisor of the company."></p-checkbox>
           </div>
-          <div class="ui-g-12 ui-md-4 ui-lg-4" *ngIf="SupEmpCnt>0">
+          <div class="ui-g-12 ui-lg-5" *ngIf="SupEmpCnt>0">
             <div style="height:5px"></div>
 
             <p-overlayPanel #opSup [showCloseIcon]="true" [dismissable]="true" appendTo="body">
@@ -335,19 +335,19 @@
               are
               assigned</label>
           </div>
-          <div class="ui-g-12 ui-lg-6">
+          <div class="ui-g-12 ui-lg-5">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Timesheet requires supervisor approval"
               [(ngModel)]="chkTimesheetVerification" [ngModelOptions]="{standalone: true}"
               pToolTip="Check if this employee needs a supervisor to verify Timesheet."></p-checkbox>
           </div>
-          <div class="ui-g-12 ui-lg-6" *ngIf="chkTimesheetVerification">
+          <div class="ui-g-12 ui-lg-5" *ngIf="chkTimesheetVerification">
             <div style="height:5px"></div>
             Select Supervisor <span class="mandatoryStar">* </span>:
             <p-dropdown appendTo="body" [options]="_Supervisors" placeholder="Select Supervisor"
               formControlName="frmSupervisor" pToolTip="Employee's Supervisor"></p-dropdown>
           </div>
-          <div class="ui-g-12 ui-md-12 ui-lg-12" *ngIf="_IsEditEmployee">
+          <div class="ui-g-12 ui-lg-12" *ngIf="_IsEditEmployee">
             <div style="height:5px"></div>
             <p-checkbox appendTo="body" binary="true" label="Inactive" [(ngModel)]="chkInactive"
               [ngModelOptions]="{standalone: true}" pTooltip="Change the status of this employee."></p-checkbox>
@@ -380,7 +380,8 @@
             Termination Date (mm-dd-yyyy) <br>
             <div style="height:5px"></div>
             <p-calendar appendTo="body" [style]="{'width':'92%'}" [inputStyle]="{'width': '100%'}" [showIcon]="true"
-              [maxDate]="today" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmTerminateEmployeeDate">
+              [showOnFocus]="false" [maxDate]="today" [readonlyInput]="true" dateFormat="mm-dd-yy"
+              formControlName="frmTerminateEmployeeDate">
             </p-calendar>
           </div>
         </div>
@@ -619,8 +620,8 @@
             Effective Date <span class="mandatoryStar">* </span>
           </div>
           <div class="ui-g-12">
-            <p-calendar [showIcon]="false" tooltipPosition="top" [readonlyInput]="true" dateFormat="mm-dd-yy"
-              formControlName="frmEffectiveDate" appendTo="body" pTooltip="The original date the employee started work">
+            <p-calendar [showIcon]="false" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+              formControlName="frmEffectiveDate" appendTo="body">
             </p-calendar>
             (mm-dd-yyyy)
           </div>
