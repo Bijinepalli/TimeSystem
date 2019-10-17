@@ -95,15 +95,13 @@
             </div>
             <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
                 <label class="sublabel" style="padding-right:10px;">From</label>
-                <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
-                    pTooltip="Enter a starting date or leave blank to select from the earliest date. Invalid entries will be reset."
-                    tooltipPosition="top" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-                    [(ngModel)]="_startDate" [inputStyle]="{'width':'100px'}"></p-calendar>
-                <label class="sublabel" style="padding:0px 10px">to</label>
-                <p-calendar appendTo="body" [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy"
-                    pTooltip="Enter the end date or leave blank to select up to the current date. Invalid entries will be reset."
-                    tooltipPosition="top" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2100"
-                    [(ngModel)]="_endDate" [inputStyle]="{'width':'100px'}"></p-calendar>
+                <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
+                    [yearNavigator]="true" yearRange="2000:2030" [(ngModel)]="_startDate" [inputStyle]="{'width':'7em'}"
+                    [showIcon]="true" [showOnFocus]="false"></p-calendar>
+                <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
+                <p-calendar [readonlyInput]="true" [monthNavigator]="true" dateFormat="mm-dd-yy" showButtonBar="true"
+                    [yearNavigator]="true" yearRange="1900:2100" [(ngModel)]="_endDate" [inputStyle]="{'width':'7em'}"
+                    [showIcon]="true" [showOnFocus]="false"></p-calendar>
             </div>
             <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12" style="padding-top: 13px">
                 <p-checkbox binary="true" label="Show Period End Detail"

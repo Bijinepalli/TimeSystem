@@ -93,11 +93,13 @@
       <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
         <label class="sublabel" style="padding-right:1em">From</label>
         <p-calendar [readonlyInput]="true" dateFormat="mm-dd-yy" [(ngModel)]="_startDate" [monthNavigator]="true"
-          showButtonBar="true" [yearNavigator]="true" yearRange="2000:2030" [inputStyle]="{'width':'7em'}">
+          showButtonBar="true" [yearNavigator]="true" yearRange="2000:2030" [inputStyle]="{'width':'7em'}"
+          [showIcon]="true" [showOnFocus]="false">
         </p-calendar>
         <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
         <p-calendar [readonlyInput]="true" dateFormat="mm-dd-yy" [(ngModel)]="_endDate" [monthNavigator]="true"
-          showButtonBar="true" [yearNavigator]="true" yearRange="2000:2030" [inputStyle]="{'width':'7em'}"></p-calendar>
+          showButtonBar="true" [yearNavigator]="true" yearRange="2000:2030" [inputStyle]="{'width':'7em'}"
+          [showIcon]="true" [showOnFocus]="false"></p-calendar>
       </div>
       <!-- <div class="ui-g-12 ui-md-2">
         <p-checkbox binary="true" label="Show Period End Detail" [(ngModel)]="showPeriodEndDetail"></p-checkbox>
