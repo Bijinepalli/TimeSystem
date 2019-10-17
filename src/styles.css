@@ -19,6 +19,12 @@ body {
   transform: translate(-50%, -50%);
 }
 
+.smLogo {
+  width: 210px;
+  padding-top: 12px;
+  padding-left: 10px;
+}
+
 /* Override color for alert box*/
 
 .alertHeader {
@@ -277,9 +283,11 @@ body .ui-panel .ui-panel-content {
   /* .smSearchLeft {
         text-align: left !important;
     } */
+
+
 }
 
-@media only screen and (min-width: 640px) and (max-width: 1250px) {
+@media only screen and (max-width: 1250px) {
   .smLeft {
     text-align: left !important;
   }
@@ -296,9 +304,3 @@ body .ui-panel .ui-panel-content {
     width: 15em !important;
   }
 }
-
-/* @media only screen and (min-width: 200px) {
-    .smSearchWidth {
-        width: 25em !important;
-    }
-} */

@@ -748,10 +748,11 @@ export class EmployeesComponent implements OnInit {
     this._selectedEmployeeForAction = dataRow;
     this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Page', 'manageRates', 'Manage Rates', '', dataRow.ID, ''); // ActivityLog
     this._employeeId = this._selectedEmployeeForAction.ID.toString();
-    this.populateTable();
     this._popUpHeader = 'Rate';
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
-    this.rateDialog = true;
+    // this.rateDialog = true;
+    this.populateTable();
+    
   }
   /* #endregion */
 
@@ -904,8 +905,8 @@ export class EmployeesComponent implements OnInit {
 
     if (empdata !== undefined && empdata !== null && empdata.length > 0) {
       this.SupEmpcols = [
-        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'EmailAddress', header: 'Email Address', align: 'left', width: 'auto' },
+        { field: 'Name', header: 'Name', align: 'left', width: '50em' },
+        { field: 'EmailAddress', header: 'Email Address', align: 'left', width: '50em' },
       ];
       this.SupEmpCnt = empdata.length;
       this.SupEmployeeList = empdata;
@@ -1922,11 +1923,11 @@ export class EmployeesComponent implements OnInit {
     this._IsEditRate = false;
     this._IsAddRate = false;
     this._ratecols = [
-      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: 'auto' },
-      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: 'auto' },
-      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '150px' },
-      { field: 'Rate', header: 'Rate', align: 'right', width: '75px' },
-      { field: 'Inactive', header: 'Inactive', align: 'center', width: '75px' },
+      { field: 'ClientName', header: 'Billing Code Name', align: 'left', width: '20em' },
+      { field: 'CustomerName', header: 'Customer Name', align: 'left', width: '20em' },
+      { field: 'EffectiveDate', header: 'Effective Date', align: 'center', width: '15em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '15em' },
+      { field: 'Inactive', header: 'Inactive', align: 'center', width: '10em' },
     ];
     this._sortArrayRates = ['ClientName', 'CustomerName', 'EffectiveDateSearch', 'Rate', 'Inactive'];
     this.timesysSvc.getEmployeeRates(+this._employeeId.toString())
@@ -1938,6 +1939,7 @@ export class EmployeesComponent implements OnInit {
             this._rates = data;
             this._recRateData = this._rates.length;
           }
+          this.rateDialog = true;
         }
       );
   }
@@ -1945,12 +1947,10 @@ export class EmployeesComponent implements OnInit {
   cancelRateModal() {
     this.resetRateControls();
     if (this._IsEditRate === true) {
-      this._IsEditRate = false;
-      this._IsAddRate = false;
+      this.populateTable();
     } else {
       this.rateDialog = false;
-    }
-    this.populateTable();
+    }    
   }
 
   saveRateModal() {
@@ -1996,8 +1996,6 @@ export class EmployeesComponent implements OnInit {
               key: 'saveSuccess', severity: 'success',
               summary: 'Info Message', detail: 'Rate saved successfully'
             });
-            this._IsAddRate = false;
-            this._IsEditRate = false;
             this.resetRateControls();
             this.populateTable();
             this.logSvc.ActionLog(PageNames.Employees, 'Rates', 'Section',
