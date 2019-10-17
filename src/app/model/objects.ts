@@ -225,6 +225,8 @@ export class BillingCodes {
     WeekEndSearch?: string;
     CalendarDateSearch?: string;
     Department?: string;
+    Rate?: string;
+    Amount?: string;
 }
 export class BillingCodesSpecial {
     value?: string;

@@ -47,7 +47,7 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
   _selectedDepartment: Departments;
   tsStatus: { label: string; value: number; }[];
   _selectedStatus: any;
-
+  reportNote: string = 'the submitted';
   constructor(
     private timesysSvc: TimesystemService,
     private logSvc: ActivitylogService, // ActivityLog - Default
@@ -84,7 +84,8 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
 
   ngOnInit() {
     this.showSpinner = true;
-    this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports', 'OnInit', 'Initialisation', '', '', ''); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCodewithRate, '', 'Reports', 'OnInit', 'Initialisation', 
+    '', '', ''); // ActivityLog
     this.IsSecure = false;
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
@@ -252,10 +253,13 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
     this._billingCodesSpecial.department = this._selectedDepartment.Name;
     if (this._selectedStatus === 3) {
       this._billingCodesSpecial.timesheetStatus = '1,0';
+      this.reportNote = 'both the saved and submitted';
     } else if (this._selectedStatus === 2) {
       this._billingCodesSpecial.timesheetStatus = '0';
+      this.reportNote = 'the saved';
     } else {
       this._billingCodesSpecial.timesheetStatus = '1';
+      this.reportNote = 'the submitted';
     }
     this.buildCols();
     if (this.selectedbillingCycle < 3) {
@@ -312,10 +316,12 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
     this.cols = [
       { field: 'BillingName', header: 'Billing Code', align: 'left', width: '30em' },
       { field: 'LastName', header: 'Last Name', align: 'left', width: '20em' },
-      { field: 'Department', header: 'Department', align: 'left', width: '10em' },
-      { field: 'TANDM', header: 'T & M', align: 'right', width: '10em' },
-      { field: 'Project', header: 'Project', align: 'right', width: '15em' },
-      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '15em' },
+      { field: 'Department', header: 'Department', align: 'left', width: '7em' },
+      { field: 'TANDM', header: 'T & M', align: 'right', width: '7em' },
+      { field: 'Project', header: 'Project', align: 'right', width: '7em' },
+      { field: 'NonBill', header: 'NonBillable', align: 'right', width: '7em' },
+      { field: 'Rate', header: 'Rate', align: 'right', width: '7em' },
+      { field: 'Amount', header: 'Total Billable Amount', align: 'right', width: '10em' },
     ];
   }
   startOver() {
@@ -325,13 +331,13 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
     this._selectcheckbox = [];
     this.allcheckbox = false;
     this.showSpinner = false;
-    const today = new Date();
-    const month = today.getMonth();
-    const year = today.getFullYear();
-    this._startDate = new Date(year, month - 1, 1);
-    this._endDate = null;
-    this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
-    this._endDateSelect = '';
+    // const today = new Date();
+    // const month = today.getMonth();
+    // const year = today.getFullYear();
+    // this._startDate = new Date(year, month - 1, 1);
+    // this._endDate = null;
+    // this._startDateSelect = this.datePipe.transform(this._startDate, 'MM-dd-yyyy');
+    // this._endDateSelect = '';
     this.resetSort();
   }
 

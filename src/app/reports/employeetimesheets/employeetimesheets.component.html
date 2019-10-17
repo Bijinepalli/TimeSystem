@@ -1,112 +1,128 @@
 <div class="ui-g ui-g-nopad mainHeader">
-    <div class="ui-g-12 ui-md-12 ui-lg-12 ui-sm-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-        Employee Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('ViewTimesheets.htm')"></i>
-    </div>
+  <div class="ui-g-12 ui-md-12 ui-lg-12 ui-sm-12 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    Employee Timesheets <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="commonSvc.showHelp('ViewTimesheets.htm')"></i>
+  </div>
 </div>
 <br>
 <ng-container *ngIf="IsSecure">
-    <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
+  <p-panel [toggleable]="true" header="Filter" *ngIf="!showBillingCodeList && !changeCodeList">
+    <div class="ui-g">
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+        <label class="label">Select</label>
+      </div>
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+        <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
+      </div>
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+        <label class="label">Select Salary Status</label>
+      </div>
+      <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+        <p-selectButton [options]="hoursType" [(ngModel)]="selectedhoursType"></p-selectButton>
+      </div>
+    </div>
+    <p-footer>
+      <div>
+        <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom"
+          class="ui-button-info" label="Show Employees" (click)=showBillingCodes()></button>
+      </div>
+    </p-footer>
+  </p-panel>
+  <div class="ui-g" *ngIf="showBillingCodeList">
+    <div class="ui-g-12 ui-g-nopad" style="padding-top: 5px">
+      <p-panel [toggleable]="false" header="Filter {{_codeType}} data">
         <div class="ui-g">
-            <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                <label class="label">Select</label>
-            </div>
-            <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                <p-selectButton [options]="types" [(ngModel)]="selectedType"></p-selectButton>
-            </div>
-            <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                <label class="label">Select Salary Status</label>
-            </div>
-            <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                <p-selectButton [options]="hoursType" [(ngModel)]="selectedhoursType"></p-selectButton>
-            </div>
+          <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+            <label class="label">{{_codeCount}}</label>
+          </div>
+          <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+            <p-dropdown [options]="codes" placeholder="Please select"
+              pTooltip="Select the employee whose timesheets you want to see" tooltipPosition="right"
+              [(ngModel)]="selectedCode" [style]="{'width':'250px'}"></p-dropdown>
+          </div>
         </div>
         <p-footer>
-            <div>
-                <button pButton pTooltip="Show the employees that match your choices" tooltipPosition="bottom" class="ui-button-info" label="Show Employees" (click)=showBillingCodes()></button>
-            </div>
+          <div>
+            <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom"
+              class="ui-button-info" label="Generate Report" [disabled]="!(this.selectedCode!=='')"
+              (click)=generateReport()></button>&nbsp;
+            <!-- <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+              class="ui-button-warning" label="Start Over" (click)=startOver()></button> &nbsp; -->
+          </div>
         </p-footer>
-    </p-panel>
-    <div class="ui-g" *ngIf="showBillingCodeList">
-        <div class="ui-g-12 ui-g-nopad" style="padding-top: 5px">
-            <p-panel [toggleable]="false" header="Filter {{_codeType}} data">
-                <div class="ui-g">
-                    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                        <label class="label">{{_codeCount}}</label>
-                    </div>
-                    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-                        <p-dropdown [options]="codes" placeholder="Please select" pTooltip="Select the employee whose timesheets you want to see" tooltipPosition="right" [(ngModel)]="selectedCode" [style]="{'width':'250px'}"></p-dropdown>
-                    </div>
-                </div>
-                <p-footer>
-                    <div>
-                        <button pButton pTooltip="Create the report from your criteria" tooltipPosition="bottom" class="ui-button-info" label="Generate Report" [disabled]="!(this.selectedCode!=='')" (click)=generateReport()></button>&nbsp;
-                        <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)=startOver()></button> &nbsp;
-                    </div>
-                </p-footer>
-            </p-panel>
-        </div>
+      </p-panel>
     </div>
-    <br>
+  </div>
+  <br>
 
-    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-        <div class="ui-g-12 ui-sm-12 ui-md-9 ui-lg-10 NoDataMessage">
-            No matching data for the selected criteria
-        </div>
-        <div class="ui-g-12 ui-sm-12 ui-md-3 ui-lg-2 smLeft" style="text-align: right">
-            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
-        </div>
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+    <div class="ui-g-12 ui-sm-12 ui-md-9 ui-lg-10 NoDataMessage">
+      No matching data for the selected criteria
     </div>
+    <div class="ui-g-12 ui-sm-12 ui-md-3 ui-lg-2 smLeft" style="text-align: right">
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+        class="ui-button-warning" label="Start Over" (click)="startOver()"></button>
+    </div>
+  </div>
 
-    <div class="ui-g" *ngIf="showReport && _recData > 0 ">
-        <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
-            Employee Name: {{selectedEmployeeName}}
-        </div>
-        <div class="ui-g-12 ui-g-nopad">
-            <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
-                <ng-template pTemplate="caption">
-                    <div class="ui-g recordsBar">
-                        <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 recordsFound">
-                            {{ _recData + ' timesheets found ( ' + _recDataPending + ' pending )'}}</div>
-                        <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
-                            <input type="text" pInputText placeholder="Global Filter" class="smSearchWidth" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
-                        </div>
-                        <div class="ui-g-12  ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
-                            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)="startOver()"></button> &nbsp;
-                            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th style="width: 5em">View</th>
-                        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-                            {{col.header}}
-                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-                            </p-sortIcon>
-                        </th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-                    <tr [pSelectableRow]="rowData">
-                        <td style="text-align: center;width: 5em">
-                            <i class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom" (click)="viewTimeSheet(rowData)"></i>
-                        </td>
-                        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
-                            <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
-                                <label *ngIf="(col.field === 'SubmitDate')">{{rowData[col.field] | dateFormat: _DisplayTimeStampFormat}}
-                </label>
-                                <label *ngIf="(col.field === 'PeriodEnd')">{{rowData[col.field] | dateFormat: _DisplayDateFormat}}
-                </label>
-                            </div>
-                            <ng-template #nondatecol>
-                                {{rowData[col.field]}}
-                            </ng-template>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
+  <div class="ui-g" *ngIf="showReport && _recData > 0 ">
+    <div class="ui-g-12 ui-lg-12 ui-md-12 ui-sm-12">
+      Employee Name: {{selectedEmployeeName}}
     </div>
+    <div class="ui-g-12 ui-g-nopad">
+      <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false"
+        dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray"
+        [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g recordsBar">
+            <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 recordsFound">
+              {{ _recData + ' timesheets found ( ' + _recDataPending + ' pending )'}}</div>
+            <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12 smLeft" style="text-align: right;">
+              <input type="text" pInputText placeholder="Global Filter" class="smSearchWidth"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em">
+            </div>
+            <div class="ui-g-12  ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
+              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button> &nbsp;
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 5em">View</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td style="text-align: center;width: 5em">
+              <i class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom"
+                (click)="viewTimeSheet(rowData)"></i>
+            </td>
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align">
+              <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
+                <label *ngIf="(col.field === 'SubmitDate')">{{rowData[col.field] | dateFormat: _DisplayTimeStampFormat}}
+                </label>
+                <label *ngIf="(col.field === 'PeriodEnd')">{{rowData[col.field] | dateFormat: _DisplayDateFormat}}
+                </label>
+              </div>
+              <ng-template #nondatecol>
+                {{rowData[col.field]}}
+              </ng-template>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
 </ng-container>
 
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

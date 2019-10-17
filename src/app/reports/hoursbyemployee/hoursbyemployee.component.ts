@@ -52,6 +52,8 @@ export class HoursbyemployeeComponent implements OnInit {
   _DisplayDateFormat: any;
   IsSecure = false;
   _sortArray: string[];
+  _buttonLabel = '';
+  _buttonTooltip = '';
   @ViewChild('dt') dt: Table;
 
   constructor(
@@ -120,6 +122,8 @@ export class HoursbyemployeeComponent implements OnInit {
   }
 
   ClearAllProperties() {
+    this._buttonLabel = 'Show Billing Codes';
+    this._buttonTooltip = 'Show the billing codes that match your choices';
     this._nonBillables = [];
     this._projects = [];
     this._clients = [];
@@ -184,7 +188,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this.selectedbreakOut = 0;
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: '25em' },
-      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em'  },
+      { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
       { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
       { field: 'Hours', header: 'Hours', align: 'right', width: '15em' },
       { field: 'PeriodEnd', header: 'Period Ending', align: 'center', width: '15em' },
@@ -439,6 +443,18 @@ export class HoursbyemployeeComponent implements OnInit {
       this.dt.sortOrder = 0;
       this.dt.sortField = '';
       this.dt.reset();
+    }
+  }
+  typeClick(evnt) {
+    if (evnt.value === 0) {
+      this._buttonLabel = 'Show Billing Codes';
+      this._buttonTooltip = 'Show the billing codes that match your choices';
+    } else if (evnt.value === 1) {
+      this._buttonLabel = 'Show Projects';
+      this._buttonTooltip = 'Show the Projects that match your choices';
+    } else if (evnt.value === 2) {
+      this._buttonLabel = 'Show Non-Billables';
+      this._buttonTooltip = 'Show the Non-Billables that match your choices';
     }
   }
 }

@@ -266,8 +266,6 @@ export class SowComponent implements OnInit {
                           ((m.ExpirationDate.toString() === '') || (m.ExpirationDate.toString() !== ''
                             && new Date(m.ExpirationDate) >= dtToday))))
                       && m.SOWFileName === data1[i].FileName.toString());
-                    // console.log(Duplicate);
-                    // console.log(Duplicate2);
                     if (Duplicate !== undefined && Duplicate !== null && Duplicate.length > 0) {
                     } else {
                       this._SOWFileNames.push({ label: data1[i].FileName.toString(), value: data1[i].FileName.toString() });
@@ -288,8 +286,6 @@ export class SowComponent implements OnInit {
                     //       ((m.ExpirationDate.toString() === '') || (m.ExpirationDate.toString() !== ''
                     //         && new Date(m.ExpirationDate) >= dtToday))))
                     //   && m.CustomerID.toString() === data[i].Id.toString());
-                    // // console.log(Duplicate);
-                    // // console.log(Duplicate2);
                     // if (Duplicate !== undefined && Duplicate !== null && Duplicate.length > 0) {
                     // } else {
                     //   this._Customers.push({ label: data[i].CustomerName.toString(), value: data[i].Id.toString() });
@@ -380,7 +376,6 @@ export class SowComponent implements OnInit {
     this._frm.addControl('frmSOWFileName', new FormControl(null, Validators.required));
     // this._frm.valueChanges.subscribe(frm => {
     //   if (frm.frmTotalContractValue) {
-    //     console.log(this.currencyConverter.transform(frm.frmTotalContractValue));
     //     this._frm.patchValue({
     //       amount: this.currencyConverter.transform(frm.frmTotalContractValue)
     //     }, {

@@ -41,6 +41,9 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   IsSecure = false;
   _DateFormat: any;
   _DisplayDateFormat: any;
+  _buttonLabel = '';
+  _buttonTooltip = '';
+
   @ViewChild('dt') dt: Table;
 
   constructor(
@@ -106,6 +109,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       });
   }
   ClearAllProperties() {
+    this._buttonLabel = 'Show Billing Codes';
+    this._buttonTooltip = 'Show the billing codes that match your choices';
     this._nonBillables = [];
     this._billingCodesSpecial = new BillingCodesSpecial();
     this.types = [];
@@ -173,8 +178,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       selectedType: this.selectedType,
       selectedBillingType: this.selectedBillingType,
     }
-    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes', 
-    'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
+    this.logSvc.ActionLog(PageNames.EmployeesbyBillingCode, '', 'Reports/Event', 'showBillingCodes',
+      'showBillingCodes', '', '', JSON.stringify(ActivityParams)); // ActivityLog
     this._displayCheckBoxes = [];
     if (this.selectedBillingType === 0) {
       this.timesysSvc.getClients().subscribe(
@@ -326,6 +331,18 @@ export class EmployeesbybillingcodeComponent implements OnInit {
       this.dt.sortOrder = 0;
       this.dt.sortField = '';
       this.dt.reset();
+    }
+  }
+  typeClick(evnt) {
+    if (evnt.value === 0) {
+      this._buttonLabel = 'Show Billing Codes';
+      this._buttonTooltip = 'Show the billing codes that match your choices';
+    } else if (evnt.value === 1) {
+      this._buttonLabel = 'Show Projects';
+      this._buttonTooltip = 'Show the Projects that match your choices';
+    } else if (evnt.value === 2) {
+      this._buttonLabel = 'Show Non-Billables';
+      this._buttonTooltip = 'Show the Non-Billables that match your choices';
     }
   }
 }
