@@ -6,12 +6,10 @@
 <br>
 <ng-container *ngIf="IsSecure">
     <div class="ui-g">
-        <div class="ui-g-12">
-            <div [innerHTML]="errMsg | sanitizeHtmlString" *ngIf="errMsg!==undefined && errMsg!==null && errMsg!==''" class="errorBlock">
+        <div class="ui-g-12" *ngIf="errMsg!==undefined && errMsg!==null && errMsg!==''">
+            <div [innerHTML]="errMsg | sanitizeHtmlString" class="errorBlock">
             </div>
         </div>
-    </div>
-    <div class="ui-g">
         <div class="ui-g-12 ui-md-12" style="text-align:right">
             <button pButton pTooltip="Add or change the groups used by this report" tooltipPosition="bottom" class="ui-button-warning" label="Change Report Groups" (click)=changeReportgroup()></button>
         </div>
@@ -37,7 +35,7 @@
             </div>
             <div class="ui-g-12 ui-sm-12 ui-md-4 ui-lg-6 ui-xl-7" style="padding-top: 13px">
                 <p-checkbox [(ngModel)]="totalChecked" pTooltip="When checked, totals are included in the report" tooltipPosition="bottom" binary="true"></p-checkbox> <label class="label" style="padding:0px 10px;">Show
-          Totals</label>
+                    Totals</label>
             </div>
         </div>
         <p-footer>

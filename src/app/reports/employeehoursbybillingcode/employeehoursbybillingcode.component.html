@@ -58,7 +58,7 @@
         </p-panel>
     </div>
     <div class="ui-g" *ngIf="changeCodeList">
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-g-nopad">
             Date From: {{_startDateSelect}} to {{(_endDateSelect!== null && _endDateSelect!=='') ? _endDateSelect:'Latest'}}
         </div>
     </div>
@@ -103,12 +103,12 @@
             <button pButton pTooltip="Start Over" tooltipPosition="bottom" class="ui-button-warning" label="Start Over" (click)=startOver()></button>
         </div>
     </div>
-    <div class="ui-g ui-lg-12 ui-md-12 ui-sm-12" *ngIf="showReport">
+    <div class="ui-g ui-lg-12 ui-md-12 ui-sm-12 ui-g-nopad" *ngIf="showReport">
         <font color=red>NOTE: This report includes both the saved and submitted hours. </font>
     </div>
 
     <div class="ui-g" *ngIf="showReport">
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-g-nopad">
             <p-table #dt [columns]="cols" [value]="_reports" [responsive]="false" dataKey="ID" (sortFunction)="customSort($event)" [customSort]="true" [scrollable]="true">
                 <ng-template pTemplate="caption">
                     <div class="ui-g recordsBar">

@@ -5,13 +5,13 @@
 </div>
 <ng-container *ngIf="IsSecure">
     <div class="ui-g" style="height:50px;">
-        <div class="ui-g-12" style="text-align: right;">
+        <div class="ui-g-12" style="text-align: right; padding-right: 0px;">
             <button pButton icon="fa fa-plus fa-1x" pTooltip="Add New Department" tooltipPosition="bottom" class="ui-button-info" label="Add New Department" *ngIf="!_HasEdit" (click)=addDepartment()></button>
         </div>
-        <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
-                No matching data for the selected criteria
-            </div>
+    </div>
+    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+        <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+            No matching data for the selected criteria
         </div>
     </div>
     <div class="ui-g" *ngIf="showReport && _recData > 0">

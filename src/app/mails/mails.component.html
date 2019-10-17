@@ -20,7 +20,7 @@
         </div>
     </div>
     <div class="ui-g" *ngIf="showReport && _recData > 0">
-        <div class="ui-g-12">
+        <div class="ui-g-12 ui-g-nopad">
             <p-table #dt [columns]="cols" [value]="_lstEmails" [paginator]="true" [rows]="20" [responsive]="false" dataKey="Id" [scrollable]="true">
                 <ng-template pTemplate="caption">
                     <div class="ui-g ui-g-nopad recordsBar">
