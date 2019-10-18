@@ -327,3 +327,13 @@ body .ui-datepicker table th {
 body .ui-datepicker table td {
   padding: .1em;
 }
+@media screen and (max-width: 1400px) {
+  .displayTimeSheet {
+    display: none;
+  }
+}
+@media screen and (min-width: 1400px) {
+  .nodisplayTimeSheet {
+    display: none;
+  }
+}

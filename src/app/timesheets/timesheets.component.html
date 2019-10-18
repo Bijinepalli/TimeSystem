@@ -1,208 +1,218 @@
-<div class="ui-g ui-g-nopad mainHeader">
-  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-    {{_mainHeader}} <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
-      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
-      (click)="commonSvc.showHelp('')"></i>
+<div class="displayTimeSheet">
+  <div class="ui-g ui-g-nopad mainHeader">
+    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+      {{_mainHeader}} <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+        style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+        (click)="commonSvc.showHelp('')"></i>
+    </div>
+    <div class="ui-g-3 ui-md-2 ui-g-nopad">
+      <div class="ui-g-3 ui-md-6"></div>
+      <div class="ui-g-3 ui-md-4"></div>
+      <div class="ui-g-6 ui-md-2 ui-g-nopad">
+        <!-- <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
+      </div>
+    </div>
   </div>
-  <div class="ui-g-3 ui-md-2 ui-g-nopad">
-    <div class="ui-g-3 ui-md-6"></div>
-    <div class="ui-g-3 ui-md-4"></div>
-    <div class="ui-g-6 ui-md-2 ui-g-nopad">
-      <!-- <a style="cursor: help;"><i class="fa fa-question fa-150x" style="padding-top:2px; color:black"></i></a> -->
-    </div>
-  </div>
-</div>
 
-<ng-container *ngIf="IsSecure">
-  <ng-container *ngIf="!Hourschrg">
-    <div class="ui-g" style="height:50px;">
-      <div class="ui-g-12" style="text-align: right;padding-right:0px;">
-        <button pButton icon="fa fa-plus fa-1x" pTooltip="Create a New Timesheet" tooltipPosition="bottom"
-          class="ui-button-info" label="Add New Timesheet" (click)=addTimesheet()></button> &nbsp;
-        <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom"
-          class="ui-button-info" label="Hours Charged" (click)=OpenHoursCharged()></button>
-      </div>
-    </div>
-
-    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-      <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
-        No matching data for the selected criteria
-      </div>
-    </div>
-
-    <div class="ui-g" *ngIf="showReport && _recData > 0">
-      <p-checkbox name="groupname" binary="true" label="Show All Timesheets " value="false" [(ngModel)]="selectedValues"
-        (onChange)="ShowAllTimesheets()"></p-checkbox>
-    </div>
-    <div class="ui-g" *ngIf="showReport && _recData > 0">
-      <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false"
-        dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
-        <ng-template pTemplate="caption">
-          <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
-            <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
-              <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-              <input type="text" pInputText size="50" placeholder="Global Filter"
-                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-            </div>
-          </div>
-        </ng-template>
-        <ng-template pTemplate="header" let-columns>
-          <tr>
-            <th style="width: 8em">View/Edit</th>
-            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-              {{col.header}}
-              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
-                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-              </p-sortIcon>
-            </th>
-            <th style="width: 5em">Delete</th>
-          </tr>
-        </ng-template>
-        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-          <tr [pSelectableRow]="rowData">
-            <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] === ''"
-                class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
-                (click)="editTimeSheet(rowData)"></i>
-              <i *ngIf="rowData['Submitted'] === 'Yes' || (rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] !== '')"
-                class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom"
-                (click)="viewTimeSheet(rowData)"></i>
-            </td>
-            <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
-              <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
-                <label *ngIf="(col.field === 'SubmitDate')">{{rowData[col.field] | dateFormat: _DisplayTimeStampFormat}}
-                </label>
-                <label *ngIf="(col.field === 'PeriodEnd')">{{rowData[col.field] | dateFormat: _DisplayDateFormat}}
-                </label>
-              </div>
-              <ng-template #nondatecol>
-                {{rowData[col.field]}}
-              </ng-template>
-            </td>
-            <td style="text-align: center">
-              <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] === ''"
-                class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this TimeSheet" tooltipPosition="left"
-                (click)="deleteTimeSheet(rowData)"></i>
-            </td>
-          </tr>
-        </ng-template>
-      </p-table>
-    </div>
-    <p-dialog [(visible)]="timesheetDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true"
-      width="500">
-      <p-header>Select Timesheet Period
-      </p-header>
-      <div class="ui-g">
-        <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
-          Select Date
-        </div>
-        <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
-          <p-dropdown [options]="_timePeriods" [appendTo]="'body'" [(ngModel)]="selectTimePeriod" optionLabel="label"
-            [style]="{'width':'300px'}"></p-dropdown>
+  <ng-container *ngIf="IsSecure">
+    <ng-container *ngIf="!Hourschrg">
+      <div class="ui-g" style="height:50px;">
+        <div class="ui-g-12" style="text-align: right;padding-right:0px;">
+          <button pButton icon="fa fa-plus fa-1x" pTooltip="Create a New Timesheet" tooltipPosition="bottom"
+            class="ui-button-info" label="Add New Timesheet" (click)=addTimesheet()></button> &nbsp;
+          <button pButton icon="fa fa-plus fa-1x" pTooltip="Report of hours charged" tooltipPosition="bottom"
+            class="ui-button-info" label="Hours Charged" (click)=OpenHoursCharged()></button>
         </div>
       </div>
-      <div class="ui-g" *ngIf="_showEmptyTimesheet">
-        <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
-          <p-checkbox name="chkEmptyTimesheet" binary="true" label="Create an Empty Timesheet " value="false"
-            [(ngModel)]="emptyTimeSheet"></p-checkbox>
-        </div>
-      </div>
-      <p-footer>
-        <div class="ui-g">
-          <div class="ui-g-12 ui-md-12">
-            <div class="ui-g-12 ui-md-12">
-              <button pButton label="Create" class="ui-button-success" (click)="createTimesheetDialog()"
-                pTooltip="Create New Timesheet" tooltipPosition="bottom"></button>
-              &nbsp;
-              <button pButton label="Cancel" (click)="cancelTimesheetDialog()" class="ui-button-danger"></button>
-            </div>
-          </div>
-        </div>
-      </p-footer>
-    </p-dialog>
-  </ng-container>
 
-  <br>
-
-  <ng-container *ngIf="Hourschrg" class="ui-g">
-    <div class="ui-g-12">
-      <p-panel [toggleable]="true" header="Filter">
-        <div class="ui-g">
-          <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
-              <label class="label" style="padding:0px 10px;">Date Range</label>
-          </div>
-          <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
-            <label class="sublabel" style="padding:0px 10px;">From</label>
-            <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" [monthNavigator]="true"
-              dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true" yearRange="2000:2030"
-              [(ngModel)]="_startDate" [inputStyle]="{'width':'7em'}">
-            </p-calendar>
-            <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
-            <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" [(ngModel)]="_endDate"
-              dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
-              yearRange="2000:2030" [inputStyle]="{'width':'7em'}">
-            </p-calendar>
-          </div>
-        </div>
-        <p-footer>
-          <div style="text-align: right">
-            <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report" (click)=showHours()
-              pTooltip="Show the hours that match your choices" tooltipPosition="bottom"></button>&nbsp;&nbsp;&nbsp;
-            <button pButton tooltipPosition="bottom" class="ui-button-warning" label="Return"
-              (click)=returntoTimesheets() pTooltip="Return back to Timesheets" tooltipPosition="bottom"></button>
-          </div>
-        </p-footer>
-      </p-panel>
-      <br>
-
-      <div class="ui-g" style="background: #e7e7e7;" *ngIf="HoursTable && _hoursData === 0">
+      <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
         <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
           No matching data for the selected criteria
         </div>
       </div>
 
-      <div class="ui-g" *ngIf="HoursTable && _hoursData > 0">
-        <p-scrollPanel [style]="{width: '100%', height: '550px'}" styleClass="custombar1">
-          <p-table #dtHours [columns]="hourscols" [value]="_hoursbytimesheetlist" [responsive]="false" dataKey="ID">
-            <ng-template pTemplate="caption">
-              <div class="ui-g ui-g-nopad recordsBar">
-                <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_hoursData}} matching rows</div>
-                <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
-                  <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
-                  <input type="text" pInputText size="50" placeholder="Global Filter"
-                    (input)="dtHours.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
-                  <button type="button" pButton icon="fa fa-table" label="Export"
-                    (click)="dtHours.exportCSV()"></button>
-                </div>
-              </div>
-            </ng-template>
-            <ng-template pTemplate="header" let-columns>
-              <tr>
-                <th *ngFor="let col of columns" [pSortableColumn]="" [style.width]="col.width">
-                  {{col.header}}
-                </th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-              <tr [pSelectableRow]="rowData">
-                <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
-                  [style.font-weight]="rowData['weight']" [style.color]="rowData['color']"
-                  [style.font-weight]="rowData['weight']" [style.color]="rowData['color']">
-                  <div>
-                    {{rowData[col.field]}}
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </p-scrollPanel>
+      <div class="ui-g" *ngIf="showReport && _recData > 0">
+        <p-checkbox name="groupname" binary="true" label="Show All Timesheets " value="false"
+          [(ngModel)]="selectedValues" (onChange)="ShowAllTimesheets()"></p-checkbox>
       </div>
-    </div>
+      <div class="ui-g" *ngIf="showReport && _recData > 0">
+        <p-table #dt [columns]="cols" [value]="_timeSheets" [paginator]="true" [rows]="20" [responsive]="false"
+          dataKey="Id" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray">
+          <ng-template pTemplate="caption">
+            <div class="ui-g ui-g-nopad recordsBar">
+              <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad recordsFound">{{_recData}} matching rows</div>
+              <div class="ui-g-12 ui-md-6 ui-lg-6 ui-g-nopad" style="text-align: right">
+                <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+                <input type="text" pInputText size="50" placeholder="Global Filter"
+                  (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+                <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+              </div>
+            </div>
+          </ng-template>
+          <ng-template pTemplate="header" let-columns>
+            <tr>
+              <th style="width: 8em">View/Edit</th>
+              <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+                {{col.header}}
+                <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                  ariaLabelDesc="Activate to sort in descending order"
+                  ariaLabelAsc="Activate to sort in ascending order">
+                </p-sortIcon>
+              </th>
+              <th style="width: 5em">Delete</th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+            <tr [pSelectableRow]="rowData">
+              <td style="text-align: center">
+                <i *ngIf="rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] === ''"
+                  class="fa fa-edit fa-150x editIcon" pTooltip="Edit this TimeSheet" tooltipPosition="bottom"
+                  (click)="editTimeSheet(rowData)"></i>
+                <i *ngIf="rowData['Submitted'] === 'Yes' || (rowData['Submitted'] === 'No' &&  rowData['ApprovalStatus'] !== '')"
+                  class="fa fa-eye fa-150x viewIcon" pTooltip="View this TimeSheet" tooltipPosition="bottom"
+                  (click)="viewTimeSheet(rowData)"></i>
+              </td>
+              <td *ngFor="let col of columns" [style.text-align]="col.align" [style.width]="col.width">
+                <div *ngIf="(col.field === 'SubmitDate' || col.field === 'PeriodEnd'); else nondatecol">
+                  <label
+                    *ngIf="(col.field === 'SubmitDate')">{{rowData[col.field] | dateFormat: _DisplayTimeStampFormat}}
+                  </label>
+                  <label *ngIf="(col.field === 'PeriodEnd')">{{rowData[col.field] | dateFormat: _DisplayDateFormat}}
+                  </label>
+                </div>
+                <ng-template #nondatecol>
+                  {{rowData[col.field]}}
+                </ng-template>
+              </td>
+              <td style="text-align: center">
+                <i *ngIf="rowData['Submitted'] === 'No' && rowData['ApprovalStatus'] === ''"
+                  class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this TimeSheet" tooltipPosition="left"
+                  (click)="deleteTimeSheet(rowData)"></i>
+              </td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </div>
+      <p-dialog [(visible)]="timesheetDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true"
+        width="500">
+        <p-header>Select Timesheet Period
+        </p-header>
+        <div class="ui-g">
+          <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
+            Select Date
+          </div>
+          <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
+            <p-dropdown [options]="_timePeriods" [appendTo]="'body'" [(ngModel)]="selectTimePeriod" optionLabel="label"
+              [style]="{'width':'300px'}"></p-dropdown>
+          </div>
+        </div>
+        <div class="ui-g" *ngIf="_showEmptyTimesheet">
+          <div class="ui-g-12 ui-md-12 ui-lg-12" align="left">
+            <p-checkbox name="chkEmptyTimesheet" binary="true" label="Create an Empty Timesheet " value="false"
+              [(ngModel)]="emptyTimeSheet"></p-checkbox>
+          </div>
+        </div>
+        <p-footer>
+          <div class="ui-g">
+            <div class="ui-g-12 ui-md-12">
+              <div class="ui-g-12 ui-md-12">
+                <button pButton label="Create" class="ui-button-success" (click)="createTimesheetDialog()"
+                  pTooltip="Create New Timesheet" tooltipPosition="bottom"></button>
+                &nbsp;
+                <button pButton label="Cancel" (click)="cancelTimesheetDialog()" class="ui-button-danger"></button>
+              </div>
+            </div>
+          </div>
+        </p-footer>
+      </p-dialog>
+    </ng-container>
+
+    <br>
+
+    <ng-container *ngIf="Hourschrg" class="ui-g">
+      <div class="ui-g-12">
+        <p-panel [toggleable]="true" header="Filter">
+          <div class="ui-g">
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+              <label class="label" style="padding:0px 10px;">Date Range</label>
+            </div>
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-12">
+              <label class="sublabel" style="padding:0px 10px;">From</label>
+              <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" [monthNavigator]="true"
+                dateFormat="mm-dd-yy" showButtonBar="true" [yearNavigator]="true" yearRange="2000:2030"
+                [(ngModel)]="_startDate" [inputStyle]="{'width':'7em'}">
+              </p-calendar>
+              <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
+              <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" [(ngModel)]="_endDate"
+                dateFormat="mm-dd-yy" [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true"
+                yearRange="2000:2030" [inputStyle]="{'width':'7em'}">
+              </p-calendar>
+            </div>
+          </div>
+          <p-footer>
+            <div style="text-align: right">
+              <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
+                (click)=showHours() pTooltip="Show the hours that match your choices"
+                tooltipPosition="bottom"></button>&nbsp;&nbsp;&nbsp;
+              <button pButton tooltipPosition="bottom" class="ui-button-warning" label="Return"
+                (click)=returntoTimesheets() pTooltip="Return back to Timesheets" tooltipPosition="bottom"></button>
+            </div>
+          </p-footer>
+        </p-panel>
+        <br>
+
+        <div class="ui-g" style="background: #e7e7e7;" *ngIf="HoursTable && _hoursData === 0">
+          <div class="ui-g-12 ui-md-12 ui-lg-12 NoDataMessage">
+            No matching data for the selected criteria
+          </div>
+        </div>
+
+        <div class="ui-g" *ngIf="HoursTable && _hoursData > 0">
+          <p-scrollPanel [style]="{width: '100%', height: '550px'}" styleClass="custombar1">
+            <p-table #dtHours [columns]="hourscols" [value]="_hoursbytimesheetlist" [responsive]="false" dataKey="ID">
+              <ng-template pTemplate="caption">
+                <div class="ui-g ui-g-nopad recordsBar">
+                  <div class="ui-g-12 ui-md-6 ui-g-nopad recordsFound">{{_hoursData}} matching rows</div>
+                  <div class="ui-g-12 ui-md-6 ui-g-nopad" style="text-align: right">
+                    <i class="fa fa-search" style="margin:4px 4px 0 0;color:black"></i>
+                    <input type="text" pInputText size="50" placeholder="Global Filter"
+                      (input)="dtHours.filterGlobal($event.target.value, 'contains')" style="width:auto"> &nbsp;
+                    <button type="button" pButton icon="fa fa-table" label="Export"
+                      (click)="dtHours.exportCSV()"></button>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template pTemplate="header" let-columns>
+                <tr>
+                  <th *ngFor="let col of columns" [pSortableColumn]="" [style.width]="col.width">
+                    {{col.header}}
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+                <tr [pSelectableRow]="rowData">
+                  <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
+                    [style.font-weight]="rowData['weight']" [style.color]="rowData['color']"
+                    [style.font-weight]="rowData['weight']" [style.color]="rowData['color']">
+                    <div>
+                      {{rowData[col.field]}}
+                    </div>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </p-scrollPanel>
+        </div>
+      </div>
+    </ng-container>
+
   </ng-container>
 
-</ng-container>
-
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+  <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}"
+    strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
+</div>
+<div class="nodisplayTimeSheet positionMiddle">
+  <p-card>
+    Timesheet cannot be viewed in this resolution, Please choose a larger resolution to view the screen.
+  </p-card>
+</div>
