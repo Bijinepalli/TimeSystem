@@ -1,247 +1,281 @@
 <div class="ui-g ui-g-nopad mainHeader">
-    <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
-        SOW <i class="fa fa-question-circle fa-5x" pTooltip="Get Help" style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px" (click)="commonSvc.showHelp('SOWSelect.htm')"></i>
-    </div>
-    <div class="ui-g-3 ui-md-2 ui-g-nopad">
-        <div class="ui-g-3 ui-md-6"></div>
-        <div class="ui-g-3 ui-md-4"></div>
-        <div class="ui-g-6 ui-md-2 ui-g-nopad"></div>
-    </div>
+  <div class="ui-g-12 ui-md-10 ui-lg-10 ui-g-nopad" style="padding: 5px 5px 5px 10px">
+    SOW <i class="fa fa-question-circle fa-5x" pTooltip="Get Help"
+      style="cursor:help; font-size: 25px; color: orange; vertical-align: middle;padding-bottom: 5px"
+      (click)="commonSvc.showHelp('SOWSelect.htm')"></i>
+  </div>
 </div>
 <ng-container *ngIf="IsSecure">
-    <div class="ui-g" style="height:50px;">
-        <div class="ui-g-12" style="text-align: right;padding-right:0px;">
-            <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new SOW" tooltipPosition="bottom" class="ui-button-info" label="Add New SOW" *ngIf="!_HasEdit" (click)=addSOW()></button>
-        </div>
+  <div class="ui-g" style="height:50px;">
+    <div class="ui-g-12" style="text-align: right;padding-right:0px;">
+      <button pButton icon="fa fa-plus fa-1x" pTooltip="Add a new SOW" tooltipPosition="bottom" class="ui-button-info"
+        label="Add New SOW" *ngIf="!_HasEdit" (click)=addSOW()></button>
     </div>
-    <div class="ui-g">&nbsp;</div>
-    <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
-        <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
-            No matching data for the selected criteria
-        </div>
+  </div>
+  <div class="ui-g" style="background: #e7e7e7;" *ngIf="showReport && _recData === 0">
+    <div class="ui-g-12 ui-md-6 ui-lg-6 NoDataMessage">
+      No matching data for the selected criteria
     </div>
-    <div class="ui-g" *ngIf="showReport && _recData > 0">
-        <div class="ui-g-12 ui-g-nopad">
-            <p-table #dt [columns]="cols" [value]="_SOWs" [paginator]="true" [rows]="10" [responsive]="false" dataKey="SOWID" (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
-                <ng-template pTemplate="caption">
-                    <div class="ui-g ui-g-nopad recordsBar">
-                        <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}} SOWs found</div>
-                        <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 smLeft" style="text-align: right">
-                            <input type="text" pInputText size="30" placeholder="Global Filter" class="smSearchWidth" (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em"> &nbsp;
-                        </div>
-                        <div class="ui-g-12 ui-md-2 ui-lg-2 ui-sm-12 smLeft" style="text-align: right">
-                            <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
-                        </div>
-                    </div>
-                </ng-template>
-                <ng-template pTemplate="header" let-columns>
-                    <tr>
-                        <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
-                        <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
-                            {{col.header}}
-                            <p-sortIcon [field]="col.field" ariaLabel="Activate to sort" ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
-                            </p-sortIcon>
-                        </th>
-                        <th style="width: 4em" *ngIf="!_HasEdit">Delete</th>
-                    </tr>
-                </ng-template>
-                <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
-                    <tr [pSelectableRow]="rowData">
-                        <td style="width: 4em;text-align: center;" *ngIf="!_HasEdit">
-                            <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this SOW" tooltipPosition="bottom" (click)="editSOW(rowData)"></i>
-                        </td>
-                        <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align" style="word-wrap: break-word">
-                            <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
-                                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
-                            </div>
-                            <ng-template #nondatecol>
-                                <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
-                                    <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank" class="HypExternal" title="{{rowData[col.field]}}">
-                                        <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
-                                    </a>
-                                </div>
-                                <ng-template #defaultcol>
-                                    <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
-                                        <label>{{rowData[col.field] | currency}} </label>
-                                    </div>
-                                    <ng-template #othercol>
-                                        {{rowData[col.field]}}
-                                    </ng-template>
-                                </ng-template>
-                            </ng-template>
-                        </td>
-                        <td style="width: 4em;text-align: center;" *ngIf="!_HasEdit">
-                            <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this SOW" tooltipPosition="left" (click)="deleteSOW(rowData)"></i>
-                        </td>
-                    </tr>
-                </ng-template>
-            </p-table>
-        </div>
-    </div>
-
-
-    <p-dialog [(visible)]="sowDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true" [width]="1000">
-        <p-header>
-            {{sowHdr}}
-            <i class="fa fa-question-circle fa-150x" pTooltip="Get Help" style="cursor:help; font-size: 18px; color: orange; vertical-align: middle" (click)="commonSvc.showHelp('SOWUpdate.htm')"></i>
-        </p-header>
-        <form [formGroup]="_frm">
-            <p-toast [style]="{marginTop: '80px'}" position="center" key="alertWarningPopup" appendTo="body"></p-toast>
-            <div class="ui-g">
-                <div class="ui-g-12" style="text-align:left" style="color:red;">
-                    * marked fields are required to save the data.
-                </div>
+  </div>
+  <div class="ui-g" *ngIf="showReport && _recData > 0">
+    <div class="ui-g-12 ui-g-nopad">
+      <p-table #dt [columns]="cols" [value]="_SOWs" [paginator]="true" [rows]="10" [responsive]="false" dataKey="SOWID"
+        (sortFunction)="customSort($event)" [customSort]="true" [globalFilterFields]="_sortArray" [scrollable]="true">
+        <ng-template pTemplate="caption">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 recordsFound">{{_recData}} SOWs found</div>
+            <div class="ui-g-12 ui-md-5 ui-lg-5 ui-sm-12 smLeft" style="text-align: right">
+              <input type="text" pInputText size="30" placeholder="Global Filter" class="smSearchWidth"
+                (input)="dt.filterGlobal($event.target.value, 'contains')" style="width:25em"> &nbsp;
             </div>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-8 ui-lg-8">
-
-                    <div class="ui-g-12 ui-g-nopad">
-
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Customer <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_Customers" placeholder="Select Customer" formControlName="frmCustomer" [style]="{'width':'99%'}" (onChange)="getLeadBAName()">
-                            </p-dropdown>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Lead Business Analyst <br>
-                            <div style="height:5px"></div>
-                            <label><b>{{_LeadBAName !== '' ? _LeadBAName : '-'}}</b></label>
-                        </div>
-                    </div>
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            SOW Name <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x" pTooltip="SOW Name can only contain upper or lower case letters, numbers, apostrophe, blank and hyphen" style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
-                            <div style="height:5px"></div>
-                            <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body" pToolTip="SOW's name" pattern="^[a-zA-Z0-9\040\047\055]*$">
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            SOW Number <span class="mandatoryStar">* </span> <i class="fa fa-info-circle fa-150x" pTooltip="SOW Number can only contain upper or lower case letters and numbers and should have maximum length of 10" style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
-                            <div style="height:5px"></div>
-                            <input type="text" pInputText style="width:100%" formControlName="frmSOWNumber" appendTo="body" pToolTip="SOW's Number" pattern="^[a-zA-Z0-9]*$" maxlength="10">
-                        </div>
-                    </div>
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Effective Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmEffectiveDate" [inputStyle]="{'width':'90%'}" [maxDate]="_frm.controls['frmExpirationDate'].value"></p-calendar>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Expiration Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-calendar appendTo="body" [showIcon]="true" [readonlyInput]="true" dateFormat="mm-dd-yy" formControlName="frmExpirationDate" [inputStyle]="{'width':'90%'}" [minDate]="_frm.controls['frmEffectiveDate'].value"></p-calendar>
-                        </div>
-                    </div>
-
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Currency Type <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_CurrencyTypes" placeholder="Select Currency Type" formControlName="frmCurrencyType" [style]="{'width':'99%'}">
-                            </p-dropdown>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Total Contract Value<span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <input type="text" pInputText style="width:100%;text-align: right;" formControlName="frmTotalContractValue" appendTo="body" (keypress)="numberOnly($event,'frmTotalContractValue')">
-
-                            <!-- [value]="_frm.get('frmTotalContractValue').value | currency:'USD':'symbol-narrow':'4.2-2'" -->
-                        </div>
-                    </div>
-
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Total Contract Hours <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <input type="text" pInputText style="width:100%;text-align: right;" formControlName="frmHours" appendTo="body" pKeyFilter="num" (keypress)="numberOnly($event,'frmHours')">
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Invoice Frequency <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_InvoiceFrequencyTypes" placeholder="Select Invoice Frequency" formControlName="frmInvoiceFrequency" [style]="{'width':'99%'}">
-                            </p-dropdown>
-                        </div>
-                    </div>
-
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Originate <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_Originates" placeholder="Select Originate" formControlName="frmOriginate" [style]="{'width':'99%'}">
-                            </p-dropdown>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Opportunity Type <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_OpportunityTypes" placeholder="Select Opportunity Type" formControlName="frmOpportunityType" [style]="{'width':'99%'}">
-                            </p-dropdown>
-                        </div>
-                    </div>
-
-                    <div class="ui-g-12 ui-g-nopad">
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            Status <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_Status" placeholder="Select Status" formControlName="frmStatus" [style]="{'width':'99%'}" (onChange)="isRequiredFiles()">
-                            </p-dropdown>
-                        </div>
-                        <div class="ui-g-12 ui-md-6 ui-lg-6">
-                            SOW Type <span class="mandatoryStar">* </span><br>
-                            <div style="height:5px"></div>
-                            <p-dropdown appendTo="body" [options]="_SOWTypes" placeholder="Select SOW Type" formControlName="frmSOWType" [style]="{'width':'99%'}">
-                            </p-dropdown>
-                        </div>
-                    </div>
-                    <div class="ui-g-12 ui-md-12 ui-lg-12">
-                        Notes<br>
-                        <div style="height:5px"></div>
-                        <textarea pInputTextarea class="comments" placeholder="Notes" formControlName="frmNotes" appendTo="body" pToolTip="Notes"></textarea>
-                    </div>
+            <div class="ui-g-12 ui-md-2 ui-lg-2 ui-sm-12 smLeft" style="text-align: right">
+              <button type="button" pButton icon="fa fa-table" label="Export" (click)="dt.exportCSV()"></button>
+            </div>
+          </div>
+        </ng-template>
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th style="width: 4em" *ngIf="!_HasEdit">Edit</th>
+            <th *ngFor="let col of columns" [pSortableColumn]="col.field" [style.width]="col.width">
+              {{col.header}}
+              <p-sortIcon [field]="col.field" ariaLabel="Activate to sort"
+                ariaLabelDesc="Activate to sort in descending order" ariaLabelAsc="Activate to sort in ascending order">
+              </p-sortIcon>
+            </th>
+            <th style="width: 4em" *ngIf="!_HasEdit">Delete</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
+          <tr [pSelectableRow]="rowData">
+            <td style="width: 4em;text-align: center;" *ngIf="!_HasEdit">
+              <i class="fa fa-edit fa-150x editIcon" pTooltip="Click to update the data for this SOW"
+                tooltipPosition="bottom" (click)="editSOW(rowData)"></i>
+            </td>
+            <td *ngFor="let col of columns" [style.width]="col.width" [style.text-align]="col.align"
+              style="word-wrap: break-word">
+              <div *ngIf="(col.field === 'EffectiveDate' || col.field === 'ExpirationDate'); else nondatecol">
+                <label>{{rowData[col.field] | dateFormat: _DisplayDateFormat}} </label>
+              </div>
+              <ng-template #nondatecol>
+                <div *ngIf="(col.field === 'SOWFileName'); else defaultcol">
+                  <a href="{{ _SOWFilesPath + rowData[col.field]}}" style="color: black" target="_blank"
+                    class="HypExternal" title="{{rowData[col.field]}}">
+                    <i class="fa fa-file" *ngIf="rowData[col.field]!==''" tooltipPosition="left"></i>
+                  </a>
                 </div>
+                <ng-template #defaultcol>
+                  <div *ngIf="(col.field === 'TotalContractValue'); else othercol">
+                    <label>{{rowData[col.field] | currency}} </label>
+                  </div>
+                  <ng-template #othercol>
+                    {{rowData[col.field]}}
+                  </ng-template>
+                </ng-template>
+              </ng-template>
+            </td>
+            <td style="width: 4em;text-align: center;" *ngIf="!_HasEdit">
+              <i class="fa fa-times fa-150x deleteIcon" pTooltip="Delete this SOW" tooltipPosition="left"
+                (click)="deleteSOW(rowData)"></i>
+            </td>
+          </tr>
+        </ng-template>
+      </p-table>
+    </div>
+  </div>
 
-                <div class="ui-g-12 ui-md-4 ui-lg-4">
-                    <div class="ui-g-12 ui-md-12 ui-lg-12">
-                        SOW File <span class="mandatoryStar" *ngIf="_isFilesRequired">* </span><br>
-                        <div style="height:5px"></div>
-                        <!-- <div *ngIf="isIEOrEdge" style="color:red">
+
+  <p-dialog [(visible)]="sowDialog" blockScroll="true" [responsive]="true" showEffect="fade" [modal]="true"
+    [width]="1000">
+    <p-header>
+      {{sowHdr}}
+      <i class="fa fa-question-circle fa-150x" pTooltip="Get Help"
+        style="cursor:help; font-size: 18px; color: orange; vertical-align: middle"
+        (click)="commonSvc.showHelp('SOWUpdate.htm')"></i>
+    </p-header>
+    <form [formGroup]="_frm">
+      <p-toast [style]="{marginTop: '80px'}" position="center" key="alertWarningPopup" appendTo="body"></p-toast>
+      <div class="ui-g">
+        <div class="ui-g-12" style="text-align:left" style="color:red;">
+          * marked fields are required to save the data.
+        </div>
+      </div>
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-8 ui-lg-8">
+
+          <div class="ui-g-12 ui-g-nopad">
+
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Customer <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_Customers" placeholder="Select Customer"
+                formControlName="frmCustomer" [style]="{'width':'99%'}" (onChange)="getLeadBAName()">
+              </p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Lead Business Analyst <br>
+              <div style="height:5px"></div>
+              <label><b>{{_LeadBAName !== '' ? _LeadBAName : '-'}}</b></label>
+            </div>
+          </div>
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              SOW Name <span class="mandatoryStar">* </span><i class="fa fa-info-circle fa-150x"
+                pTooltip="SOW Name can only contain upper or lower case letters, numbers, apostrophe, blank and hyphen"
+                style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%" formControlName="frmName" appendTo="body"
+                pToolTip="SOW's name" pattern="^[a-zA-Z0-9\040\047\055]*$">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              SOW Number <span class="mandatoryStar">* </span> <i class="fa fa-info-circle fa-150x"
+                pTooltip="SOW Number can only contain upper or lower case letters and numbers and should have maximum length of 10"
+                style="cursor:help; font-size: 16px; color: orange; vertical-align: bottom;"></i><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%" formControlName="frmSOWNumber" appendTo="body"
+                pToolTip="SOW's Number" pattern="^[a-zA-Z0-9]*$" maxlength="10">
+            </div>
+          </div>
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Effective Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+                formControlName="frmEffectiveDate" [inputStyle]="{'width':'90%'}"
+                [maxDate]="_frm.controls['frmExpirationDate'].value"></p-calendar>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Expiration Date (mm-dd-yyyy) <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
+                formControlName="frmExpirationDate" [inputStyle]="{'width':'90%'}"
+                [minDate]="_frm.controls['frmEffectiveDate'].value"></p-calendar>
+            </div>
+          </div>
+
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Currency Type <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_CurrencyTypes" placeholder="Select Currency Type"
+                formControlName="frmCurrencyType" [style]="{'width':'99%'}">
+              </p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Total Contract Value<span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%;text-align: right;"
+                formControlName="frmTotalContractValue" appendTo="body"
+                (keypress)="numberOnly($event,'frmTotalContractValue')">
+
+              <!-- [value]="_frm.get('frmTotalContractValue').value | currency:'USD':'symbol-narrow':'4.2-2'" -->
+            </div>
+          </div>
+
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Total Contract Hours <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <input type="text" pInputText style="width:100%;text-align: right;" formControlName="frmHours"
+                appendTo="body" pKeyFilter="num" (keypress)="numberOnly($event,'frmHours')">
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Invoice Frequency <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_InvoiceFrequencyTypes" placeholder="Select Invoice Frequency"
+                formControlName="frmInvoiceFrequency" [style]="{'width':'99%'}">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Originate <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_Originates" placeholder="Select Originate"
+                formControlName="frmOriginate" [style]="{'width':'99%'}">
+              </p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Opportunity Type <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_OpportunityTypes" placeholder="Select Opportunity Type"
+                formControlName="frmOpportunityType" [style]="{'width':'99%'}">
+              </p-dropdown>
+            </div>
+          </div>
+
+          <div class="ui-g-12 ui-g-nopad">
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              Status <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_Status" placeholder="Select Status" formControlName="frmStatus"
+                [style]="{'width':'99%'}" (onChange)="isRequiredFiles()">
+              </p-dropdown>
+            </div>
+            <div class="ui-g-12 ui-md-6 ui-lg-6">
+              SOW Type <span class="mandatoryStar">* </span><br>
+              <div style="height:5px"></div>
+              <p-dropdown appendTo="body" [options]="_SOWTypes" placeholder="Select SOW Type"
+                formControlName="frmSOWType" [style]="{'width':'99%'}">
+              </p-dropdown>
+            </div>
+          </div>
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            Notes<br>
+            <div style="height:5px"></div>
+            <textarea pInputTextarea class="comments" placeholder="Notes" formControlName="frmNotes" appendTo="body"
+              pToolTip="Notes"></textarea>
+          </div>
+        </div>
+
+        <div class="ui-g-12 ui-md-4 ui-lg-4">
+          <div class="ui-g-12 ui-md-12 ui-lg-12">
+            SOW File <span class="mandatoryStar" *ngIf="_isFilesRequired">* </span><br>
+            <div style="height:5px"></div>
+            <!-- <div *ngIf="isIEOrEdge" style="color:red">
               Note: Attachments not supported in EDGE, Please choose Chrome to add the files.
             </div> -->
-                        <p-listbox appendTo="body" [options]="_SOWFileNames" filter="true" formControlName="frmSOWFileName" [style]="{'width':'99%'}" [listStyle]="{'max-height':'460px'}" (onChange)="removeUploadFiles()">
-                            <p-header>
-                                <div style="float:left;">
-                                    <i class="fa fa-file"></i> Available SOW Files
-                                </div>
-                                <div style="float:right;">
-                                    <!-- *ngIf="!isIEOrEdge"  -->
-                                    <p-fileUpload #fupSOWFile (onSelect)="onSelectFiles($event.files)" multiple="false" mode="basic" maxFileSize="10000000" [showUploadButton]="false" [showCancelButton]="false" (onRemove)="onRemoveFile($event)" accept=".pdf" customUpload="true" (uploadHandler)="uploadFile($event)"
-                                        auto="true" chooseLabel="Add">
-                                    </p-fileUpload>
-                                </div>
-                            </p-header>
-                            <ng-template let-SOWFile let-i="index" pTemplate="item">
-                                {{SOWFile.value}}
-                            </ng-template>
-                            <p-footer>
-                                <div style="width:100%;padding:5px;overflow: auto;">
-                                    Selected: {{_frm.controls['frmSOWFileName'].value||'-'}}
-                                    <i *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()" class="pi pi-times" style="color:red;float:right;padding:5px;"></i>
-                                </div>
-                            </p-footer>
-                        </p-listbox>
-                    </div>
+            <p-listbox appendTo="body" [options]="_SOWFileNames" filter="true" formControlName="frmSOWFileName"
+              [style]="{'width':'99%'}" [listStyle]="{'max-height':'460px'}" (onChange)="removeUploadFiles()">
+              <p-header>
+                <div style="float:left;">
+                  <i class="fa fa-file"></i> Available SOW Files
                 </div>
-            </div>
-        </form>
-        <p-footer>
-            <div class="ui-g">
-                <div class="ui-g-12 ui-md-12 ui-lg-12">
-                    <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveSOW()" [disabled]="hasFormErrors()" pTooltip="Save the data for the SOW" tooltipPosition="bottom"></button> &nbsp;
-                    <button pButton label="Cancel" (click)="cancelSOW()" class="ui-button-danger"></button>
+                <div style="float:right;">
+                  <!-- *ngIf="!isIEOrEdge"  -->
+                  <p-fileUpload #fupSOWFile (onSelect)="onSelectFiles($event.files)" multiple="false" mode="basic"
+                    maxFileSize="10000000" [showUploadButton]="false" [showCancelButton]="false"
+                    (onRemove)="onRemoveFile($event)" accept=".pdf" customUpload="true"
+                    (uploadHandler)="uploadFile($event)" auto="true" chooseLabel="Add">
+                  </p-fileUpload>
                 </div>
-            </div>
-        </p-footer>
-    </p-dialog>
+              </p-header>
+              <ng-template let-SOWFile let-i="index" pTemplate="item">
+                {{SOWFile.value}}
+              </ng-template>
+              <p-footer>
+                <div style="width:100%;padding:5px;overflow: auto;">
+                  Selected: {{_frm.controls['frmSOWFileName'].value||'-'}}
+                  <i *ngIf="_frm.controls['frmSOWFileName'].value" (click)="clearSelectedFile()" class="pi pi-times"
+                    style="color:red;float:right;padding:5px;"></i>
+                </div>
+              </p-footer>
+            </p-listbox>
+          </div>
+        </div>
+      </div>
+    </form>
+    <p-footer>
+      <div class="ui-g">
+        <div class="ui-g-12 ui-md-12 ui-lg-12">
+          <button pButton label="Save" class="ui-button-success" *ngIf="!_HasEdit" (click)="saveSOW()"
+            [disabled]="hasFormErrors()" pTooltip="Save the data for the SOW" tooltipPosition="bottom"></button> &nbsp;
+          <button pButton label="Cancel" (click)="cancelSOW()" class="ui-button-danger"></button>
+        </div>
+      </div>
+    </p-footer>
+  </p-dialog>
 </ng-container>
 
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4" fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
+  fill="#EEEEEE"></p-progressSpinner>

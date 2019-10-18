@@ -63,7 +63,7 @@
             <th style="width: 5em" *ngIf="!_ShowClients">Billing Codes</th>
             <th style="width: 6em" *ngIf="!_ShowProjects">Projects</th>
             <th style="width: 8em" *ngIf="!_ShowNonBillables">Non-Billable</th>
-            <th style="width: 5em" *ngIf="!_ShowRates">Rates</th>
+            <th style="width: 7em" *ngIf="!_ShowRates">Rates</th>
           </tr>
         </ng-template>
         <ng-template pTemplate="body" let-rowData let-expanded="expanded" let-columns="columns">
@@ -116,7 +116,7 @@
                 style="cursor:pointer;color:darkmagenta" tooltipPosition="bottom"
                 (click)="manageNonBillables(rowData)"></i>
             </td>
-            <td style="width: 5em;text-align: center;" *ngIf="!_ShowRates">
+            <td style="width: 7em;text-align: center;" *ngIf="!_ShowRates">
               <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
                 class="fa fa-usd fa-150x" pTooltip="Manage the rate information assigned to this employee"
                 style="cursor:pointer;color:navy" tooltipPosition="bottom" (click)="manageRates(rowData)"></i>

@@ -174,9 +174,11 @@ export class ClientsComponent implements OnInit {
     this._billingCodes = new BillingCode();
     this.addControls();
     this.showSpinner = false;
-    this.getClients();
+    this.GetMethods();
+  }
+
+  GetMethods() {
     this.getCompanies();
-    this.getCustomers();
   }
 
   // CheckSecurity() {
@@ -196,26 +198,48 @@ export class ClientsComponent implements OnInit {
   //   });
   // }
 
-  showClients(event: any) {
-    if (this.selectedType === 'Both') {
-      this.cols = [
-        { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
-        { field: 'Key', header: 'Code', width: '200px' },
-        { field: 'CustomerName', header: 'Customer Name', width: '200px' },
-        { field: 'SOWName', header: 'SOW Name', width: '150px' },
-        { field: 'PONumber', header: 'PO#', width: '150px' },
-        { field: 'Inactive', header: 'Inactive', width: '100px' },
-      ];
-    } else {
-      this.cols = [
-        { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
-        { field: 'Key', header: 'Code', width: '200px' },
-        { field: 'CustomerName', header: 'Customer Name', width: '200px' },
-        { field: 'SOWName', header: 'SOW Name', width: '150px' },
-        { field: 'PONumber', header: 'PO#', width: '150px' },
-      ];
-    }
-    this.getClients();
+
+
+
+
+  getCompanies() {
+    this.showSpinner = true;
+    this.timesysSvc.getCompanies()
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._companies = data;
+            for (let i = 0; i < this._companies.length; i++) {
+              this._companyNames.push({ label: this._companies[i].CompanyName, value: this._companies[i].Id });
+            }
+          } else {
+            this._companies = [];
+            this._companyNames = [];
+          }
+          this.showSpinner = false;
+          this.getCustomers();
+        }
+      );
+  }
+
+  getCustomers() {
+    this.showSpinner = true;
+    this.timesysSvc.getCustomers()
+      .subscribe(
+        (data) => {
+          if (data !== undefined && data !== null && data.length > 0) {
+            this._customers = data;
+            for (let i = 0; i < this._customers.length; i++) {
+              this._customerNames.push({ label: this._customers[i].CustomerName, value: this._customers[i].Id });
+            }
+          } else {
+            this._customers = [];
+            this._customerNames = [];
+          }
+          this.showSpinner = false;
+          this.getClients();
+        }
+      );
   }
 
   getClients() {
@@ -232,6 +256,7 @@ export class ClientsComponent implements OnInit {
     this.timesysSvc.getClients()
       .subscribe(
         (data) => {
+          this.showSpinner = false;
           if (data !== undefined && data !== null && data.length > 0) {
             if (this.selectedType === 'Active') {
               this._clients = data.filter(P => P.Inactive === false);
@@ -249,8 +274,8 @@ export class ClientsComponent implements OnInit {
             this._recData = this._clients.length;
             this.getUsedClients();
           }
-          this.showReport = true;
-          this.showSpinner = false;
+          // this.showReport = true;
+
           // else {
           //   this._recData = 'No clients found';
           // }
@@ -274,42 +299,7 @@ export class ClientsComponent implements OnInit {
             }
           }
           this.showSpinner = false;
-        }
-      );
-  }
-  getCustomers() {
-    this.showSpinner = true;
-    this.timesysSvc.getCustomers()
-      .subscribe(
-        (data) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._customers = data;
-            for (let i = 0; i < this._customers.length; i++) {
-              this._customerNames.push({ label: this._customers[i].CustomerName, value: this._customers[i].Id });
-            }
-          } else {
-            this._customers = [];
-            this._customerNames = [];
-          }
-          this.showSpinner = false;
-        }
-      );
-  }
-  getCompanies() {
-    this.showSpinner = true;
-    this.timesysSvc.getCompanies()
-      .subscribe(
-        (data) => {
-          if (data !== undefined && data !== null && data.length > 0) {
-            this._companies = data;
-            for (let i = 0; i < this._companies.length; i++) {
-              this._companyNames.push({ label: this._companies[i].CompanyName, value: this._companies[i].Id });
-            }
-          } else {
-            this._companies = [];
-            this._companyNames = [];
-          }
-          this.showSpinner = false;
+          this.showReport = true;
         }
       );
   }
@@ -343,7 +333,28 @@ export class ClientsComponent implements OnInit {
           this.showSpinner = false;
         }
       );
+  }
 
+  showClients(event: any) {
+    if (this.selectedType === 'Both') {
+      this.cols = [
+        { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
+        { field: 'Key', header: 'Code', width: '200px' },
+        { field: 'CustomerName', header: 'Customer Name', width: '200px' },
+        { field: 'SOWName', header: 'SOW Name', width: '150px' },
+        { field: 'PONumber', header: 'PO#', width: '150px' },
+        { field: 'Inactive', header: 'Inactive', width: '100px' },
+      ];
+    } else {
+      this.cols = [
+        { field: 'ClientName', header: 'Billing Code Name', width: '400px' },
+        { field: 'Key', header: 'Code', width: '200px' },
+        { field: 'CustomerName', header: 'Customer Name', width: '200px' },
+        { field: 'SOWName', header: 'SOW Name', width: '150px' },
+        { field: 'PONumber', header: 'PO#', width: '150px' },
+      ];
+    }
+    this.getClients();
   }
 
   addClient() {

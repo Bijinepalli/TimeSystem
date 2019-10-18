@@ -175,9 +175,14 @@
 }
 
 
-.heightFillAvailable {
+.maxHeightFillAvailable {
   max-height: -moz-available;
   max-height: -webkit-fill-available;
+}
+
+.heightFillAvailable {
+  height: -moz-available;
+  height: -webkit-fill-available;
 }
 
 .footerCopyRight {
