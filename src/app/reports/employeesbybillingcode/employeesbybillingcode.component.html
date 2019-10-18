@@ -39,7 +39,7 @@
         </p-header>
         <p-scrollPanel [style]="{height: '400px'}">
           <div class="ui-g" style="margin-bottom:10px">
-            <div class="ui-g-4 ui-sm-12" style="width:33em" *ngFor="let _dcb of _displayCheckBoxes">
+            <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-4" *ngFor="let _dcb of _displayCheckBoxes">
               <p-checkbox name="showBillingDetails" [value]="_dcb.value"
                 pTooltip="Select the billing codes to appear in the report" tooltipPosition="bottom" [label]="_dcb.label"
                 [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
