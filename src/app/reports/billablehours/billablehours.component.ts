@@ -164,7 +164,7 @@ export class BillablehoursComponent implements OnInit {
     ];
     this.cols = [
       { field: 'Name', header: 'Name', align: 'left', width: '15em' },
-      { field: 'Key', header: 'Code', align: 'left', width: '10em' },
+      { field: 'Key', header: 'Code', align: 'left', width: '15em' },
       { field: 'Inactive', header: 'Inactive', align: 'center', width: '6em' },
       { field: 'InactiveRel', header: 'Currently Associated', align: 'center', width: '10em' },
       { field: 'CalendarDate', header: 'Date', align: 'center', width: '10em' },
