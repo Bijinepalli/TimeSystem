@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { TimesystemService } from '../../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
-import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails, PageNames } from 'src/app/model/objects';
+import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails, PageNames, Utilization } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 
 import { TableExport } from 'tableexport';
@@ -43,6 +43,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
   _endDate = '';
   _UtilizationReportDetails: EmployeeUtilityReport = null;
   _DistinctEmployee: EmployeeUtilityDetails[] = [];
+  _utilization: Utilization = null;
 
   _startDateVal: string;
   _endDateVal: string;
@@ -222,7 +223,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
       (data) => {
         if (data !== undefined && data !== null && data.length > 0) {
           this._Departments = data;
-          this._Departments.unshift({Id: 0, Name: 'All' });
+          this._Departments.unshift({ Id: 0, Name: 'All' });
           this._selectedDepartment = data[0];
         }
         this.showSpinner = false;
@@ -319,22 +320,27 @@ export class EmployeeutilizationreportComponent implements OnInit {
       if (this._startDate > this._endDate) {
         this.showSpinner = false;
       } else {
-        this.timesysSvc.GetEmployeeUtilitizationReport(
-          this._selectcheckbox.join(),
-          this._selectedDepartment.Id.toString(),
-          _start, _end, '8', _status, _frequency).subscribe(
-            (data) => {
-              if (data !== undefined && data !== null) {
-                this._UtilizationReportDetails = data;
-                this._DistinctEmployee =
-                  data.EmployeeLevelDetails.filter((value, index, self) => self.map(x => x.Name).indexOf(value.Name) === index);
+        this._utilization = new Utilization();
+        this._utilization.EmployeeID = this._selectcheckbox.join();
+        this._utilization.DepartmentID = this._selectedDepartment.Id.toString();
+        this._utilization.FromDate = _start;
+        this._utilization.ToDate = _end;
+        this._utilization.WorkingHours = '8';
+        this._utilization.Status = _status;
+        this._utilization.Frequency = _frequency;
+        this.timesysSvc.GetEmployeeUtilitizationReport(this._utilization).subscribe(
+          (data) => {
+            if (data !== undefined && data !== null) {
+              this._UtilizationReportDetails = data;
+              this._DistinctEmployee =
+                data.EmployeeLevelDetails.filter((value, index, self) => self.map(x => x.Name).indexOf(value.Name) === index);
 
-                this.ExportFilePath = 'http://172.16.16.217/TimeSystemHelpFiles/Help/EmployeeSelect.htm';
-              }
-              this.showSelectList = false;
-              this.showDateRangeValues = true;
-              this.showSpinner = false;
-            });
+              this.ExportFilePath = 'http://172.16.16.217/TimeSystemHelpFiles/Help/EmployeeSelect.htm';
+            }
+            this.showSelectList = false;
+            this.showDateRangeValues = true;
+            this.showSpinner = false;
+          });
       }
     }
   }
