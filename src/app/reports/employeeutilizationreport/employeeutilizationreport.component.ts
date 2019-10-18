@@ -327,7 +327,7 @@ export class EmployeeutilizationreportComponent implements OnInit {
         this._utilization.ToDate = _end;
         this._utilization.WorkingHours = '8';
         this._utilization.Status = _status;
-        this._utilization.FromDate = _frequency;
+        this._utilization.Frequency = _frequency;
         this.timesysSvc.GetEmployeeUtilitizationReport(this._utilization).subscribe(
           (data) => {
             if (data !== undefined && data !== null) {
