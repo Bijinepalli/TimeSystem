@@ -176,6 +176,7 @@ export class EmployeehoursbybillingcodewithrateComponent implements OnInit {
       (data) => {
         if (data !== undefined && data !== null && data.length > 0) {
           this._Departments = data;
+          this._Departments.unshift({Id: 0, Name: 'All' });
           this._selectedDepartment = data[0];
         }
         this.showSpinner = false;
