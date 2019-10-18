@@ -5,7 +5,10 @@
     "ng": "ng",
     "start": "ng serve --port 4300 -o",
     "build": "ng build",
-    "test": "ng test",
+    "build:prod": "ng build --target production --base-href /eTimeSystem/ --build-optimizer --vendor-chunk --output-hashing all --extract-css true --sourcemaps false --named-chunks false --aot",
+    "build:stage": "ng build  --prod --c=staging --base-href /eTimeSystem/ --build-optimizer --vendor-chunk --output-hashing all --extract-css true --sourcemaps false --named-chunks false --aot",
+    "test": "ng test --browser ChromeHeadless --single-run",
+    "watch": "ng test --browser ChromeHeadless",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },

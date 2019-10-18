@@ -24,7 +24,6 @@ body {
     padding-left: 10px;
 }
 
-
 /* Override color for alert box*/
 
 .alertHeader {
@@ -263,6 +262,9 @@ body .ui-panel .ui-panel-content {
     /* .smSearchLeft {
         text-align: left !important;
     } */
+    .ui-dialog {
+        width: 100vw !important;
+    }
 }
 
 @media only screen and (max-width: 1250px) {
@@ -278,4 +280,24 @@ body .ui-panel .ui-panel-content {
     .smSearchWidth {
         width: 15em !important;
     }
+}
+
+body .ui-datepicker {
+    width: 100%;
+    padding: 0.1em;
+    min-width: 20em!important;
+}
+
+body .ui-datepicker table {
+    font-size: 12px;
+    margin: .1em 0 0 0;
+    width: 100%;
+}
+
+body .ui-datepicker table th {
+    padding: .1em;
+}
+
+body .ui-datepicker table td {
+    padding: .1em;
 }

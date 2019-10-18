@@ -420,9 +420,9 @@ export class EmployeesComponent implements OnInit {
   }
 
   GetMethods() {
-    this.getEmployees();
+    // this.getEmployees();
     this.getSupervisors();
-    this.getDepartments();
+    // this.getDepartments();
   }
   /* #endregion */
 
@@ -463,6 +463,7 @@ export class EmployeesComponent implements OnInit {
           }
           this.showReport = true;
           this.showSpinner = false;
+          // this.getSupervisors();
         }
       );
   }
@@ -628,6 +629,7 @@ export class EmployeesComponent implements OnInit {
           }
 
           this.showSpinner = false;
+          this.getDepartments();
         }
       );
   }
@@ -645,6 +647,7 @@ export class EmployeesComponent implements OnInit {
             }
           }
           this.showSpinner = false;
+          this.getEmployees();
         });
   }
 
@@ -752,7 +755,7 @@ export class EmployeesComponent implements OnInit {
     this._employeeNameHdr = dataRow.LastName + ' ' + dataRow.FirstName;
     // this.rateDialog = true;
     this.populateTable();
-    
+
   }
   /* #endregion */
 
@@ -1261,9 +1264,10 @@ export class EmployeesComponent implements OnInit {
               this.logSvc.ActionLog(PageNames.Employees, 'Add Employee', 'Section',
                 'SaveDepartmentSPCall', 'Department Insert', '', '', ''); // ActivityLog
               this.clearControlsEmployee();
-              this.getEmployees();
-              this.getSupervisors();
-              this.getDepartments();
+              this.GetMethods();
+              // this.getEmployees();
+              // this.getSupervisors();
+              // this.getDepartments();
             }
           });
     }
@@ -1950,7 +1954,7 @@ export class EmployeesComponent implements OnInit {
       this.populateTable();
     } else {
       this.rateDialog = false;
-    }    
+    }
   }
 
   saveRateModal() {
