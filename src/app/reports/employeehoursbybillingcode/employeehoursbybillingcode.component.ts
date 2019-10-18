@@ -279,7 +279,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
           _selectedBillingCycle = 'A';
         }
         this._billingCodesSpecial.billingCycle = _selectedBillingCycle;
-        console.log(this._billingCodesSpecial);
         this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
           'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
         this.timesysSvc.ListEmployeeHoursByBillingCodeClientOnly(this._billingCodesSpecial).subscribe(
@@ -291,7 +290,6 @@ export class EmployeehoursbybillingcodeComponent implements OnInit {
     } else {
       this.logSvc.ActionLog(PageNames.EmployeeHoursbyBillingCode, '', 'Reports/Event', 'generateReport',
         'Generate Report', '', '', JSON.stringify(this._billingCodesSpecial)); // ActivityLog
-      console.log(this._billingCodesSpecial);
       this.timesysSvc.ListEmployeeHoursByBillingCode(this._billingCodesSpecial).subscribe(
         (data) => {
           this.showTable(data);

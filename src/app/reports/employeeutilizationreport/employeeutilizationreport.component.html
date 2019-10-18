@@ -34,28 +34,22 @@
 
   <div class="ui-g"
     *ngIf="showDepartmentName && !(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
-    <div class="ui-g-12">
-      <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
-        Department : {{_selectedDepartment.Name}}
-      </ng-container>
+    <div class="ui-g-12" *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
+      Department : {{_selectedDepartment.Name}}
     </div>
-    <div class="ui-g-12">
-      <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
-        Date Range From: {{_startDateVal}} <label class="label" style="padding:0px 10px">to</label> {{_endDateVal}}
-      </ng-container>
+    <div class="ui-g-12" *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
+      Date Range From: {{_startDateVal}} <label class="label" style="padding:0px 10px">to</label> {{_endDateVal}}
     </div>
-    <div class="ui-g-12">
-      <ng-container *ngIf="showDateRangeValues">
-        <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-          class="ui-button-warning" label="Start Over" (click)=startOver()></button>
-      </ng-container>
+    <div class="ui-g-12" *ngIf="showDateRangeValues">
+      <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+        class="ui-button-warning" label="Start Over" (click)=startOver()></button>
     </div>
   </div>
 
-  <div class="ui-g  ui-g-nopad">
+  <div class="ui-g  ui-g-nopad" *ngIf="showSelectList">
     <div class="ui-g-6 ui-md-12">
-      <p-checkbox *ngIf="showSelectList" binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox"
-        (onChange)="selectAll()"></p-checkbox>
+      <p-checkbox binary="true" label="Select/Clear All" [(ngModel)]="allcheckbox" (onChange)="selectAll()">
+      </p-checkbox>
     </div>
   </div>
   <div *ngIf="showSelectList">
@@ -122,127 +116,129 @@
       No matching data for the selected criteria
     </div>
   </div>
-
-  <div class="ui-g-12" *ngIf="(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
-    <p-table #dt [responsive]="false" class="tablePadding">
-      <ng-template pTemplate="caption">
-        <div class="ui-g ui-g-nopad recordsBar">
-          <div class="ui-g-12 ui-md-5 ui-lg-8 ui-g-nopad recordsFound">
-            <div class="ui-g-12 ui-md-5" style="text-align: left;">
-              <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
-                Department : {{_selectedDepartment.Name}}
-              </ng-container>
+  <div class="ui-g">
+    <div class="ui-g-12 ui-g-nopad"
+      *ngIf="(_UtilizationReportDetails !== undefined && _UtilizationReportDetails !== null)">
+      <p-table #dt [responsive]="false" class="tablePadding">
+        <ng-template pTemplate="caption">
+          <div class="ui-g ui-g-nopad recordsBar">
+            <div class="ui-g-12 ui-md-5 ui-lg-8 ui-g-nopad recordsFound">
+              <div class="ui-g-12 ui-md-5" style="text-align: left;">
+                <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
+                  Department : {{_selectedDepartment.Name}}
+                </ng-container>
+              </div>
+              <div class="ui-g-12 ui-md-7" style="text-align: left;">
+                <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
+                  Date Range From: {{_startDateVal}} to {{_endDateVal}}
+                </ng-container>
+              </div>
             </div>
-            <div class="ui-g-12 ui-md-7" style="text-align: left;">
-              <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
-                Date Range From: {{_startDateVal}} to {{_endDateVal}}
-              </ng-container>
+            <div class="ui-g-12 ui-md-7 ui-lg-4 ui-g-nopad" style="text-align: right;">
+              <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
+                class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
+              <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
+                (click)="exportClick()"></button>&nbsp;
             </div>
           </div>
-          <div class="ui-g-12 ui-md-7 ui-lg-4 ui-g-nopad" style="text-align: right;">
-            <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
-              class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
-            <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"
-              (click)="exportClick()"></button>&nbsp;
-          </div>
+        </ng-template>
+      </p-table>
+      <p-scrollPanel [style]="{width: '100%',height:'640px'}" styleClass="custombar1">
+        <div style="width:100%;">
+          <table #dtUtilizationReport cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;"
+            class="ui-table"
+            *ngIf="_UtilizationReportDetails.WeekNumDetails !== undefined && _UtilizationReportDetails.WeekNumDetails !== null && _UtilizationReportDetails.WeekNumDetails.length > 0">
+            <thead class="ui-table-thead">
+              <tr>
+                <th class="tdName" style="border:0px;">&nbsp;</th>
+                <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
+                  <th [ngStyle]="getDisplayColors(i,1)"></th>
+                  <th [ngStyle]="getDisplayColors(i,1)" colspan="5">
+                    {{weekNumDetails.Startdate +' to '+weekNumDetails.Enddate}}
+                  </th>
+                </ng-container>
+              </tr>
+              <tr class="trHeader">
+                <th>Employee</th>
+                <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
+                  <th></th>
+                  <th>
+                    Utilization
+                  </th>
+                  <th>
+                    Weekday
+                  </th>
+                  <th>
+                    Holiday
+                  </th>
+                  <th>
+                    PTO
+                  </th>
+                  <th>
+                    Billable
+                  </th>
+                </ng-container>
+              </tr>
+            </thead>
+            <tbody class="ui-table-tbody">
+              <tr *ngFor="let distinctEmployees of _DistinctEmployee">
+                <td class="tdName" style="border:0px;">
+                  {{distinctEmployees.Name}}
+                </td>
+                <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
+                  <ng-container *ngFor="let EmployeeLevelDetails of _UtilizationReportDetails.EmployeeLevelDetails">
+                    <ng-container
+                      *ngIf="EmployeeLevelDetails.Name === distinctEmployees.Name && EmployeeLevelDetails.WeekNum === weekNumDetails.WeekNum">
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)"></td>
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                        {{ EmployeeLevelDetails.Utilization}}%
+                      </td>
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                        {{ ((EmployeeLevelDetails.Weekday > 0) ? EmployeeLevelDetails.Weekday : '-') }}
+                      </td>
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                        {{ ((EmployeeLevelDetails.Holiday > 0) ? EmployeeLevelDetails.Holiday : '-')}}
+                      </td>
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                        {{ ((EmployeeLevelDetails.PTO > 0) ? EmployeeLevelDetails.PTO : '-')}}
+                      </td>
+                      <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
+                        {{ ((EmployeeLevelDetails.Billable > 0) ? EmployeeLevelDetails.Billable : '-')}}
+                      </td>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </tr>
+              <tr class="trSummary">
+                <td class="tdName">Summary of Team</td>
+                <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
+                  <ng-container *ngFor="let TeamLevelDetails of _UtilizationReportDetails.TeamLevelDetails">
+                    <ng-container *ngIf="TeamLevelDetails.WeekNum === weekNumDetails.WeekNum">
+                      <td class="tdValues"></td>
+                      <td class="tdValues">
+                        {{ TeamLevelDetails.Utilization}}%
+                      </td>
+                      <td class="tdValues">
+                        {{ ((TeamLevelDetails.Weekday > 0) ? TeamLevelDetails.Weekday : '-') }}
+                      </td>
+                      <td class="tdValues">
+                        {{ ((TeamLevelDetails.Holiday > 0) ? TeamLevelDetails.Holiday : '-')}}
+                      </td>
+                      <td class="tdValues">
+                        {{ ((TeamLevelDetails.PTO > 0) ? TeamLevelDetails.PTO : '-')}}
+                      </td>
+                      <td class="tdValues">
+                        {{ ((TeamLevelDetails.Billable > 0) ? TeamLevelDetails.Billable : '-')}}
+                      </td>
+                    </ng-container>
+                  </ng-container>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
         </div>
-      </ng-template>
-    </p-table>
-    <p-scrollPanel [style]="{width: '100%',height:'640px'}" styleClass="custombar1">
-      <div style="width:100%;">
-        <table #dtUtilizationReport cellpadding="0" cellspacing="0" width="100%" style="padding-right:20px;"
-          class="ui-table"
-          *ngIf="_UtilizationReportDetails.WeekNumDetails !== undefined && _UtilizationReportDetails.WeekNumDetails !== null && _UtilizationReportDetails.WeekNumDetails.length > 0">
-          <thead class="ui-table-thead">
-            <tr>
-              <th class="tdName" style="border:0px;">&nbsp;</th>
-              <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
-                <th [ngStyle]="getDisplayColors(i,1)"></th>
-                <th [ngStyle]="getDisplayColors(i,1)" colspan="5">
-                  {{weekNumDetails.Startdate +' to '+weekNumDetails.Enddate}}
-                </th>
-              </ng-container>
-            </tr>
-            <tr class="trHeader">
-              <th>Employee</th>
-              <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
-                <th></th>
-                <th>
-                  Utilization
-                </th>
-                <th>
-                  Weekday
-                </th>
-                <th>
-                  Holiday
-                </th>
-                <th>
-                  PTO
-                </th>
-                <th>
-                  Billable
-                </th>
-              </ng-container>
-            </tr>
-          </thead>
-          <tbody class="ui-table-tbody">
-            <tr *ngFor="let distinctEmployees of _DistinctEmployee">
-              <td class="tdName" style="border:0px;">
-                {{distinctEmployees.Name}}
-              </td>
-              <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
-                <ng-container *ngFor="let EmployeeLevelDetails of _UtilizationReportDetails.EmployeeLevelDetails">
-                  <ng-container
-                    *ngIf="EmployeeLevelDetails.Name === distinctEmployees.Name && EmployeeLevelDetails.WeekNum === weekNumDetails.WeekNum">
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)"></td>
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
-                      {{ EmployeeLevelDetails.Utilization}}%
-                    </td>
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
-                      {{ ((EmployeeLevelDetails.Weekday > 0) ? EmployeeLevelDetails.Weekday : '-') }}
-                    </td>
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
-                      {{ ((EmployeeLevelDetails.Holiday > 0) ? EmployeeLevelDetails.Holiday : '-')}}
-                    </td>
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
-                      {{ ((EmployeeLevelDetails.PTO > 0) ? EmployeeLevelDetails.PTO : '-')}}
-                    </td>
-                    <td class="tdValues" [ngStyle]="getDisplayColors(i,0)">
-                      {{ ((EmployeeLevelDetails.Billable > 0) ? EmployeeLevelDetails.Billable : '-')}}
-                    </td>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-            </tr>
-            <tr class="trSummary">
-              <td class="tdName">Summary of Team</td>
-              <ng-container *ngFor="let weekNumDetails of _UtilizationReportDetails.WeekNumDetails;index as i">
-                <ng-container *ngFor="let TeamLevelDetails of _UtilizationReportDetails.TeamLevelDetails">
-                  <ng-container *ngIf="TeamLevelDetails.WeekNum === weekNumDetails.WeekNum">
-                    <td class="tdValues"></td>
-                    <td class="tdValues">
-                      {{ TeamLevelDetails.Utilization}}%
-                    </td>
-                    <td class="tdValues">
-                      {{ ((TeamLevelDetails.Weekday > 0) ? TeamLevelDetails.Weekday : '-') }}
-                    </td>
-                    <td class="tdValues">
-                      {{ ((TeamLevelDetails.Holiday > 0) ? TeamLevelDetails.Holiday : '-')}}
-                    </td>
-                    <td class="tdValues">
-                      {{ ((TeamLevelDetails.PTO > 0) ? TeamLevelDetails.PTO : '-')}}
-                    </td>
-                    <td class="tdValues">
-                      {{ ((TeamLevelDetails.Billable > 0) ? TeamLevelDetails.Billable : '-')}}
-                    </td>
-                  </ng-container>
-                </ng-container>
-              </ng-container>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </p-scrollPanel>
+      </p-scrollPanel>
+    </div>
   </div>
 </ng-container>
 <p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"

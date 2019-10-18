@@ -91,8 +91,7 @@ export class MaintaintimesheethourlyComponent implements OnInit {
       } else {
         timeSheetSubmit.timeSheet.Submitted = true;
       }
-      if (this._timeSheetEntries.length > 0) {
-        console.log(this._timeSheetEntries[0]);
+      if (this._timeSheetEntries && this._timeSheetEntries.length > 0) {
         timeSheetSubmit.timeSheet.Resubmitted = this._timeSheetEntries[0].Resubmitted;
         // this.timesysSvc.timesheetUpdate(timeSheetSubmit.timeSheet).subscribe((dataNew) => {
         //   this._IsTimeSheetSubmittedJustNow = true;

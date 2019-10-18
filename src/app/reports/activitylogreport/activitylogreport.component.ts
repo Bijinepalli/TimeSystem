@@ -36,7 +36,6 @@ export class ActivitylogreportComponent implements OnInit {
     private confSvc: ConfirmationService,
     private datePipe: DatePipe,
     public commonSvc: CommonService) {
-      console.log('1');
     // this.CheckActiveSession();
     // this.commonSvc.setAppSettings();
   }
@@ -45,7 +44,6 @@ export class ActivitylogreportComponent implements OnInit {
 
   CheckActiveSession() {
     let sessionActive = false;
-    console.log('2');
     if (sessionStorage !== undefined && sessionStorage !== null && sessionStorage.length > 0) {
       if (sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== undefined &&
         sessionStorage.getItem(environment.buildType.toString() + '_' + 'UserId') !== null) {
@@ -60,10 +58,8 @@ export class ActivitylogreportComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log('3');
     this.showSpinner = true;
     this.IsSecure = false;
-    console.log('In');
     this.ParamSubscribe = this.route.queryParams.subscribe(params => {
       if (params['Id'] !== undefined && params['Id'] !== null && params['Id'].toString() !== '') {
         const SplitVals = params['Id'].toString().split('@');
@@ -72,7 +68,6 @@ export class ActivitylogreportComponent implements OnInit {
         this.router.navigate(['/access'], { queryParams: { Message: 'Invalid Link/Page Not Found' } }); // Invalid URL
       }
     });
-    this.showSpinner = false;
   }
 
   CheckSecurity(PageId: string) {
