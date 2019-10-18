@@ -405,7 +405,8 @@ export class CompaniesComponent implements OnInit {
   }
 
   changeHolidayYear() {
-    this.clearControls();
+    // this.clearControls();
+    this.getCompanyHolidays();
   }
 
   getCompanyHolidays() {
@@ -447,9 +448,6 @@ export class CompaniesComponent implements OnInit {
     this._slctedCompanyId = companyData.Id;
     this.selectedYear = new Date().getFullYear();
     this.companyHolidayHdr = 'Assign Holidays to ' + companyData.CompanyName;
-    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
-      this.pcklHolidays.resetFilter();
-    }
     this.getCompanyHolidays();
   }
 
@@ -478,7 +476,9 @@ export class CompaniesComponent implements OnInit {
   clearCompanyHolidaysControls() {
     this.companyHolidayDialog = false;
     this._slctedCompanyId = null;
-    this.pcklHolidays.resetFilter();
+    if (this.pcklHolidays !== undefined && this.pcklHolidays !== null) {
+      this.pcklHolidays.resetFilter();
+    }
     this._slctHolidays = [];
     this._slctHolidaysSaved = [];
     this._availableHolidays = [];
