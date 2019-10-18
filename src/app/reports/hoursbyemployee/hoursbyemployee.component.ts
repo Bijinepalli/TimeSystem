@@ -55,6 +55,7 @@ export class HoursbyemployeeComponent implements OnInit {
   _buttonLabel = '';
   _buttonTooltip = '';
   @ViewChild('dt') dt: Table;
+  _selectedString = '';
 
   constructor(
     private timesysSvc: TimesystemService,
@@ -142,6 +143,7 @@ export class HoursbyemployeeComponent implements OnInit {
     this._displayCheckBoxes = [];
 
     this._selectString = '';
+    this._selectedString = '';
     this.showBillingCodeList = false;
     this.allcheckbox = false;
     this.changeCodeList = false;
@@ -222,6 +224,7 @@ export class HoursbyemployeeComponent implements OnInit {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
           }
           this._selectString = 'Billing Codes (' + this._clients.length + ' matching codes found)';
+          this._selectedString = 'Billing Code';
           this.showBillingCodeList = true;
           this.showPeriodEndDetail = true;
           this.showTotals = true;
@@ -240,6 +243,7 @@ export class HoursbyemployeeComponent implements OnInit {
             this._displayCheckBoxes.push({ label: this._projects[i].ProjectName, value: this._projects[i].Key });
           }
           this._selectString = 'Projects (' + this._projects.length + ' matching codes found)';
+          this._selectedString = 'Project';
           this.showBillingCodeList = true;
           this.showSpinner = false;
         }
@@ -255,7 +259,8 @@ export class HoursbyemployeeComponent implements OnInit {
           for (let i = 0; i < this._nonBillables.length; i++) {
             this._displayCheckBoxes.push({ label: this._nonBillables[i].ProjectName, value: this._nonBillables[i].Key });
           }
-          this._selectString = 'Non Billables (' + this._nonBillables.length + ') matching codes found';
+          this._selectString = 'Non-Billables (' + this._nonBillables.length + ') matching codes found';
+          this._selectedString = 'Non-Billable';
           this.showBillingCodeList = true;
           this.showSpinner = false;
         }
@@ -389,17 +394,17 @@ export class HoursbyemployeeComponent implements OnInit {
   buildCols() {
     if (this.selectedbreakOut.toString() === '0') {
       this.cols = [
-        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
+        { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
       ];
     } else {
       this.cols = [
-        { field: 'LastName', header: 'Last Name', align: 'left', width: '150px' },
-        { field: 'FirstName', header: 'First Name', align: 'left', width: '150px' },
-        { field: 'Name', header: 'Name', align: 'left', width: 'auto' },
-        { field: 'Hours', header: 'Hours', align: 'right', width: '100px' },
+        { field: 'LastName', header: 'Last Name', align: 'left', width: '15em' },
+        { field: 'FirstName', header: 'First Name', align: 'left', width: '15em' },
+        { field: 'Name', header: 'Name', align: 'left', width: '25em' },
+        { field: 'Hours', header: 'Hours', align: 'right', width: '10em' },
       ];
     }
     if (this.showPeriodEndDetail) {

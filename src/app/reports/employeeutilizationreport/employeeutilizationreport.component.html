@@ -67,7 +67,7 @@
         </div>
       </p-scrollPanel>
       <p-footer>
-        <h3 class="first">{{_selectcheckbox.length}} record(s) selected</h3>
+        <h3 class="first">{{_selectcheckbox.length}} Employee(s) selected</h3>
       </p-footer>
     </p-panel>
   </div>
@@ -122,19 +122,19 @@
       <p-table #dt [responsive]="false" class="tablePadding">
         <ng-template pTemplate="caption">
           <div class="ui-g ui-g-nopad recordsBar">
-            <div class="ui-g-12 ui-md-5 ui-lg-8 ui-g-nopad recordsFound">
-              <div class="ui-g-12 ui-md-5" style="text-align: left;">
+            <div class="ui-g-12 ui-lg-2 ui-md-4 ui-sm-12 recordsFound">
+              <!-- <div class="ui-g-12 ui-md-5" style="text-align: left;"> -->
                 <ng-container *ngIf="_selectedDepartment !== undefined && _selectedDepartment !== null">
                   Department : {{_selectedDepartment.Name}}
                 </ng-container>
-              </div>
-              <div class="ui-g-12 ui-md-7" style="text-align: left;">
-                <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
-                  Date Range From: {{_startDateVal}} to {{_endDateVal}}
-                </ng-container>
-              </div>
+              <!-- </div> -->
             </div>
-            <div class="ui-g-12 ui-md-7 ui-lg-4 ui-g-nopad" style="text-align: right;">
+            <div class="ui-g-12 ui-lg-6 ui-md-8 ui-sm-12 recordsFound smLeft" style="text-align: right;">
+              <ng-container *ngIf="showDateRangeValues && _startDateVal && _endDateVal">
+                Date Range From: {{_startDateVal}} to {{_endDateVal}}
+              </ng-container>
+            </div>
+            <div class="ui-g-12 ui-lg-4 ui-md-12 ui-sm-12 smLeft" style="text-align: right;">
               <button pButton pTooltip="Change your report selection criteria" tooltipPosition="bottom"
                 class="ui-button-warning" label="Start Over" (click)="startOver()"></button>&nbsp;
               <button pButton pTooltip="Export" tooltipPosition="bottom" icon="fa fa-table" label="Export"

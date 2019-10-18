@@ -99,7 +99,7 @@
       <p-header>
         <h3 class="first">{{_selectString}}</h3>
       </p-header>
-      <p-scrollPanel [style]="{height: '200px'}" appendTo="body">
+      <p-scrollPanel [style]="{height: '400px'}" appendTo="body">
         <div class="ui-g" style="margin-bottom:10px">
           <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-4" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label"
@@ -108,7 +108,7 @@
         </div>
       </p-scrollPanel>
       <p-footer>
-        <h3 class="first">{{_selectcheckbox.length}} record(s) selected</h3>
+        <h3 class="first">{{_selectcheckbox.length}} Billing Code(s) selected</h3>
       </p-footer>
     </p-panel>
   </div>
