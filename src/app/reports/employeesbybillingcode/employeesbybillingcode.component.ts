@@ -32,6 +32,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
   _projects: Projects[];
   _nonBillables: NonBillables[];
   _selectString = '';
+  _selectedString = '';
   _reports: any[] = [];
   _recData = 0;
   cols: any;
@@ -198,6 +199,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
             this._displayCheckBoxes.push({ label: this._clients[i].ClientName, value: this._clients[i].Key });
           }
           this._selectString = 'Billing Codes (' + this._clients.length + ' matching codes found)';
+          this._selectedString = 'Billing Code';
           this.showBillingCodeList = true;
           this.showSpinner = false;
         }
@@ -216,6 +218,7 @@ export class EmployeesbybillingcodeComponent implements OnInit {
             this._displayCheckBoxes.push({ label: this._projects[i].ProjectName, value: this._projects[i].Key });
           }
           this._selectString = 'Projects (' + this._projects.length + ' matching codes found)';
+          this._selectedString = 'Project';
           this.showBillingCodeList = true;
           this.showSpinner = false;
         }
@@ -233,7 +236,8 @@ export class EmployeesbybillingcodeComponent implements OnInit {
           for (let i = 0; i < this._nonBillables.length; i++) {
             this._displayCheckBoxes.push({ label: this._nonBillables[i].ProjectName, value: this._nonBillables[i].Key });
           }
-          this._selectString = 'Non Billables (' + this._nonBillables.length + ') matching codes found';
+          this._selectString = 'Non-Billables (' + this._nonBillables.length + ') matching codes found';
+          this._selectedString = 'Non-Billable';
           this.showBillingCodeList = true;
           this.showSpinner = false;
         }

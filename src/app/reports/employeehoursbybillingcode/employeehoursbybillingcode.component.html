@@ -60,8 +60,12 @@
       </div>
       <p-footer>
         <div style="text-align: left">
-          <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-            (click)=showBillingCodes() pTooltip="Get the billing codes/run the report"
+          <button pButton tooltipPosition="bottom"
+            *ngIf="selectedbillingCycle === 0||selectedbillingCycle === 1||selectedbillingCycle === 2"
+            class="ui-button-info" label="Show Billing Codes" (click)=showBillingCodes()
+            pTooltip="Get the billing codes/run the report" tooltipPosition="bottom"></button>
+          <button pButton tooltipPosition="bottom" *ngIf="selectedbillingCycle === 3" class="ui-button-info"
+            label="Generate Report" (click)=showBillingCodes() pTooltip="Get the billing codes/run the report"
             tooltipPosition="bottom"></button>
         </div>
       </p-footer>
