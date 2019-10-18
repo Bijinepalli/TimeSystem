@@ -16,7 +16,8 @@ import {
   PeriodEndWithKeys,
   SOWUtilizationReport,
   SOWMonthlyUtilizationReport,
-  ActivityLog
+  ActivityLog,
+  Utilization,
 } from '../model/objects';
 import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -413,7 +414,7 @@ export class TimesystemService {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByTimeSheetCategory', body, httpOptions);
   }
-  
+
   ListEmployeeHoursByBillingCode(billingCodesSpecial: BillingCodesSpecial) {
     const body = JSON.stringify(billingCodesSpecial);
     return this.http.post<BillingCodes[]>(this.url + 'ListEmployeeHoursByBillingCode', body, httpOptions);
@@ -709,17 +710,17 @@ export class TimesystemService {
     return this.http.get<BillingCodes[]>(this.url + 'GetRevenueReports', { params });
   }
 
-  GetEmployeeUtilitizationReport(EmployeeID: string, DepartmentID: string, FromDate: string, ToDate: string, WorkingHours: string,
-    Status: string, Frequency: string) {
-    const params = new HttpParams()
-      .set('EmployeeID', EmployeeID)
-      .set('DepartmentID', DepartmentID)
-      .set('FromDate', FromDate)
-      .set('ToDate', ToDate)
-      .set('WorkingHours', WorkingHours)
-      .set('Status', Status)
-      .set('Frequency', Frequency);
-    return this.http.get<EmployeeUtilityReport>(this.url + 'GetEmployeeUtilitizationReport', { params });
+  GetEmployeeUtilitizationReport(_utilization: Utilization) {
+    // const params = new HttpParams()
+    //   .set('EmployeeID', EmployeeID)
+    //   .set('DepartmentID', DepartmentID)
+    //   .set('FromDate', FromDate)
+    //   .set('ToDate', ToDate)
+    //   .set('WorkingHours', WorkingHours)
+    //   .set('Status', Status)
+    //   .set('Frequency', Frequency);
+    const body = JSON.stringify(_utilization);
+    return this.http.post<EmployeeUtilityReport>(this.url + 'GetEmployeeUtilitizationReport', body, httpOptions);
   }
   getEmployeesBySupervisor(employeeId: string) {
     const params = new HttpParams()

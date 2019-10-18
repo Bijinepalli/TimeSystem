@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { TimesystemService } from '../service/timesystem.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MessageService, ConfirmationService, SelectItem } from 'primeng/api';
-import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails } from 'src/app/model/objects';
+import { Departments, EmployeeUtilityReport, EmployeeUtilityDetails, Utilization } from 'src/app/model/objects';
 import { DatePipe } from '@angular/common';
 import { WeeklyhoursbyemployeeComponent } from '../reports/weeklyhoursbyemployee/weeklyhoursbyemployee.component';
 import { environment } from 'src/environments/environment';
@@ -46,6 +46,7 @@ export class UtilizationchartComponent implements OnInit {
   _endDate = '';
   _UtilizationReportDetails: EmployeeUtilityReport = null;
   _DistinctEmployee: EmployeeUtilityDetails[] = [];
+  _utilization: Utilization = null;
 
   _startDateVal: string;
   _endDateVal: string;
@@ -268,85 +269,88 @@ export class UtilizationchartComponent implements OnInit {
       // if (this._startDate > this._endDate) {
       //   this.showSpinner = false;
       // } else {
-      this.timesysSvc.GetEmployeeUtilitizationReport(
-        this.selectedEmp,
-        '',
-        this._startDate,
-        this._endDate,
-        '8', '1', '1').subscribe(
-          (data) => {
-            if (data !== undefined && data !== null) {
-              this._UtilizationReportDetails = data;
+      this._utilization = new Utilization();
+      this._utilization.EmployeeID = this.selectedEmp;
+      this._utilization.DepartmentID = '';
+      this._utilization.FromDate = this._startDate;
+      this._utilization.ToDate = this._endDate;
+      this._utilization.WorkingHours = '8';
+      this._utilization.Status = '1';
+      this._utilization.FromDate = '1';
+      this.timesysSvc.GetEmployeeUtilitizationReport(this._utilization).subscribe(
+        (data) => {
+          if (data !== undefined && data !== null) {
+            this._UtilizationReportDetails = data;
 
-              if (this._UtilizationReportDetails.WeekNumDetails !== undefined &&
-                this._UtilizationReportDetails.WeekNumDetails !== null &&
-                this._UtilizationReportDetails.WeekNumDetails.length > 0) {
-                const labels = [];
+            if (this._UtilizationReportDetails.WeekNumDetails !== undefined &&
+              this._UtilizationReportDetails.WeekNumDetails !== null &&
+              this._UtilizationReportDetails.WeekNumDetails.length > 0) {
+              const labels = [];
+              for (let weekCnt = 0; weekCnt < this._UtilizationReportDetails.WeekNumDetails.length; weekCnt++) {
+                labels.push([this._UtilizationReportDetails.WeekNumDetails[weekCnt].Startdate,
+                this._UtilizationReportDetails.WeekNumDetails[weekCnt].Enddate]);
+              }
+              this.hoursByTeamChartData.labels = labels;
+
+              this.hoursByTeamChartData.datasets = [];
+              let UtilizationDataLabels = [];
+              // UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable', 'Utilization'];
+
+              if (this.selectedUtilizationType === 'Detail') {
+                UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable'];
+              } else {
+                UtilizationDataLabels = ['Utilization'];
+              }
+              for (let i = 0; i < UtilizationDataLabels.length; i++) {
+                this.hoursByTeamChartData.datasets.push({
+                  label: UtilizationDataLabels[i],
+                  backgroundColor: '',
+                  borderColor: '',
+                  data: []
+                });
+                this.hoursByTeamChartData.datasets[i].backgroundColor = this.configureDefaultColours(i);
+              }
+
+              this.ShowGraph = true;
+              if (this.barChart !== undefined && this.barChart !== null) {
+                this.barChart.refresh();
+              }
+
+              for (let i = 0; i < UtilizationDataLabels.length; i++) {
+                this.hoursByTeamChartData.datasets[i].data = [];
                 for (let weekCnt = 0; weekCnt < this._UtilizationReportDetails.WeekNumDetails.length; weekCnt++) {
-                  labels.push([this._UtilizationReportDetails.WeekNumDetails[weekCnt].Startdate,
-                  this._UtilizationReportDetails.WeekNumDetails[weekCnt].Enddate]);
-                }
-                this.hoursByTeamChartData.labels = labels;
-
-                this.hoursByTeamChartData.datasets = [];
-                let UtilizationDataLabels = [];
-                // UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable', 'Utilization'];
-
-                if (this.selectedUtilizationType === 'Detail') {
-                  UtilizationDataLabels = ['Weekday', 'Holiday', 'PTO', 'Billable'];
-                } else {
-                  UtilizationDataLabels = ['Utilization'];
-                }
-                for (let i = 0; i < UtilizationDataLabels.length; i++) {
-                  this.hoursByTeamChartData.datasets.push({
-                    label: UtilizationDataLabels[i],
-                    backgroundColor: '',
-                    borderColor: '',
-                    data: []
-                  });
-                  this.hoursByTeamChartData.datasets[i].backgroundColor = this.configureDefaultColours(i);
-                }
-
-                this.ShowGraph = true;
-                if (this.barChart !== undefined && this.barChart !== null) {
-                  this.barChart.refresh();
-                }
-
-                for (let i = 0; i < UtilizationDataLabels.length; i++) {
-                  this.hoursByTeamChartData.datasets[i].data = [];
-                  for (let weekCnt = 0; weekCnt < this._UtilizationReportDetails.WeekNumDetails.length; weekCnt++) {
-                    const WeekLevelEmpData = this._UtilizationReportDetails.EmployeeLevelDetails.filter(m =>
-                      (m.WeekNum === this._UtilizationReportDetails.WeekNumDetails[weekCnt].WeekNum));
-                    if (WeekLevelEmpData !== undefined && WeekLevelEmpData !== null && WeekLevelEmpData.length > 0) {
-                      switch (UtilizationDataLabels[i]) {
-                        case 'Weekday':
-                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Weekday);
-                          break;
-                        case 'Holiday':
-                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Holiday);
-                          break;
-                        case 'PTO':
-                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].PTO);
-                          break;
-                        case 'Billable':
-                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Billable);
-                          break;
-                        case 'Utilization':
-                          this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Utilization);
-                          break;
-                        default:
-                          break;
-                      }
+                  const WeekLevelEmpData = this._UtilizationReportDetails.EmployeeLevelDetails.filter(m =>
+                    (m.WeekNum === this._UtilizationReportDetails.WeekNumDetails[weekCnt].WeekNum));
+                  if (WeekLevelEmpData !== undefined && WeekLevelEmpData !== null && WeekLevelEmpData.length > 0) {
+                    switch (UtilizationDataLabels[i]) {
+                      case 'Weekday':
+                        this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Weekday);
+                        break;
+                      case 'Holiday':
+                        this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Holiday);
+                        break;
+                      case 'PTO':
+                        this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].PTO);
+                        break;
+                      case 'Billable':
+                        this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Billable);
+                        break;
+                      case 'Utilization':
+                        this.hoursByTeamChartData.datasets[i].data.push(WeekLevelEmpData[0].Utilization);
+                        break;
+                      default:
+                        break;
                     }
                   }
                 }
-                if (this.barChart !== undefined && this.barChart !== null) {
-                  this.barChart.refresh();
-                }
+              }
+              if (this.barChart !== undefined && this.barChart !== null) {
+                this.barChart.refresh();
               }
             }
-            this.showSpinner = false;
-          });
+          }
+          this.showSpinner = false;
+        });
       // }
     }
   }

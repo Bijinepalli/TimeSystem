@@ -729,4 +729,13 @@ export class ActivityLog {
     TimeStamp?: string;
     SessionID?: string;
 }
+export class Utilization {
+    EmployeeID?: string;
+    DepartmentID?: string;
+    FromDate?: string;
+    ToDate?: string;
+    WorkingHours?: string;
+    Status?: string;
+    Frequency?: string;
+}
 
