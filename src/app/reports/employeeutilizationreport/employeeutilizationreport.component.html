@@ -15,7 +15,7 @@
       </div>
       <div class="ui-g-12">
         <p-dropdown [options]="_Departments" [(ngModel)]="_selectedDepartment" optionLabel="Name"
-          pTooltip="Employee's Department" tooltipPosition="right" [style]="{'width':'300px;'}"></p-dropdown>
+          pTooltip="Employee's Department" tooltipPosition="right" [style]="{'width':'300px'}"></p-dropdown>
       </div>
       <div class="ui-g-12">
         <label class="label">Select Status</label>
@@ -65,7 +65,7 @@
       </p-header>
       <p-scrollPanel [style]="{height: '400px'}">
         <div class="ui-g" style="margin-bottom:10px">
-          <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
+          <div class="ui-g-4 ui-sm-6" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" [value]="_dcb.value"
               pTooltip="Select the billing codes to appear in the report" tooltipPosition="bottom" [label]="_dcb.label"
               [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
@@ -86,11 +86,11 @@
       <label class="sublabel">From</label>&nbsp;
       <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
         [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2030"
-        [(ngModel)]="_startDate" [inputStyle]="{'width':'8em'}" [maxDate]="_todayDate"></p-calendar>
+        [(ngModel)]="_startDate" [inputStyle]="{'width':'7em'}" [maxDate]="_todayDate"></p-calendar>
       <label class="sublabel" style="padding:0em 1em 0em 3em">&nbsp;to</label>
       <p-calendar [showIcon]="true" [showOnFocus]="false" [readonlyInput]="true" dateFormat="mm-dd-yy"
         [monthNavigator]="true" showButtonBar="true" [yearNavigator]="true" yearRange="1900:2030" [(ngModel)]="_endDate"
-        [inputStyle]="{'width':'8em'}" [minDate]="_startDate"></p-calendar>
+        [inputStyle]="{'width':'7em'}" [minDate]="_startDate"></p-calendar>
     </div>
     <div class="ui-g-12">
       <label class="label">Select Timesheet Status</label>
