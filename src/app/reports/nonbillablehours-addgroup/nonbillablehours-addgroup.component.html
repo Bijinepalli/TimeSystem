@@ -86,7 +86,7 @@
       </p-header>
       <p-scrollPanel [style]="{height: '400px'}">
         <div class="ui-g" style="margin-bottom:10px;color:black">
-          <div class="ui-g-4" *ngFor="let _dcb of _displayCheckBoxes">
+          <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-4" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showSecondaryGroups" [value]="_dcb.value" [label]="_dcb.label" [(ngModel)]="_selectcheckbox"
               (click)="selectcheck()"></p-checkbox>
           </div>

@@ -44,13 +44,13 @@
             </p-header>
             <p-scrollPanel [style]="{height: '200px'}">
                 <div class="ui-g">
-                    <div class="ui-g-12 ui-lg-4 ui-md-6 ui-sm-12" *ngFor="let _dcb of _displayCheckBoxes">
+                    <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-4" *ngFor="let _dcb of _displayCheckBoxes">
                         <p-checkbox name="showBillingDetails" pTooltip="Select the employees to appear in the report" tooltipPosition="bottom" [value]="_dcb.value" [label]="_dcb.label" [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
                     </div>
                 </div>
             </p-scrollPanel>
             <p-footer>
-                <h3 class="first">{{_selectcheckbox.length}} record(s) selected</h3>
+                <h3 class="first">{{_selectcheckbox.length}} employee(s) selected</h3>
             </p-footer>
         </p-panel>
     </div>

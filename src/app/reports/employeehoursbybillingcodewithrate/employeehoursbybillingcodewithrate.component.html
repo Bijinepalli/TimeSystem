@@ -60,8 +60,12 @@
       </div>
       <p-footer>
         <div style="text-align: left">
-          <button pButton tooltipPosition="bottom" class="ui-button-info" label="Generate Report"
-            (click)=showBillingCodes() pTooltip="Get the billing codes/run the report"
+          <button pButton tooltipPosition="bottom"
+            *ngIf="selectedbillingCycle === 0||selectedbillingCycle === 1||selectedbillingCycle === 2"
+            class="ui-button-info" label="Show Billing Codes" (click)=showBillingCodes()
+            pTooltip="Get the billing codes/run the report" tooltipPosition="bottom"></button>
+          <button pButton tooltipPosition="bottom" *ngIf="selectedbillingCycle === 3" class="ui-button-info"
+            label="Generate Report" (click)=showBillingCodes() pTooltip="Get the billing codes/run the report"
             tooltipPosition="bottom"></button>
         </div>
       </p-footer>
@@ -97,7 +101,7 @@
       </p-header>
       <p-scrollPanel [style]="{height: '400px'}">
         <div class="ui-g" style="margin-bottom:10px">
-          <div class="ui-g-4 ui-sm-12" style="width:33em" *ngFor="let _dcb of _displayCheckBoxes">
+          <div class="ui-g-12 ui-sm-12 ui-md-12 ui-lg-6 ui-xl-4" *ngFor="let _dcb of _displayCheckBoxes">
             <p-checkbox name="showBillingDetails" [value]="_dcb.value" [label]="_dcb.label"
               [(ngModel)]="_selectcheckbox" (click)="selectcheck()"></p-checkbox>
           </div>
