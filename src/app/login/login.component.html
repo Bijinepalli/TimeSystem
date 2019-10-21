@@ -7,7 +7,7 @@
       <div class="ui-g-12 ui-md-9" align="left">
         <h3 style="margin:5px;">{{message.summary}}</h3>
       </div>
-      <div class="ui-g-12 ui-md-12" align="center">
+      <div class="ui-g-12" align="center">
         <p-scrollPanel [style]="{width: '100%', height: '100px'}">
           <h4 style="margin:5px;" [innerHTML]="message.detail | sanitizeHtmlString"></h4>
         </p-scrollPanel>
@@ -20,48 +20,45 @@
     </div>
   </ng-template>
 </p-toast>
-<div class="ui-g ui-g-nopad">
-  <div id="content-body" class="ui-g-12">
-    <div class="ui-g-12" style="min-height: 800px">
-      <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
-        <div class="ui-g-12 ui-sm-12 ui-md-8 ui-lg-5 ui-xl-3 positionMiddle">
-          <div class="ui-g-12 ui-md-12" align="center">
-            <img src="assets/images/ebixconsulting.png">
-          </div>
-          <div class="ui-g-12 ui-md-12 TimeSystemTitle">
-            <b>TimeSystem</b> Login
-          </div>
-          <div class="ui-g-12 ui-md-12">
-            <input id="username" maxlength="50" type="text" pInputText placeholder="Username" autocomplete="username"
-              formControlName="username" value="Name" style="color: black; background-color: white;width:100%;">
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: left;">
-            <app-fielderrors style="width:100%" [form]="signInForm" field="username" nicename="Username">
-            </app-fielderrors>
-          </div>
-          <div class="ui-g-12 ui-md-12">
-            <input type="password" maxlength="20" pInputText placeholder="Password" autocomplete="current-password"
-              formControlName="password" value="password" style="color: black; background-color: white;width:100%;">
-          </div>
-          <div class="ui-g-12 ui-md-12 ui-g-nopad" style="text-align: left;">
-            <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">
-            </app-fielderrors>
-          </div>
-          <div class="ui-g-12 ui-md-12">
-            <button style="width:100%" pButton type="submit" [disabled]="hasFormErrors()" class="LoginButton"
-              label="Login"></button>
-          </div>
-          <div class="ui-g-12 ui-md-12" align="center">
-            <button style="width:100%" pButton type="button" [disabled]="hasFormErrorsForgot()"
-              (click)="ForgotPasswordClick()" class="ui-button-secondary" label="Forgot Password"></button>
-          </div>
-        </div>
-      </form>
+<div class="ui-g ui-g-nopad contentbody">
+  <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+    <div class="ui-g-12 ui-sm-12 ui-md-8 ui-lg-5 ui-xl-3 positionMiddle">
+      <div class="ui-g-12" align="center">
+        <img src="assets/images/ebixconsulting.png">
+      </div>
+      <div class="ui-g-12 TimeSystemTitle">
+        <b>TimeSystem</b> Login
+      </div>
+      <div class="ui-g-12">
+        <input id="username" maxlength="50" type="text" pInputText placeholder="Username" autocomplete="username"
+          formControlName="username" value="Name" style="color: black; background-color: white;width:100%;">
+      </div>
+      <div class="ui-g-12 ui-g-nopad" style="text-align: left;">
+        <app-fielderrors style="width:100%" [form]="signInForm" field="username" nicename="Username">
+        </app-fielderrors>
+      </div>
+      <div class="ui-g-12">
+        <input type="password" maxlength="20" pInputText placeholder="Password" autocomplete="current-password"
+          formControlName="password" value="password" style="color: black; background-color: white;width:100%;">
+      </div>
+      <div class="ui-g-12 ui-g-nopad" style="text-align: left;">
+        <app-fielderrors style="width:100%" [form]="signInForm" field="password" nicename="Password">
+        </app-fielderrors>
+      </div>
+      <div class="ui-g-12">
+        <button style="width:100%" pButton type="submit" [disabled]="hasFormErrors()" class="LoginButton"
+          label="Login"></button>
+      </div>
+      <div class="ui-g-12" align="center">
+        <button style="width:100%" pButton type="button" [disabled]="hasFormErrorsForgot()"
+          (click)="ForgotPasswordClick()" class="ui-button-secondary" label="Forgot Password"></button>
+      </div>
     </div>
-    <div style="text-align: center" class="ui-g-12">
-      © Copyright Ebix Consulting
-    </div>
+  </form>
+  <div style="text-align: center;position:fixed; bottom:1em;" class="ui-g-12">
+    © Copyright Ebix Consulting
   </div>
 </div>
-<p-progressSpinner class="positionMiddle" *ngIf="showSpinner" [style]="{width: '50px', height: '50px'}" strokeWidth="4"
-  fill="#EEEEEE"></p-progressSpinner>
+<p-progressSpinner *ngIf="showSpinner" class="loading" [style]="{width: '100%', height: '100%'}" strokeWidth="4"
+  fill="#EEEEEE">
+</p-progressSpinner>

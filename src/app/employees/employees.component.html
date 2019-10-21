@@ -78,7 +78,7 @@
                 tooltipPosition="bottom" (click)="editEmployee(rowData)"></i>
             </td>
             <td style="width: 7em;text-align: center;" *ngIf="!_HasEdit && !_ShowTerminate">
-              <i *ngIf="rowData['Inactive'] === 'False'" class="fa fa-times fa-150x deleteIcon"
+              <i *ngIf="!(rowData['Inactive'] === 'True' || rowData['Officer'] === 'True')" class="fa fa-times fa-150x deleteIcon"
                 pTooltip="Inactivate this employee. Remove their billing codes, reset their password, and delete unsubmitted timesheets."
                 tooltipPosition="bottom" (click)="terminateEmployee(rowData)"></i>
             </td>
@@ -101,23 +101,23 @@
               </ng-template>
             </td>
             <td style="width: 5em;text-align: center;" *ngIf="!_ShowClients">
-              <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+              <i *ngIf=" !(rowData['Inactive'] === 'True' || rowData['Officer'] === 'True') && rowData['SubmitsTime'] === 'True'"
                 class="fa fa-handshake-o fa-150x" pTooltip="Manage the billing codes assigned to this employee"
                 style="cursor:pointer;color:orangered" tooltipPosition="bottom" (click)="manageClients(rowData)"></i>
             </td>
             <td style="width: 6em;text-align: center;" *ngIf="!_ShowProjects">
-              <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+              <i *ngIf=" !(rowData['Inactive'] === 'True' || rowData['Officer'] === 'True') && rowData['SubmitsTime'] === 'True'"
                 class="fa fa-wrench fa-150x" pTooltip="Manage the billable projects assigned to this employee"
                 style="cursor:pointer;color:green" tooltipPosition="bottom" (click)="manageProjects(rowData)"></i>
             </td>
             <td style="width: 8em;text-align: center;" *ngIf="!_ShowNonBillables">
-              <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+              <i *ngIf=" !(rowData['Inactive'] === 'True' || rowData['Officer'] === 'True') && rowData['SubmitsTime'] === 'True'"
                 class="fa fa-book fa-150x" pTooltip="Manage the non-billable items assigned to this employee"
                 style="cursor:pointer;color:darkmagenta" tooltipPosition="bottom"
                 (click)="manageNonBillables(rowData)"></i>
             </td>
             <td style="width: 7em;text-align: center;" *ngIf="!_ShowRates">
-              <i *ngIf="  rowData['Inactive'] === 'False' && rowData['SubmitsTime'] === 'True' && rowData['Officer'] === 'False'"
+              <i *ngIf=" !(rowData['Inactive'] === 'True' || rowData['Officer'] === 'True') && rowData['SubmitsTime'] === 'True'"
                 class="fa fa-usd fa-150x" pTooltip="Manage the rate information assigned to this employee"
                 style="cursor:pointer;color:navy" tooltipPosition="bottom" (click)="manageRates(rowData)"></i>
             </td>
