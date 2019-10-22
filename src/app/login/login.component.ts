@@ -10,6 +10,7 @@ import { PasswordValidator } from '../sharedpipes/password.validator';
 import { CommonService } from '../service/common.service';
 import { environment } from 'src/environments/environment';
 import { ActivitylogService } from '../service/activitylog.service'; // ActivityLog - Default
+import { debug } from 'util';
 
 
 @Component({
@@ -273,7 +274,6 @@ export class LoginComponent implements OnInit {
   }
 
   SendEmailForgotPassword() {
-
     const LinkExpiryMin = this.commonSvc.getAppSettingsValue('LinkExpiryMin');
     const WebsiteAddress = this.commonSvc.getAppSettingsValue('WebsiteAddress');
     const FinanceEmailAddress = this.commonSvc.getAppSettingsValue('FinanceEmailAddress');
@@ -330,7 +330,7 @@ export class LoginComponent implements OnInit {
                     } else {
                       this.msgSvc.add({
                         key: 'saveSuccess',
-                        sticky: true,
+                        sticky: false,
                         severity: 'success',
                         summary: 'Info',
                         detail: 'Email is sent with a link to Change Password that will expire in '
